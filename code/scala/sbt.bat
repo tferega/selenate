@@ -37,7 +37,7 @@ goto :PARSER_LOOP
 
 set JVM_PARAMS=%JVM_PARAMS% %LIFT_RUN_MODE%
 
-set GRUJ_PATH=project\strap\gruj_vs_sbt-launch-0.11.2.jar
+set GRUJ_PATH=project\strap\gruj_vs_sbt-launch-0.11.3.jar
 set RUN_CMD=java %JVM_PARAMS% -jar %GRUJ_PATH% %LOG_LEVEL% %SBT_PARAMS%
 
 :RUN_LOOP

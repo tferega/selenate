@@ -3,30 +3,21 @@ import Keys._
 
 
 
-// =============  PACKS THE REPOSITORIES INTO A SETTINGS VARIABLE  =============
-object Resolvers {
-  val settings = Seq(
-    resolvers := Options.Repositories,
-    externalResolvers <<= resolvers map { rs =>
-      Resolver.withDefaultResolvers(rs, mavenCentral = false, scalaTools = false)
-    }
-  )
-}
-
-
 
 // ==============  DEFINES DEFAULT SETTINGS USED BY ALL PROJECTS  ==============
 object Default {
   val settings =
-    Defaults.defaultSettings ++
-    Resolvers.settings ++ Seq(
+    Defaults.defaultSettings ++ Seq(
       organization       :=  Options.Organisation,
       crossScalaVersions :=  Options.ScalaVersions,
       scalaVersion       <<= (crossScalaVersions) { versions => versions.head },
       scalacOptions      :=  Seq("-unchecked", "-deprecation", "-encoding", "UTF-8", "-optimise", "-Yrepl-sync"),
       unmanagedSourceDirectories in Compile <<= (scalaSource in Compile)(_ :: Nil),
-      unmanagedSourceDirectories in Test    <<= (scalaSource in Test)(_ :: Nil)
-  )
+      unmanagedSourceDirectories in Test    <<= (scalaSource in Test)(_ :: Nil),
+      publishTo := Some("Element Releases" at "http://maven.element.hr/nexus/content/repositories/releases/"),
+      credentials += Credentials(Path.userHome / ".publish" / "element.credentials"),
+      publishArtifact in (Compile, packageDoc) := false
+    )
 }
 
 
