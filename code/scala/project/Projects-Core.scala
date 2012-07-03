@@ -11,8 +11,8 @@ object Core extends Build {
     Seq(
       selenium,
       jodaTime,
-      scalaTest,
       slf4j,
+      scalaTest % "test",
       logback % "test"
     )
   ) settings(
