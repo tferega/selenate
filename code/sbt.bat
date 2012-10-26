@@ -5,7 +5,6 @@ cd "%~dp0"
 
 set JVM_PARAMS=-Xss2m -Xmx712m -XX:MaxPermSize=256m -XX:+CMSClassUnloadingEnabled
 
-set LIFT_RUN_MODE=-Drun.mode=development
 set TRY_JREBEL=true
 set LOG_LEVEL=
 set NO_PAUSE=false
@@ -14,18 +13,8 @@ set DO_LOOP=false
 :PARSER_LOOP
 if "%~1"=="" goto :PARSER_END
 
-if "%~1"=="--prod" (
-  set LIFT_RUN_MODE=-Drun.mode=production
-  goto :PARSER_CONTINUE
-)
-
 if "%~1"=="--debug" (
   set LOG_LEVEL="set logLevel:=Level.Debug"
-  goto :PARSER_CONTINUE
-)
-
-if "%~1"=="~jetty" (
-  set SBT_PARAMS=%SBT_PARAMS% container:start ~compile container:stop
   goto :PARSER_CONTINUE
 )
 
@@ -51,7 +40,7 @@ shift
 goto :PARSER_LOOP
 :PARSER_END
 
-set JVM_PARAMS=%JVM_PARAMS% %LIFT_RUN_MODE%
+set JVM_PARAMS=%JVM_PARAMS%
 if %TRY_JREBEL%.==true. (
   if exist "%JREBEL_HOME%\jrebel.jar" set JVM_PARAMS=%JVM_PARAMS% -noverify -javaagent:"%JREBEL_HOME%\jrebel.jar" %JREBEL_PLUGINS%
 )
