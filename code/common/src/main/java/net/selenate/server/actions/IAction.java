@@ -6,5 +6,5 @@ public interface IAction {
   public SeCapture capture();
   public Void click(final String xpath);
   public Void close();
-  public Void get(final String url);
+  public boolean get(final String url);
 }

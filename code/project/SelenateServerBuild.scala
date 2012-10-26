@@ -19,7 +19,7 @@ object SelenateServerBuild extends Build {
     , unmanagedSourceDirectories in Compile <<= (scalaSource in Compile)(_ :: Nil)
     , unmanagedSourceDirectories in Test := Nil
 
-    , autoScalaLibrary := false
+    , autoScalaLibrary := true
     , crossPaths       := false
 
     , resolvers := Seq(
@@ -56,7 +56,7 @@ object SelenateServerBuild extends Build {
     , unmanagedSourceDirectories in Compile <<= (javaSource in Compile)(_ :: Nil)
     , EclipseKeys.projectFlavor :=  EclipseProjectFlavor.Java
     )
-  )
+  ) dependsOn(common)
 
   lazy val server = Project(
     "SelenateServer"
@@ -65,8 +65,9 @@ object SelenateServerBuild extends Build {
       libraryDependencies ++= Seq(
         "com.typesafe.akka" % "akka-actor" % "2.0.3"
       , "com.typesafe.akka" % "akka-remote" % "2.0.3"
-      )
-    , unmanagedSourceDirectories in Compile <<= (scalaSource in Compile)(_ :: Nil)
+      , "org.seleniumhq.selenium" % "selenium-firefox-driver" % "2.25.0"
+      , "org.seleniumhq.selenium" % "selenium-server"         % "2.25.0"
+      )    , unmanagedSourceDirectories in Compile <<= (scalaSource in Compile)(_ :: Nil)
     )
-  )
+  ) dependsOn(common)
 }
