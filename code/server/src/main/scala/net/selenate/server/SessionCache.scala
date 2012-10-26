@@ -1,22 +1,20 @@
 package net.selenate.server
 
-import scala.collection.mutable.Map
-
 import akka.actor._
+import akka.dispatch.Await
+import akka.pattern.ask
 import akka.util.duration._
 import akka.util.Timeout
-import akka.pattern.ask
-
-import org.openqa.selenium.firefox.FirefoxDriver
 
 import java.util.UUID
 
+import org.openqa.selenium.firefox.FirefoxDriver
 
+import scala.collection.mutable.Map
 
-
-object SessionCached {
+object SessionCache {
   private type K = UUID
-  private type V = Int //FirefoxDriver
+  private type V = FirefoxDriver
 
   private implicit val timeout = Timeout(5 seconds)
 
@@ -49,8 +47,9 @@ object SessionCached {
   private val cacheActor = system.actorOf(Props[CacheActor], name = "cache-actor")
 
   def getKeyList: IndexedSeq[K] = {
-    val r = cacheActor ? All
-    r.mapTo[IndexedSeq[K]].apply
+    val f = cacheActor ? All
+    val tf = f.mapTo[IndexedSeq[K]]
+    Await.result(tf, 1 second)
   }
 
   def remove(k: K) = {
@@ -58,8 +57,9 @@ object SessionCached {
   }
 
   def apply(k: K): V = {
-    val v = cacheActor ? Get(k)
-    v.mapTo[V].apply
+    val f = cacheActor ? Get(k)
+    val tf = f.mapTo[V]
+    Await.result(tf, 1 second)
   }
 
   def update(k: K, v: V) {
