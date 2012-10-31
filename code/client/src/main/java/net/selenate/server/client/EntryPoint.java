@@ -5,15 +5,32 @@ import net.selenate.server.actions.*;
 import akka.actor.*;
 
 public class EntryPoint {
-  public static void main(String[] args) {
-    final ActorSystem system = ActorSystem.create("selenium-server-client");
+  private static ActorSystem system;
+  private static ISessionFactory sessionFactory;
 
-    IAction client = TypedActor.get(system).typedActorOf(
-        new TypedProps<IAction>(IAction.class),
-        system.actorFor("akka://selenate-server@localhost:9070/user/ss")
+  private static void p(final String s) {
+    System.out.println("###############==========-----> "+ s);
+  }
+
+  public static void main(String[] args) {
+    system = ActorSystem.create("selenium-server-client");
+    sessionFactory = TypedActor.get(system).typedActorOf(
+        new TypedProps<ISessionFactory>(ISessionFactory.class),
+        system.actorFor("akka://selenate-server@localhost:9070/user/session-factory")
     );
 
-    boolean b = client.get("http://www.google.com");
-    System.out.println("RETURNED: "+ b);
+    test("new1");
+    test("new2");
+  }
+
+  public static void test(String sessionName) {
+    p("REQUESTING SESSION PATH ("+ sessionName +")");
+    String sessionActorName = sessionFactory.getSession(sessionName);
+    p("SESSION NAME: "+ sessionActorName);
+
+    p("REQUESTING SESSION ACTOR");
+    ActorRef sessionActor = system.actorFor("akka://selenate-server@localhost:9070/user/"+ sessionActorName);
+    p("SENDING MESSAGE");
+    sessionActor.tell("test");
   }
 }

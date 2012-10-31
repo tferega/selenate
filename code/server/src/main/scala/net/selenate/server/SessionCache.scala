@@ -13,7 +13,7 @@ import org.openqa.selenium.firefox.FirefoxDriver
 import scala.collection.mutable.Map
 
 object SessionCache {
-  private type K = UUID
+  private type K = String
   private type V = FirefoxDriver
 
   private implicit val timeout = Timeout(5 seconds)

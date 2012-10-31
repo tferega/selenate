@@ -12,22 +12,8 @@ import akka.routing._
 
 object EntryPoint extends App {
   try {
-    val system = ActorSystem("selenate-server")
+    val sessionFactoryActor = ActorFactory.typed("session-factory", new SessionFactory)
 
-    val ucs =
-      for (i <- 1 to 1) yield {
-        val name = "ss"// + i
-
-        TypedActor(system).typedActorOf(
-          TypedProps(
-            classOf[IAction]
-          , new Action
-          ).copy(timeout = Some(30))
-        , name
-        )
-
-        system.actorFor("user/" + name)
-      }
 /*
       val ucRouter = system.actorOf(
         Props[Actor].withRouter(
@@ -50,7 +36,7 @@ object EntryPoint extends App {
     waitForExit()
     println("Shutting down...")
     println("Exiting!")
-    system.shutdown()
+    ActorFactory.shutdown()
     Runtime.getRuntime.halt(0)
 
   }
