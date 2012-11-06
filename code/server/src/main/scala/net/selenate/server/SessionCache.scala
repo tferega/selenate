@@ -14,55 +14,47 @@ import scala.collection.mutable.Map
 
 object SessionCache {
   private type K = String
-  private type V = FirefoxDriver
+  private type V = ActorRef
 
   private implicit val timeout = Timeout(5 seconds)
 
-  private sealed trait Actions
-  private case object All             extends Actions
-  private case class  Del(k: K)       extends Actions
-  private case class  Get(k: K)       extends Actions
-  private case class  Set(k: K, v: V) extends Actions
+  private sealed trait Action
+  private case object All             extends Action
+  private case class  Del(k: K)       extends Action
+  private case class  Ctn(k: K)       extends Action
+  private case class  Get(k: K)       extends Action
+  private case class  Opt(k: K)       extends Action
+  private case class  Set(k: K, v: V) extends Action
 
   private class CacheActor extends Actor {
     val cache: Map[K, V] = Map.empty
 
     def receive = {
-      case All =>
-        println("ALL")
-        sender ! cache.keys.toIndexedSeq
-      case Del(k) =>
-        println("DEL(%s)".format(k))
-        cache.remove(k)
-      case Get(k) =>
-        println("GET(%s)".format(k.toString))
-        sender ! cache(k)
-      case Set(k, v) =>
-        println("SET(%s, %s)".format(k.toString, v.toString))
-        cache(k) = v
+      case All =>       sender ! cache.keys.toIndexedSeq
+      case Del(k) =>    cache.remove(k)
+      case Ctn(k) =>    sender ! cache.contains(k)
+      case Get(k) =>    sender ! cache(k)
+      case Opt(k) =>    sender ! cache.get(k)
+      case Set(k, v) => cache(k) = v
     }
   }
 
-  private val system = ActorSystem("session-cache")
-  private val cacheActor = system.actorOf(Props[CacheActor], name = "cache-actor")
+  private val cacheActor = ActorFactory.untyped[CacheActor]("cache-actor")
 
-  def getKeyList: IndexedSeq[K] = {
-    val f = cacheActor ? All
-    val tf = f.mapTo[IndexedSeq[K]]
+  private def ret[T](msg: Action)(implicit m: Manifest[T]): T = {
+    val f = cacheActor ? msg
+    val tf = f.mapTo[T]
     Await.result(tf, 1 second)
   }
 
-  def remove(k: K) = {
-    cacheActor ! Del(k)
+  private def snd(msg: Action) {
+    cacheActor ! msg
   }
 
-  def apply(k: K): V = {
-    val f = cacheActor ? Get(k)
-    val tf = f.mapTo[V]
-    Await.result(tf, 1 second)
-  }
-
-  def update(k: K, v: V) {
-    cacheActor ! Set(k, v)
-  }
+  def getKeyList         = ret[IndexedSeq[K]](All)
+  def remove(k: K)       = snd(Del(k))
+  def contains(k: K)     = ret[Boolean](Ctn(k))
+  def apply(k: K)        = ret[V](Get(k))
+  def get(k: K)          = ret[Option[V]](Opt(k))
+  def update(k: K, v: V) = snd(Set(k, v))
 }
