@@ -1,14 +1,14 @@
-package net.selenate.server.comms;
+package net.selenate.server.comms.res;
 
 import java.io.Serializable;
 
-public class SeCapture implements Serializable {
+public class SeResCapture implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public final String html;
   public final byte[] screenshot;
 
-  public SeCapture(
+  public SeResCapture(
       final String html,
       final byte[] screenshot) {
     if (html == null) {
