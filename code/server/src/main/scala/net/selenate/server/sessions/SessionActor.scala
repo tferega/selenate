@@ -1,7 +1,8 @@
 package net.selenate.server
+package sessions
 
-import comms.res._;
-import comms.req._;
+import comms.req._
+import comms.res._
 
 import akka.actor.{ Actor, ActorRef }
 
@@ -19,7 +20,7 @@ class SessionActor(sessionID: String) extends Actor {
   private def tryOrReport[T](sender: ActorRef) =
     tryOrElse[Exception, T] { e =>
       println(e.toString)
-      sender ! e.stackTrace
+      sender ! e
       e
     }
 

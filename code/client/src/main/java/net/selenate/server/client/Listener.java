@@ -12,10 +12,9 @@ public class Listener extends UntypedActor {
       final String m = (String) obj;
       System.out.println(m);
     }
-    else if (obj instanceof Exception) {
+    else if (obj.getClass().isAssignableFrom(Exception.class)) {
       System.out.println("SERVER RESPONDS WITH AN ERROR");
-      final Exception m = (Exception) obj;
-      m.printStackTrace();
+      throw (Exception) obj;
     }
     else if (obj instanceof SeResCapture) {
       System.out.println("SERVER RESPONDS WITH A CAPUTRE");

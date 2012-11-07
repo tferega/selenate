@@ -5,8 +5,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.selenate.server.actions.*;
 import net.selenate.server.comms.req.*;
+import net.selenate.server.sessions.*;
 
 import akka.actor.*;
 
@@ -120,9 +120,10 @@ public class EntryPoint {
 
   public static ActorRef getSession(String sessionName) {
     p("REQUESTING SESSION "+ sessionName);
-    String sessionActorName = sessionFactory.getSession(sessionName);
-    ActorRef sessionActor = system.actorFor("akka://selenate-server@localhost:9070/user/"+ sessionActorName);
-    p("SESSION NAME: "+ sessionActorName);
+    String sessionActorPath = sessionFactory.getSession(sessionName).
+        replace("selenate-server", "selenate-server@localhost:9070");
+    ActorRef sessionActor = system.actorFor(sessionActorPath);
+    p("SESSION PATH: "+ sessionActorPath);
     p("SENDING PING MESSAGE");
     sessionActor.tell("ping");
 
