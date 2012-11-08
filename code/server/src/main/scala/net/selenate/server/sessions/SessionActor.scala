@@ -6,11 +6,11 @@ import comms.res._
 
 import akka.actor.{ Actor, ActorRef }
 
-import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.firefox.{ FirefoxDriver, FirefoxProfile }
 import org.openqa.selenium.OutputType
 
-class SessionActor(sessionID: String) extends Actor {
-  private val d = new FirefoxDriver()
+class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
+  private val d = new FirefoxDriver(profile)
 
   private def p(s: String) {
     println("SESSION [%s] RECEIVED %s".format(sessionID, s))
