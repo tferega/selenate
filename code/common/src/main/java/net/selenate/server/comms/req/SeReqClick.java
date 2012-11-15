@@ -5,13 +5,20 @@ import java.io.Serializable;
 public class SeReqClick implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  public final String xpath;
+  public final SeReqSelectMethod method;
+  public final String            selector;
 
-  public SeReqClick(final String xpath) {
-    if (xpath == null) {
-      throw new IllegalArgumentException("xpath cannot be null!");
+  public SeReqClick(
+      final SeReqSelectMethod method,
+      final String            selector) {
+    if (method == null) {
+      throw new IllegalArgumentException("method cannot be null!");
+    }
+    if (selector == null) {
+      throw new IllegalArgumentException("selector cannot be null!");
     }
 
-    this.xpath = xpath;
+    this.method   = method;
+    this.selector = selector;
   }
 }

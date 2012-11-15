@@ -2,11 +2,13 @@ package net.selenate.server
 package sessions
 package actions
 
-import net.selenate.server.comms.res.{ SeResCapture, SeResCookie, SeResFrame, SeResWindow }
-import net.selenate.server.comms.req.SeReqCapture
-import org.openqa.selenium.firefox.FirefoxDriver
-import scala.collection.JavaConversions._
+import comms.res._
+import comms.req._
+
 import org.openqa.selenium.{ Cookie, OutputType, WebElement }
+import org.openqa.selenium.firefox.FirefoxDriver
+
+import scala.collection.JavaConversions._
 
 class CaptureAction(val d: FirefoxDriver) extends IAction[SeReqCapture, SeResCapture] {
   private case class Frame(index: Int, name: String, src: String)

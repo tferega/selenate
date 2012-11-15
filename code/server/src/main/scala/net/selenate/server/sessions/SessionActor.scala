@@ -13,18 +13,16 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
   private val d = new FirefoxDriver(profile)
 
   private def capture = new CaptureAction(d).act
+  private def click   = new ClickAction(d).act
 
   def receiveBase(sender: ActorRef): PartialFunction[Any, Unit] = {
-    case "ping" =>
-    case arg: SeReqCapture =>
-      sender ! capture(arg)
-    case arg: SeReqClick =>
-      d.findElementByXPath(arg.xpath).click()
-    case arg: SeReqClose =>
+    case "ping"            => sender ! "pong"
+    case arg: SeReqCapture => sender ! capture(arg)
+    case arg: SeReqClick   => sender ! click(arg)
+    case arg: SeReqClose   =>
       d.close()
-    case arg: SeReqGet =>
+    case arg: SeReqGet     =>
       d.get(arg.url)
-    case arg =>
   }
 
   def receive = new PartialFunction[Any, Unit] {
