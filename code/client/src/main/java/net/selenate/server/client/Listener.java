@@ -1,5 +1,8 @@
 package net.selenate.server.client;
 
+import java.util.List;
+import java.util.Set;
+
 import net.selenate.server.comms.res.*;
 import akka.actor.UntypedActor;
 
@@ -7,6 +10,7 @@ public class Listener extends UntypedActor {
   public void onReceive(final Object obj) throws Exception {
     System.out.println();
 
+    System.out.println("A MESSAGE!");
     if (obj instanceof String) {
       System.out.println("SERVER RESPONDS WITH A MESSAGE");
       final String m = (String) obj;
@@ -19,11 +23,10 @@ public class Listener extends UntypedActor {
     else if (obj instanceof SeResCapture) {
       System.out.println("SERVER RESPONDS WITH A CAPUTRE");
       final SeResCapture m = (SeResCapture) obj;
-      System.out.println("  HTML LENGTH: "+ m.html.length());
-      System.out.println("  IMAGE SIZE:  "+ m.screenshot.length);
+      SaveCapture.saveCapture(m);
     }
     else {
-      System.out.println("SERVER IS GIBBERING");
+      System.out.println("SERVER IS GIBBERING (" + obj.toString() + ")");
       unhandled(obj);
     }
 

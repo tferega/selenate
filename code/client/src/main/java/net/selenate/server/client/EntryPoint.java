@@ -62,7 +62,8 @@ public class EntryPoint {
           else {
             final Serializable actionObj;
             if (actionStr.equals("capture")) {
-              actionObj = new SeReqCapture();
+              final String captureName = inputElems[3];
+              actionObj = new SeReqCapture(captureName);
             }
             else if (actionStr.equals("click")) {
               final String xpath = inputElems[3];

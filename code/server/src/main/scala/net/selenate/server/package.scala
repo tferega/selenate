@@ -1,6 +1,7 @@
 package net.selenate
 
 import java.io.{ PrintWriter, StringWriter }
+import java.{ util => ju }
 
 package object server {
   // My deepest apologies for this, but I .. could .. not .. resist.
@@ -25,5 +26,21 @@ package object server {
       sw.close
       s
     }
+  }
+
+  // scala.collection.JavaConversions and scala.collection.JavaConverters are not adequate.
+  // They create instances of scala.collection.JavaConversions$SeqWrapper (or similar), which subclass
+  // java lists.
+  // That fails when pure java tries to de-serialize it.
+  def seqToRealJava[T](in: Seq[T]): ju.List[T] = {
+    val out = new ju.ArrayList[T]()
+    in foreach out.add
+    out
+  }
+
+  def setToRealJava[T](in: Set[T]): ju.Set[T] = {
+    val out = new ju.HashSet[T]()
+    in foreach out.add
+    out
   }
 }
