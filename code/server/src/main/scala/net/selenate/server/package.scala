@@ -4,16 +4,9 @@ import java.io.{ PrintWriter, StringWriter }
 import java.{ util => ju }
 
 package object server {
-  // My deepest apologies for this, but I .. could .. not .. resist.
-  // Also, it is quite self-explanatory :)
-  def tryOrElse[E, T](elseFun: (Exception) => E): ( => T) => Either[E, T] = (tryFun) => {
-    try {
-      Right(tryFun)
-    } catch {
-      case e: Exception =>
-        Left(elseFun(e))
-    }
-  }
+  type PF[A, R] = PartialFunction[A, R]
+
+  def ??? = throw new Exception("???: Not implemented")
 
   implicit def exceptionImpaler(e: Exception): ImpaleException = new ImpaleException(e)
   class ImpaleException(e: Exception) {
