@@ -10,7 +10,9 @@ import org.openqa.selenium.firefox.FirefoxDriver
 
 import scala.collection.JavaConversions._
 
-class CaptureAction(val d: FirefoxDriver) extends IAction[SeReqCapture, SeResCapture] {
+class CaptureAction(val d: FirefoxDriver)
+    extends IAction[SeReqCapture, SeResCapture]
+    with ActionCommons {
   private case class Frame(index: Int, name: String, src: String)
 
   def act = { arg =>
@@ -70,21 +72,6 @@ class CaptureAction(val d: FirefoxDriver) extends IAction[SeReqCapture, SeResCap
     cookie.getPath,
     cookie.getValue,
     cookie.isSecure)
-
-  private def switchToWindow(windowHandle: String) {
-    println("SWITCHING TO DEFAULT CONTENT")
-    d.switchTo.defaultContent
-    println("SWITCHING TO WINDOW "+ windowHandle)
-    d.switchTo.window(windowHandle)
-  }
-
-  private def switchToFrame(windowHandle: String, framePath: Seq[Int]) {
-    switchToWindow(windowHandle)
-    framePath foreach { e =>
-      println("SWITCHING TO FRAME "+ e)
-      d.switchTo.frame(e)
-    }
-  }
 
   private def findAllFrames: List[Frame] = {
     val raw = d.findElementsByXPath("//*[local-name()='frame' or local-name()='iframe']").toList.zipWithIndex

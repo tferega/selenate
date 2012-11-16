@@ -5,6 +5,13 @@ import java.io.Serializable;
 public class SeReqClose implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  public SeReqClose() {
+  public final String windowHandle;
+
+  public SeReqClose(final String windowHandle) {
+    if (windowHandle == null) {
+      throw new IllegalArgumentException("window handle cannot be null!");
+    }
+
+    this.windowHandle = windowHandle;
   }
 }
