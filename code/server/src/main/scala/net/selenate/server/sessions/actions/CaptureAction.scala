@@ -5,23 +5,93 @@ package actions
 import comms.res._
 import comms.req._
 
+import java.util.ArrayList
+
 import org.openqa.selenium.{ Cookie, OutputType, WebElement }
+import org.openqa.selenium.remote.RemoteWebElement
 import org.openqa.selenium.firefox.FirefoxDriver
 
 import scala.collection.JavaConversions._
 
+object CaptureAction {
+  object XPath {
+    val AllChildren = "*"
+  }
+
+  object JS {
+    val getAttributes = """
+var report = [];
+var attrList = arguments[0].attributes;
+for (var n = 0; n < attrList.length; n++) {
+  var entry = attrList[n];
+  report.push(entry.name + ' -> ' + entry.value);
+};
+return report;
+"""
+  }
+}
+
 class CaptureAction(val d: FirefoxDriver)
     extends IAction[SeReqCapture, SeResCapture]
     with ActionCommons {
+  import CaptureAction._
+
   private case class Frame(index: Int, name: String, src: String)
 
   def act = { arg =>
     new SeResCapture(
         arg.name,
         System.currentTimeMillis,
+        getEntireDom,
         setToRealJava(getCookieList),
         seqToRealJava(getWindowList))
   }
+
+  private def getEntireDom: SeResElement = {
+    val rootElement = d.findElementByXPath("*").asInstanceOf[RemoteWebElement]
+    getDomElement(rootElement)
+  }
+
+  private def getDomElement(e: RemoteWebElement): SeResElement = {
+    val seleniumChildren = e.findElementsByXPath(XPath.AllChildren).map(_.asInstanceOf[RemoteWebElement])
+    val children = seleniumChildren map getDomElement
+
+    val attributeReport = d.executeScript(JS.getAttributes, e)
+    new SeResElement(
+        e.getId,
+        e.getLocation.getX,
+        e.getLocation.getY,
+        e.getSize.getWidth,
+        e.getSize.getHeight,
+        e.getTagName,
+        e.getText,
+        e.isDisplayed,
+        e.isEnabled,
+        e.isSelected,
+        parseAttributeReport(attributeReport),
+        seqToRealJava(children))
+  }
+
+  private def parseAttributeReport(reportRaw: Object): Map[String, String] =
+    reportRaw match {
+      case report: ArrayList[_] =>
+        val attributeList: List[(String, String)] =
+          report.toList flatMap {
+            case entry: String =>
+              val elements = entry.split(" -> ").toList
+              elements match {
+                case attribute :: value :: Nil =>
+                  Some(attribute -> value)
+                case _ =>
+                  None
+              }
+            case _ =>
+              None
+          }
+        attributeList.toMap
+      case _ =>
+        Map.empty
+    }
 
   private def getCookieList =
     d.manage.getCookies.toSet map toSelenate

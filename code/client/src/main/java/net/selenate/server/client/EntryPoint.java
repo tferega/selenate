@@ -48,7 +48,7 @@ public class EntryPoint {
         }
         else if (inputElems[0].equals("get")) {
           final String name = inputElems[1];
-          ActorRef session = getSession(name);
+          final ActorRef session = getSession(name);
           sessionList.put(name, session);
         }
         else if (inputElems[0].equals("act")) {
@@ -67,10 +67,10 @@ public class EntryPoint {
             }
             else if (actionStr.equals("click")) {
               final String xpath = inputElems[3];
-              actionObj = new SeReqClick(xpath);
+              actionObj = new SeReqClick(SeReqSelectMethod.XPATH, xpath);
             }
-            else if (actionStr.equals("close")) {
-              actionObj = new SeReqClose();
+            else if (actionStr.equals("quit")) {
+              actionObj = new SeReqQuit();
             }
             else if (actionStr.equals("get")) {
               final String url = inputElems[3];
@@ -84,6 +84,13 @@ public class EntryPoint {
             }
             session.tell(actionObj, listener);
           }
+        }
+        else if (inputElems[0].equals("test")) {
+          final Serializable actionObj;
+          final ActorRef session = sessionList.values().toArray(new ActorRef[0])[0];
+
+          actionObj = "ping";
+          session.tell(actionObj, listener);
         }
       } catch (Exception e) {
         System.out.println("");
@@ -113,7 +120,7 @@ public class EntryPoint {
     System.out.println("ACTIONS");
     System.out.println("  capture");
     System.out.println("  click %xpath%");
-    System.out.println("  close");
+    System.out.println("  quit");
     System.out.println("  get %url%");
     System.out.println("  ping");
     System.out.println("");
