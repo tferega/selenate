@@ -1,8 +1,15 @@
 import sbt._
 import Keys._
 
+object Repositories {
+  val ElementNexus     = "Element Nexus"     at "http://repo.element.hr/nexus/content/groups/public/"
+  val ElementSnapshots = "Element Snapshots" at "http://repo.element.hr/nexus/content/repositories/snapshots/"
+  val ElementReleases  = "Element Releases"  at "http://repo.element.hr/nexus/content/repositories/releases/"
+}
+
 object SelenateServerBuild extends Build {
   import com.typesafe.sbteclipse.plugin.EclipsePlugin.{settings => eclipseSettings, _}
+  import Repositories._
 
   lazy val defaults =
     Defaults.defaultSettings ++
@@ -22,11 +29,7 @@ object SelenateServerBuild extends Build {
     , autoScalaLibrary := true
     , crossPaths       := false
 
-    , resolvers := Seq(
-        "Element Nexus"     at "http://maven.element.hr/nexus/content/groups/public/"
-      , "Element Snapshots" at "http://maven.element.hr/nexus/content/repositories/releases/"
-      , "Element Releases"  at "http://maven.element.hr/nexus/content/repositories/snapshots/"
-      )
+    , resolvers := Seq(ElementNexus, ElementSnapshots, ElementReleases)
 
     , externalResolvers <<= resolvers map { r =>
         Resolver.withDefaultResolvers(r, mavenCentral = false)
@@ -34,10 +37,18 @@ object SelenateServerBuild extends Build {
     , credentials += Credentials(Path.userHome / ".config" / "selenate-server" / "nexus.config")
     )
 
+  lazy val publishing = Seq(
+      publishTo <<= (version) { version => Some(
+        if (version.endsWith("SNAPSHOT")) ElementSnapshots else ElementNexus
+      )},
+      credentials += Credentials(Path.userHome / ".config" / "selenate-server" / "nexus.config"),
+      publishArtifact in (Compile, packageDoc) := false
+  )
+
   lazy val common = Project(
     "SelenateServer-Common"
   , file("common")
-  , settings = defaults ++ Seq(
+  , settings = defaults ++ publishing ++ Seq(
       libraryDependencies ++= Seq(
       )
     , unmanagedSourceDirectories in Compile <<= (javaSource in Compile)(_ :: Nil)
