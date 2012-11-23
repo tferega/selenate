@@ -6,24 +6,39 @@ import comms.res._
 import comms.req._
 
 import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.By
+import org.openqa.selenium.{ By, WebElement }
 
-class ClickAction(val d: FirefoxDriver) extends IAction[SeReqClick, SeResClick] {
+class ClickAction(val d: FirefoxDriver)
+    extends IAction[SeReqClick, SeResClick]
+    with ActionCommons {
+  import SeReqSelectMethod._
+  type Selector = String => WebElement
+
   def act = { arg =>
-    val byFactory = arg.method match {
-      case SeReqSelectMethod.CLASS_NAME        => By.className _
-      case SeReqSelectMethod.CSS_SELECTOR      => By.cssSelector _
-      case SeReqSelectMethod.ID                => By.id _
-      case SeReqSelectMethod.LINK_TEXT         => By.linkText _
-      case SeReqSelectMethod.NAME              => By.name _
-      case SeReqSelectMethod.PARTIAL_LINK_TEXT => By.partialLinkText _
-      case SeReqSelectMethod.TAG_NAME          => By.tagName _
-      case SeReqSelectMethod.XPATH             => By.xpath _
+    val elementFactory = arg.method match {
+      case CLASS_NAME        => findByBy(By.className _)
+      case CSS_SELECTOR      => findByBy(By.cssSelector _)
+      case ID                => findByBy(By.id _)
+      case LINK_TEXT         => findByBy(By.linkText _)
+      case NAME              => findByBy(By.name _)
+      case PARTIAL_LINK_TEXT => findByBy(By.partialLinkText _)
+      case TAG_NAME          => findByBy(By.tagName _)
+      case UUID              => findByUUID()
+      case XPATH             => findByBy(By.xpath _)
     }
 
-    val by = byFactory(arg.selector)
-    d.findElement(by).click
+    val e = elementFactory(arg.selector)
+    e.click
 
     new SeResClick()
+  }
+
+
+  def findByBy(byFactory: (String) => By): Selector = { selector =>
+    d.findElement(byFactory(selector))
+  }
+
+  def findByUUID(): Selector = { selector =>
+    SelenateWebElement(d, selector)
   }
 }

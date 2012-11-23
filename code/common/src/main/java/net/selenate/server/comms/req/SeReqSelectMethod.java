@@ -8,5 +8,6 @@ public enum SeReqSelectMethod {
   NAME,
   PARTIAL_LINK_TEXT,
   TAG_NAME,
+  UUID,
   XPATH
 }
