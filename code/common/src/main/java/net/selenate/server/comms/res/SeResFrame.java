@@ -11,6 +11,7 @@ public class SeResFrame implements Serializable {
   public final String src;
   public final String html;
   public final byte[] screenshot;
+  public final SeResElement dom;
   public final List<SeResFrame> frameList;
 
   public SeResFrame(
@@ -19,12 +20,14 @@ public class SeResFrame implements Serializable {
       final String src,
       final String html,
       final byte[] screenshot,
+      final SeResElement dom,
       final List<SeResFrame> frameList) {
     this.index      = index;
     this.name       = name;
     this.src        = src;
     this.html       = html;
     this.screenshot = screenshot;
+    this.dom        = dom;
     this.frameList  = frameList;
   }
 }

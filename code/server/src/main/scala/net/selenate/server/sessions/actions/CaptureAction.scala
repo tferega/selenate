@@ -42,7 +42,6 @@ class CaptureAction(val d: FirefoxDriver)
     new SeResCapture(
         arg.name,
         System.currentTimeMillis,
-        getEntireDom,
         setToRealJava(getCookieList),
         seqToRealJava(getWindowList))
   }
@@ -111,6 +110,7 @@ class CaptureAction(val d: FirefoxDriver)
         d.manage.window.getSize.height,
         getHtml,
         getScreenshot,
+        getEntireDom,
         seqToRealJava(getRootFrames(windowHandle)))
   }
 
@@ -126,13 +126,14 @@ class CaptureAction(val d: FirefoxDriver)
     val name       = frame.name
     val src        = frame.src
     val html       = getHtml
+    val dom        = getEntireDom
     val screenshot = getScreenshot
 
     val frameList = findAllFrames map { f =>
       getFrame(windowHandle, fullPath :+ frame.index, f)
     }
 
-    new SeResFrame(frame.index, name, src, html, screenshot, seqToRealJava(frameList))
+    new SeResFrame(frame.index, name, src, html, screenshot, dom, seqToRealJava(frameList))
   }
 
   private implicit def toSelenate(cookie: Cookie): SeResCookie = new SeResCookie(
