@@ -1,7 +1,7 @@
 package net.selenate.server
 package sessions
 
-import actors.ActorFactory
+import actors.ActorFactory._
 
 import java.util.{ Map => JMap }
 
@@ -29,8 +29,8 @@ class SessionFactory extends ISessionFactory {
     val profile    = profileOpt getOrElse emptyProfile
     val name       = sessionID
 
-    val session = ActorFactory.untyped(name, () => new SessionActor(sessionID, profile))
-    session.path.toString
+    val session = untyped(name, () => new SessionActor(sessionID, profile))
+    session.path.toStringWithAddress(address)
   }
 
 

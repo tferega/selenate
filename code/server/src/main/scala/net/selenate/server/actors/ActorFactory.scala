@@ -1,10 +1,11 @@
 package net.selenate.server
 package actors
 
-import akka.actor.{ Actor, ActorRef, ActorSystem, Props, TypedActor, TypedProps }
+import akka.actor.{ Actor, ActorRef, ActorSystem, Address, Props, TypedActor, TypedProps }
 
 object ActorFactory {
-  val system = ActorSystem("selenate-server")
+  val address = Address("akka", "main", "selenate-server", 9070)
+  val system = ActorSystem("main")
   private implicit val overlord = system.actorOf(Props[Overlord], name = "overlord")
   private def getTypedClass[T](i: T) = i.getClass.asInstanceOf[Class[T]]
 
