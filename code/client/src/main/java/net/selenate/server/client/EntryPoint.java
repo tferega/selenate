@@ -19,7 +19,7 @@ public class EntryPoint {
   }
 
   public static void main(String[] args) throws Throwable {
-    system = ActorSystem.create("selenium-server-client");
+    system = ActorSystem.create("selenium-client");
     sessionFactory = TypedActor.get(system).typedActorOf(
         new TypedProps<ISessionFactory>(ISessionFactory.class),
         system.actorFor("akka://main@selenate-server:9070/user/session-factory")
