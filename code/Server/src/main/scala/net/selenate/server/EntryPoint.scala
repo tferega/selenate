@@ -1,7 +1,9 @@
-package net.selenate.server
+package net.selenate
+package server
 
 import actors.ActorFactory
-import sessions.{ ISessionFactory, SessionFactory }
+import common.sessions.ISessionFactory
+import sessions.SessionFactory
 
 import scala.annotation.tailrec
 

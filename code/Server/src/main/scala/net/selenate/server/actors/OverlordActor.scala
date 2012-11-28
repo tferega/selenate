@@ -1,4 +1,5 @@
-package net.selenate.server
+package net.selenate
+package server
 package actors
 
 import akka.actor.{ Actor, ActorRef, Props }

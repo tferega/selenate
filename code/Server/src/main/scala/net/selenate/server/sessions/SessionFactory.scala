@@ -1,5 +1,8 @@
-package net.selenate.server
+package net.selenate
+package server
 package sessions
+
+import common.sessions.ISessionFactory
 
 import actors.ActorFactory._
 

@@ -1,9 +1,10 @@
-package net.selenate.server
+package net.selenate
+package server
 package sessions
 package actions
 
-import comms.res._
-import comms.req._
+import common.comms.res._
+import common.comms.req._
 
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.{ By, WebElement }

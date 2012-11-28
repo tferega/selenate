@@ -1,9 +1,10 @@
-package net.selenate.server
+package net.selenate
+package server
 package sessions
 
 import actions._
-import comms.req._
-import comms.res._
+import common.comms.req._
+import common.comms.res._
 import akka.actor.{ Actor, ActorRef }
 import org.openqa.selenium.firefox.{ FirefoxDriver, FirefoxProfile }
 import org.openqa.selenium.OutputType

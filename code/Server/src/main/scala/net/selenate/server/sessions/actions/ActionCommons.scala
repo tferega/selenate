@@ -1,4 +1,5 @@
-package net.selenate.server
+package net.selenate
+package server
 package sessions
 package actions
 
