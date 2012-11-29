@@ -1,5 +1,6 @@
 package net.selenate.common.user;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +18,8 @@ public interface IElement {
 
   public ISelect toSelect();
 
-  public void clearText();
-  public void appendText();
-  public void setText();
-  public void click();
+  public void clearText() throws IOException;
+  public void appendText() throws IOException;
+  public void setText() throws IOException;
+  public void click() throws IOException;
 }

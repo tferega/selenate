@@ -1,17 +1,18 @@
 package net.selenate.common.user;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IBrowser {
-  public void open(String url);
-  public List<IElement> getDom();
-  public void capture(String name);
-  public void executeScript(String javascript);
+  public void open(String url) throws IOException;
+  public List<IElement> getDom() throws IOException;
+  public void capture(String name) throws IOException;
+  public void executeScript(String javascript) throws IOException;
 
-  public void quit();
+  public void quit() throws IOException;
 
-  public IElement tryGetElement(ElementSelector method, String query);
+  public IElement tryGetElement(ElementSelector method, String query) throws IOException;
 
-  public boolean isAlert();
-  public IAlert getAlert();
+  public boolean isAlert() throws IOException;
+  public IAlert getAlert() throws IOException;
 }
