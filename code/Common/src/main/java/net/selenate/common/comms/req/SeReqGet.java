@@ -9,7 +9,7 @@ public class SeReqGet implements Serializable {
 
   public SeReqGet(final String url) {
     if (url == null) {
-      throw new IllegalArgumentException("url cannot be null!");
+      throw new IllegalArgumentException("Url cannot be null!");
     }
 
     this.url = url;

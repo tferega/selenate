@@ -12,10 +12,10 @@ public class SeReqClick implements Serializable {
       final SeReqSelectMethod method,
       final String            selector) {
     if (method == null) {
-      throw new IllegalArgumentException("method cannot be null!");
+      throw new IllegalArgumentException("Method cannot be null!");
     }
     if (selector == null) {
-      throw new IllegalArgumentException("selector cannot be null!");
+      throw new IllegalArgumentException("Selector cannot be null!");
     }
 
     this.method   = method;

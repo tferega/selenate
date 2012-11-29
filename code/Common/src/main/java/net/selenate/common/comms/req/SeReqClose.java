@@ -1,3 +1,4 @@
+
 package net.selenate.common.comms.req;
 
 import java.io.Serializable;
@@ -9,7 +10,7 @@ public class SeReqClose implements Serializable {
 
   public SeReqClose(final String windowHandle) {
     if (windowHandle == null) {
-      throw new IllegalArgumentException("window handle cannot be null!");
+      throw new IllegalArgumentException("Window handle cannot be null!");
     }
 
     this.windowHandle = windowHandle;
