@@ -28,7 +28,15 @@ object SelenateBuild extends Build {
     Publishing.settings: _*
   )
 
-  lazy val library = project("Library", ProjectFlavor.Scala)
+  lazy val library = project(
+    "Library",
+    ProjectFlavor.Scala,
+    Seq(
+      selenium,
+      jodaTime,
+      slf4j
+    )
+  )
 
   lazy val server = project(
     "Server",
