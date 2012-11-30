@@ -47,31 +47,6 @@ class CaptureAction(val d: FirefoxDriver)
         seqToRealJava(getWindowList))
   }
 
-  private def getEntireDom: SeResElement = {
-    val rootElement = d.findElementByXPath("*").asInstanceOf[RemoteWebElement]
-    getDomElement(rootElement)
-  }
-
-  private def getDomElement(e: RemoteWebElement): SeResElement = {
-    val seleniumChildren = e.findElementsByXPath(XPath.AllChildren).map(_.asInstanceOf[RemoteWebElement])
-    val children = seleniumChildren map getDomElement
-
-    val attributeReport = d.executeScript(JS.getAttributes, e)
-    new SeResElement(
-        e.getId,
-        e.getLocation.getX,
-        e.getLocation.getY,
-        e.getSize.getWidth,
-        e.getSize.getHeight,
-        e.getTagName,
-        e.getText,
-        e.isDisplayed,
-        e.isEnabled,
-        e.isSelected,
-        parseAttributeReport(attributeReport),
-        seqToRealJava(children))
-  }
-
   private def parseAttributeReport(reportRaw: Object): Map[String, String] =
     reportRaw match {
       case report: ArrayList[_] =>
@@ -111,7 +86,6 @@ class CaptureAction(val d: FirefoxDriver)
         d.manage.window.getSize.height,
         getHtml,
         getScreenshot,
-        getEntireDom,
         seqToRealJava(getRootFrames(windowHandle)))
   }
 
@@ -127,14 +101,13 @@ class CaptureAction(val d: FirefoxDriver)
     val name       = frame.name
     val src        = frame.src
     val html       = getHtml
-    val dom        = getEntireDom
     val screenshot = getScreenshot
 
     val frameList = findAllFrames map { f =>
-      getFrame(windowHandle, fullPath :+ frame.index, f)
+      getFrame(windowHandle, fullPath, f)
     }
 
-    new SeResFrame(frame.index, name, src, html, screenshot, dom, seqToRealJava(frameList))
+    new SeResFrame(frame.index, name, src, html, screenshot, seqToRealJava(frameList))
   }
 
   private implicit def toSelenate(cookie: Cookie): SeResCookie = new SeResCookie(
