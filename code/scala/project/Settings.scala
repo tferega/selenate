@@ -6,7 +6,7 @@ import Keys._
 // =============  PACKS THE REPOSITORIES INTO A SETTINGS VARIABLE  =============
 object Resolvers {
   val settings = Seq(
-    resolvers := Options.Repositories,
+    resolvers := Seq("Maven Central" at "http://repo1.maven.org/maven2/"),
     externalResolvers <<= resolvers map { rs =>
       Resolver.withDefaultResolvers(rs, mavenCentral = false, scalaTools = false)
     }
@@ -19,7 +19,7 @@ object Resolvers {
 object Publishing {
   val settings = Seq(
     publishTo <<= (version) { version => Some(
-      if (version.endsWith("SNAPSHOT")) ("Element Snapshots" at "http://maven.element.hr/nexus/content/repositories/snapshots/") else ("Element Releases"  at "http://maven.element.hr/nexus/content/repositories/releases/")
+      if (version.endsWith("SNAPSHOT")) ("Element Snapshots" at "http://repo.element.hr/nexus/content/repositories/snapshots/") else ("Element Releases"  at "http://repo.element.hr/nexus/content/repositories/releases/")
     )},
     credentials += Credentials(Path.userHome / ".publish" / "element.credentials"),
     publishArtifact in (Compile, packageDoc) := false,
