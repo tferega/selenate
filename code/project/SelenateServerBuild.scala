@@ -8,6 +8,7 @@ object SelenateBuild extends Build {
   lazy val root = top(Seq(
     common,
     client,
+    library,
     server
   ))
 
@@ -26,6 +27,8 @@ object SelenateBuild extends Build {
   ) settings (
     Publishing.settings: _*
   )
+
+  lazy val library = project("Library", ProjectFlavor.Scala)
 
   lazy val server = project(
     "Server",
