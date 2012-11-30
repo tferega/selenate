@@ -21,7 +21,7 @@ import net.selenate._
 import core._
 import util._
 import org.openqa.selenium._
-val d = new BaseDriver()
+val d = new SelenateDriver()
 """
   )
 }

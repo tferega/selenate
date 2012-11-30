@@ -15,15 +15,30 @@ object Resolvers {
 
 
 
+// ==============  PUBLISHING SETTINGS  ==============
+object Publishing {
+  val settings = Seq(
+    publishTo <<= (version) { version => Some(
+      if (version.endsWith("SNAPSHOT")) ("Element Snapshots" at "http://maven.element.hr/nexus/content/repositories/snapshots/") else ("Element Releases"  at "http://maven.element.hr/nexus/content/repositories/releases/")
+    )},
+    credentials += Credentials(Path.userHome / ".publish" / "element.credentials"),
+    publishArtifact in (Compile, packageDoc) := false,
+    crossScalaVersions := Seq("2.9.2", "2.9.1-1", "2.9.1")
+  )
+}
+
+
+
 // ==============  DEFINES DEFAULT SETTINGS USED BY ALL PROJECTS  ==============
 object Default {
   val settings =
     Defaults.defaultSettings ++
-    Resolvers.settings ++ Seq(
+    Resolvers.settings ++
+    Publishing.settings ++ Seq(
       organization       :=  Options.Organisation,
       crossScalaVersions :=  Options.ScalaVersions,
       scalaVersion       <<= (crossScalaVersions) { versions => versions.head },
-      scalacOptions      :=  Seq("-unchecked", "-deprecation", "-encoding", "UTF-8", "-optimise", "-Yrepl-sync"),
+      scalacOptions      :=  Seq("-unchecked", "-deprecation", "-encoding", "UTF-8", "-optimise"),
       unmanagedSourceDirectories in Compile <<= (scalaSource in Compile)(_ :: Nil),
       unmanagedSourceDirectories in Test    <<= (scalaSource in Test)(_ :: Nil)
   )
