@@ -13,19 +13,21 @@ import scala.collection.JavaConversions
 class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
   private val d = new FirefoxDriver(profile)
 
-  private def capture = new CaptureAction(d).act
-  private def click   = new ClickAction(d).act
-  private def close   = new CloseAction(d).act
-  private def get     = new GetAction(d).act
-  private def quit    = new QuitAction(d).act
+  private def capture       = new CaptureAction(d).act
+  private def click         = new ClickAction(d).act
+  private def close         = new CloseAction(d).act
+  private def executeScript = new ExecuteScriptAction(d).act
+  private def get           = new GetAction(d).act
+  private def quit          = new QuitAction(d).act
 
   def receiveBase(sender: ActorRef): PartialFunction[Any, Unit] = {
-    case "ping"            => sender ! "pong"
-    case arg: SeReqCapture => sender ! capture(arg)
-    case arg: SeReqClick   => sender ! click(arg)
-    case arg: SeReqClose   => sender ! close(arg)
-    case arg: SeReqQuit    => sender ! quit(arg)
-    case arg: SeReqGet     => sender ! get(arg)
+    case "ping"                  => sender ! "pong"
+    case arg: SeReqCapture       => sender ! capture(arg)
+    case arg: SeReqClick         => sender ! click(arg)
+    case arg: SeReqClose         => sender ! close(arg)
+    case arg: SeReqExecuteScript => sender ! executeScript(arg)
+    case arg: SeReqQuit          => sender ! quit(arg)
+    case arg: SeReqGet           => sender ! get(arg)
   }
 
   def receive = new PartialFunction[Any, Unit] {

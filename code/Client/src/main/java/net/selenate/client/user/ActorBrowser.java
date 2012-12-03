@@ -30,10 +30,10 @@ public class ActorBrowser implements IBrowser {
 
   protected Object block(final Object req) throws IOException {
     try {
-      Future<Object> future = Patterns.ask(session, req, timeout);
-      Object result = Await.result(future, timeout.duration());
+      final Future<Object> future = Patterns.ask(session, req, timeout);
+      final Object result = Await.result(future, timeout.duration());
       return result;
-    } catch (Exception e) {
+    } catch (final Exception e) {
       throw new IOException(String.format("An error occured while sending the message to remote actor!\nMessage: %s", req.toString()), e);
     }
   }
@@ -45,35 +45,37 @@ public class ActorBrowser implements IBrowser {
     try {
       final T res = clazz.cast(obj);
       return res;
-    } catch (ClassCastException e) {
+    } catch (final ClassCastException e) {
       throw new IOException(String.format("Received an unexpected response! Found: %s; required: %s.", obj.getClass().toString(), clazz.toString()), e);
     }
   }
 
 
   @Override
-  public void open(String url) throws IOException {
+  public void open(final String url) throws IOException {
     typedBlock(new SeReqGet(url), SeResGet.class);
   }
 
   @Override
-  public void capture(String name) throws IOException {
+  public void capture(final String name) throws IOException {
     typedBlock(new SeReqCapture(name), SeResCapture.class);
   }
 
   @Override
-  public void executeScript(String javascript) throws IOException {
-    throw new IllegalArgumentException("Not supported");
+  public String executeScript(final String javascript) throws IOException {
+    final SeResExecuteScript res = typedBlock(new SeReqExecuteScript(javascript), SeResExecuteScript.class);
+    return res.result;
   }
 
   @Override
   public void quit() throws IOException {
     typedBlock(new SeReqQuit(), SeResQuit.class);
-
   }
 
   @Override
-  public IElement tryGetElement(ElementSelector method, String query)
+  public IElement tryGetElement(
+      final ElementSelector method,
+      final String query)
       throws IOException {
     throw new IllegalArgumentException("Not supported");
   }
