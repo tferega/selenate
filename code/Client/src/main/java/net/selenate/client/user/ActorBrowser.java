@@ -73,10 +73,26 @@ public class ActorBrowser implements IBrowser {
   }
 
   @Override
-  public IElement tryGetElement(
+  public IElement findElement(
       final ElementSelector method,
       final String query)
       throws IOException {
+    final SeReqSelectMethod reqMethod;
+    switch (method) {
+      case CLASS_NAME:        reqMethod = SeReqSelectMethod.CLASS_NAME;        break;
+      case CSS_SELECTOR:      reqMethod = SeReqSelectMethod.CSS_SELECTOR;      break;
+      case ID:                reqMethod = SeReqSelectMethod.ID;                break;
+      case LINK_TEXT:         reqMethod = SeReqSelectMethod.LINK_TEXT;         break;
+      case NAME:              reqMethod = SeReqSelectMethod.NAME;              break;
+      case PARTIAL_LINK_TEXT: reqMethod = SeReqSelectMethod.PARTIAL_LINK_TEXT; break;
+      case TAG_NAME:          reqMethod = SeReqSelectMethod.TAG_NAME;          break;
+      case UUID:              reqMethod = SeReqSelectMethod.UUID;              break;
+      case XPATH:             reqMethod = SeReqSelectMethod.XPATH;             break;
+      default:                throw new RuntimeException("Unexpected error!");
+    }
+
+    final SeResElement res = typedBlock(new SeReqElement(reqMethod, query), SeResElement.class);
+    // Must first create an implementation!
     throw new IllegalArgumentException("Not supported");
   }
 

@@ -10,7 +10,7 @@ public interface IBrowser {
 
   public void quit() throws IOException;
 
-  public IElement tryGetElement(ElementSelector method, String query) throws IOException;
+  public IElement findElement(ElementSelector method, String query) throws IOException;
 
   public boolean isAlert() throws IOException;
   public IAlert getAlert() throws IOException;

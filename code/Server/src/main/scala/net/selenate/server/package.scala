@@ -36,4 +36,10 @@ package object server {
     in foreach out.add
     out
   }
+
+  def mapToRealJava[K, V](in: Map[K, V]): ju.Map[K, V] = {
+    val out = new ju.HashMap[K, V]
+    in foreach { case(k, v) => out.put(k, v) }
+    out
+  }
 }

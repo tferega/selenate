@@ -6,8 +6,6 @@ package actions
 import common.comms.res._
 import common.comms.req._
 
-import java.util.ArrayList
-
 import org.openqa.selenium.{ Cookie, OutputType, WebElement }
 import org.openqa.selenium.remote.RemoteWebElement
 import org.openqa.selenium.firefox.FirefoxDriver
@@ -46,27 +44,6 @@ class CaptureAction(val d: FirefoxDriver)
         setToRealJava(getCookieList),
         seqToRealJava(getWindowList))
   }
-
-  private def parseAttributeReport(reportRaw: Object): Map[String, String] =
-    reportRaw match {
-      case report: ArrayList[_] =>
-        val attributeList: List[(String, String)] =
-          report.toList flatMap {
-            case entry: String =>
-              val elements = entry.split(" -> ").toList
-              elements match {
-                case attribute :: value :: Nil =>
-                  Some(attribute -> value)
-                case _ =>
-                  None
-              }
-            case _ =>
-              None
-          }
-        attributeList.toMap
-      case _ =>
-        Map.empty
-    }
 
   private def getCookieList =
     d.manage.getCookies.toSet map toSelenate
