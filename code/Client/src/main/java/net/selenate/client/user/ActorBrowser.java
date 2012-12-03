@@ -8,6 +8,8 @@ import net.selenate.common.user.ElementSelector;
 import net.selenate.common.user.IAlert;
 import net.selenate.common.user.IBrowser;
 import net.selenate.common.user.IElement;
+import net.selenate.common.user.Location;
+import net.selenate.common.user.Position;
 
 import akka.actor.ActorRef;
 import akka.dispatch.Await;
@@ -92,8 +94,19 @@ public class ActorBrowser implements IBrowser {
     }
 
     final SeResElement res = typedBlock(new SeReqElement(reqMethod, query), SeResElement.class);
-    // Must first create an implementation!
-    throw new IllegalArgumentException("Not supported");
+
+    return new ActorElement(
+        session,
+        res.uuid,
+        new Position(res.posX, res.posY),
+        new Location(res.width, res.height),
+        res.name,
+        res.text,
+        res.isDisplayed,
+        res.isEnabled,
+        res.isSelected,
+        res.attributeList,
+        null);
   }
 
   @Override
