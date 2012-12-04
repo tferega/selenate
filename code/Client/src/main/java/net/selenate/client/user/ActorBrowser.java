@@ -12,46 +12,11 @@ import net.selenate.common.user.Location;
 import net.selenate.common.user.Position;
 
 import akka.actor.ActorRef;
-import akka.dispatch.Await;
-import akka.dispatch.Future;
-import akka.pattern.Patterns;
-import akka.util.Timeout;
-import java.util.concurrent.TimeUnit;
 
-public class ActorBrowser implements IBrowser {
-  protected static final Timeout timeout = new Timeout(5, TimeUnit.SECONDS);
-  protected final ActorRef session;
-
+public class ActorBrowser extends ActorBase implements IBrowser {
   public ActorBrowser(final ActorRef session) {
-    if (session == null) {
-      throw new IllegalArgumentException("Session cannot be null!");
-    }
-
-    this.session = session;
+    super(session);
   }
-
-  protected Object block(final Object req) throws IOException {
-    try {
-      final Future<Object> future = Patterns.ask(session, req, timeout);
-      final Object result = Await.result(future, timeout.duration());
-      return result;
-    } catch (final Exception e) {
-      throw new IOException(String.format("An error occured while sending the message to remote actor!\nMessage: %s", req.toString()), e);
-    }
-  }
-
-  protected <T> T typedBlock(
-      final Object req,
-      final Class<T> clazz) throws IOException {
-    final Object obj = block(req);
-    try {
-      final T res = clazz.cast(obj);
-      return res;
-    } catch (final ClassCastException e) {
-      throw new IOException(String.format("Received an unexpected response! Found: %s; required: %s.", obj.getClass().toString(), clazz.toString()), e);
-    }
-  }
-
 
   @Override
   public void open(final String url) throws IOException {

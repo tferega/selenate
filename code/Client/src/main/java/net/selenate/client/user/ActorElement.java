@@ -3,7 +3,6 @@ package net.selenate.client.user;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import akka.actor.ActorRef;
 
@@ -12,9 +11,7 @@ import net.selenate.common.user.ISelect;
 import net.selenate.common.user.Location;
 import net.selenate.common.user.Position;
 
-public class ActorElement implements IElement {
-  protected final ActorRef session;
-
+public class ActorElement extends ActorBase implements IElement {
   private final String   uuid;
   private final Position pos;
   private final Location loc;
@@ -38,9 +35,8 @@ public class ActorElement implements IElement {
       final boolean  isSelected,
       final Map<String, String> attributeList,
       final List<IElement>      children) {
-    if (session == null) {
-      throw new IllegalArgumentException("Session cannot be null!");
-    }
+    super(session);
+
     if (uuid == null) {
       throw new IllegalArgumentException("UUID cannot be null!");
     }
@@ -63,7 +59,6 @@ public class ActorElement implements IElement {
       throw new IllegalArgumentException("Children cannot be null!");
     }
 
-    this.session       = session;
     this.uuid          = uuid;
     this.pos           = pos;
     this.loc           = loc;
@@ -144,7 +139,8 @@ public class ActorElement implements IElement {
 
   @Override
   public void setText() throws IOException {
-    throw new IllegalArgumentException("Not supported");
+    clearText();
+    appendText();
   }
 
   @Override
