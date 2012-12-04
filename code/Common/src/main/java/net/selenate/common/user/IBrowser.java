@@ -13,5 +13,5 @@ public interface IBrowser {
   public IElement findElement(ElementSelector method, String query) throws IOException;
 
   public boolean isAlert() throws IOException;
-  public IAlert getAlert() throws IOException;
+  public IAlert findAlert() throws IOException;
 }

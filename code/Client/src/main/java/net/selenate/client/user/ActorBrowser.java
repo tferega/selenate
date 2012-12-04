@@ -115,7 +115,9 @@ public class ActorBrowser implements IBrowser {
   }
 
   @Override
-  public IAlert getAlert() throws IOException {
+  public IAlert findAlert() throws IOException {
+    final SeResFindAlert alert = typedBlock(new SeReqFindAlert(), SeResFindAlert.class);
+    // Must first create an implementation.
     throw new IllegalArgumentException("Not supported");
   }
 }
