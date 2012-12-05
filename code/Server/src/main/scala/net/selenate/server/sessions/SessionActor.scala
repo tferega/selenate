@@ -13,6 +13,7 @@ import scala.collection.JavaConversions
 class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
   private val d = new FirefoxDriver(profile)
 
+  private def appendText    = new AppendTextAction(d).act
   private def capture       = new CaptureAction(d).act
   private def click         = new ClickAction(d).act
   private def close         = new CloseAction(d).act
@@ -24,6 +25,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
 
   def receiveBase(sender: ActorRef): PartialFunction[Any, Unit] = {
     case "ping"                  => sender ! "pong"
+    case arg: SeReqAppendText    => sender ! appendText(arg)
     case arg: SeReqCapture       => sender ! capture(arg)
     case arg: SeReqClick         => sender ! click(arg)
     case arg: SeReqClose         => sender ! close(arg)
@@ -44,7 +46,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
       } catch {
         case e: Exception =>
           println(e.toString)
-          sender ! e.stackTrace
+          sender ! new Exception(e.stackTrace)
       }
     }
   }

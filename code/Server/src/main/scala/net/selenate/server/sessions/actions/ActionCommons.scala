@@ -6,7 +6,7 @@ package actions
 import common.comms.req._
 
 import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.remote.{ RemoteWebDriver, RemoteWebElement }
+import org.openqa.selenium.remote.{ RemoteWebDriver, RemoteWebElement, UselessFileDetector }
 import org.openqa.selenium.SearchContext
 import org.openqa.selenium.{ By, WebElement }
 
@@ -19,10 +19,15 @@ trait ActionCommons {
       e.setParent(parent);
       e.setId(uuid);
       e.setFoundBy(parent, "UUID", uuid)
+      e.setFileDetector(new UselessFileDetector())
       e
     }
   }
-  protected class SelenateWebElement private () extends RemoteWebElement
+  protected class SelenateWebElement private () extends RemoteWebElement {
+    override def setFoundBy(parent: SearchContext, locator: String, term: String) {
+      super.setFoundBy(parent, locator, term);
+    }
+  }
 
   protected def switchToWindow(windowHandle: String) {
     println("SWITCHING TO DEFAULT CONTENT")

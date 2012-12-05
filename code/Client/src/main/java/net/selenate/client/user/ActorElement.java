@@ -6,6 +6,8 @@ import java.util.Map;
 
 import akka.actor.ActorRef;
 
+import net.selenate.common.comms.req.*;
+import net.selenate.common.comms.res.*;
 import net.selenate.common.user.IElement;
 import net.selenate.common.user.ISelect;
 import net.selenate.common.user.Location;
@@ -133,14 +135,14 @@ public class ActorElement extends ActorBase implements IElement {
   }
 
   @Override
-  public void appendText() throws IOException {
-    throw new IllegalArgumentException("Not supported");
+  public void appendText(String text) throws IOException {
+    typedBlock(new SeReqAppendText(SeReqSelectMethod.UUID, uuid, text), SeResAppendText.class);
   }
 
   @Override
-  public void setText() throws IOException {
+  public void setText(String text) throws IOException {
     clearText();
-    appendText();
+    appendText(text);
   }
 
   @Override

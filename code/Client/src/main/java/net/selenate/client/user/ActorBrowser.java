@@ -1,6 +1,7 @@
 package net.selenate.client.user;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
@@ -71,7 +72,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
         res.isEnabled,
         res.isSelected,
         res.attributeList,
-        null);
+        new ArrayList<IElement>());
   }
 
   @Override

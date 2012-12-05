@@ -19,7 +19,7 @@ public interface IElement {
   public ISelect toSelect();
 
   public void clearText() throws IOException;
-  public void appendText() throws IOException;
-  public void setText() throws IOException;
+  public void appendText(String text) throws IOException;
+  public void setText(String text) throws IOException;
   public void click() throws IOException;
 }
