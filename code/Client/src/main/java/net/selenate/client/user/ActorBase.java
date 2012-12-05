@@ -38,8 +38,13 @@ public abstract class ActorBase {
     try {
       final T res = clazz.cast(obj);
       return res;
-    } catch (final ClassCastException e) {
-      throw new IOException(String.format("Received an unexpected response! Found: %s; required: %s.", obj.getClass().toString(), clazz.toString()), e);
+    } catch (final ClassCastException e0) {
+      try {
+        final Exception ex = Exception.class.cast(obj);
+        throw new IOException("Received an exception!", ex);
+      } catch (final ClassCastException e1) {
+        throw new IOException(String.format("Received an unexpected response! Found: %s; required: %s.", obj.getClass().toString(), clazz.toString()), e0);
+      }
     }
   }
 
