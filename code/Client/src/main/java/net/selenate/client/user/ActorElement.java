@@ -131,7 +131,7 @@ public class ActorElement extends ActorBase implements IElement {
 
   @Override
   public void clearText() throws IOException {
-    throw new IllegalArgumentException("Not supported");
+    typedBlock(new SeReqClearText(SeReqSelectMethod.UUID, uuid), SeResClearText.class);
   }
 
   @Override
@@ -147,6 +147,6 @@ public class ActorElement extends ActorBase implements IElement {
 
   @Override
   public void click() throws IOException {
-    throw new IllegalArgumentException("Not supported");
+    typedBlock(new SeReqClick(SeReqSelectMethod.UUID, uuid), SeResClick.class);
   }
 }

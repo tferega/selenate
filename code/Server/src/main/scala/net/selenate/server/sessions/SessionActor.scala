@@ -15,6 +15,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
 
   private def appendText    = new AppendTextAction(d).act
   private def capture       = new CaptureAction(d).act
+  private def clearText     = new ClearTextAction(d).act
   private def click         = new ClickAction(d).act
   private def close         = new CloseAction(d).act
   private def element       = new ElementAction(d).act
@@ -27,6 +28,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
     case "ping"                  => sender ! "pong"
     case arg: SeReqAppendText    => sender ! appendText(arg)
     case arg: SeReqCapture       => sender ! capture(arg)
+    case arg: SeReqClearText     => sender ! clearText(arg)
     case arg: SeReqClick         => sender ! click(arg)
     case arg: SeReqClose         => sender ! close(arg)
     case arg: SeReqElement       => sender ! element(arg)
