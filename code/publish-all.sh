@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo Publishing Client...
+`dirname $0`/sbt.sh --no-jrebel "$@" Client/clean Client/publish
+
+echo Publishing Common...
+`dirname $0`/sbt.sh --no-jrebel "$@" Common/clean Common/publish
+
+echo Publishing Library...
+`dirname $0`/sbt.sh --no-jrebel "$@" Library/clean Library/publish
+
+echo Publishing Server...
+`dirname $0`/sbt.sh --no-jrebel "$@" Server/clean Server/publish

@@ -20,7 +20,7 @@ object Publishing {
   import Repositories._
 
   lazy val settings = Seq(
-    credentials        += Credentials(Path.userHome / ".config" / "selenate-server" / "nexus.config"),
+    credentials        += Credentials(Path.userHome / ".config" / "selenate" / "nexus.config"),
     crossScalaVersions := Seq("2.9.2", "2.9.1-1", "2.9.1", "2.9.0-1", "2.9.0"),
     publishArtifact in (Compile, packageDoc) := false,
     publishTo <<= (version) { version => Some(

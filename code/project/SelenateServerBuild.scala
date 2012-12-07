@@ -36,6 +36,8 @@ object SelenateBuild extends Build {
       jodaTime,
       slf4j
     )
+  ) settings (
+    Publishing.settings: _*
   )
 
   lazy val server = project(
