@@ -4,14 +4,32 @@ package sessions
 package actions
 
 import common.comms.req._
+import common.comms.res._
+
+import java.util.ArrayList
 
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.remote.{ RemoteWebDriver, RemoteWebElement, UselessFileDetector }
 import org.openqa.selenium.SearchContext
 import org.openqa.selenium.{ By, WebElement }
 
+import scala.collection.JavaConversions._
+
 trait ActionCommons {
   val d: FirefoxDriver
+
+  object JS {
+    val getAttributes = """
+var report = [];
+var attrList = arguments[0].attributes;
+for (var n = 0; n < attrList.length; n++) {
+  var entry = attrList[n];
+  report.push(entry.name + ' -> ' + entry.value);
+};
+return report;
+"""
+  }
+
 
   protected object SelenateWebElement {
     def apply(parent: RemoteWebDriver, uuid: String) = {
@@ -44,12 +62,39 @@ trait ActionCommons {
     }
   }
 
-  protected def findElement(method: SeReqSelectMethod, selector: String) = {
+  protected def findElementList(method: SeReqSelectMethod, selector: String) = {
     import SeReqSelectMethod._
-    type Selector = String => WebElement
+    type Selector = String => IndexedSeq[RemoteWebElement]
 
     def findByBy(byFactory: (String) => By): Selector = { selector =>
-      d.findElement(byFactory(selector))
+      d.findElements(byFactory(selector)).map(_.asInstanceOf[RemoteWebElement]).toIndexedSeq
+    }
+
+    def findByUUID(): Selector = { selector =>
+      IndexedSeq(SelenateWebElement(d, selector))
+    }
+
+    val elementFactory = method match {
+      case CLASS_NAME        => findByBy(By.className _)
+      case CSS_SELECTOR      => findByBy(By.cssSelector _)
+      case ID                => findByBy(By.id _)
+      case LINK_TEXT         => findByBy(By.linkText _)
+      case NAME              => findByBy(By.name _)
+      case PARTIAL_LINK_TEXT => findByBy(By.partialLinkText _)
+      case TAG_NAME          => findByBy(By.tagName _)
+      case UUID              => findByUUID()
+      case XPATH             => findByBy(By.xpath _)
+    }
+
+    elementFactory(selector)
+  }
+
+  protected def findElement(method: SeReqSelectMethod, selector: String) = {
+    import SeReqSelectMethod._
+    type Selector = String => RemoteWebElement
+
+    def findByBy(byFactory: (String) => By): Selector = { selector =>
+      d.findElement(byFactory(selector)).asInstanceOf[RemoteWebElement]
     }
 
     def findByUUID(): Selector = { selector =>
@@ -70,4 +115,47 @@ trait ActionCommons {
 
     elementFactory(selector)
   }
+
+  protected def parseWebElement(e: RemoteWebElement): SeResElement = {
+    val attributeReport = d.executeScript(JS.getAttributes, e)
+    new SeResElement(
+        e.getId,
+        e.getLocation.getX,
+        e.getLocation.getY,
+        e.getSize.getWidth,
+        e.getSize.getHeight,
+        e.getTagName,
+        e.getText,
+        e.isDisplayed,
+        e.isEnabled,
+        e.isSelected,
+        mapToRealJava(parseAttributeReport(attributeReport)),
+        seqToRealJava(Nil))
+  }
+
+  protected def parseAttributeReport(reportRaw: Object): Map[String, String] =
+    reportRaw match {
+      case report: ArrayList[_] =>
+        val attributeList: List[(String, String)] =
+          report.toList flatMap {
+            case entry: String =>
+              val elements = entry.split(" -> ").toList
+              elements match {
+                case attribute :: value :: Nil =>
+                  Some(attribute -> value)
+                case _ =>
+                  None
+              }
+            case _ =>
+              None
+          }
+        attributeList.toMap
+      case _ =>
+        Map.empty
+    }
+
+
+//  protected def inAllFrames[T](f => T): IndexedSeq[T] = {
+//
+//  }
 }

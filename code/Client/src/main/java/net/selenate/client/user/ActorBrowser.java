@@ -2,6 +2,7 @@ package net.selenate.client.user;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
@@ -83,6 +84,47 @@ public class ActorBrowser extends ActorBase implements IBrowser {
         res.isSelected,
         res.attributeList,
         new ArrayList<IElement>());
+  }
+
+  @Override
+  public List<IElement> findElementList(
+      final ElementSelector method,
+      final String query)
+          throws IOException {
+    final SeReqSelectMethod reqMethod;
+    switch (method) {
+      case CLASS_NAME:        reqMethod = SeReqSelectMethod.CLASS_NAME;        break;
+      case CSS_SELECTOR:      reqMethod = SeReqSelectMethod.CSS_SELECTOR;      break;
+      case ID:                reqMethod = SeReqSelectMethod.ID;                break;
+      case LINK_TEXT:         reqMethod = SeReqSelectMethod.LINK_TEXT;         break;
+      case NAME:              reqMethod = SeReqSelectMethod.NAME;              break;
+      case PARTIAL_LINK_TEXT: reqMethod = SeReqSelectMethod.PARTIAL_LINK_TEXT; break;
+      case TAG_NAME:          reqMethod = SeReqSelectMethod.TAG_NAME;          break;
+      case UUID:              reqMethod = SeReqSelectMethod.UUID;              break;
+      case XPATH:             reqMethod = SeReqSelectMethod.XPATH;             break;
+      default:                throw new RuntimeException("Unexpected error!");
+    }
+
+    final SeResElementList res = typedBlock(new SeReqElementList(reqMethod, query), SeResElementList.class);
+
+    final List<IElement> actorElementList = new ArrayList<IElement>();
+    for (final SeResElement resElement : res.elementList) {
+      final ActorElement actorElement = new ActorElement(
+          session,
+          resElement.uuid,
+          new Position(resElement.posX, resElement.posY),
+          new Location(resElement.width, resElement.height),
+          resElement.name,
+          resElement.text,
+          resElement.isDisplayed,
+          resElement.isEnabled,
+          resElement.isSelected,
+          resElement.attributeList,
+          new ArrayList<IElement>());
+      actorElementList.add(actorElement);
+    }
+
+    return actorElementList;
   }
 
   @Override

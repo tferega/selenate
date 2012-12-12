@@ -6,20 +6,19 @@ package actions
 import common.comms.res._
 import common.comms.req._
 
-import java.util.ArrayList
-
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.remote.RemoteWebElement
 
 import scala.collection.JavaConversions._
 
 
-class ElementAction(val d: FirefoxDriver)
-    extends IAction[SeReqElement, SeResElement]
+class ElementListAction(val d: FirefoxDriver)
+    extends IAction[SeReqElementList, SeResElementList]
     with ActionCommons {
-
   def act = { arg =>
-    val e = findElement(arg.method, arg.selector).asInstanceOf[RemoteWebElement]
-    parseWebElement(e)
+    val webElementList = findElementList(arg.method, arg.selector)
+    val resElementList = webElementList map parseWebElement
+
+    new SeResElementList(seqToRealJava(resElementList))
   }
 }
