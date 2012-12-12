@@ -10,7 +10,7 @@ import akka.pattern.Patterns;
 import akka.util.Timeout;
 
 public abstract class ActorBase {
-  protected static final Timeout timeout = new Timeout(5, TimeUnit.SECONDS);
+  protected static final Timeout timeout = new Timeout(30, TimeUnit.SECONDS);
   protected final ActorRef session;
 
   public ActorBase(final ActorRef session) {
