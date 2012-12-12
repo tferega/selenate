@@ -21,6 +21,13 @@ package object server {
     }
   }
 
+  def tryo[T](f: => T) =
+    try {
+      Some(f)
+    } catch {
+      case e: Exception => None
+    }
+
   // scala.collection.JavaConversions and scala.collection.JavaConverters are not adequate.
   // They create instances of scala.collection.JavaConversions$SeqWrapper (or similar), which subclass
   // java lists.

@@ -16,9 +16,11 @@ class ElementListAction(val d: FirefoxDriver)
     extends IAction[SeReqElementList, SeResElementList]
     with ActionCommons {
   def act = { arg =>
-    val webElementList = findElementList(arg.method, arg.selector)
-    val resElementList = webElementList map parseWebElement
+    val resElementList = inAllFrames {
+      val webElementList = findElementList(arg.method, arg.selector)
+      webElementList map parseWebElement
+    }
 
-    new SeResElementList(seqToRealJava(resElementList))
+    new SeResElementList(seqToRealJava(resElementList.flatten))
   }
 }

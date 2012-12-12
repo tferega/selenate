@@ -155,7 +155,32 @@ return report;
     }
 
 
-//  protected def inAllFrames[T](f => T): IndexedSeq[T] = {
-//
-//  }
+  protected def inAllFrames[T](f: => T): IndexedSeq[T] = {
+    type Frame = Int
+
+    def findAllFrames: IndexedSeq[Frame] = {
+      val raw = d.findElementsByXPath("//*[local-name()='frame' or local-name()='iframe']").toIndexedSeq.zipWithIndex
+      raw map { case (elem, index) => index }
+    }
+
+    def inAllFramesDoit(windowHandle: String, framePath: Vector[Int], frame: Frame): IndexedSeq[T] = {
+      val fullPath = framePath :+ frame
+      switchToFrame(windowHandle, fullPath)
+
+      val result = f
+      val childrenResultList = findAllFrames flatMap { f =>
+        inAllFramesDoit(windowHandle, fullPath, f)
+      }
+
+      childrenResultList :+ f
+    }
+
+    d.switchTo.defaultContent
+    val rootFrames = findAllFrames
+    if (rootFrames.isEmpty) {
+      IndexedSeq(f)
+    } else {
+      rootFrames.flatMap(inAllFramesDoit(d.getWindowHandle, Vector(), _))
+    }
+  }
 }
