@@ -36,6 +36,11 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
+  public void resetFrame() throws IOException {
+    typedBlock(new SeReqResetFrame(), SeResResetFrame.class);
+  }
+
+  @Override
   public void switchFrame(final int frame) throws IOException {
     typedBlock(new SeReqSwitchFrame(frame), SeResSwitchFrame.class);
   }

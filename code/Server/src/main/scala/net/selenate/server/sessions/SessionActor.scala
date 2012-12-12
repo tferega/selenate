@@ -23,6 +23,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
   private def findAlert     = new FindAlertAction(d).act
   private def get           = new GetAction(d).act
   private def quit          = new QuitAction(d).act
+  private def resetFrame    = new ResetFrameAction(d).act
   private def switchFrame   = new SwitchFrameAction(d).act
 
   def receiveBase(sender: ActorRef): PartialFunction[Any, Unit] = {
@@ -37,6 +38,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
     case arg: SeReqFindAlert     => sender ! findAlert(arg)
     case arg: SeReqQuit          => sender ! quit(arg)
     case arg: SeReqGet           => sender ! get(arg)
+    case arg: SeReqResetFrame    => sender ! resetFrame(arg)
     case arg: SeReqSwitchFrame   => sender ! switchFrame(arg)
   }
 

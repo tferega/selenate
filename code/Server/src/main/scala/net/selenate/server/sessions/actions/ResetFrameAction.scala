@@ -9,12 +9,12 @@ import common.comms.req._
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.{ By, WebElement }
 
-class SwitchFrameAction(val d: FirefoxDriver)
-    extends IAction[SeReqSwitchFrame, SeResSwitchFrame]
+class ResetFrameAction(val d: FirefoxDriver)
+    extends IAction[SeReqResetFrame, SeResResetFrame]
     with ActionCommons {
   def act = { arg =>
-    d.switchTo.frame(arg.frame)
+    d.switchTo.defaultContent
 
-    new SeResSwitchFrame()
+    new SeResResetFrame()
   }
 }
