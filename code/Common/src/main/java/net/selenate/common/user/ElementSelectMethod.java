@@ -1,6 +1,6 @@
 package net.selenate.common.user;
 
-public enum ElementSelector {
+public enum ElementSelectMethod {
   CLASS_NAME,
   CSS_SELECTOR,
   ID,

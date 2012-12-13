@@ -1,6 +1,6 @@
 package net.selenate.common.user;
 
-public enum OptionSelector {
+public enum OptionSelectMethod {
   INDEX,
   VALUE,
   VISIBLE_TEXT

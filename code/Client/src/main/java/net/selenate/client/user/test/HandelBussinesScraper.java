@@ -2,7 +2,7 @@ package net.selenate.client.user.test;
 
 import java.io.IOException;
 
-import net.selenate.common.user.ElementSelector;
+import net.selenate.common.user.ElementSelectMethod;
 import net.selenate.common.user.IBrowser;
 import net.selenate.common.user.IElement;
 
@@ -17,15 +17,15 @@ public class HandelBussinesScraper {
 
   public String start() throws IOException {
     browser.open(base);
-    final IElement challengeElem = browser.findElement(ElementSelector.CLASS_NAME, "boxedcode");
+    final IElement challengeElem = browser.findElement(ElementSelectMethod.CLASS_NAME, "boxedcode");
     return challengeElem.getText();
   }
 
 
   public void login(String personalNumber, String code) throws IOException {
-    final IElement pnumInput = browser.findElement(ElementSelector.NAME, "CAP_USID");
-    final IElement codeInput = browser.findElement(ElementSelector.NAME, "CAP_RESPONSE");
-    final IElement loginButton = browser.findElement(ElementSelector.NAME, "subm");
+    final IElement pnumInput = browser.findElement(ElementSelectMethod.NAME, "CAP_USID");
+    final IElement codeInput = browser.findElement(ElementSelectMethod.NAME, "CAP_RESPONSE");
+    final IElement loginButton = browser.findElement(ElementSelectMethod.NAME, "subm");
 
     pnumInput.setText(personalNumber);
     codeInput.setText(code);

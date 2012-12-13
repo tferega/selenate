@@ -6,7 +6,7 @@ import java.util.List;
 
 import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
-import net.selenate.common.user.ElementSelector;
+import net.selenate.common.user.ElementSelectMethod;
 import net.selenate.common.user.IAlert;
 import net.selenate.common.user.IBrowser;
 import net.selenate.common.user.IElement;
@@ -53,7 +53,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
 
   @Override
   public IElement findElement(
-      final ElementSelector method,
+      final ElementSelectMethod method,
       final String query)
       throws IOException {
     final SeReqSelectMethod reqMethod;
@@ -88,7 +88,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
 
   @Override
   public List<IElement> findElementList(
-      final ElementSelector method,
+      final ElementSelectMethod method,
       final String query)
           throws IOException {
     final SeReqSelectMethod reqMethod;

@@ -12,8 +12,8 @@ public interface IBrowser {
 
   public void quit() throws IOException;
 
-  public IElement findElement(ElementSelector method, String query) throws IOException;
-  public List<IElement> findElementList(ElementSelector method, String query) throws IOException;
+  public IElement findElement(ElementSelectMethod method, String query) throws IOException;
+  public List<IElement> findElementList(ElementSelectMethod method, String query) throws IOException;
 
   public boolean isAlert() throws IOException;
   public IAlert findAlert() throws IOException;
