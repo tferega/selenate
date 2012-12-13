@@ -26,6 +26,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
   private def quit          = new QuitAction(d).act
   private def resetFrame    = new ResetFrameAction(d).act
   private def switchFrame   = new SwitchFrameAction(d).act
+  private def waitFor       = new WaitForAction(d).act
 
   def receiveBase(sender: ActorRef): PartialFunction[Any, Unit] = {
     case "ping"                  => sender ! "pong"
@@ -42,6 +43,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
     case arg: SeReqGet           => sender ! get(arg)
     case arg: SeReqResetFrame    => sender ! resetFrame(arg)
     case arg: SeReqSwitchFrame   => sender ! switchFrame(arg)
+    case arg: SeReqWaitFor       => sender ! waitFor(arg)
   }
 
   def receive = new PartialFunction[Any, Unit] {

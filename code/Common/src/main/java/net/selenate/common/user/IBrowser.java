@@ -9,6 +9,7 @@ public interface IBrowser {
   public String executeScript(String javascript) throws IOException;
   public void resetFrame() throws IOException;
   public void switchFrame(int frame) throws IOException;
+  public boolean waitFor(List<ElementSelector> selectorList) throws IOException;
 
   public void quit() throws IOException;
 

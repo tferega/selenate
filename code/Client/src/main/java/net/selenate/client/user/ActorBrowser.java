@@ -48,6 +48,12 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
+  public boolean waitFor(final List<ElementSelector> selector) throws IOException {
+    final SeResWaitFor res = typedBlock(new SeReqWaitFor(userToReqSelectorList(selector)), SeResWaitFor.class);
+    return res.isSuccessful;
+  }
+
+  @Override
   public void quit() throws IOException {
     typedBlock(new SeReqQuit(), SeResQuit.class);
   }
@@ -138,5 +144,19 @@ public class ActorBrowser extends ActorBase implements IBrowser {
     }
 
     return userElementList;
+  }
+
+  private SeReqElementSelector userToReqSelector(final ElementSelector userSelector) {
+    return new SeReqElementSelector(userToReqSelectMethod(userSelector.method), userSelector.query);
+  }
+
+  private List<SeReqElementSelector> userToReqSelectorList(final List<ElementSelector> userSelectorList) {
+    final List<SeReqElementSelector> reqSelectorList = new ArrayList<SeReqElementSelector>();
+    for (final ElementSelector userSelector : userSelectorList) {
+      final SeReqElementSelector reqSelector = userToReqSelector(userSelector);
+      reqSelectorList.add(reqSelector);
+    }
+
+    return reqSelectorList;
   }
 }
