@@ -13,7 +13,7 @@ class AppendTextAction(val d: FirefoxDriver)
     extends IAction[SeReqAppendText, SeResAppendText]
     with ActionCommons {
   def act = { arg =>
-    val e = findElement(arg.method, arg.selector)
+    val e = findElement(arg.method, arg.query)
     e.sendKeys(arg.text)
 
     new SeResAppendText()

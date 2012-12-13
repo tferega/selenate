@@ -18,14 +18,14 @@ class ElementAction(val d: FirefoxDriver)
   def act = { arg =>
     val resElementList: IndexedSeq[Option[SeResElement]] = inAllFrames {
       tryo {
-        val webElement = findElement(arg.method, arg.selector)
+        val webElement = findElement(arg.method, arg.query)
         parseWebElement(webElement)
       }
     }
 
     val e = resElementList.flatten
     if (e.isEmpty) {
-      throw new IllegalArgumentException("Element [%s, %s] was not found in any frame!".format(arg.method.toString, arg.selector))
+      throw new IllegalArgumentException("Element [%s, %s] was not found in any frame!".format(arg.method.toString, arg.query))
     } else {
       e(0)
     }

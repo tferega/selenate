@@ -17,7 +17,7 @@ class ElementListAction(val d: FirefoxDriver)
     with ActionCommons {
   def act = { arg =>
     val resElementList = inAllFrames {
-      val webElementList = findElementList(arg.method, arg.selector)
+      val webElementList = findElementList(arg.method, arg.query)
       webElementList map parseWebElement
     }
 

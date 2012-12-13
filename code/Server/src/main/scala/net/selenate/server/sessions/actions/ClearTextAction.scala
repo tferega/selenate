@@ -13,7 +13,7 @@ class ClearTextAction(val d: FirefoxDriver)
     extends IAction[SeReqClearText, SeResClearText]
     with ActionCommons {
   def act = { arg =>
-    val e = findElement(arg.method, arg.selector)
+    val e = findElement(arg.method, arg.query)
     e.clear
 
     new SeResClearText()

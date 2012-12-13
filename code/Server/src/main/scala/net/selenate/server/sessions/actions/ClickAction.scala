@@ -13,7 +13,7 @@ class ClickAction(val d: FirefoxDriver)
     extends IAction[SeReqClick, SeResClick]
     with ActionCommons {
   def act = { arg =>
-    val e = findElement(arg.method, arg.selector)
+    val e = findElement(arg.method, arg.query)
     e.click
 
     new SeResClick()

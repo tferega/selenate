@@ -62,16 +62,16 @@ return report;
     }
   }
 
-  protected def findElementList(method: SeReqSelectMethod, selector: String) = {
+  protected def findElementList(method: SeReqSelectMethod, query: String) = {
     import SeReqSelectMethod._
     type Selector = String => IndexedSeq[RemoteWebElement]
 
-    def findByBy(byFactory: (String) => By): Selector = { selector =>
-      d.findElements(byFactory(selector)).map(_.asInstanceOf[RemoteWebElement]).toIndexedSeq
+    def findByBy(byFactory: (String) => By): Selector = { query =>
+      d.findElements(byFactory(query)).map(_.asInstanceOf[RemoteWebElement]).toIndexedSeq
     }
 
-    def findByUUID(): Selector = { selector =>
-      IndexedSeq(SelenateWebElement(d, selector))
+    def findByUUID(): Selector = { query =>
+      IndexedSeq(SelenateWebElement(d, query))
     }
 
     val elementFactory = method match {
@@ -86,19 +86,19 @@ return report;
       case XPATH             => findByBy(By.xpath _)
     }
 
-    elementFactory(selector)
+    elementFactory(query)
   }
 
-  protected def findElement(method: SeReqSelectMethod, selector: String) = {
+  protected def findElement(method: SeReqSelectMethod, query: String) = {
     import SeReqSelectMethod._
     type Selector = String => RemoteWebElement
 
-    def findByBy(byFactory: (String) => By): Selector = { selector =>
-      d.findElement(byFactory(selector)).asInstanceOf[RemoteWebElement]
+    def findByBy(byFactory: (String) => By): Selector = { query =>
+      d.findElement(byFactory(query)).asInstanceOf[RemoteWebElement]
     }
 
-    def findByUUID(): Selector = { selector =>
-      SelenateWebElement(d, selector)
+    def findByUUID(): Selector = { query =>
+      SelenateWebElement(d, query)
     }
 
     val elementFactory = method match {
@@ -113,7 +113,7 @@ return report;
       case XPATH             => findByBy(By.xpath _)
     }
 
-    elementFactory(selector)
+    elementFactory(query)
   }
 
   protected def parseWebElement(e: RemoteWebElement): SeResElement = {
