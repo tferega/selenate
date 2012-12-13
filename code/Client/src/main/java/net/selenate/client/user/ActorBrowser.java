@@ -7,6 +7,7 @@ import java.util.List;
 import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
 import net.selenate.common.user.ElementSelectMethod;
+import net.selenate.common.user.ElementSelector;
 import net.selenate.common.user.IAlert;
 import net.selenate.common.user.IBrowser;
 import net.selenate.common.user.IElement;
@@ -87,6 +88,11 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
+  public IElement findElement(final ElementSelector selector) throws IOException {
+    return findElement(selector.method, selector.query);
+  }
+
+  @Override
   public List<IElement> findElementList(
       final ElementSelectMethod method,
       final String query)
@@ -125,6 +131,11 @@ public class ActorBrowser extends ActorBase implements IBrowser {
     }
 
     return actorElementList;
+  }
+
+  @Override
+  public List<IElement> findElementList(final ElementSelector selector) throws IOException {
+    return findElementList(selector.method, selector.query);
   }
 
   @Override
