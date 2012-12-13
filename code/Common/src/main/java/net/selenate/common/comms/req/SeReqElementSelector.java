@@ -2,13 +2,13 @@ package net.selenate.common.comms.req;
 
 import java.io.Serializable;
 
-public class SeReqElement implements Serializable {
+public class SeReqElementSelector implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public final SeReqSelectMethod method;
   public final String            query;
 
-  public SeReqElement(
+  public SeReqElementSelector(
       final SeReqSelectMethod method,
       final String            query) {
     if (method == null) {
@@ -18,16 +18,7 @@ public class SeReqElement implements Serializable {
       throw new IllegalArgumentException("Query cannot be null!");
     }
 
-    this.method = method;
-    this.query  = query;
-  }
-
-  public SeReqElement(final SeReqElementSelector selector) {
-    if (selector == null) {
-      throw new IllegalArgumentException("Selector cannot be null!");
-    }
-
-    this.method = selector.method;
-    this.query  = selector.query;
+    this.method   = method;
+    this.query = query;
   }
 }

@@ -27,4 +27,19 @@ public class SeReqAppendText implements Serializable {
     this.query  = query;
     this.text   = text;
   }
+
+  public SeReqAppendText(
+      final SeReqElementSelector selector,
+      final String               text) {
+    if (selector == null) {
+      throw new IllegalArgumentException("Selector cannot be null!");
+    }
+    if (text == null) {
+      throw new IllegalArgumentException("Text cannot be null!");
+    }
+
+    this.method = selector.method;
+    this.query  = selector.query;
+    this.text   = text;
+  }
 }

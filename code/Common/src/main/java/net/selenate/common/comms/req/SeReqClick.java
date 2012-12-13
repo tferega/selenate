@@ -21,4 +21,13 @@ public class SeReqClick implements Serializable {
     this.method   = method;
     this.query = query;
   }
+
+  public SeReqClick(final SeReqElementSelector selector) {
+    if (selector == null) {
+      throw new IllegalArgumentException("Selector cannot be null!");
+    }
+
+    this.method = selector.method;
+    this.query  = selector.query;
+  }
 }
