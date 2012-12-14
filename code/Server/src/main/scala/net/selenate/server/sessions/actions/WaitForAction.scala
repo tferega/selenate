@@ -16,17 +16,18 @@ object WaitForAction {
   private val timeout    = 20000
   private val resolution = 250
 
-  def waitForPredicate(predicate: => Boolean): Boolean = {
+  def waitForPredicate[T](predicate: => Option[T]): Option[T] = {
     @tailrec
-    def waitForDoit(end: Long, resolution: Long, predicate: => Boolean): Boolean = {
+    def waitForDoit(end: Long, resolution: Long, predicate: => Option[T]): Option[T] = {
       val current = System.currentTimeMillis
       val remaining = end - current
 
       if (remaining < 0) {
-        false  // Timeout
+        None  // Timeout
       } else {
-        if (predicate) {
-          true  // Predicate evaluated to true
+        val p = predicate
+        if (p.isDefined) {
+          p  // Predicate evaluated to true
         } else {
           // Do not oversleep.
           val sleep = scala.math.min(resolution, remaining)
@@ -48,29 +49,29 @@ class WaitForAction(val d: FirefoxDriver)
   import WaitForAction._
 
   def act = { arg =>
-    val res = waitForElementList(arg.selectorList.toIndexedSeq)
+    val res = waitForPageList(arg.pageList.toIndexedSeq)
 
-    new SeResWaitFor(res)
+    new SeResWaitFor(res.isDefined, res.orNull)
   }
 
 
-  def waitForElementList(selectorList: IndexedSeq[SeReqElementSelector]): Boolean = {
+  def waitForPageList(pageList: IndexedSeq[SeReqPage]): Option[String] =
     waitForPredicate {
-      (selectorList map elementExists).foldLeft(true)(_ && _)
+      pageList find pageExists map (_.name)
     }
-  }
 
-  def elementExists(selector: SeReqElementSelector): Boolean = {
+  def pageExists(page: SeReqPage): Boolean =
+    (page.selectorList map elementExists).foldLeft(true)(_ && _)
+
+  def elementExists(selector: SeReqElementSelector): Boolean =
     try {
       val elemOpt = inAllFrames {
         tryo {
           findElement(selector.method, selector.query)
         }
       }
-
       elemOpt.exists(_.isDefined)
     } catch {
       case e: Exception => false
     }
-  }
 }

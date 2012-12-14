@@ -7,25 +7,25 @@ import java.util.List;
 public class SeReqWaitFor implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  public final List<SeReqElementSelector> selectorList;
+  public final List<SeReqPage> pageList;
 
-  public SeReqWaitFor(final List<SeReqElementSelector> selectorList) {
-    if (selectorList == null) {
-      throw new IllegalArgumentException("Selector list cannot be null!");
+  public SeReqWaitFor(final List<SeReqPage> pageList) {
+    if (pageList == null) {
+      throw new IllegalArgumentException("Page list cannot be null!");
     }
-    if (selectorList.isEmpty()) {
-      throw new IllegalArgumentException("Selector list cannot be empty!");
+    if (pageList.isEmpty()) {
+      throw new IllegalArgumentException("Page list cannot be empty!");
     }
 
-    this.selectorList = selectorList;
+    this.pageList = pageList;
   }
 
-  public SeReqWaitFor(final SeReqElementSelector selector) {
-    if (selector == null) {
-      throw new IllegalArgumentException("Selector cannot be null!");
+  public SeReqWaitFor(final SeReqPage page) {
+    if (page == null) {
+      throw new IllegalArgumentException("Page cannot be null!");
     }
 
-    this.selectorList = new ArrayList<SeReqElementSelector>();
-    this.selectorList.add(selector);
+    this.pageList = new ArrayList<SeReqPage>();
+    this.pageList.add(page);
   }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
+import net.selenate.common.user.BrowserPage;
 import net.selenate.common.user.ElementSelectMethod;
 import net.selenate.common.user.ElementSelector;
 import net.selenate.common.user.IAlert;
@@ -48,9 +49,17 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
-  public boolean waitFor(final List<ElementSelector> selector) throws IOException {
-    final SeResWaitFor res = typedBlock(new SeReqWaitFor(userToReqSelectorList(selector)), SeResWaitFor.class);
-    return res.isSuccessful;
+  public boolean waitFor(final List<ElementSelector> selectorList) throws IOException {
+    final List<BrowserPage> pageList = new ArrayList<BrowserPage>();
+    pageList.add(new BrowserPage("default", selectorList));
+    String res = waitForAny(pageList);
+    return (res != null);
+  }
+
+  @Override
+  public String waitForAny(final List<BrowserPage> pageList) throws IOException {
+    final SeResWaitFor res = typedBlock(new SeReqWaitFor(userToReqPageList(pageList)), SeResWaitFor.class);
+    return res.isSuccessful ? res.foundName : null;
   }
 
   @Override
@@ -158,5 +167,15 @@ public class ActorBrowser extends ActorBase implements IBrowser {
     }
 
     return reqSelectorList;
+  }
+
+  private List<SeReqPage> userToReqPageList(final List<BrowserPage> userPageList) {
+    final List<SeReqPage> reqPageList = new ArrayList<SeReqPage>();
+    for (final BrowserPage userPage : userPageList) {
+      final SeReqPage reqPage = new SeReqPage(userPage.name, userToReqSelectorList(userPage.selectorList));
+      reqPageList.add(reqPage);
+    }
+
+    return reqPageList;
   }
 }

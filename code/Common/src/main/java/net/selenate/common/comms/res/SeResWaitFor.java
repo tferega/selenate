@@ -6,13 +6,29 @@ public class SeResWaitFor implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public final boolean isSuccessful;
+  public final String  foundName;
 
-  public SeResWaitFor(final boolean isSuccessful) {
+  public SeResWaitFor(
+      final boolean isSuccessful,
+      final String  foundName) {
+    if (isSuccessful && foundName == null) {
+      throw new IllegalArgumentException("When successful, found name cannot be null!");
+    }
+    if (!isSuccessful && foundName != null) {
+      throw new IllegalArgumentException("When unsuccessful, found name must be null!");
+    }
+
     this.isSuccessful = isSuccessful;
+    this.foundName    = foundName;
   }
 
   @Override
   public String toString() {
-    return String.format("SeResWaitFor [%s]", isSuccessful ? "successful" : "failed");
+    if (isSuccessful) {
+      return String.format("SeResWaitFor[successful, %s]", foundName);
+    }
+    else {
+      return "SeResWaitFor[unsuccessful]";
+    }
   }
 }
