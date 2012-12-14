@@ -2,6 +2,7 @@ package net.selenate.client.user;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.selenate.common.comms.req.*;
@@ -50,10 +51,20 @@ public class ActorBrowser extends ActorBase implements IBrowser {
 
   @Override
   public boolean waitFor(final List<ElementSelector> selectorList) throws IOException {
+    return waitFor(new BrowserPage("default", selectorList));
+  }
+
+  @Override
+  public boolean waitFor(final BrowserPage page) throws IOException {
     final List<BrowserPage> pageList = new ArrayList<BrowserPage>();
-    pageList.add(new BrowserPage("default", selectorList));
+    pageList.add(page);
     String res = waitForAny(pageList);
     return (res != null);
+  }
+
+  @Override
+  public String waitForAny(BrowserPage ... pageList) throws IOException {
+    return waitForAny(Arrays.asList(pageList));
   }
 
   @Override
