@@ -1,8 +1,5 @@
 package net.selenate.client.user.test;
 
-import java.util.List;
-import java.util.Set;
-
 import net.selenate.common.comms.res.*;
 import akka.actor.UntypedActor;
 

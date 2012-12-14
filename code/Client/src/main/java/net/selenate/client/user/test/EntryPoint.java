@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.selenate.common.comms.*;
 import net.selenate.common.comms.req.*;
 import net.selenate.common.sessions.*;
 
@@ -67,7 +68,7 @@ public class EntryPoint {
             }
             else if (actionStr.equals("click")) {
               final String xpath = inputElems[3];
-              actionObj = new SeReqClick(SeReqSelectMethod.XPATH, xpath);
+              actionObj = new SeReqClick(SeSelectMethod.XPATH, xpath);
             }
             else if (actionStr.equals("quit")) {
               actionObj = new SeReqQuit();

@@ -1,15 +1,15 @@
-package net.selenate.common.comms.req;
+package net.selenate.common.comms;
 
 import java.io.Serializable;
 
-public class SeReqElementSelector implements Serializable {
+public class SeElementSelector implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  public final SeReqSelectMethod method;
+  public final SeSelectMethod method;
   public final String            query;
 
-  public SeReqElementSelector(
-      final SeReqSelectMethod method,
+  public SeElementSelector(
+      final SeSelectMethod method,
       final String            query) {
     if (method == null) {
       throw new IllegalArgumentException("Method cannot be null!");

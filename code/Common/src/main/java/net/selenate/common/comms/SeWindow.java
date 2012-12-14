@@ -1,9 +1,9 @@
-package net.selenate.common.comms.res;
+package net.selenate.common.comms;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class SeResWindow implements Serializable {
+public class SeWindow implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public final String title;
@@ -15,9 +15,9 @@ public class SeResWindow implements Serializable {
   public final int    height;
   public final String html;
   public final byte[] screenshot;
-  public final List<SeResFrame> frameList;
+  public final List<SeFrame> frameList;
 
-  public SeResWindow(
+  public SeWindow(
       final String title,
       final String url,
       final String handle,
@@ -27,7 +27,7 @@ public class SeResWindow implements Serializable {
       final int    height,
       final String html,
       final byte[] screenshot,
-      final List<SeResFrame> frameList) {
+      final List<SeFrame> frameList) {
     this.title      = title;
     this.url        = url;
     this.handle     = handle;

@@ -3,8 +3,9 @@ package server
 package sessions
 package actions
 
-import common.comms.req._
-import common.comms.res._
+import common.comms._
+import req._
+import res._
 
 import java.util.ArrayList
 
@@ -62,8 +63,8 @@ return report;
     }
   }
 
-  protected def findElementList(method: SeReqSelectMethod, query: String) = {
-    import SeReqSelectMethod._
+  protected def findElementList(method: SeSelectMethod, query: String) = {
+    import SeSelectMethod._
     type Selector = String => IndexedSeq[RemoteWebElement]
 
     def findByBy(byFactory: (String) => By): Selector = { query =>
@@ -89,8 +90,8 @@ return report;
     elementFactory(query)
   }
 
-  protected def findElement(method: SeReqSelectMethod, query: String) = {
-    import SeReqSelectMethod._
+  protected def findElement(method: SeSelectMethod, query: String) = {
+    import SeSelectMethod._
     type Selector = String => RemoteWebElement
 
     def findByBy(byFactory: (String) => By): Selector = { query =>

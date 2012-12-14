@@ -1,9 +1,9 @@
-package net.selenate.common.comms.res;
+package net.selenate.common.comms;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class SeResCookie implements Serializable {
+public class SeCookie implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public final String  domain;
@@ -13,7 +13,7 @@ public class SeResCookie implements Serializable {
   public final String  value;
   public final boolean isSecure;
 
-  public SeResCookie(
+  public SeCookie(
       final String  domain,
       final Date    expiry,
       final String  name,

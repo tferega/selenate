@@ -1,6 +1,6 @@
-package net.selenate.common.comms.req;
+package net.selenate.common.comms;
 
-public enum SeReqSelectMethod {
+public enum SeSelectMethod {
   CLASS_NAME,
   CSS_SELECTOR,
   ID,

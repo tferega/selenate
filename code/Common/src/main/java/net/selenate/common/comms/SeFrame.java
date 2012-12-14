@@ -1,9 +1,9 @@
-package net.selenate.common.comms.res;
+package net.selenate.common.comms;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class SeResFrame implements Serializable {
+public class SeFrame implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public final int    index;
@@ -11,15 +11,15 @@ public class SeResFrame implements Serializable {
   public final String src;
   public final String html;
   public final byte[] screenshot;
-  public final List<SeResFrame> frameList;
+  public final List<SeFrame> frameList;
 
-  public SeResFrame(
+  public SeFrame(
       final int    index,
       final String name,
       final String src,
       final String html,
       final byte[] screenshot,
-      final List<SeResFrame> frameList) {
+      final List<SeFrame> frameList) {
     this.index      = index;
     this.name       = name;
     this.src        = src;

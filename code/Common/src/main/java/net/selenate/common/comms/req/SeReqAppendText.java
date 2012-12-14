@@ -2,15 +2,17 @@ package net.selenate.common.comms.req;
 
 import java.io.Serializable;
 
+import net.selenate.common.comms.*;
+
 public class SeReqAppendText implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  public final SeReqSelectMethod method;
+  public final SeSelectMethod method;
   public final String            query;
   public final String            text;
 
   public SeReqAppendText(
-      final SeReqSelectMethod method,
+      final SeSelectMethod method,
       final String            query,
       final String            text) {
     if (method == null) {
@@ -29,7 +31,7 @@ public class SeReqAppendText implements Serializable {
   }
 
   public SeReqAppendText(
-      final SeReqElementSelector selector,
+      final SeElementSelector selector,
       final String               text) {
     if (selector == null) {
       throw new IllegalArgumentException("Selector cannot be null!");

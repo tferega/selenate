@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.selenate.common.comms.*;
+
 public class SeReqWaitFor implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  public final List<SeReqPage> pageList;
+  public final List<SePage> pageList;
 
-  public SeReqWaitFor(final List<SeReqPage> pageList) {
+  public SeReqWaitFor(final List<SePage> pageList) {
     if (pageList == null) {
       throw new IllegalArgumentException("Page list cannot be null!");
     }
@@ -20,12 +22,12 @@ public class SeReqWaitFor implements Serializable {
     this.pageList = pageList;
   }
 
-  public SeReqWaitFor(final SeReqPage page) {
+  public SeReqWaitFor(final SePage page) {
     if (page == null) {
       throw new IllegalArgumentException("Page cannot be null!");
     }
 
-    this.pageList = new ArrayList<SeReqPage>();
+    this.pageList = new ArrayList<SePage>();
     this.pageList.add(page);
   }
 }

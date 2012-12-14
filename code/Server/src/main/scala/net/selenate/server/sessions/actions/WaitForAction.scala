@@ -3,8 +3,9 @@ package server
 package sessions
 package actions
 
-import common.comms.res._
-import common.comms.req._
+import common.comms._
+import res._
+import req._
 
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.{ By, WebElement }
@@ -55,15 +56,15 @@ class WaitForAction(val d: FirefoxDriver)
   }
 
 
-  def waitForPageList(pageList: IndexedSeq[SeReqPage]): Option[String] =
+  def waitForPageList(pageList: IndexedSeq[SePage]): Option[String] =
     waitForPredicate {
       pageList find pageExists map (_.name)
     }
 
-  def pageExists(page: SeReqPage): Boolean =
+  def pageExists(page: SePage): Boolean =
     (page.selectorList map elementExists).foldLeft(true)(_ && _)
 
-  def elementExists(selector: SeReqElementSelector): Boolean =
+  def elementExists(selector: SeElementSelector): Boolean =
     try {
       val elemOpt = inAllFrames {
         tryo {

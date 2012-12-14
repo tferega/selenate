@@ -3,8 +3,9 @@ package server
 package sessions
 package actions
 
-import common.comms.res._
-import common.comms.req._
+import common.comms._
+import res._
+import req._
 
 import org.openqa.selenium.{ Cookie, OutputType, WebElement }
 import org.openqa.selenium.remote.RemoteWebElement
@@ -53,7 +54,7 @@ class CaptureAction(val d: FirefoxDriver)
 
   private def getWindow(windowHandle: String) = {
     switchToWindow(windowHandle)
-    new SeResWindow(
+    new SeWindow(
         d.getTitle,
         d.getCurrentUrl,
         windowHandle,
@@ -66,12 +67,12 @@ class CaptureAction(val d: FirefoxDriver)
         seqToRealJava(getRootFrames(windowHandle)))
   }
 
-  private def getRootFrames(windowHandle: String): List[SeResFrame] =
+  private def getRootFrames(windowHandle: String): List[SeFrame] =
     findAllFrames map { f =>
       getFrame(windowHandle, Vector.empty, f)
     }
 
-  private def getFrame(windowHandle: String, framePath: Vector[Int], frame: Frame): SeResFrame = {
+  private def getFrame(windowHandle: String, framePath: Vector[Int], frame: Frame): SeFrame = {
     val fullPath = framePath :+ frame.index
     switchToFrame(windowHandle, fullPath)
 
@@ -84,10 +85,10 @@ class CaptureAction(val d: FirefoxDriver)
       getFrame(windowHandle, fullPath, f)
     }
 
-    new SeResFrame(frame.index, name, src, html, screenshot, seqToRealJava(frameList))
+    new SeFrame(frame.index, name, src, html, screenshot, seqToRealJava(frameList))
   }
 
-  private implicit def toSelenate(cookie: Cookie): SeResCookie = new SeResCookie(
+  private implicit def toSelenate(cookie: Cookie): SeCookie = new SeCookie(
     cookie.getDomain,
     cookie.getExpiry,
     cookie.getName,

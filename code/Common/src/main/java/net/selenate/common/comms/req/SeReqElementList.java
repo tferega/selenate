@@ -2,14 +2,16 @@ package net.selenate.common.comms.req;
 
 import java.io.Serializable;
 
+import net.selenate.common.comms.*;
+
 public class SeReqElementList implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  public final SeReqSelectMethod method;
+  public final SeSelectMethod method;
   public final String            query;
 
   public SeReqElementList(
-      final SeReqSelectMethod method,
+      final SeSelectMethod method,
       final String            query) {
     if (method == null) {
       throw new IllegalArgumentException("Method cannot be null!");
@@ -22,7 +24,7 @@ public class SeReqElementList implements Serializable {
     this.query  = query;
   }
 
-  public SeReqElementList(final SeReqElementSelector selector) {
+  public SeReqElementList(final SeElementSelector selector) {
     if (selector == null) {
       throw new IllegalArgumentException("Selector cannot be null!");
     }

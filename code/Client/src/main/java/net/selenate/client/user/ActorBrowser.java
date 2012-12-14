@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.selenate.common.comms.*;
 import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
 import net.selenate.common.user.BrowserPage;
@@ -83,7 +84,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
       final ElementSelectMethod method,
       final String query)
       throws IOException {
-    final SeReqSelectMethod reqMethod = userToReqSelectMethod(method);
+    final SeSelectMethod reqMethod = userToReqSelectMethod(method);
     final SeResElement res = typedBlock(new SeReqElement(reqMethod, query), SeResElement.class);
 
     return resToUserElement(res);
@@ -99,7 +100,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
       final ElementSelectMethod method,
       final String query)
           throws IOException {
-    final SeReqSelectMethod reqMethod = userToReqSelectMethod(method);
+    final SeSelectMethod reqMethod = userToReqSelectMethod(method);
     final SeResElementList res = typedBlock(new SeReqElementList(reqMethod, query), SeResElementList.class);
 
     return resToUserElementList(res.elementList);
@@ -123,18 +124,18 @@ public class ActorBrowser extends ActorBase implements IBrowser {
 
 
 
-  private SeReqSelectMethod userToReqSelectMethod(final ElementSelectMethod userMethod) {
-    final SeReqSelectMethod reqMethod;
+  private SeSelectMethod userToReqSelectMethod(final ElementSelectMethod userMethod) {
+    final SeSelectMethod reqMethod;
     switch (userMethod) {
-      case CLASS_NAME:        reqMethod = SeReqSelectMethod.CLASS_NAME;        break;
-      case CSS_SELECTOR:      reqMethod = SeReqSelectMethod.CSS_SELECTOR;      break;
-      case ID:                reqMethod = SeReqSelectMethod.ID;                break;
-      case LINK_TEXT:         reqMethod = SeReqSelectMethod.LINK_TEXT;         break;
-      case NAME:              reqMethod = SeReqSelectMethod.NAME;              break;
-      case PARTIAL_LINK_TEXT: reqMethod = SeReqSelectMethod.PARTIAL_LINK_TEXT; break;
-      case TAG_NAME:          reqMethod = SeReqSelectMethod.TAG_NAME;          break;
-      case UUID:              reqMethod = SeReqSelectMethod.UUID;              break;
-      case XPATH:             reqMethod = SeReqSelectMethod.XPATH;             break;
+      case CLASS_NAME:        reqMethod = SeSelectMethod.CLASS_NAME;        break;
+      case CSS_SELECTOR:      reqMethod = SeSelectMethod.CSS_SELECTOR;      break;
+      case ID:                reqMethod = SeSelectMethod.ID;                break;
+      case LINK_TEXT:         reqMethod = SeSelectMethod.LINK_TEXT;         break;
+      case NAME:              reqMethod = SeSelectMethod.NAME;              break;
+      case PARTIAL_LINK_TEXT: reqMethod = SeSelectMethod.PARTIAL_LINK_TEXT; break;
+      case TAG_NAME:          reqMethod = SeSelectMethod.TAG_NAME;          break;
+      case UUID:              reqMethod = SeSelectMethod.UUID;              break;
+      case XPATH:             reqMethod = SeSelectMethod.XPATH;             break;
       default:                throw new RuntimeException("Unexpected error!");
     }
 
@@ -166,24 +167,24 @@ public class ActorBrowser extends ActorBase implements IBrowser {
     return userElementList;
   }
 
-  private SeReqElementSelector userToReqSelector(final ElementSelector userSelector) {
-    return new SeReqElementSelector(userToReqSelectMethod(userSelector.method), userSelector.query);
+  private SeElementSelector userToReqSelector(final ElementSelector userSelector) {
+    return new SeElementSelector(userToReqSelectMethod(userSelector.method), userSelector.query);
   }
 
-  private List<SeReqElementSelector> userToReqSelectorList(final List<ElementSelector> userSelectorList) {
-    final List<SeReqElementSelector> reqSelectorList = new ArrayList<SeReqElementSelector>();
+  private List<SeElementSelector> userToReqSelectorList(final List<ElementSelector> userSelectorList) {
+    final List<SeElementSelector> reqSelectorList = new ArrayList<SeElementSelector>();
     for (final ElementSelector userSelector : userSelectorList) {
-      final SeReqElementSelector reqSelector = userToReqSelector(userSelector);
+      final SeElementSelector reqSelector = userToReqSelector(userSelector);
       reqSelectorList.add(reqSelector);
     }
 
     return reqSelectorList;
   }
 
-  private List<SeReqPage> userToReqPageList(final List<BrowserPage> userPageList) {
-    final List<SeReqPage> reqPageList = new ArrayList<SeReqPage>();
+  private List<SePage> userToReqPageList(final List<BrowserPage> userPageList) {
+    final List<SePage> reqPageList = new ArrayList<SePage>();
     for (final BrowserPage userPage : userPageList) {
-      final SeReqPage reqPage = new SeReqPage(userPage.name, userToReqSelectorList(userPage.selectorList));
+      final SePage reqPage = new SePage(userPage.name, userToReqSelectorList(userPage.selectorList));
       reqPageList.add(reqPage);
     }
 

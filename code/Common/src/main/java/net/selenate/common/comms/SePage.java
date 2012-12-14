@@ -1,18 +1,18 @@
-package net.selenate.common.comms.req;
+package net.selenate.common.comms;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SeReqPage implements Serializable {
+public class SePage implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public final String name;
-  public final List<SeReqElementSelector> selectorList;
+  public final List<SeElementSelector> selectorList;
 
-  public SeReqPage(
+  public SePage(
       final String name,
-      final List<SeReqElementSelector> selectorList) {
+      final List<SeElementSelector> selectorList) {
     if (name == null) {
       throw new IllegalArgumentException("Name cannot be null!");
     }
@@ -27,9 +27,9 @@ public class SeReqPage implements Serializable {
     this.selectorList = selectorList;
   }
 
-  public SeReqPage(
+  public SePage(
       final String name,
-      final SeReqElementSelector selector) {
+      final SeElementSelector selector) {
     if (name == null) {
       throw new IllegalArgumentException("Name cannot be null!");
     }
@@ -38,7 +38,7 @@ public class SeReqPage implements Serializable {
     }
 
     this.name         = name;
-    this.selectorList = new ArrayList<SeReqElementSelector>();
+    this.selectorList = new ArrayList<SeElementSelector>();
     this.selectorList.add(selector);
   }
 }

@@ -1,11 +1,10 @@
 package net.selenate.client.user.test;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
+import net.selenate.common.comms.*;
 import net.selenate.common.comms.res.*;
 import java.io.*;
 import java.util.Iterator;
@@ -36,12 +35,12 @@ public class SaveCapture {
     saveWindowList(windowFolder, capture.windowList);
   }
 
-  public static void saveCookieList(final String folder, final Set<SeResCookie> cookieList) {
+  public static void saveCookieList(final String folder, final Set<SeCookie> cookieList) {
     int n = 0;
-    Iterator<SeResCookie> iter = cookieList.iterator();
+    Iterator<SeCookie> iter = cookieList.iterator();
     while (iter.hasNext()) {
       n++;
-      final SeResCookie cookie = iter.next();
+      final SeCookie cookie = iter.next();
       final String filename = folder + String.format("%d - %s.txt", n, sanitize(cookie.name));
       final String body =
           "DOMAIN:    " + cookie.domain + "\n" +
@@ -54,9 +53,9 @@ public class SaveCapture {
     }
   }
 
-  public static void saveWindowList(final String baseFolder, final List<SeResWindow> windowList) {
+  public static void saveWindowList(final String baseFolder, final List<SeWindow> windowList) {
     for (int n = 0; n < windowList.size(); n++) {
-      final SeResWindow window = windowList.get(n);
+      final SeWindow window = windowList.get(n);
       final String folder = baseFolder + String.format("%d - %s/", n+1, sanitize(window.title));
 
       final String filename = folder + "window.txt";
@@ -82,9 +81,9 @@ public class SaveCapture {
     }
   }
 
-  public static void saveFrameList(final String baseFolder, final List<SeResFrame> frameList) {
+  public static void saveFrameList(final String baseFolder, final List<SeFrame> frameList) {
     for (int n = 0; n < frameList.size(); n++) {
-      final SeResFrame frame = frameList.get(n);
+      final SeFrame frame = frameList.get(n);
       final String folder = baseFolder + String.format("%s/", n+1);
 
       final String filename = folder + "frame.txt";

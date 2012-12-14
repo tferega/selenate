@@ -6,6 +6,7 @@ import java.util.Map;
 
 import akka.actor.ActorRef;
 
+import net.selenate.common.comms.*;
 import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
 import net.selenate.common.user.IElement;
@@ -131,12 +132,12 @@ public class ActorElement extends ActorBase implements IElement {
 
   @Override
   public void clearText() throws IOException {
-    typedBlock(new SeReqClearText(SeReqSelectMethod.UUID, uuid), SeResClearText.class);
+    typedBlock(new SeReqClearText(SeSelectMethod.UUID, uuid), SeResClearText.class);
   }
 
   @Override
   public void appendText(String text) throws IOException {
-    typedBlock(new SeReqAppendText(SeReqSelectMethod.UUID, uuid, text), SeResAppendText.class);
+    typedBlock(new SeReqAppendText(SeSelectMethod.UUID, uuid, text), SeResAppendText.class);
   }
 
   @Override
@@ -147,6 +148,6 @@ public class ActorElement extends ActorBase implements IElement {
 
   @Override
   public void click() throws IOException {
-    typedBlock(new SeReqClick(SeReqSelectMethod.UUID, uuid), SeResClick.class);
+    typedBlock(new SeReqClick(SeSelectMethod.UUID, uuid), SeResClick.class);
   }
 }
