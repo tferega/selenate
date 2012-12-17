@@ -156,7 +156,7 @@ return report;
     }
 
 
-  protected def inAllFrames[T](f: => T): IndexedSeq[T] = {
+  protected def inAllFrames[T](f: IndexedSeq[Int] => T): IndexedSeq[T] = {
     type Frame = Int
 
     def findAllFrames: IndexedSeq[Frame] = {
@@ -173,13 +173,13 @@ return report;
         inAllFramesDoit(windowHandle, fullPath, f)
       }
 
-      childrenResultList :+ f
+      childrenResultList :+ f(framePath)
     }
 
     d.switchTo.defaultContent
     val rootFrames = findAllFrames
     if (rootFrames.isEmpty) {
-      IndexedSeq(f)
+      IndexedSeq(f(IndexedSeq.empty))
     } else {
       rootFrames.flatMap(inAllFramesDoit(d.getWindowHandle, Vector(), _))
     }
