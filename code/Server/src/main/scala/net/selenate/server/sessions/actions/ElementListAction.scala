@@ -18,7 +18,7 @@ class ElementListAction(val d: FirefoxDriver)
   def act = { arg =>
     val resElementList = inAllFrames { framePath =>
       val webElementList = findElementList(arg.method, arg.query)
-      webElementList map parseWebElement
+      webElementList map parseWebElement(framePath)
     }
 
     new SeResElementList(seqToRealJava(resElementList.flatten))

@@ -117,7 +117,7 @@ return report;
     elementFactory(query)
   }
 
-  protected def parseWebElement(e: RemoteWebElement): SeResElement = {
+  protected def parseWebElement(framePath: IndexedSeq[Int])(e: RemoteWebElement): SeResElement = {
     val attributeReport = d.executeScript(JS.getAttributes, e)
     new SeResElement(
         e.getId,
@@ -130,6 +130,7 @@ return report;
         e.isDisplayed,
         e.isEnabled,
         e.isSelected,
+        seqToRealJava(framePath.map(java.lang.Integer.valueOf(_))),
         mapToRealJava(parseAttributeReport(attributeReport)),
         seqToRealJava(Nil))
   }

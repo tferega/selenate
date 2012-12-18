@@ -17,6 +17,7 @@ public class SeResElement implements Serializable {
   public final boolean isDisplayed;
   public final boolean isEnabled;
   public final boolean isSelected;
+  public final List<Integer>       framePath;
   public final Map<String, String> attributeList;
   public final List<SeResElement>  children;
 
@@ -31,6 +32,7 @@ public class SeResElement implements Serializable {
       final boolean isDisplayed,
       final boolean isEnabled,
       final boolean isSelected,
+      final List<Integer>       framePath,
       final Map<String, String> attributeList,
       final List<SeResElement>  children) {
     this.uuid          = uuid;
@@ -43,6 +45,7 @@ public class SeResElement implements Serializable {
     this.isDisplayed   = isDisplayed;
     this.isEnabled     = isEnabled;
     this.isSelected    = isSelected;
+    this.framePath     = framePath;
     this.attributeList = attributeList;
     this.children      = children;
   }
