@@ -66,10 +66,10 @@ public class EntryPoint {
               final String captureName = inputElems[3];
               actionObj = new SeReqCapture(captureName);
             }
-            else if (actionStr.equals("click")) {
-              final String xpath = inputElems[3];
-              actionObj = new SeReqClick(SeSelectMethod.XPATH, xpath);
-            }
+//            else if (actionStr.equals("click")) {
+//              final String xpath = inputElems[3];
+//              actionObj = new SeReqClick(SeSelectMethod.XPATH, xpath);
+//            }
             else if (actionStr.equals("quit")) {
               actionObj = new SeReqQuit();
             }

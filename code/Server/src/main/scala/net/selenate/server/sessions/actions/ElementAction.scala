@@ -18,6 +18,7 @@ class ElementAction(val d: FirefoxDriver)
   def act = { arg =>
     val resElementList: IndexedSeq[Option[SeResElement]] = inAllFrames { framePath =>
       tryo {
+println("FRAME PATH: "+ framePath.mkString(", "))
         val webElement = findElement(arg.method, arg.query)
         parseWebElement(framePath)(webElement)
       }

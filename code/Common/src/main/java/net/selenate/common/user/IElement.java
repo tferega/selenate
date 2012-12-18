@@ -13,6 +13,7 @@ public interface IElement {
   public boolean  getIsDisplayed();
   public boolean  getIsEnabled();
   public boolean  getIsSelected();
+  public List<Integer>       getFramePath();
   public Map<String, String> getAttributeList();
   public List<IElement>      getChildren();
 

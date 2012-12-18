@@ -6,11 +6,11 @@ public class SeElementSelector implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public final SeSelectMethod method;
-  public final String            query;
+  public final String         query;
 
   public SeElementSelector(
       final SeSelectMethod method,
-      final String            query) {
+      final String         query) {
     if (method == null) {
       throw new IllegalArgumentException("Method cannot be null!");
     }
@@ -18,7 +18,7 @@ public class SeElementSelector implements Serializable {
       throw new IllegalArgumentException("Query cannot be null!");
     }
 
-    this.method   = method;
-    this.query = query;
+    this.method    = method;
+    this.query     = query;
   }
 }

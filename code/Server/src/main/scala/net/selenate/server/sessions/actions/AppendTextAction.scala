@@ -9,10 +9,14 @@ import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.{ By, WebElement }
 import org.openqa.selenium.internal.selenesedriver.SendKeys
 
+import scala.collection.JavaConversions._
+
+
 class AppendTextAction(val d: FirefoxDriver)
     extends IAction[SeReqAppendText, SeResAppendText]
     with ActionCommons {
   def act = { arg =>
+    switchToFrame(d.getWindowHandle, arg.framePath.map(_.toInt))
     val e = findElement(arg.method, arg.query)
     e.sendKeys(arg.text)
 

@@ -153,6 +153,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
         resElement.isDisplayed,
         resElement.isEnabled,
         resElement.isSelected,
+        resElement.framePath,
         resElement.attributeList,
         new ArrayList<IElement>());
   }

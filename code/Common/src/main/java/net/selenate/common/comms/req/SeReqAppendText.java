@@ -1,20 +1,26 @@
 package net.selenate.common.comms.req;
 
 import java.io.Serializable;
+import java.util.List;
 
 import net.selenate.common.comms.*;
 
 public class SeReqAppendText implements Serializable {
   private static final long serialVersionUID = 1L;
 
+  public final List<Integer>  framePath;
   public final SeSelectMethod method;
-  public final String            query;
-  public final String            text;
+  public final String         query;
+  public final String         text;
 
   public SeReqAppendText(
+      final List<Integer>  framePath,
       final SeSelectMethod method,
-      final String            query,
-      final String            text) {
+      final String         query,
+      final String         text) {
+    if (framePath == null) {
+      throw new IllegalArgumentException("Frame path cannot be null!");
+    }
     if (method == null) {
       throw new IllegalArgumentException("Method cannot be null!");
     }
@@ -25,14 +31,15 @@ public class SeReqAppendText implements Serializable {
       throw new IllegalArgumentException("Text cannot be null!");
     }
 
-    this.method = method;
-    this.query  = query;
-    this.text   = text;
+    this.framePath = framePath;
+    this.method    = method;
+    this.query     = query;
+    this.text      = text;
   }
 
   public SeReqAppendText(
-      final SeElementSelector selector,
-      final String               text) {
+      final SeFrameElementSelector selector,
+      final String                 text) {
     if (selector == null) {
       throw new IllegalArgumentException("Selector cannot be null!");
     }
@@ -40,8 +47,9 @@ public class SeReqAppendText implements Serializable {
       throw new IllegalArgumentException("Text cannot be null!");
     }
 
-    this.method = selector.method;
-    this.query  = selector.query;
-    this.text   = text;
+    this.framePath = selector.framePath;
+    this.method    = selector.method;
+    this.query     = selector.query;
+    this.text      = text;
   }
 }

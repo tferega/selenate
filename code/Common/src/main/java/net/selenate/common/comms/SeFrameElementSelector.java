@@ -1,18 +1,16 @@
-package net.selenate.common.comms.req;
+package net.selenate.common.comms;
 
 import java.io.Serializable;
 import java.util.List;
 
-import net.selenate.common.comms.*;
-
-public class SeReqClearText implements Serializable {
+public class SeFrameElementSelector implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public final List<Integer>  framePath;
   public final SeSelectMethod method;
   public final String         query;
 
-  public SeReqClearText(
+  public SeFrameElementSelector(
       final List<Integer>  framePath,
       final SeSelectMethod method,
       final String         query) {
@@ -29,15 +27,5 @@ public class SeReqClearText implements Serializable {
     this.framePath = framePath;
     this.method    = method;
     this.query     = query;
-  }
-
-  public SeReqClearText(final SeFrameElementSelector selector) {
-    if (selector == null) {
-      throw new IllegalArgumentException("Selector cannot be null!");
-    }
-
-    this.framePath = selector.framePath;
-    this.method    = selector.method;
-    this.query     = selector.query;
   }
 }

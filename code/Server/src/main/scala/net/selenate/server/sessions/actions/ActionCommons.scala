@@ -174,7 +174,7 @@ return report;
         inAllFramesDoit(windowHandle, fullPath, f)
       }
 
-      childrenResultList :+ f(framePath)
+      childrenResultList :+ f(fullPath)
     }
 
     d.switchTo.defaultContent
