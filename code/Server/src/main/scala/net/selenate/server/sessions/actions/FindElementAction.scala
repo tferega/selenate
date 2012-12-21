@@ -19,7 +19,8 @@ class FindElementAction(val d: FirefoxDriver)
     val resElementList: IndexedSeq[Option[SeResFindElement]] = inAllFrames { framePath =>
       tryo {
         val webElement = findElement(arg.method, arg.query)
-        parseWebElement(framePath)(webElement)
+        val resElement = parseWebElement(framePath)(webElement)
+        new SeResFindElement(resElement)
       }
     }
 

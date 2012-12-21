@@ -87,7 +87,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
     final SeSelectMethod reqMethod = userToReqSelectMethod(method);
     final SeResFindElement res = typedBlock(new SeReqFindElement(reqMethod, query), SeResFindElement.class);
 
-    return resToUserElement(res);
+    return resToUserElement(res.element);
   }
 
   @Override
@@ -142,7 +142,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
     return reqMethod;
   }
 
-  private ActorElement resToUserElement(final SeResFindElement resElement) {
+  private ActorElement resToUserElement(final SeElement resElement) {
     return new ActorElement(
         session,
         resElement.uuid,
@@ -158,9 +158,9 @@ public class ActorBrowser extends ActorBase implements IBrowser {
         new ArrayList<IElement>());
   }
 
-  private List<IElement> resToUserElementList(final List<SeResFindElement> resElementList) {
+  private List<IElement> resToUserElementList(final List<SeElement> resElementList) {
     final List<IElement> userElementList = new ArrayList<IElement>();
-    for (final SeResFindElement resElement : resElementList) {
+    for (final SeElement resElement : resElementList) {
       final ActorElement actorElement = resToUserElement(resElement);
       userElementList.add(actorElement);
     }

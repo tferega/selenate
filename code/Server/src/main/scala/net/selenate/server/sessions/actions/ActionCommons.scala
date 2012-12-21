@@ -117,9 +117,9 @@ return report;
     elementFactory(query)
   }
 
-  protected def parseWebElement(framePath: IndexedSeq[Int])(e: RemoteWebElement): SeResFindElement = {
+  protected def parseWebElement(framePath: IndexedSeq[Int])(e: RemoteWebElement): SeElement = {
     val attributeReport = d.executeScript(JS.getAttributes, e)
-    new SeResFindElement(
+    new SeElement(
         e.getId,
         e.getLocation.getX,
         e.getLocation.getY,

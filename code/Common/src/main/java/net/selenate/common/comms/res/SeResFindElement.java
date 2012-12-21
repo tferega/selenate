@@ -1,53 +1,16 @@
 package net.selenate.common.comms.res;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
+
+import net.selenate.common.comms.SeElement;
 
 public class SeResFindElement implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  public final String  uuid;
-  public final int     posX;
-  public final int     posY;
-  public final int     width;
-  public final int     height;
-  public final String  name;
-  public final String  text;
-  public final boolean isDisplayed;
-  public final boolean isEnabled;
-  public final boolean isSelected;
-  public final List<Integer>       framePath;
-  public final Map<String, String> attributeList;
-  public final List<SeResFindElement>  children;
+  public final SeElement element;
 
-  public SeResFindElement(
-      final String  uuid,
-      final int     posX,
-      final int     posY,
-      final int     width,
-      final int     height,
-      final String  name,
-      final String  text,
-      final boolean isDisplayed,
-      final boolean isEnabled,
-      final boolean isSelected,
-      final List<Integer>       framePath,
-      final Map<String, String> attributeList,
-      final List<SeResFindElement>  children) {
-    this.uuid          = uuid;
-    this.posX          = posX;
-    this.posY          = posY;
-    this.width         = width;
-    this.height        = height;
-    this.name          = name;
-    this.text          = text;
-    this.isDisplayed   = isDisplayed;
-    this.isEnabled     = isEnabled;
-    this.isSelected    = isSelected;
-    this.framePath     = framePath;
-    this.attributeList = attributeList;
-    this.children      = children;
+  public SeResFindElement(final SeElement element) {
+    this.element = element;
   }
 
   public String toFullString() {
@@ -57,7 +20,7 @@ public class SeResFindElement implements Serializable {
   public String toFullString(int indent) {
     String fullString = pad(toString(), " ", indent*2);
 
-    for (final SeResFindElement child : children) {
+    for (final SeElement child : element.children) {
       fullString += "\n" + child.toFullString(indent + 1);
     }
 
@@ -67,7 +30,7 @@ public class SeResFindElement implements Serializable {
 
   @Override
   public String toString() {
-    final String altDesc = orElse(attributeList.get("id"), attributeList.get("name"), attributeList.get("class"));
+    final String altDesc = orElse(element.attributeList.get("id"), element.attributeList.get("name"), element.attributeList.get("class"));
     final String altDescStr;
     if (altDesc != null) {
       altDescStr = String.format(" (%s)", altDesc);
@@ -76,7 +39,7 @@ public class SeResFindElement implements Serializable {
       altDescStr = "";
     }
 
-    return String.format("SeResElement [%s]: %s%s", uuid, name, altDescStr);
+    return String.format("SeResFindElement [%s]: %s%s", element.uuid, element.name, altDescStr);
   }
 
   private static String orElse(final String ... args) {
