@@ -131,8 +131,7 @@ return report;
         e.isEnabled,
         e.isSelected,
         seqToRealJava(framePath.map(java.lang.Integer.valueOf(_))),
-        mapToRealJava(parseAttributeReport(attributeReport)),
-        seqToRealJava(Nil))
+        mapToRealJava(parseAttributeReport(attributeReport)))
   }
 
   protected def parseAttributeReport(reportRaw: Object): Map[String, String] =

@@ -19,7 +19,6 @@ public class SeElement implements Serializable {
   public final boolean isSelected;
   public final List<Integer>       framePath;
   public final Map<String, String> attributeList;
-  public final List<SeElement>     children;
 
   public SeElement(
       final String  uuid,
@@ -33,8 +32,7 @@ public class SeElement implements Serializable {
       final boolean isEnabled,
       final boolean isSelected,
       final List<Integer>       framePath,
-      final Map<String, String> attributeList,
-      final List<SeElement>     children) {
+      final Map<String, String> attributeList) {
     this.uuid          = uuid;
     this.posX          = posX;
     this.posY          = posY;
@@ -47,23 +45,7 @@ public class SeElement implements Serializable {
     this.isSelected    = isSelected;
     this.framePath     = framePath;
     this.attributeList = attributeList;
-    this.children      = children;
   }
-
-  public String toFullString() {
-    return toFullString(0);
-  }
-
-  public String toFullString(int indent) {
-    String fullString = pad(toString(), " ", indent*2);
-
-    for (final SeElement child : children) {
-      fullString += "\n" + child.toFullString(indent + 1);
-    }
-
-    return fullString;
-  }
-
 
   @Override
   public String toString() {
@@ -88,15 +70,6 @@ public class SeElement implements Serializable {
       }
     }
 
-    return result;
-  }
-
-  private static String pad(final String s, final String padding, final int indent) {
-    String result = "";
-    for (int n = 0; n < indent; n++) {
-      result += padding;
-    }
-    result += s;
     return result;
   }
 }

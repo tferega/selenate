@@ -13,21 +13,6 @@ public class SeResFindElement implements Serializable {
     this.element = element;
   }
 
-  public String toFullString() {
-    return toFullString(0);
-  }
-
-  public String toFullString(int indent) {
-    String fullString = pad(toString(), " ", indent*2);
-
-    for (final SeElement child : element.children) {
-      fullString += "\n" + child.toFullString(indent + 1);
-    }
-
-    return fullString;
-  }
-
-
   @Override
   public String toString() {
     final String altDesc = orElse(element.attributeList.get("id"), element.attributeList.get("name"), element.attributeList.get("class"));
@@ -51,15 +36,6 @@ public class SeResFindElement implements Serializable {
       }
     }
 
-    return result;
-  }
-
-  private static String pad(final String s, final String padding, final int indent) {
-    String result = "";
-    for (int n = 0; n < indent; n++) {
-      result += padding;
-    }
-    result += s;
     return result;
   }
 }

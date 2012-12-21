@@ -14,17 +14,8 @@ public class SeResFindElementList implements Serializable {
     this.elementList = elementList;
   }
 
-  public String toFullString(int indent) {
-    String fullString = toString();
-    for (final SeElement element : elementList) {
-      fullString += "\n" + element.toFullString(1);
-    }
-
-    return fullString;
-  }
-
   @Override
   public String toString() {
-    return String.format("SeResElements [%d elements]", elementList.size());
+    return String.format("SeResElementList [%d elements]", elementList.size());
   }
 }
