@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class SeResElement implements Serializable {
+public class SeResFindElement implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public final String  uuid;
@@ -19,9 +19,9 @@ public class SeResElement implements Serializable {
   public final boolean isSelected;
   public final List<Integer>       framePath;
   public final Map<String, String> attributeList;
-  public final List<SeResElement>  children;
+  public final List<SeResFindElement>  children;
 
-  public SeResElement(
+  public SeResFindElement(
       final String  uuid,
       final int     posX,
       final int     posY,
@@ -34,7 +34,7 @@ public class SeResElement implements Serializable {
       final boolean isSelected,
       final List<Integer>       framePath,
       final Map<String, String> attributeList,
-      final List<SeResElement>  children) {
+      final List<SeResFindElement>  children) {
     this.uuid          = uuid;
     this.posX          = posX;
     this.posY          = posY;
@@ -57,7 +57,7 @@ public class SeResElement implements Serializable {
   public String toFullString(int indent) {
     String fullString = pad(toString(), " ", indent*2);
 
-    for (final SeResElement child : children) {
+    for (final SeResFindElement child : children) {
       fullString += "\n" + child.toFullString(indent + 1);
     }
 

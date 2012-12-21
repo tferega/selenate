@@ -3,18 +3,18 @@ package net.selenate.common.comms.res;
 import java.io.Serializable;
 import java.util.List;
 
-public class SeResElementList implements Serializable {
+public class SeResFindElementList implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  public final List<SeResElement>  elementList;
+  public final List<SeResFindElement>  elementList;
 
-  public SeResElementList(final List<SeResElement>  elementList) {
+  public SeResFindElementList(final List<SeResFindElement>  elementList) {
     this.elementList = elementList;
   }
 
   public String toFullString(int indent) {
     String fullString = toString();
-    for (final SeResElement element : elementList) {
+    for (final SeResFindElement element : elementList) {
       fullString += "\n" + element.toFullString(1);
     }
 

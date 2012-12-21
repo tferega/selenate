@@ -85,7 +85,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
       final String query)
       throws IOException {
     final SeSelectMethod reqMethod = userToReqSelectMethod(method);
-    final SeResElement res = typedBlock(new SeReqElement(reqMethod, query), SeResElement.class);
+    final SeResFindElement res = typedBlock(new SeReqFindElement(reqMethod, query), SeResFindElement.class);
 
     return resToUserElement(res);
   }
@@ -101,7 +101,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
       final String query)
           throws IOException {
     final SeSelectMethod reqMethod = userToReqSelectMethod(method);
-    final SeResElementList res = typedBlock(new SeReqElementList(reqMethod, query), SeResElementList.class);
+    final SeResFindElementList res = typedBlock(new SeReqFindElementList(reqMethod, query), SeResFindElementList.class);
 
     return resToUserElementList(res.elementList);
   }
@@ -142,7 +142,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
     return reqMethod;
   }
 
-  private ActorElement resToUserElement(final SeResElement resElement) {
+  private ActorElement resToUserElement(final SeResFindElement resElement) {
     return new ActorElement(
         session,
         resElement.uuid,
@@ -158,9 +158,9 @@ public class ActorBrowser extends ActorBase implements IBrowser {
         new ArrayList<IElement>());
   }
 
-  private List<IElement> resToUserElementList(final List<SeResElement> resElementList) {
+  private List<IElement> resToUserElementList(final List<SeResFindElement> resElementList) {
     final List<IElement> userElementList = new ArrayList<IElement>();
-    for (final SeResElement resElement : resElementList) {
+    for (final SeResFindElement resElement : resElementList) {
       final ActorElement actorElement = resToUserElement(resElement);
       userElementList.add(actorElement);
     }

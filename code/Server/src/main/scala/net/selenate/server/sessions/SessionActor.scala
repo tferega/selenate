@@ -13,37 +13,37 @@ import scala.collection.JavaConversions
 class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
   private val d = new FirefoxDriver(profile)
 
-  private def appendText    = new AppendTextAction(d).act
-  private def capture       = new CaptureAction(d).act
-  private def clearText     = new ClearTextAction(d).act
-  private def click         = new ClickAction(d).act
-  private def close         = new CloseAction(d).act
-  private def element       = new ElementAction(d).act
-  private def elementList   = new ElementListAction(d).act
-  private def executeScript = new ExecuteScriptAction(d).act
-  private def findAlert     = new FindAlertAction(d).act
-  private def get           = new GetAction(d).act
-  private def quit          = new QuitAction(d).act
-  private def resetFrame    = new ResetFrameAction(d).act
-  private def switchFrame   = new SwitchFrameAction(d).act
-  private def waitFor       = new WaitForAction(d).act
+  private def appendText      = new AppendTextAction(d).act
+  private def capture         = new CaptureAction(d).act
+  private def clearText       = new ClearTextAction(d).act
+  private def click           = new ClickAction(d).act
+  private def close           = new CloseAction(d).act
+  private def findElement     = new FindElementAction(d).act
+  private def findElementList = new FindElementListAction(d).act
+  private def executeScript   = new ExecuteScriptAction(d).act
+  private def findAlert       = new FindAlertAction(d).act
+  private def get             = new GetAction(d).act
+  private def quit            = new QuitAction(d).act
+  private def resetFrame      = new ResetFrameAction(d).act
+  private def switchFrame     = new SwitchFrameAction(d).act
+  private def waitFor         = new WaitForAction(d).act
 
   def receiveBase(sender: ActorRef): PartialFunction[Any, Unit] = {
-    case "ping"                  => sender ! "pong"
-    case arg: SeReqAppendText    => sender ! appendText(arg)
-    case arg: SeReqCapture       => sender ! capture(arg)
-    case arg: SeReqClearText     => sender ! clearText(arg)
-    case arg: SeReqClick         => sender ! click(arg)
-    case arg: SeReqClose         => sender ! close(arg)
-    case arg: SeReqElement       => sender ! element(arg)
-    case arg: SeReqElementList   => sender ! elementList(arg)
-    case arg: SeReqExecuteScript => sender ! executeScript(arg)
-    case arg: SeReqFindAlert     => sender ! findAlert(arg)
-    case arg: SeReqQuit          => sender ! quit(arg)
-    case arg: SeReqGet           => sender ! get(arg)
-    case arg: SeReqResetFrame    => sender ! resetFrame(arg)
-    case arg: SeReqSwitchFrame   => sender ! switchFrame(arg)
-    case arg: SeReqWaitFor       => sender ! waitFor(arg)
+    case "ping"                    => sender ! "pong"
+    case arg: SeReqAppendText      => sender ! appendText(arg)
+    case arg: SeReqCapture         => sender ! capture(arg)
+    case arg: SeReqClearText       => sender ! clearText(arg)
+    case arg: SeReqClick           => sender ! click(arg)
+    case arg: SeReqClose           => sender ! close(arg)
+    case arg: SeReqFindElement     => sender ! findElement(arg)
+    case arg: SeReqFindElementList => sender ! findElementList(arg)
+    case arg: SeReqExecuteScript   => sender ! executeScript(arg)
+    case arg: SeReqFindAlert       => sender ! findAlert(arg)
+    case arg: SeReqQuit            => sender ! quit(arg)
+    case arg: SeReqGet             => sender ! get(arg)
+    case arg: SeReqResetFrame      => sender ! resetFrame(arg)
+    case arg: SeReqSwitchFrame     => sender ! switchFrame(arg)
+    case arg: SeReqWaitFor         => sender ! waitFor(arg)
   }
 
   def receive = new PartialFunction[Any, Unit] {

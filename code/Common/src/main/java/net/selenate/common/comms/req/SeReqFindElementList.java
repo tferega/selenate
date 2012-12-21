@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 import net.selenate.common.comms.*;
 
-public class SeReqElement implements Serializable {
+public class SeReqFindElementList implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public final SeSelectMethod method;
   public final String         query;
 
-  public SeReqElement(
+  public SeReqFindElementList(
       final SeSelectMethod method,
       final String         query) {
     if (method == null) {
@@ -24,7 +24,7 @@ public class SeReqElement implements Serializable {
     this.query     = query;
   }
 
-  public SeReqElement(final SeElementSelector selector) {
+  public SeReqFindElementList(final SeElementSelector selector) {
     if (selector == null) {
       throw new IllegalArgumentException("Selector cannot be null!");
     }
