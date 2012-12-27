@@ -26,6 +26,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
   private def get             = new GetAction(d).act
   private def quit            = new QuitAction(d).act
   private def resetFrame      = new ResetFrameAction(d).act
+  private def selectOption    = new SelectOptionAction(d).act
   private def switchFrame     = new SwitchFrameAction(d).act
   private def waitFor         = new WaitForAction(d).act
 
@@ -44,6 +45,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
     case arg: SeReqQuit            => sender ! quit(arg)
     case arg: SeReqGet             => sender ! get(arg)
     case arg: SeReqResetFrame      => sender ! resetFrame(arg)
+    case arg: SeReqSelectOption    => sender ! selectOption(arg)
     case arg: SeReqSwitchFrame     => sender ! switchFrame(arg)
     case arg: SeReqWaitFor         => sender ! waitFor(arg)
   }

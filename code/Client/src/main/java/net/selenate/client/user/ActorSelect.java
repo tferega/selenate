@@ -6,6 +6,9 @@ import java.util.Map;
 
 import akka.actor.ActorRef;
 
+import net.selenate.common.comms.*;
+import net.selenate.common.comms.req.*;
+import net.selenate.common.comms.res.*;
 import net.selenate.common.user.*;
 
 public class ActorSelect extends ActorElement implements ISelect {
@@ -54,9 +57,10 @@ public class ActorSelect extends ActorElement implements ISelect {
   }
 
   @Override
-  public ISelect select(OptionSelectMethod method, String query)
+  public void select(OptionSelectMethod method, String query)
       throws IOException {
-    throw new IllegalArgumentException("Not supported!");
+    final SeOptionSelectMethod reqMethod = userToReqOptionSelectMethod(method);
+    typedBlock(new SeReqSelectOption(getFramePath(), SeElementSelectMethod.UUID, getUuid(), reqMethod, query), SeResSelectOption.class);
   }
 
   @Override

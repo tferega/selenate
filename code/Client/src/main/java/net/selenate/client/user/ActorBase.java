@@ -57,7 +57,7 @@ public abstract class ActorBase {
 
 
 
-  protected SeElementSelectMethod userToReqSelectMethod(final ElementSelectMethod userMethod) {
+  protected SeElementSelectMethod userToReqElementSelectMethod(final ElementSelectMethod userMethod) {
     final SeElementSelectMethod reqMethod;
     switch (userMethod) {
       case CLASS_NAME:        reqMethod = SeElementSelectMethod.CLASS_NAME;        break;
@@ -70,6 +70,18 @@ public abstract class ActorBase {
       case UUID:              reqMethod = SeElementSelectMethod.UUID;              break;
       case XPATH:             reqMethod = SeElementSelectMethod.XPATH;             break;
       default:                throw new RuntimeException("Unexpected error!");
+    }
+
+    return reqMethod;
+  }
+
+  protected SeOptionSelectMethod userToReqOptionSelectMethod(final OptionSelectMethod userMethod) {
+    final SeOptionSelectMethod reqMethod;
+    switch (userMethod) {
+      case INDEX:        reqMethod = SeOptionSelectMethod.INDEX;        break;
+      case VALUE:        reqMethod = SeOptionSelectMethod.VALUE;        break;
+      case VISIBLE_TEXT: reqMethod = SeOptionSelectMethod.VISIBLE_TEXT; break;
+      default:           throw new RuntimeException("Unexpected error!");
     }
 
     return reqMethod;
@@ -102,7 +114,7 @@ public abstract class ActorBase {
   }
 
   protected SeElementSelector userToReqSelector(final ElementSelector userSelector) {
-    return new SeElementSelector(userToReqSelectMethod(userSelector.method), userSelector.query);
+    return new SeElementSelector(userToReqElementSelectMethod(userSelector.method), userSelector.query);
   }
 
   protected List<SeElementSelector> userToReqSelectorList(final List<ElementSelector> userSelectorList) {

@@ -14,10 +14,10 @@ public class SeReqAppendText implements Serializable {
   public final String         text;
 
   public SeReqAppendText(
-      final List<Integer>  framePath,
+      final List<Integer>         framePath,
       final SeElementSelectMethod method,
-      final String         query,
-      final String         text) {
+      final String                query,
+      final String                text) {
     if (framePath == null) {
       throw new IllegalArgumentException("Frame path cannot be null!");
     }

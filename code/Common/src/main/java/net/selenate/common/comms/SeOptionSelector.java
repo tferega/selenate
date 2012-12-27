@@ -2,15 +2,15 @@ package net.selenate.common.comms;
 
 import java.io.Serializable;
 
-public class SeElementSelector implements Serializable {
+public class SeOptionSelector implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  public final SeElementSelectMethod method;
-  public final String                query;
+  public final SeOptionSelectMethod method;
+  public final String               query;
 
-  public SeElementSelector(
-      final SeElementSelectMethod method,
-      final String                query) {
+  public SeOptionSelector(
+      final SeOptionSelectMethod method,
+      final String               query) {
     if (method == null) {
       throw new IllegalArgumentException("Method cannot be null!");
     }

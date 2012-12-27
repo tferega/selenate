@@ -118,6 +118,17 @@ return report;
     elementFactory(query)
   }
 
+  protected def selectOption(s: Select, method: SeOptionSelectMethod, query: String) = {
+    import SeOptionSelectMethod._
+    def selectorFactory = method match {
+      case INDEX        => (str: String) => s.selectByIndex(str.toInt)
+      case VALUE        => s.selectByValue _
+      case VISIBLE_TEXT => s.selectByVisibleText _
+    }
+
+    selectorFactory(query)
+  }
+
   protected def parseWebElement(framePath: IndexedSeq[Int])(e: RemoteWebElement): SeElement = {
     val attributeReport = d.executeScript(JS.getAttributes, e)
     new SeElement(
