@@ -1,6 +1,5 @@
 package net.selenate.client.user;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +20,7 @@ public class ActorOption extends ActorElement implements IOption {
       final boolean  isSelected,
       final int      optionCount,
       final Integer  selectedIndex,
-      final IOption selectedOption,
+      final IOption  selectedOption,
       final List<IOption>       options,
       final List<Integer>       framePath,
       final Map<String, String> attributeList,
@@ -33,11 +32,5 @@ public class ActorOption extends ActorElement implements IOption {
       final ActorRef session,
       final IElement element) {
     super(session, element.getUuid(), element.getPos(), element.getLoc(), element.getName(), element.getText(), element.getIsDisplayed(), element.getIsEnabled(), element.getIsSelected(), element.getFramePath(), element.getAttributeList(), element.getChildren());
-  }
-
-  @Override
-  public void select()
-      throws IOException {
-    throw new IllegalArgumentException("Not supported");
   }
 }
