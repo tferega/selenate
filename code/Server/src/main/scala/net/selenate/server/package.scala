@@ -49,4 +49,6 @@ package object server {
     in foreach { case(k, v) => out.put(k, v) }
     out
   }
+
+  def toInteger(i: Int) = java.lang.Integer.valueOf(i)
 }

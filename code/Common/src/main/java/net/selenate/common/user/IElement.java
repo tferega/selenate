@@ -17,7 +17,7 @@ public interface IElement {
   public Map<String, String> getAttributeList();
   public List<IElement>      getChildren();
 
-  public ISelect toSelect();
+  public ISelect toSelect() throws IOException;
 
   public void clearText() throws IOException;
   public void appendText(String text) throws IOException;

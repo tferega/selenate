@@ -7,7 +7,8 @@ public interface ISelect extends IElement {
   public ISelect select(OptionSelectMethod method, String query) throws IOException;
 
   public int getOptionCount();
-  public int getSelectedIndex();
+  public Integer getSelectedIndex();
+  public IOption getSelectedOption();
 
   public List<IOption> getOptions();
 }

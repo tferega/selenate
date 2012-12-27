@@ -9,10 +9,7 @@ import akka.actor.ActorRef;
 import net.selenate.common.comms.*;
 import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
-import net.selenate.common.user.IElement;
-import net.selenate.common.user.ISelect;
-import net.selenate.common.user.Location;
-import net.selenate.common.user.Position;
+import net.selenate.common.user.*;
 
 public class ActorElement extends ActorBase implements IElement {
   private final String   uuid;
@@ -137,8 +134,9 @@ public class ActorElement extends ActorBase implements IElement {
   }
 
   @Override
-  public ISelect toSelect() {
-    throw new IllegalArgumentException("Not supported");
+  public ISelect toSelect() throws IOException {
+    final SeResFindSelect res = typedBlock(new SeReqFindSelect(SeSelectMethod.UUID, uuid), SeResFindSelect.class);
+    return resToUserSelect(res.select);
   }
 
   @Override

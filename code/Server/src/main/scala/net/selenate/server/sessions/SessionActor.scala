@@ -18,10 +18,11 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
   private def clearText       = new ClearTextAction(d).act
   private def click           = new ClickAction(d).act
   private def close           = new CloseAction(d).act
-  private def findElement     = new FindElementAction(d).act
-  private def findElementList = new FindElementListAction(d).act
   private def executeScript   = new ExecuteScriptAction(d).act
   private def findAlert       = new FindAlertAction(d).act
+  private def findElement     = new FindElementAction(d).act
+  private def findElementList = new FindElementListAction(d).act
+  private def findSelect      = new FindSelectAction(d).act
   private def get             = new GetAction(d).act
   private def quit            = new QuitAction(d).act
   private def resetFrame      = new ResetFrameAction(d).act
@@ -35,10 +36,11 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
     case arg: SeReqClearText       => sender ! clearText(arg)
     case arg: SeReqClick           => sender ! click(arg)
     case arg: SeReqClose           => sender ! close(arg)
-    case arg: SeReqFindElement     => sender ! findElement(arg)
-    case arg: SeReqFindElementList => sender ! findElementList(arg)
     case arg: SeReqExecuteScript   => sender ! executeScript(arg)
     case arg: SeReqFindAlert       => sender ! findAlert(arg)
+    case arg: SeReqFindElement     => sender ! findElement(arg)
+    case arg: SeReqFindElementList => sender ! findElementList(arg)
+    case arg: SeReqFindSelect      => sender ! findSelect(arg)
     case arg: SeReqQuit            => sender ! quit(arg)
     case arg: SeReqGet             => sender ! get(arg)
     case arg: SeReqResetFrame      => sender ! resetFrame(arg)

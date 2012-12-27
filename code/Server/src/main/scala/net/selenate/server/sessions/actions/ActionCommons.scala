@@ -13,6 +13,7 @@ import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.remote.{ RemoteWebDriver, RemoteWebElement, UselessFileDetector }
 import org.openqa.selenium.SearchContext
 import org.openqa.selenium.{ By, WebElement }
+import org.openqa.selenium.support.ui.Select
 
 import scala.collection.JavaConversions._
 
@@ -130,8 +131,32 @@ return report;
         e.isDisplayed,
         e.isEnabled,
         e.isSelected,
-        seqToRealJava(framePath.map(java.lang.Integer.valueOf(_))),
+        seqToRealJava(framePath map toInteger),
         mapToRealJava(parseAttributeReport(attributeReport)))
+  }
+
+  protected def parseSelectElement(framePath: IndexedSeq[Int])(e: RemoteWebElement): SeSelect = {
+    val select = new Select(e)
+    val rawAllOptionList         = select.getOptions.map(_.asInstanceOf[RemoteWebElement]).toIndexedSeq
+    val rawSelectedOptionList    = select.getAllSelectedOptions.map(_.asInstanceOf[RemoteWebElement]).toIndexedSeq
+    val selectedIndexList        = rawAllOptionList.zipWithIndex.collect { case(o, i) if rawSelectedOptionList.contains(o) => i }
+
+    val parsedAllOptionList      = rawAllOptionList map parseOptionElement(framePath)
+    val parsedSelectedOptionList = rawSelectedOptionList map parseOptionElement(framePath)
+
+    val firstSelectedIndex       = selectedIndexList.headOption
+    val firstSelectedOption      = parsedSelectedOptionList.headOption
+
+    new SeSelect(
+        parseWebElement(framePath)(e),
+        parsedAllOptionList.size,
+        firstSelectedIndex map toInteger orNull,
+        firstSelectedOption.orNull,
+        seqToRealJava(parsedAllOptionList))
+  }
+
+  protected def parseOptionElement(framePath: IndexedSeq[Int])(e: RemoteWebElement): SeOption = {
+    new SeOption(parseWebElement(framePath)(e))
   }
 
   protected def parseAttributeReport(reportRaw: Object): Map[String, String] =
