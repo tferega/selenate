@@ -49,6 +49,11 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
+  public boolean waitFor(final ElementSelector... selectorList) throws IOException {
+    return waitFor(new BrowserPage("default", new ArrayList<ElementSelector>(Arrays.asList(selectorList))));
+  }
+
+  @Override
   public boolean waitFor(final BrowserPage page) throws IOException {
     final List<BrowserPage> pageList = new ArrayList<BrowserPage>();
     pageList.add(page);

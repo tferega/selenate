@@ -11,8 +11,9 @@ public interface IBrowser {
   public void switchFrame(int frame) throws IOException;
 
   public boolean waitFor(List<ElementSelector> selectorList) throws IOException;
+  public boolean waitFor(ElementSelector... selectorList) throws IOException;
   public boolean waitFor(BrowserPage page) throws IOException;
-  public String waitForAny(BrowserPage ... pageList) throws IOException;
+  public String waitForAny(BrowserPage... pageList) throws IOException;
   public String waitForAny(List<BrowserPage> pageList) throws IOException;
 
   public void quit() throws IOException;
