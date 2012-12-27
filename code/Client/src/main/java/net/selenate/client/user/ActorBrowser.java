@@ -77,7 +77,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
       final ElementSelectMethod method,
       final String query)
       throws IOException {
-    final SeSelectMethod reqMethod = userToReqSelectMethod(method);
+    final SeElementSelectMethod reqMethod = userToReqSelectMethod(method);
     final SeResFindElement res = typedBlock(new SeReqFindElement(reqMethod, query), SeResFindElement.class);
 
     return resToUserElement(res.element);
@@ -93,7 +93,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
       final ElementSelectMethod method,
       final String query)
           throws IOException {
-    final SeSelectMethod reqMethod = userToReqSelectMethod(method);
+    final SeElementSelectMethod reqMethod = userToReqSelectMethod(method);
     final SeResFindElementList res = typedBlock(new SeReqFindElementList(reqMethod, query), SeResFindElementList.class);
 
     return resToUserElementList(res.elementList);

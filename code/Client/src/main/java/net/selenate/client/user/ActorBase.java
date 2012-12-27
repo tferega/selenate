@@ -57,18 +57,18 @@ public abstract class ActorBase {
 
 
 
-  protected SeSelectMethod userToReqSelectMethod(final ElementSelectMethod userMethod) {
-    final SeSelectMethod reqMethod;
+  protected SeElementSelectMethod userToReqSelectMethod(final ElementSelectMethod userMethod) {
+    final SeElementSelectMethod reqMethod;
     switch (userMethod) {
-      case CLASS_NAME:        reqMethod = SeSelectMethod.CLASS_NAME;        break;
-      case CSS_SELECTOR:      reqMethod = SeSelectMethod.CSS_SELECTOR;      break;
-      case ID:                reqMethod = SeSelectMethod.ID;                break;
-      case LINK_TEXT:         reqMethod = SeSelectMethod.LINK_TEXT;         break;
-      case NAME:              reqMethod = SeSelectMethod.NAME;              break;
-      case PARTIAL_LINK_TEXT: reqMethod = SeSelectMethod.PARTIAL_LINK_TEXT; break;
-      case TAG_NAME:          reqMethod = SeSelectMethod.TAG_NAME;          break;
-      case UUID:              reqMethod = SeSelectMethod.UUID;              break;
-      case XPATH:             reqMethod = SeSelectMethod.XPATH;             break;
+      case CLASS_NAME:        reqMethod = SeElementSelectMethod.CLASS_NAME;        break;
+      case CSS_SELECTOR:      reqMethod = SeElementSelectMethod.CSS_SELECTOR;      break;
+      case ID:                reqMethod = SeElementSelectMethod.ID;                break;
+      case LINK_TEXT:         reqMethod = SeElementSelectMethod.LINK_TEXT;         break;
+      case NAME:              reqMethod = SeElementSelectMethod.NAME;              break;
+      case PARTIAL_LINK_TEXT: reqMethod = SeElementSelectMethod.PARTIAL_LINK_TEXT; break;
+      case TAG_NAME:          reqMethod = SeElementSelectMethod.TAG_NAME;          break;
+      case UUID:              reqMethod = SeElementSelectMethod.UUID;              break;
+      case XPATH:             reqMethod = SeElementSelectMethod.XPATH;             break;
       default:                throw new RuntimeException("Unexpected error!");
     }
 

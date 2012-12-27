@@ -64,8 +64,8 @@ return report;
     }
   }
 
-  protected def findElementList(method: SeSelectMethod, query: String) = {
-    import SeSelectMethod._
+  protected def findElementList(method: SeElementSelectMethod, query: String) = {
+    import SeElementSelectMethod._
     type Selector = String => IndexedSeq[RemoteWebElement]
 
     def findByBy(byFactory: (String) => By): Selector = { query =>
@@ -91,8 +91,8 @@ return report;
     elementFactory(query)
   }
 
-  protected def findElement(method: SeSelectMethod, query: String) = {
-    import SeSelectMethod._
+  protected def findElement(method: SeElementSelectMethod, query: String) = {
+    import SeElementSelectMethod._
     type Selector = String => RemoteWebElement
 
     def findByBy(byFactory: (String) => By): Selector = { query =>

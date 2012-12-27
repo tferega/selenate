@@ -9,13 +9,13 @@ public class SeReqAppendText implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public final List<Integer>  framePath;
-  public final SeSelectMethod method;
+  public final SeElementSelectMethod method;
   public final String         query;
   public final String         text;
 
   public SeReqAppendText(
       final List<Integer>  framePath,
-      final SeSelectMethod method,
+      final SeElementSelectMethod method,
       final String         query,
       final String         text) {
     if (framePath == null) {

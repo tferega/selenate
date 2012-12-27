@@ -7,11 +7,11 @@ import net.selenate.common.comms.*;
 public class SeReqFindElement implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  public final SeSelectMethod method;
+  public final SeElementSelectMethod method;
   public final String         query;
 
   public SeReqFindElement(
-      final SeSelectMethod method,
+      final SeElementSelectMethod method,
       final String         query) {
     if (method == null) {
       throw new IllegalArgumentException("Method cannot be null!");

@@ -135,18 +135,18 @@ public class ActorElement extends ActorBase implements IElement {
 
   @Override
   public ISelect toSelect() throws IOException {
-    final SeResFindSelect res = typedBlock(new SeReqFindSelect(SeSelectMethod.UUID, uuid), SeResFindSelect.class);
+    final SeResFindSelect res = typedBlock(new SeReqFindSelect(SeElementSelectMethod.UUID, uuid), SeResFindSelect.class);
     return resToUserSelect(res.select);
   }
 
   @Override
   public void clearText() throws IOException {
-    typedBlock(new SeReqClearText(framePath, SeSelectMethod.UUID, uuid), SeResClearText.class);
+    typedBlock(new SeReqClearText(framePath, SeElementSelectMethod.UUID, uuid), SeResClearText.class);
   }
 
   @Override
   public void appendText(String text) throws IOException {
-    typedBlock(new SeReqAppendText(framePath, SeSelectMethod.UUID, uuid, text), SeResAppendText.class);
+    typedBlock(new SeReqAppendText(framePath, SeElementSelectMethod.UUID, uuid, text), SeResAppendText.class);
   }
 
   @Override
@@ -157,6 +157,6 @@ public class ActorElement extends ActorBase implements IElement {
 
   @Override
   public void click() throws IOException {
-    typedBlock(new SeReqClick(framePath, SeSelectMethod.UUID, uuid), SeResClick.class);
+    typedBlock(new SeReqClick(framePath, SeElementSelectMethod.UUID, uuid), SeResClick.class);
   }
 }

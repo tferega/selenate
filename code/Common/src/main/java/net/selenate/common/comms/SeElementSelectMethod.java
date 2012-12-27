@@ -1,6 +1,6 @@
 package net.selenate.common.comms;
 
-public enum SeSelectMethod {
+public enum SeElementSelectMethod {
   CLASS_NAME,
   CSS_SELECTOR,
   ID,
