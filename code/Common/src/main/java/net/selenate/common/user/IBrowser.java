@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface IBrowser {
   public void open(String url) throws IOException;
-  public void capture(String name) throws IOException;
+  public Capture capture(String name) throws IOException;
   public String executeScript(String javascript) throws IOException;
   public void resetFrame() throws IOException;
   public void switchFrame(int frame) throws IOException;

@@ -23,8 +23,9 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
-  public void capture(final String name) throws IOException {
-    typedBlock(new SeReqCapture(name), SeResCapture.class);
+  public Capture capture(final String name) throws IOException {
+    final SeResCapture res = typedBlock(new SeReqCapture(name), SeResCapture.class);
+    return resToUserCapture(res);
   }
 
   @Override

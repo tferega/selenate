@@ -2,10 +2,13 @@ package net.selenate.client.user;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import net.selenate.common.comms.*;
+import net.selenate.common.comms.res.SeResCapture;
 import net.selenate.common.user.*;
 
 import akka.actor.ActorRef;
@@ -86,6 +89,78 @@ public abstract class ActorBase {
 
     return reqMethod;
   }
+
+  protected Capture resToUserCapture(final SeResCapture resCapture) {
+    return new Capture(
+        resCapture.name,
+        resCapture.time,
+        resToUserCookieList(resCapture.cookieList),
+        resToUserWindowList(resCapture.windowList));
+  }
+
+  protected CaptureCookie resToUserCookie(final SeCookie resCookie) {
+    return new CaptureCookie(
+        resCookie.domain,
+        resCookie.expiry,
+        resCookie.name,
+        resCookie.path,
+        resCookie.value,
+        resCookie.isSecure);
+  }
+
+  protected Set<CaptureCookie> resToUserCookieList(final Set<SeCookie> resCookieList) {
+    final Set<CaptureCookie> userCookieList = new HashSet<CaptureCookie>();
+    for (final SeCookie resCookie : resCookieList) {
+      final CaptureCookie cookie = resToUserCookie(resCookie);
+      userCookieList.add(cookie);
+    }
+
+    return userCookieList;
+  }
+
+  protected CaptureWindow resToUserWindow(final SeWindow resWindow) {
+    return new CaptureWindow(
+        resWindow.title,
+        resWindow.url,
+        resWindow.handle,
+        new Position(resWindow.posX, resWindow.posY),
+        new Location(resWindow.width, resWindow.height),
+        resWindow.html,
+        resWindow.screenshot,
+        resToUserFrameList(resWindow.frameList));
+  }
+
+  protected List<CaptureWindow> resToUserWindowList(final List<SeWindow> resWindowList) {
+    final List<CaptureWindow> userWindowList = new ArrayList<CaptureWindow>();
+    for (final SeWindow resWindow : resWindowList) {
+      final CaptureWindow window = resToUserWindow(resWindow);
+      userWindowList.add(window);
+    }
+
+    return userWindowList;
+  }
+
+  protected CaptureFrame resToUserFrame(final SeFrame resFrame) {
+    return new CaptureFrame(
+        resFrame.index,
+        resFrame.name,
+        resFrame.src,
+        resFrame.html,
+        resToUserFrameList(resFrame.frameList));
+  }
+
+  protected List<CaptureFrame> resToUserFrameList(final List<SeFrame> resFrameList) {
+    final List<CaptureFrame> userFrameList = new ArrayList<CaptureFrame>();
+    for (final SeFrame resFrame : resFrameList) {
+      final CaptureFrame frame = resToUserFrame(resFrame);
+      userFrameList.add(frame);
+    }
+
+    return userFrameList;
+  }
+
+
+
 
   protected ActorElement resToUserElement(final SeElement resElement) {
     return new ActorElement(
