@@ -10,7 +10,6 @@ public class SeFrame implements Serializable {
   public final String name;
   public final String src;
   public final String html;
-  public final byte[] screenshot;
   public final List<SeFrame> frameList;
 
   public SeFrame(
@@ -18,13 +17,11 @@ public class SeFrame implements Serializable {
       final String name,
       final String src,
       final String html,
-      final byte[] screenshot,
       final List<SeFrame> frameList) {
     this.index      = index;
     this.name       = name;
     this.src        = src;
     this.html       = html;
-    this.screenshot = screenshot;
     this.frameList  = frameList;
   }
 }

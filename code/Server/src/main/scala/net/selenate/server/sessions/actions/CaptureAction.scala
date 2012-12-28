@@ -79,13 +79,12 @@ class CaptureAction(val d: FirefoxDriver)
     val name       = frame.name
     val src        = frame.src
     val html       = getHtml
-    val screenshot = getScreenshot
 
     val frameList = findAllFrames map { f =>
       getFrame(windowHandle, fullPath, f)
     }
 
-    new SeFrame(frame.index, name, src, html, screenshot, seqToRealJava(frameList))
+    new SeFrame(frame.index, name, src, html, seqToRealJava(frameList))
   }
 
   private implicit def toSelenate(cookie: Cookie): SeCookie = new SeCookie(

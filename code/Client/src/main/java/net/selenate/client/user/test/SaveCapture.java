@@ -90,15 +90,11 @@ public class SaveCapture {
       final String body =
           "INDEX:           " + frame.index             + "\n" +
           "HTML LENGTH:     " + frame.html.length()     + "\n" +
-          "SCREENSHOT SIZE: " + frame.screenshot.length + "\n" +
           "SUBFRAME COUNT:  " + frame.frameList.size()  + "\n";
       saveFile(filename, body);
 
       final String htmlFilename = folder + "body.html";
       saveFile(htmlFilename, frame.html);
-
-      final String screenshotFilename = folder + "screenshot.png";
-      saveFile(screenshotFilename, frame.screenshot);
 
       final String subframeFolder = folder + "frames/";
       saveFrameList(subframeFolder, frame.frameList);
