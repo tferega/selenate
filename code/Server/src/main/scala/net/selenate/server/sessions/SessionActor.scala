@@ -18,6 +18,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
   private def clearText       = new ClearTextAction(d).act
   private def click           = new ClickAction(d).act
   private def close           = new CloseAction(d).act
+  private def elementExists   = new ElementExistsAction(d).act
   private def executeScript   = new ExecuteScriptAction(d).act
   private def findAlert       = new FindAlertAction(d).act
   private def findElement     = new FindElementAction(d).act
@@ -37,6 +38,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
     case arg: SeReqClearText       => sender ! clearText(arg)
     case arg: SeReqClick           => sender ! click(arg)
     case arg: SeReqClose           => sender ! close(arg)
+    case arg: SeReqElementExists   => sender ! elementExists(arg)
     case arg: SeReqExecuteScript   => sender ! executeScript(arg)
     case arg: SeReqFindAlert       => sender ! findAlert(arg)
     case arg: SeReqFindElement     => sender ! findElement(arg)

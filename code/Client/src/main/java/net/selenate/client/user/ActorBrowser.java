@@ -78,6 +78,22 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
+  public boolean elementExists(
+      final ElementSelectMethod method,
+      final String query)
+          throws IOException {
+    final SeElementSelectMethod reqMethod = userToReqElementSelectMethod(method);
+    final SeResElementExists res = typedBlock(new SeReqElementExists(reqMethod, query), SeResElementExists.class);
+
+    return res.isFound;
+  }
+
+  @Override
+  public boolean elementExists(final ElementSelector selector) throws IOException {
+    return elementExists(selector.method, selector.query);
+  }
+
+  @Override
   public IElement findElement(
       final ElementSelectMethod method,
       final String query)

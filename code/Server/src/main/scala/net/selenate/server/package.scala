@@ -21,12 +21,20 @@ package object server {
     }
   }
 
-  def tryo[T](f: => T) =
+  def tryo[T](f: => T): Option[T] =
     try {
       Some(f)
     } catch {
       case e: Exception => None
     }
+
+  def tryb[T](f: => T): Boolean =
+      try {
+        f
+        true
+      } catch {
+        case e: Exception => false
+      }
 
   // scala.collection.JavaConversions and scala.collection.JavaConverters are not adequate.
   // They create instances of scala.collection.JavaConversions$SeqWrapper (or similar), which subclass

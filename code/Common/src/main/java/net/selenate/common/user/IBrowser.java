@@ -18,6 +18,9 @@ public interface IBrowser {
 
   public void quit() throws IOException;
 
+  public boolean elementExists(ElementSelectMethod method, String query) throws IOException;
+  public boolean elementExists(ElementSelector selector) throws IOException;
+
   public IElement findElement(ElementSelectMethod method, String query) throws IOException;
   public IElement findElement(ElementSelector selector) throws IOException;
 
