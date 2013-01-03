@@ -1,10 +1,8 @@
 package net.selenate.common.comms.res;
 
-import java.io.Serializable;
-
 import net.selenate.common.comms.SeElement;
 
-public class SeResFindElement implements Serializable {
+public class SeResFindElement extends SeCommsRes {
   private static final long serialVersionUID = 1L;
 
   public final SeElement element;

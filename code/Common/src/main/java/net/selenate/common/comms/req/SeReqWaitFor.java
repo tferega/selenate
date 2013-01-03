@@ -1,12 +1,11 @@
 package net.selenate.common.comms.req;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.selenate.common.comms.*;
 
-public class SeReqWaitFor implements Serializable {
+public class SeReqWaitFor extends SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public final List<SePage> pageList;

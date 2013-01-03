@@ -1,11 +1,10 @@
 package net.selenate.common.comms.req;
 
-import java.io.Serializable;
 import java.util.List;
 
 import net.selenate.common.comms.*;
 
-public class SeReqSelectOption implements Serializable {
+public class SeReqSelectOption extends SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public final List<Integer>         framePath;

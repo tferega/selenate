@@ -1,8 +1,6 @@
 package net.selenate.common.comms;
 
-import java.io.Serializable;
-
-public class SeOptionSelector implements Serializable {
+public class SeOptionSelector extends SeComms {
   private static final long serialVersionUID = 1L;
 
   public final SeOptionSelectMethod method;

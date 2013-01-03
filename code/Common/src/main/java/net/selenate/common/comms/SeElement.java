@@ -1,10 +1,9 @@
 package net.selenate.common.comms;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class SeElement implements Serializable {
+public class SeElement extends SeComms {
   private static final long serialVersionUID = 1L;
 
   public final String  uuid;

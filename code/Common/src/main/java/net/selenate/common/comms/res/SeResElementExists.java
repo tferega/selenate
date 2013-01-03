@@ -1,8 +1,6 @@
 package net.selenate.common.comms.res;
 
-import java.io.Serializable;
-
-public class SeResElementExists implements Serializable {
+public class SeResElementExists extends SeCommsRes {
   private static final long serialVersionUID = 1L;
 
   public final boolean isFound;

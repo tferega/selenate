@@ -1,8 +1,6 @@
 package net.selenate.common.comms.res;
 
-import java.io.Serializable;
-
-public class SeResQuit implements Serializable {
+public class SeResQuit extends SeCommsRes {
   private static final long serialVersionUID = 1L;
 
   public SeResQuit() {

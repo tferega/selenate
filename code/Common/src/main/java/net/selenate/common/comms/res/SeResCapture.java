@@ -1,11 +1,10 @@
 package net.selenate.common.comms.res;
 
 import net.selenate.common.comms.*;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-public class SeResCapture implements Serializable {
+public class SeResCapture extends SeCommsRes {
   private static final long serialVersionUID = 1L;
 
   public final String name;

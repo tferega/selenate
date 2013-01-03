@@ -1,9 +1,8 @@
 package net.selenate.common.comms;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class SeWindow implements Serializable {
+public class SeWindow extends SeComms {
   private static final long serialVersionUID = 1L;
 
   public final String title;

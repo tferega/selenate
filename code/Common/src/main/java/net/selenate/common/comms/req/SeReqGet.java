@@ -1,8 +1,6 @@
 package net.selenate.common.comms.req;
 
-import java.io.Serializable;
-
-public class SeReqGet implements Serializable {
+public class SeReqGet extends SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public final String url;

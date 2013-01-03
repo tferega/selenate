@@ -1,8 +1,6 @@
 package net.selenate.common.comms.req;
 
-import java.io.Serializable;
-
-public class SeReqResetFrame implements Serializable {
+public class SeReqResetFrame extends SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public SeReqResetFrame() {

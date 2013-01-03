@@ -1,11 +1,10 @@
 package net.selenate.common.comms.req;
 
-import java.io.Serializable;
 import java.util.List;
 
 import net.selenate.common.comms.*;
 
-public class SeReqAppendText implements Serializable {
+public class SeReqAppendText extends SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public final List<Integer>  framePath;

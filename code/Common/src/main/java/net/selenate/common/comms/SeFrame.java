@@ -1,9 +1,8 @@
 package net.selenate.common.comms;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class SeFrame implements Serializable {
+public class SeFrame extends SeComms {
   private static final long serialVersionUID = 1L;
 
   public final int    index;

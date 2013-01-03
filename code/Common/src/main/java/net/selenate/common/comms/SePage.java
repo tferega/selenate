@@ -1,10 +1,9 @@
 package net.selenate.common.comms;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SePage implements Serializable {
+public class SePage extends SeComms {
   private static final long serialVersionUID = 1L;
 
   public final String name;

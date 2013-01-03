@@ -1,8 +1,6 @@
 package net.selenate.common.comms.res;
 
-import java.io.Serializable;
-
-public class SeResFindAlert implements Serializable {
+public class SeResFindAlert extends SeCommsRes {
   private static final long serialVersionUID = 1L;
 
   public final String text;

@@ -1,9 +1,8 @@
 package net.selenate.common.comms;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class SeFrameElementSelector implements Serializable {
+public class SeFrameElementSelector extends SeComms {
   private static final long serialVersionUID = 1L;
 
   public final List<Integer>  framePath;

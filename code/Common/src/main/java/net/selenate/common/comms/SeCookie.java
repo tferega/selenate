@@ -1,9 +1,8 @@
 package net.selenate.common.comms;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class SeCookie implements Serializable {
+public class SeCookie extends SeComms {
   private static final long serialVersionUID = 1L;
 
   public final String  domain;
