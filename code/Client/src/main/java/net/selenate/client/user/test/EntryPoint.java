@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.selenate.common.comms.*;
 import net.selenate.common.comms.req.*;
 import net.selenate.common.sessions.*;
 
@@ -87,10 +86,12 @@ public class EntryPoint {
           }
         }
         else if (inputElems[0].equals("q")) {
-          //final Serializable actionObj;
-          //final ActorRef session = sessionList.values().toArray(new ActorRef[0])[0];
-          final ActorRef session = getSession("a");
-          session.tell(new SeReqGet("file:///home/huitz/work/dump/frametest/frametest.html"), listener);
+          final ActorRef session = getSession("asdf");
+          session.tell(new SeReqCapture(String.format("%d", System.currentTimeMillis())), listener);
+        }
+        else if (inputElems[0].equals("w")) {
+          final ActorRef session = getSession("asdf");
+          session.tell(new SeReqGet("http://users.ipa.net/~djhill/frmain.html"), listener);
         }
       } catch (Exception e) {
         System.out.println("");

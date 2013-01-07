@@ -1,4 +1,4 @@
 #!/bin/bash
 
 echo Starting up Akka - ELVIS HAS LEFT THE BUILDING ...
-`dirname $0`/sbt.sh --loop "$@" '~run-main net.selenate.client.EntryPoint'
+`dirname $0`/sbt.sh --loop "$@" '~run-main net.selenate.client.user.test.EntryPoint'
