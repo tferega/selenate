@@ -136,4 +136,23 @@ public class ActorBrowser extends ActorBase implements IBrowser {
     final SeResFindAlert alert = typedBlock(new SeReqFindAlert(), SeResFindAlert.class);
     return new ActorAlert(session, alert.text);
   }
+
+  @Override
+  public void keepalive(long delayMillis, ElementSelector selector) throws IOException {
+    keepalive(delayMillis, selector.method, selector.query);
+  }
+
+  @Override
+  public void keepalive(long delayMillis, ElementSelectMethod method, String query) throws IOException {
+    final IElement element = findElement(method, query);
+    keepalive(delayMillis, element);
+  }
+
+  @Override
+  public void keepalive(long delayMillis, IElement element) throws IOException {
+    final List<SeCommsReq> reqList = new ArrayList<SeCommsReq>();
+    reqList.add(new SeReqClick(element.getFramePath(), SeElementSelectMethod.UUID, element.getUuid()));
+
+    typedBlock(new SeReqKeepalive(delayMillis, reqList), SeResKeepalive.class);
+  }
 }

@@ -29,4 +29,8 @@ public interface IBrowser {
 
   public boolean isAlert() throws IOException;
   public IAlert findAlert() throws IOException;
+
+  public void keepalive(long delayMillis, ElementSelectMethod method, String query) throws IOException;
+  public void keepalive(long delayMillis, ElementSelector selector) throws IOException;
+  public void keepalive(long delayMillis, IElement element) throws IOException;
 }

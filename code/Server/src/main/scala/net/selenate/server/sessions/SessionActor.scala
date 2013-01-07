@@ -8,62 +8,76 @@ import common.comms.res._
 import akka.actor.{ Actor, ActorRef }
 import org.openqa.selenium.firefox.{ FirefoxDriver, FirefoxProfile }
 import org.openqa.selenium.OutputType
-import scala.collection.JavaConversions
+import scala.collection.JavaConversions._
+import akka.util.duration._
 
 class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
+  import context._
+
   private val d = new FirefoxDriver(profile)
+  private var isKeepalive = false
 
-  private def appendText      = new AppendTextAction(d).act
-  private def capture         = new CaptureAction(d).act
-  private def clearText       = new ClearTextAction(d).act
-  private def click           = new ClickAction(d).act
-  private def close           = new CloseAction(d).act
-  private def elementExists   = new ElementExistsAction(d).act
-  private def executeScript   = new ExecuteScriptAction(d).act
-  private def findAlert       = new FindAlertAction(d).act
-  private def findElement     = new FindElementAction(d).act
-  private def findElementList = new FindElementListAction(d).act
-  private def findSelect      = new FindSelectAction(d).act
-  private def get             = new GetAction(d).act
-  private def quit            = new QuitAction(d).act
-  private def resetFrame      = new ResetFrameAction(d).act
-  private def selectOption    = new SelectOptionAction(d).act
-  private def switchFrame     = new SwitchFrameAction(d).act
-  private def waitFor         = new WaitForAction(d).act
-
-  def receiveBase(sender: ActorRef): PartialFunction[Any, Unit] = {
-    case "ping"                    => sender ! "pong"
-    case arg: SeReqAppendText      => sender ! appendText(arg)
-    case arg: SeReqCapture         => sender ! capture(arg)
-    case arg: SeReqClearText       => sender ! clearText(arg)
-    case arg: SeReqClick           => sender ! click(arg)
-    case arg: SeReqClose           => sender ! close(arg)
-    case arg: SeReqElementExists   => sender ! elementExists(arg)
-    case arg: SeReqExecuteScript   => sender ! executeScript(arg)
-    case arg: SeReqFindAlert       => sender ! findAlert(arg)
-    case arg: SeReqFindElement     => sender ! findElement(arg)
-    case arg: SeReqFindElementList => sender ! findElementList(arg)
-    case arg: SeReqFindSelect      => sender ! findSelect(arg)
-    case arg: SeReqQuit            => sender ! quit(arg)
-    case arg: SeReqGet             => sender ! get(arg)
-    case arg: SeReqResetFrame      => sender ! resetFrame(arg)
-    case arg: SeReqSelectOption    => sender ! selectOption(arg)
-    case arg: SeReqSwitchFrame     => sender ! switchFrame(arg)
-    case arg: SeReqWaitFor         => sender ! waitFor(arg)
+  private def actionMan: PartialFunction[SeCommsReq, SeCommsRes] = {
+    case arg: SeReqAppendText      => new AppendTextAction(d).act(arg)
+    case arg: SeReqCapture         => new CaptureAction(d).act(arg)
+    case arg: SeReqClearText       => new ClearTextAction(d).act(arg)
+    case arg: SeReqClick           => new ClickAction(d).act(arg)
+    case arg: SeReqClose           => new CloseAction(d).act(arg)
+    case arg: SeReqElementExists   => new ElementExistsAction(d).act(arg)
+    case arg: SeReqExecuteScript   => new ExecuteScriptAction(d).act(arg)
+    case arg: SeReqFindAlert       => new FindAlertAction(d).act(arg)
+    case arg: SeReqFindElement     => new FindElementAction(d).act(arg)
+    case arg: SeReqFindElementList => new FindElementListAction(d).act(arg)
+    case arg: SeReqFindSelect      => new FindSelectAction(d).act(arg)
+    case arg: SeReqGet             => new GetAction(d).act(arg)
+    case arg: SeReqKeepalive       => new KeepaliveAction(d).act(arg)
+    case arg: SeReqQuit            => new QuitAction(d).act(arg)
+    case arg: SeReqResetFrame      => new ResetFrameAction(d).act(arg)
+    case arg: SeReqSelectOption    => new SelectOptionAction(d).act(arg)
+    case arg: SeReqSwitchFrame     => new SwitchFrameAction(d).act(arg)
+    case arg: SeReqWaitFor         => new WaitForAction(d).act(arg)
   }
 
-  def receive = new PartialFunction[Any, Unit] {
-    def isDefinedAt(arg: Any) = receiveBase(sender).isDefinedAt(arg)
+  private def p(s: String) {
+    println("==========-----> "+ s)
+  }
+
+  private def receiveBase: Receive = {
+    case "ping" => sender ! "pong"
+    case msg @ KeepaliveMsg(delay, reqList) =>
+      if (isKeepalive) {
+        p("KEEPALIVE")
+        msg.reqList foreach actionMan
+        schedulify(msg)
+      }
+    case arg: SeReqKeepalive =>
+      sender ! actionMan(arg)
+      isKeepalive = true
+      val msg = KeepaliveMsg.fromReq(arg)
+      schedulify(msg)
+    case arg: SeCommsReq =>
+      isKeepalive = false
+      sender ! actionMan(arg)
+  }
+
+  private def wrap(base: Receive) = new Receive {
+    def isDefinedAt(arg: Any) = base.isDefinedAt(arg)
     def apply(arg: Any) = {
       try {
         val clazz = arg.getClass.toString
         println("SESSION (%s) RECEIVED [%s] FROM %s".format(sessionID, clazz, sender.path.toString))
-        receiveBase(sender).apply(arg)
+        base.apply(arg)
       } catch {
         case e: Exception =>
           println(e.toString)
           sender ! new Exception(e.stackTrace)
       }
     }
+  }
+
+  def receive = wrap(receiveBase)
+
+  private def schedulify(msg: KeepaliveMsg) {
+    system.scheduler.scheduleOnce(msg.delay, self, msg)
   }
 }
