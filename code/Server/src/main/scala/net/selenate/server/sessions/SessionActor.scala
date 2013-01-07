@@ -26,6 +26,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
     case arg: SeReqElementExists   => new ElementExistsAction(d).act(arg)
     case arg: SeReqExecuteScript   => new ExecuteScriptAction(d).act(arg)
     case arg: SeReqFindAlert       => new FindAlertAction(d).act(arg)
+    case arg: SeReqFindAndClick    => new FindAndClickAction(d).act(arg)
     case arg: SeReqFindElement     => new FindElementAction(d).act(arg)
     case arg: SeReqFindElementList => new FindElementListAction(d).act(arg)
     case arg: SeReqFindSelect      => new FindSelectAction(d).act(arg)

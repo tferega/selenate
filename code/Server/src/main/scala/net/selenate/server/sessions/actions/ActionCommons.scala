@@ -18,6 +18,8 @@ import org.openqa.selenium.support.ui.Select
 import scala.collection.JavaConversions._
 
 trait ActionCommons {
+  type FramePath = IndexedSeq[Int]
+
   val d: FirefoxDriver
 
   object JS {
@@ -129,7 +131,7 @@ return report;
     selectorFactory(query)
   }
 
-  protected def parseWebElement(framePath: IndexedSeq[Int])(e: RemoteWebElement): SeElement = {
+  protected def parseWebElement(framePath: FramePath)(e: RemoteWebElement): SeElement = {
     val attributeReport = d.executeScript(JS.getAttributes, e)
     new SeElement(
         e.getId,
@@ -146,7 +148,7 @@ return report;
         mapToRealJava(parseAttributeReport(attributeReport)))
   }
 
-  protected def parseSelectElement(framePath: IndexedSeq[Int])(e: RemoteWebElement): SeSelect = {
+  protected def parseSelectElement(framePath: FramePath)(e: RemoteWebElement): SeSelect = {
     val select = new Select(e)
     val rawAllOptionList         = select.getOptions.map(_.asInstanceOf[RemoteWebElement]).toIndexedSeq
     val rawSelectedOptionList    = select.getAllSelectedOptions.map(_.asInstanceOf[RemoteWebElement]).toIndexedSeq
@@ -166,7 +168,7 @@ return report;
         seqToRealJava(parsedAllOptionList))
   }
 
-  protected def parseOptionElement(framePath: IndexedSeq[Int])(e: RemoteWebElement): SeOption = {
+  protected def parseOptionElement(framePath: FramePath)(e: RemoteWebElement): SeOption = {
     new SeOption(parseWebElement(framePath)(e))
   }
 
@@ -192,7 +194,7 @@ return report;
     }
 
 
-  protected def inAllFrames[T](f: IndexedSeq[Int] => T): IndexedSeq[T] = {
+  protected def inAllFrames[T](f: FramePath => T): IndexedSeq[T] = {
     type Frame = Int
 
     def findAllFrames: IndexedSeq[Frame] = {
