@@ -10,6 +10,7 @@ import org.openqa.selenium.firefox.{ FirefoxDriver, FirefoxProfile }
 import org.openqa.selenium.OutputType
 import scala.collection.JavaConversions._
 import akka.util.duration._
+import actors.ActorFactory
 
 class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
   import context._
@@ -70,7 +71,12 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
         base.apply(arg)
       } catch {
         case e: Exception =>
-          println(e.toString)
+          if (sender == ActorFactory.system.deadLetters) {
+            e.printStackTrace
+          } else {
+            println(e.toString)
+          }
+
           sender ! new Exception(e.stackTrace)
       }
     }

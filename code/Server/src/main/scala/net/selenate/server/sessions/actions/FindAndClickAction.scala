@@ -17,20 +17,18 @@ class FindAndClickAction(val d: FirefoxDriver)
   type PathElement = (FramePath, RemoteWebElement)
 
   def act = { arg =>
-    val elementList: IndexedSeq[PathElement] =
+    val elementList: Stream[Boolean] =
       inAllFrames { framePath =>
-        tryo {
-          (framePath, findElement(arg.method, arg.query))
+        tryb {
+          findElement(arg.method, arg.query).click
         }
-      }.flatten
+      }
 
-    elementList.headOption match {
-      case Some((framePath, element)) =>
-        switchToFrame(d.getWindowHandle, framePath)
-        element.click
-        new SeResFindAndClick()
-      case None =>
-        throw new IllegalArgumentException("Element [%s, %s] was not found in any frame!".format(arg.method.toString, arg.query))
+    val isElementClicked = elementList.contains(true)
+    if (isElementClicked) {
+      new SeResFindAndClick()
+    } else {
+      throw new IllegalArgumentException("Element [%s, %s] was not found in any frame!".format(arg.method.toString, arg.query))
     }
   }
 }

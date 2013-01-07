@@ -36,7 +36,7 @@ class CaptureAction(val d: FirefoxDriver)
     with ActionCommons {
   import CaptureAction._
 
-  private case class Frame(index: Int, name: String, src: String)
+  private case class FrameInfo(index: Int, name: String, src: String)
 
   def act = { arg =>
     new SeResCapture(
@@ -72,7 +72,7 @@ class CaptureAction(val d: FirefoxDriver)
       getFrame(windowHandle, Vector.empty, f)
     }
 
-  private def getFrame(windowHandle: String, framePath: Vector[Int], frame: Frame): SeFrame = {
+  private def getFrame(windowHandle: String, framePath: Vector[Int], frame: FrameInfo): SeFrame = {
     val fullPath = framePath :+ frame.index
     switchToFrame(windowHandle, fullPath)
 
@@ -95,10 +95,10 @@ class CaptureAction(val d: FirefoxDriver)
     cookie.getValue,
     cookie.isSecure)
 
-  private def findAllFrames: List[Frame] = {
+  private def findAllFrames: List[FrameInfo] = {
     val raw = d.findElementsByXPath("//*[local-name()='frame' or local-name()='iframe']").toList.zipWithIndex
     raw map { case (elem, index) =>
-      Frame(index, elem.getAttribute("name"), elem.getAttribute("name"))
+      FrameInfo(index, elem.getAttribute("name"), elem.getAttribute("name"))
     }
   }
 

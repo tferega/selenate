@@ -144,14 +144,9 @@ public class ActorBrowser extends ActorBase implements IBrowser {
 
   @Override
   public void keepalive(long delayMillis, ElementSelectMethod method, String query) throws IOException {
-    final IElement element = findElement(method, query);
-    keepalive(delayMillis, element);
-  }
-
-  @Override
-  public void keepalive(long delayMillis, IElement element) throws IOException {
+    final SeElementSelectMethod reqMethod = userToReqElementSelectMethod(method);
     final List<SeCommsReq> reqList = new ArrayList<SeCommsReq>();
-    reqList.add(new SeReqClick(element.getFramePath(), SeElementSelectMethod.UUID, element.getUuid()));
+    reqList.add(new SeReqFindAndClick(reqMethod, query));
 
     typedBlock(new SeReqKeepalive(delayMillis, reqList), SeResKeepalive.class);
   }

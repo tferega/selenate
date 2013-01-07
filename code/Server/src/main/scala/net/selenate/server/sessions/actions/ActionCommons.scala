@@ -18,7 +18,8 @@ import org.openqa.selenium.support.ui.Select
 import scala.collection.JavaConversions._
 
 trait ActionCommons {
-  type FramePath = IndexedSeq[Int]
+  type Frame     = Int
+  type FramePath = IndexedSeq[Frame]
 
   val d: FirefoxDriver
 
@@ -58,7 +59,7 @@ return report;
     d.switchTo.window(windowHandle)
   }
 
-  protected def switchToFrame(windowHandle: String, framePath: Seq[Int]) {
+  protected def switchToFrame(windowHandle: String, framePath: FramePath) {
     switchToWindow(windowHandle)
     framePath foreach { e =>
       println("SWITCHING TO FRAME "+ e)
@@ -194,20 +195,18 @@ return report;
     }
 
 
-  protected def inAllFrames[T](f: FramePath => T): IndexedSeq[T] = {
-    type Frame = Int
-
-    def findAllFrames: IndexedSeq[Frame] = {
+  protected def inAllFrames[T](f: FramePath => T): Stream[T] = {
+    def findAllFrames: FramePath = {
       val raw = d.findElementsByXPath("//*[local-name()='frame' or local-name()='iframe']").toIndexedSeq.zipWithIndex
       raw map { case (elem, index) => index }
     }
 
-    def inAllFramesDoit(windowHandle: String, framePath: Vector[Int], frame: Frame): IndexedSeq[T] = {
+    def inAllFramesDoit(windowHandle: String, framePath: Vector[Frame], frame: Frame): Stream[T] = {
       val fullPath = framePath :+ frame
       switchToFrame(windowHandle, fullPath)
 
       val result = f
-      val childrenResultList = findAllFrames flatMap { f =>
+      val childrenResultList = findAllFrames.toStream flatMap { f =>
         inAllFramesDoit(windowHandle, fullPath, f)
       }
 
@@ -215,9 +214,9 @@ return report;
     }
 
     d.switchTo.defaultContent
-    val rootFrames = findAllFrames
+    val rootFrames = findAllFrames.toStream
     if (rootFrames.isEmpty) {
-      IndexedSeq(f(IndexedSeq.empty))
+      Stream(f(IndexedSeq.empty))
     } else {
       rootFrames.flatMap(inAllFramesDoit(d.getWindowHandle, Vector(), _))
     }
