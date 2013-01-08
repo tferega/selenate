@@ -40,15 +40,10 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
     case arg: SeReqWaitFor         => new WaitForAction(d).act(arg)
   }
 
-  private def p(s: String) {
-    println("==========-----> "+ s)
-  }
-
   private def receiveBase: Receive = {
     case "ping" => sender ! "pong"
     case msg @ KeepaliveMsg(delay, reqList) =>
       if (isKeepalive) {
-        p("KEEPALIVE")
         msg.reqList foreach actionMan
         schedulify(msg)
       }
