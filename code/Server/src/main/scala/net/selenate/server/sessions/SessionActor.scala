@@ -32,10 +32,11 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
     case arg: SeReqFindElementList => new FindElementListAction(d).act(arg)
     case arg: SeReqFindSelect      => new FindSelectAction(d).act(arg)
     case arg: SeReqGet             => new GetAction(d).act(arg)
-    case arg: SeReqStartKeepalive  => new StartKeepaliveAction(d).act(arg)
     case arg: SeReqQuit            => new QuitAction(d).act(arg)
     case arg: SeReqResetFrame      => new ResetFrameAction(d).act(arg)
     case arg: SeReqSelectOption    => new SelectOptionAction(d).act(arg)
+    case arg: SeReqStartKeepalive  => new StartKeepaliveAction(d).act(arg)
+    case arg: SeReqStopKeepalive   => new StopKeepaliveAction(d).act(arg)
     case arg: SeReqSwitchFrame     => new SwitchFrameAction(d).act(arg)
     case arg: SeReqWaitFor         => new WaitForAction(d).act(arg)
   }

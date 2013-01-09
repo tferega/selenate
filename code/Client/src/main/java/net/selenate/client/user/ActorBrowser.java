@@ -160,4 +160,9 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   public void startKeepalive(long delayMillis, List<SeCommsReq> reqList) throws IOException {
     typedBlock(new SeReqStartKeepalive(delayMillis, reqList), SeResStartKeepalive.class);
   }
+
+  @Override
+  public void stopKeepalive() throws IOException {
+    typedBlock(new SeReqStopKeepalive(), SeResStopKeepalive.class);
+  }
 }

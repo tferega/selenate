@@ -37,4 +37,6 @@ public interface IBrowser {
 
   public void startKeepalive(long delayMillis, SeCommsReq... reqList) throws IOException;
   public void startKeepalive(long delayMillis, List<SeCommsReq> reqList) throws IOException;
+
+  public void stopKeepalive() throws IOException;
 }
