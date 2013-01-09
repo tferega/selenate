@@ -3,6 +3,8 @@ package net.selenate.common.user;
 import java.io.IOException;
 import java.util.List;
 
+import net.selenate.common.comms.req.SeCommsReq;
+
 public interface IBrowser {
   public void open(String url) throws IOException;
   public Capture capture(String name) throws IOException;
@@ -30,6 +32,9 @@ public interface IBrowser {
   public boolean isAlert() throws IOException;
   public IAlert findAlert() throws IOException;
 
-  public void keepalive(long delayMillis, ElementSelectMethod method, String query) throws IOException;
-  public void keepalive(long delayMillis, ElementSelector selector) throws IOException;
+  public void keepaliveClick(long delayMillis, ElementSelectMethod method, String query) throws IOException;
+  public void keepaliveClick(long delayMillis, ElementSelector selector) throws IOException;
+
+  public void keepalive(long delayMillis, SeCommsReq... reqList) throws IOException;
+  public void keepalive(long delayMillis, List<SeCommsReq> reqList) throws IOException;
 }
