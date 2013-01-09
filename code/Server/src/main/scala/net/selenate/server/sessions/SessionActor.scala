@@ -42,16 +42,16 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
 
   private def receiveBase: Receive = {
     case "ping" => sender ! "pong"
-    case msg @ KeepaliveMsg(delay, reqList) =>
+    case data @ KeepaliveData(delay, reqList) =>
       if (isKeepalive) {
-        msg.reqList foreach actionMan
-        schedulify(msg)
+        data.reqList foreach actionMan
+        schedulify(data)
       }
     case arg: SeReqStartKeepalive =>
       sender ! actionMan(arg)
       isKeepalive = true
-      val msg = KeepaliveMsg.fromReq(arg)
-      schedulify(msg)
+      val data = KeepaliveData.fromReq(arg)
+      schedulify(data)
     case arg: SeCommsReq =>
       isKeepalive = false
       sender ! actionMan(arg)
@@ -79,7 +79,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
 
   def receive = wrap(receiveBase)
 
-  private def schedulify(msg: KeepaliveMsg) {
-    system.scheduler.scheduleOnce(msg.delay, self, msg)
+  private def schedulify(data: KeepaliveData) {
+    system.scheduler.scheduleOnce(data.delay, self, data)
   }
 }

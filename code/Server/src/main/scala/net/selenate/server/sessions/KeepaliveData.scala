@@ -9,12 +9,12 @@ import akka.util.Duration
 import akka.util.duration._
 import scala.collection.JavaConversions._
 
-object KeepaliveMsg {
+object KeepaliveData {
   def fromReq(req: SeReqStartKeepalive) = {
     val delay = req.delayMillis.milliseconds
     val reqList = req.reqList.toIndexedSeq
 
-    KeepaliveMsg(delay, reqList)
+    KeepaliveData(delay, reqList)
   }
 }
-case class KeepaliveMsg(delay: Duration, reqList: IndexedSeq[SeCommsReq])
+case class KeepaliveData(delay: Duration, reqList: IndexedSeq[SeCommsReq])
