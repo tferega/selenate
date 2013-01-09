@@ -2,13 +2,13 @@ package net.selenate.common.comms.req;
 
 import java.util.List;
 
-public class SeReqKeepalive extends SeCommsReq {
+public class SeReqStartKeepalive extends SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public final long delayMillis;
   public final List<SeCommsReq> reqList;
 
-  public SeReqKeepalive(long delayMillis, final List<SeCommsReq> reqList) {
+  public SeReqStartKeepalive(long delayMillis, final List<SeCommsReq> reqList) {
     if (reqList == null) {
       throw new IllegalArgumentException("Req list cannot be null!");
     }

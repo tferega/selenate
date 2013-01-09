@@ -138,26 +138,26 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
-  public void keepaliveClick(long delayMillis, ElementSelector selector) throws IOException {
-    keepaliveClick(delayMillis, selector.method, selector.query);
+  public void startKeepaliveClick(long delayMillis, ElementSelector selector) throws IOException {
+    startKeepaliveClick(delayMillis, selector.method, selector.query);
   }
 
   @Override
-  public void keepaliveClick(long delayMillis, ElementSelectMethod method, String query) throws IOException {
+  public void startKeepaliveClick(long delayMillis, ElementSelectMethod method, String query) throws IOException {
     final SeElementSelectMethod reqMethod = userToReqElementSelectMethod(method);
     final List<SeCommsReq> reqList = new ArrayList<SeCommsReq>();
     reqList.add(new SeReqFindAndClick(reqMethod, query));
 
-    keepalive(delayMillis, reqList);
+    startKeepalive(delayMillis, reqList);
   }
 
   @Override
-  public void keepalive(long delayMillis, SeCommsReq... reqList) throws IOException {
-    keepalive(delayMillis, Arrays.asList(reqList));
+  public void startKeepalive(long delayMillis, SeCommsReq... reqList) throws IOException {
+    startKeepalive(delayMillis, Arrays.asList(reqList));
   }
 
   @Override
-  public void keepalive(long delayMillis, List<SeCommsReq> reqList) throws IOException {
-    typedBlock(new SeReqKeepalive(delayMillis, reqList), SeResKeepalive.class);
+  public void startKeepalive(long delayMillis, List<SeCommsReq> reqList) throws IOException {
+    typedBlock(new SeReqStartKeepalive(delayMillis, reqList), SeResStartKeepalive.class);
   }
 }

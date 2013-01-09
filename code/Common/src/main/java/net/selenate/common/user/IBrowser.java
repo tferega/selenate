@@ -32,9 +32,9 @@ public interface IBrowser {
   public boolean isAlert() throws IOException;
   public IAlert findAlert() throws IOException;
 
-  public void keepaliveClick(long delayMillis, ElementSelectMethod method, String query) throws IOException;
-  public void keepaliveClick(long delayMillis, ElementSelector selector) throws IOException;
+  public void startKeepaliveClick(long delayMillis, ElementSelectMethod method, String query) throws IOException;
+  public void startKeepaliveClick(long delayMillis, ElementSelector selector) throws IOException;
 
-  public void keepalive(long delayMillis, SeCommsReq... reqList) throws IOException;
-  public void keepalive(long delayMillis, List<SeCommsReq> reqList) throws IOException;
+  public void startKeepalive(long delayMillis, SeCommsReq... reqList) throws IOException;
+  public void startKeepalive(long delayMillis, List<SeCommsReq> reqList) throws IOException;
 }

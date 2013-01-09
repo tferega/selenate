@@ -8,8 +8,8 @@ import common.comms.req._
 
 import org.openqa.selenium.firefox.FirefoxDriver
 
-class KeepaliveAction(val d: FirefoxDriver) extends IAction[SeReqKeepalive, SeResKeepalive] {
+class StartKeepaliveAction(val d: FirefoxDriver) extends IAction[SeReqStartKeepalive, SeResStartKeepalive] {
   def act = { arg =>
-    new SeResKeepalive()
+    new SeResStartKeepalive()
   }
 }

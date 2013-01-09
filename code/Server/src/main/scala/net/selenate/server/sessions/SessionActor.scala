@@ -32,7 +32,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
     case arg: SeReqFindElementList => new FindElementListAction(d).act(arg)
     case arg: SeReqFindSelect      => new FindSelectAction(d).act(arg)
     case arg: SeReqGet             => new GetAction(d).act(arg)
-    case arg: SeReqKeepalive       => new KeepaliveAction(d).act(arg)
+    case arg: SeReqStartKeepalive  => new StartKeepaliveAction(d).act(arg)
     case arg: SeReqQuit            => new QuitAction(d).act(arg)
     case arg: SeReqResetFrame      => new ResetFrameAction(d).act(arg)
     case arg: SeReqSelectOption    => new SelectOptionAction(d).act(arg)
@@ -47,7 +47,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
         msg.reqList foreach actionMan
         schedulify(msg)
       }
-    case arg: SeReqKeepalive =>
+    case arg: SeReqStartKeepalive =>
       sender ! actionMan(arg)
       isKeepalive = true
       val msg = KeepaliveMsg.fromReq(arg)
