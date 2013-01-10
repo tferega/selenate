@@ -2,7 +2,7 @@ package net.selenate.common.comms.res;
 
 import net.selenate.common.comms.*;
 
-public class SeResFindSelect extends SeCommsRes {
+public class SeResFindSelect implements SeCommsRes {
   private static final long serialVersionUID = 1L;
 
   public final SeSelect select;
@@ -13,7 +13,7 @@ public class SeResFindSelect extends SeCommsRes {
 
   @Override
   public String toString() {
-    final String altDesc = orElse(select.element.attributeList.get("id"), select.element.attributeList.get("name"), select.element.attributeList.get("class"));
+    final String altDesc = ""; //orElse(select.element.attributeList.get("id"), select.element.attributeList.get("name"), select.element.attributeList.get("class"));
     final String altDescStr;
     if (altDesc != null) {
       altDescStr = String.format(" (%s)", altDesc);

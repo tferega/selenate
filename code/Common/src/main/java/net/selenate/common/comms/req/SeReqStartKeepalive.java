@@ -2,7 +2,7 @@ package net.selenate.common.comms.req;
 
 import java.util.List;
 
-public class SeReqStartKeepalive extends SeCommsReq {
+public class SeReqStartKeepalive implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public final long delayMillis;

@@ -1,6 +1,6 @@
 package net.selenate.common.comms.req;
 
-public class SeReqSwitchFrame extends SeCommsReq {
+public class SeReqSwitchFrame implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public final int frame;

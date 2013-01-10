@@ -1,6 +1,6 @@
 package net.selenate.common.comms.res;
 
-public class SeResExecuteScript extends SeCommsRes {
+public class SeResExecuteScript implements SeCommsRes {
   private static final long serialVersionUID = 1L;
 
   public final String result;

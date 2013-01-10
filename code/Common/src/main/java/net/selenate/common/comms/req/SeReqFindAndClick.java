@@ -2,7 +2,7 @@ package net.selenate.common.comms.req;
 
 import net.selenate.common.comms.*;
 
-public class SeReqFindAndClick extends SeCommsReq {
+public class SeReqFindAndClick implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public final SeElementSelectMethod method;

@@ -1,6 +1,6 @@
 package net.selenate.common.comms;
 
-public class SeOptionSelector extends SeComms {
+public class SeOptionSelector implements SeComms {
   private static final long serialVersionUID = 1L;
 
   public final SeOptionSelectMethod method;

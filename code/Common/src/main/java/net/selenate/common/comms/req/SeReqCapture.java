@@ -1,6 +1,6 @@
 package net.selenate.common.comms.req;
 
-public class SeReqCapture extends SeCommsReq {
+public class SeReqCapture implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public final String name;

@@ -1,6 +1,6 @@
 package net.selenate.common.comms.req;
 
-public class SeReqClose extends SeCommsReq {
+public class SeReqClose implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public final String windowHandle;

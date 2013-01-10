@@ -4,7 +4,7 @@ import net.selenate.common.comms.*;
 import java.util.List;
 import java.util.Set;
 
-public class SeResCapture extends SeCommsRes {
+public class SeResCapture implements SeCommsRes {
   private static final long serialVersionUID = 1L;
 
   public final String name;

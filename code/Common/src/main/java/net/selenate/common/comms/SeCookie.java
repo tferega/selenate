@@ -2,7 +2,7 @@ package net.selenate.common.comms;
 
 import java.util.Date;
 
-public class SeCookie extends SeComms {
+public class SeCookie implements SeComms {
   private static final long serialVersionUID = 1L;
 
   public final String  domain;

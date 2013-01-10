@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.selenate.common.comms.*;
 
-public class SeReqSelectOption extends SeCommsReq {
+public class SeReqSelectOption implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public final List<Integer>         framePath;

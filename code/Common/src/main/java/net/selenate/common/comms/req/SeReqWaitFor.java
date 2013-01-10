@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.selenate.common.comms.*;
 
-public class SeReqWaitFor extends SeCommsReq {
+public class SeReqWaitFor implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public final List<SePage> pageList;

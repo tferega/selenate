@@ -3,7 +3,7 @@ package net.selenate.common.comms;
 import java.util.List;
 import java.util.Map;
 
-public class SeElement extends SeComms {
+public class SeElement implements SeComms {
   private static final long serialVersionUID = 1L;
 
   public final String  uuid;
@@ -61,5 +61,17 @@ public class SeElement extends SeComms {
 
   public String getDesc() {
     return orElse(attributeList.get("id"), attributeList.get("name"), attributeList.get("class"));
+  }
+
+  private static String orElse(final String ... args) {
+    String result = null;
+    for (final String entry : args) {
+      if (entry != null) {
+        result = entry;
+        break;
+      }
+    }
+
+    return result;
   }
 }

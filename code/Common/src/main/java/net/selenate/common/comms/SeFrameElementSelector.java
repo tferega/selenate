@@ -2,7 +2,7 @@ package net.selenate.common.comms;
 
 import java.util.List;
 
-public class SeFrameElementSelector extends SeComms {
+public class SeFrameElementSelector implements SeComms {
   private static final long serialVersionUID = 1L;
 
   public final List<Integer>  framePath;

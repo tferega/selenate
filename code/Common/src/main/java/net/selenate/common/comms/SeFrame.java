@@ -2,7 +2,7 @@ package net.selenate.common.comms;
 
 import java.util.List;
 
-public class SeFrame extends SeComms {
+public class SeFrame implements SeComms {
   private static final long serialVersionUID = 1L;
 
   public final int    index;

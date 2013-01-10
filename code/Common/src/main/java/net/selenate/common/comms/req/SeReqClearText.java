@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.selenate.common.comms.*;
 
-public class SeReqClearText extends SeCommsReq {
+public class SeReqClearText implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public final List<Integer>  framePath;

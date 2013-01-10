@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.selenate.common.comms.SeElement;
 
-public class SeResFindElementList extends SeCommsRes {
+public class SeResFindElementList implements SeCommsRes {
   private static final long serialVersionUID = 1L;
 
   public final List<SeElement>  elementList;

@@ -1,6 +1,6 @@
 package net.selenate.common.comms.res;
 
-public class SeResClick extends SeCommsRes {
+public class SeResClick implements SeCommsRes {
   private static final long serialVersionUID = 1L;
 
   public SeResClick() {

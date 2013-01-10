@@ -1,6 +1,6 @@
 package net.selenate.common.comms.res;
 
-public class SeResStartKeepalive extends SeCommsRes {
+public class SeResStartKeepalive implements SeCommsRes {
   private static final long serialVersionUID = 1L;
 
   public SeResStartKeepalive() {
