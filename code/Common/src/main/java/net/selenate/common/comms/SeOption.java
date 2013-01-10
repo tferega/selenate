@@ -22,16 +22,4 @@ public class SeOption extends SeComms {
 
     return String.format("SeOption [%s]: %s%s", element.uuid, element.name, altDescStr);
   }
-
-  private static String orElse(final String ... args) {
-    String result = null;
-    for (final String entry : args) {
-      if (entry != null) {
-        result = entry;
-        break;
-      }
-    }
-
-    return result;
-  }
 }

@@ -51,24 +51,12 @@ public class SeElement extends SeComms {
     final String altDesc = orElse(attributeList.get("id"), attributeList.get("name"), attributeList.get("class"));
     final String altDescStr;
     if (altDesc != null) {
-      altDescStr = String.format(" (%s)", altDesc);
+      altDescStr = String.format(": %s", altDesc);
     }
     else {
       altDescStr = "";
     }
 
-    return String.format("SeElement [%s]: %s%s", uuid, name, altDescStr);
-  }
-
-  private static String orElse(final String ... args) {
-    String result = null;
-    for (final String entry : args) {
-      if (entry != null) {
-        result = entry;
-        break;
-      }
-    }
-
-    return result;
+    return String.format("SeElement(%s%s)", name, altDescStr);
   }
 }

@@ -24,16 +24,4 @@ public class SeResFindSelect extends SeCommsRes {
 
     return String.format("SeResFindSelect [%s]: %s%s", select.element.uuid, select.element.name, altDescStr);
   }
-
-  private static String orElse(final String ... args) {
-    String result = null;
-    for (final String entry : args) {
-      if (entry != null) {
-        result = entry;
-        break;
-      }
-    }
-
-    return result;
-  }
 }
