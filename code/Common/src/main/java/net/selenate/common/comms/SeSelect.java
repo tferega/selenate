@@ -27,15 +27,6 @@ public class SeSelect extends SeComms {
 
   @Override
   public String toString() {
-    final String altDesc = orElse(element.attributeList.get("id"), element.attributeList.get("name"), element.attributeList.get("class"));
-    final String altDescStr;
-    if (altDesc != null) {
-      altDescStr = String.format(" (%s)", altDesc);
-    }
-    else {
-      altDescStr = "";
-    }
-
-    return String.format("SeSelect [%s]: %s%s", element.uuid, element.name, altDescStr);
+    return String.format("SeSelect(%s, %d options)", element.getDesc(), optionCount);
   }
 }

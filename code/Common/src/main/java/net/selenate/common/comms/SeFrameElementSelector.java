@@ -27,4 +27,16 @@ public class SeFrameElementSelector extends SeComms {
     this.method    = method;
     this.query     = query;
   }
+
+  @Override
+  public String toString() {
+    String framePathStr = "[";
+    boolean isFirst = true;
+    for (int f : framePath) {
+      framePathStr += (isFirst ? "" : ":") + f;
+      isFirst = false;
+    }
+    framePathStr += "]";
+    return String.format("SeFrameElementSelector(%s: %s, %s)", framePathStr, method, query);
+  }
 }

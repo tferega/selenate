@@ -38,4 +38,9 @@ public class SeWindow extends SeComms {
     this.screenshot = screenshot;
     this.frameList  = frameList;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeWindow(%s, %s)", title, url);
+  }
 }

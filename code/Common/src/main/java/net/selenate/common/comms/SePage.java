@@ -40,4 +40,9 @@ public class SePage extends SeComms {
     this.selectorList = new ArrayList<SeElementSelector>();
     this.selectorList.add(selector);
   }
+
+  @Override
+  public String toString() {
+    return String.format("SePage(%s, %d selectors)", name, selectorList.size());
+  }
 }

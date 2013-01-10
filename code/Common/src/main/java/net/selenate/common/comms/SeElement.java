@@ -48,15 +48,18 @@ public class SeElement extends SeComms {
 
   @Override
   public String toString() {
-    final String altDesc = orElse(attributeList.get("id"), attributeList.get("name"), attributeList.get("class"));
     final String altDescStr;
-    if (altDesc != null) {
-      altDescStr = String.format(": %s", altDesc);
+    if (getDesc() != null) {
+      altDescStr = String.format(": %s", getDesc());
     }
     else {
       altDescStr = "";
     }
 
     return String.format("SeElement(%s%s)", name, altDescStr);
+  }
+
+  public String getDesc() {
+    return orElse(attributeList.get("id"), attributeList.get("name"), attributeList.get("class"));
   }
 }

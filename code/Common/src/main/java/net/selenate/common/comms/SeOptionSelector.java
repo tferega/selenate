@@ -19,4 +19,9 @@ public class SeOptionSelector extends SeComms {
     this.method = method;
     this.query  = query;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeOptionSelector(%s, %s)", method, query);
+  }
 }

@@ -26,4 +26,9 @@ public class SeCookie extends SeComms {
     this.value    = value;
     this.isSecure = isSecure;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeCookie(%s)", name);
+  }
 }

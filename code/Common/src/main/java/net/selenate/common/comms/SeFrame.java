@@ -23,4 +23,9 @@ public class SeFrame extends SeComms {
     this.html       = html;
     this.frameList  = frameList;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeFrame(%d, %s)", index, name);
+  }
 }
