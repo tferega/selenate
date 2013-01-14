@@ -30,4 +30,9 @@ public class SeReqElementExists implements SeCommsReq {
     this.method = selector.method;
     this.query  = selector.query;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeReqElementExists(%s, %s)", method, query);
+  }
 }

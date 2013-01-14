@@ -12,4 +12,9 @@ public class SeReqGet implements SeCommsReq {
 
     this.url = url;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeReqGet(%s)", url);
+  }
 }

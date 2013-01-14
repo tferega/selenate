@@ -8,4 +8,9 @@ public class SeResElementExists implements SeCommsRes {
   public SeResElementExists(final boolean isFound) {
     this.isFound = isFound;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeResElementExists(%s)", isFound);
+  }
 }

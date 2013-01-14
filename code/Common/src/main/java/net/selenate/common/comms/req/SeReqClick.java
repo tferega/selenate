@@ -3,6 +3,7 @@ package net.selenate.common.comms.req;
 import java.util.List;
 
 import net.selenate.common.comms.*;
+import net.selenate.common.util.Util;
 
 public class SeReqClick implements SeCommsReq {
   private static final long serialVersionUID = 1L;
@@ -38,5 +39,10 @@ public class SeReqClick implements SeCommsReq {
     this.framePath = selector.framePath;
     this.method    = selector.method;
     this.query     = selector.query;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("SeReqClick(%s: %s, %s)", Util.simpleListToString(framePath), method, query);
   }
 }

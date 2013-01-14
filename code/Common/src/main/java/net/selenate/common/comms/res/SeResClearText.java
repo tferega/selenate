@@ -5,4 +5,9 @@ public class SeResClearText implements SeCommsRes {
 
   public SeResClearText() {
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeResClearText()");
+  }
 }

@@ -22,4 +22,9 @@ public class SeResCapture implements SeCommsRes {
     this.cookieList = cookieList;
     this.windowList = windowList;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeResCapture(%s, %d)", name, time);
+  }
 }

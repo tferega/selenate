@@ -3,6 +3,7 @@ package net.selenate.common.comms.res;
 import java.util.List;
 
 import net.selenate.common.comms.SeElement;
+import net.selenate.common.util.Util;
 
 public class SeResFindElementList implements SeCommsRes {
   private static final long serialVersionUID = 1L;
@@ -15,6 +16,6 @@ public class SeResFindElementList implements SeCommsRes {
 
   @Override
   public String toString() {
-    return String.format("SeResElementList [%d elements]", elementList.size());
+    return String.format("SeResFindElementList()%s", Util.multilineListToString(elementList));
   }
 }

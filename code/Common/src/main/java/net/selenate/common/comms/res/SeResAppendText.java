@@ -5,4 +5,9 @@ public class SeResAppendText implements SeCommsRes {
 
   public SeResAppendText() {
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeResAppendText()");
+  }
 }

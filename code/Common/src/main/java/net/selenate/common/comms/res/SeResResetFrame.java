@@ -5,4 +5,9 @@ public class SeResResetFrame implements SeCommsRes {
 
   public SeResResetFrame() {
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeResResetFrame()");
+  }
 }

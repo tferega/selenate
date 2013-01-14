@@ -12,4 +12,9 @@ public class SeReqExecuteScript implements SeCommsReq {
 
     this.javascript = javascript;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeReqExecuteScript(%s)", javascript);
+  }
 }

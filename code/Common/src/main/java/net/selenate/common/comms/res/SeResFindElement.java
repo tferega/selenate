@@ -13,15 +13,6 @@ public class SeResFindElement implements SeCommsRes {
 
   @Override
   public String toString() {
-    final String altDesc = ""; //orElse(element.attributeList.get("id"), element.attributeList.get("name"), element.attributeList.get("class"));
-    final String altDescStr;
-    if (altDesc != null) {
-      altDescStr = String.format(" (%s)", altDesc);
-    }
-    else {
-      altDescStr = "";
-    }
-
-    return String.format("SeResFindElement [%s]: %s%s", element.uuid, element.name, altDescStr);
+    return String.format("SeResFindElement(%s, %s)", element.name, element.getDesc());
   }
 }

@@ -5,4 +5,9 @@ public class SeResClose implements SeCommsRes {
 
   public SeResClose() {
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeResClose()");
+  }
 }

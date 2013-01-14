@@ -5,4 +5,9 @@ public class SeReqQuit implements SeCommsReq {
 
   public SeReqQuit() {
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeReqQuit()");
+  }
 }

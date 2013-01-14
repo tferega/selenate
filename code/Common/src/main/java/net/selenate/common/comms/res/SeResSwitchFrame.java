@@ -5,4 +5,9 @@ public class SeResSwitchFrame implements SeCommsRes {
 
   public SeResSwitchFrame() {
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeResSwitchFrame()");
+  }
 }

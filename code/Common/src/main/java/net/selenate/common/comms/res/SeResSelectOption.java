@@ -5,4 +5,9 @@ public class SeResSelectOption implements SeCommsRes {
 
   public SeResSelectOption() {
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeResSelectOption()");
+  }
 }

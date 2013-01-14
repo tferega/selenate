@@ -5,4 +5,9 @@ public class SeReqResetFrame implements SeCommsReq {
 
   public SeReqResetFrame() {
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeReqResetFrame()");
+  }
 }

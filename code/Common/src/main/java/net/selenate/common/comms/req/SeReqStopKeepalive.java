@@ -5,4 +5,9 @@ public class SeReqStopKeepalive implements SeCommsReq {
 
   public SeReqStopKeepalive() {
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeReqStopKeepalive");
+  }
 }

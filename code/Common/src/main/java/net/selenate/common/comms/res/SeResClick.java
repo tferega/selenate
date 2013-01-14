@@ -5,4 +5,9 @@ public class SeResClick implements SeCommsRes {
 
   public SeResClick() {
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeResClick()");
+  }
 }

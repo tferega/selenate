@@ -8,4 +8,9 @@ public class SeResExecuteScript implements SeCommsRes {
   public SeResExecuteScript(final String result) {
     this.result = result;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeResExecuteScript(%s)", result);
+  }
 }

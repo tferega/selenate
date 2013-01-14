@@ -2,6 +2,8 @@ package net.selenate.common.comms;
 
 import java.util.List;
 
+import net.selenate.common.util.Util;
+
 public class SeFrameElementSelector implements SeComms {
   private static final long serialVersionUID = 1L;
 
@@ -30,13 +32,6 @@ public class SeFrameElementSelector implements SeComms {
 
   @Override
   public String toString() {
-    String framePathStr = "[";
-    boolean isFirst = true;
-    for (int f : framePath) {
-      framePathStr += (isFirst ? "" : ":") + f;
-      isFirst = false;
-    }
-    framePathStr += "]";
-    return String.format("SeFrameElementSelector(%s: %s, %s)", framePathStr, method, query);
+    return String.format("SeFrameElementSelector(%s: %s, %s)", Util.simpleListToString(framePath), method, query);
   }
 }

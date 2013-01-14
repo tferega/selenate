@@ -12,4 +12,9 @@ public class SeReqClose implements SeCommsReq {
 
     this.windowHandle = windowHandle;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeReqClose(%s)", windowHandle);
+  }
 }

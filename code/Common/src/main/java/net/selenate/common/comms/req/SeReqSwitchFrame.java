@@ -8,4 +8,9 @@ public class SeReqSwitchFrame implements SeCommsReq {
   public SeReqSwitchFrame(final int frame) {
     this.frame = frame;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeReqSwitchFrame(%d)", frame);
+  }
 }

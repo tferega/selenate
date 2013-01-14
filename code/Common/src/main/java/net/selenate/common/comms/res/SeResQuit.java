@@ -5,4 +5,9 @@ public class SeResQuit implements SeCommsRes {
 
   public SeResQuit() {
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeResQuit()");
+  }
 }

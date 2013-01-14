@@ -30,4 +30,9 @@ public class SeReqFindElementList implements SeCommsReq {
     this.method    = selector.method;
     this.query     = selector.query;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeReqFindElementList(%s, %s)", method, query);
+  }
 }

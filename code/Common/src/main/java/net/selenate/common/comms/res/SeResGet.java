@@ -5,4 +5,9 @@ public class SeResGet implements SeCommsRes {
 
   public SeResGet() {
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeResGet()");
+  }
 }

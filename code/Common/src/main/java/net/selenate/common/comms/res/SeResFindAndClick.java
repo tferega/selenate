@@ -5,4 +5,9 @@ public class SeResFindAndClick implements SeCommsRes {
 
   public SeResFindAndClick() {
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeResFindAndClick()");
+  }
 }

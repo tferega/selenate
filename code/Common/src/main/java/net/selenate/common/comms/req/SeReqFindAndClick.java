@@ -30,4 +30,9 @@ public class SeReqFindAndClick implements SeCommsReq {
     this.method    = selector.method;
     this.query     = selector.query;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeReqFindAndClick(%s, %s)", method, query);
+  }
 }

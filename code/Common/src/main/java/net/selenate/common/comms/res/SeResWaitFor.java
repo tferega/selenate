@@ -22,11 +22,6 @@ public class SeResWaitFor implements SeCommsRes {
 
   @Override
   public String toString() {
-    if (isSuccessful) {
-      return String.format("SeResWaitFor[successful, %s]", foundName);
-    }
-    else {
-      return "SeResWaitFor[unsuccessful]";
-    }
+    return String.format("SeResWaitFor(%s, %s)", isSuccessful, foundName);
   }
 }

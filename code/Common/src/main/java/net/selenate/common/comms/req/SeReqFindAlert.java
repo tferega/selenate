@@ -5,4 +5,9 @@ public class SeReqFindAlert implements SeCommsReq {
 
   public SeReqFindAlert() {
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeReqFindAlert()");
+  }
 }

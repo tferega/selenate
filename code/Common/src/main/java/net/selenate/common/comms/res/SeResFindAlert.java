@@ -8,4 +8,9 @@ public class SeResFindAlert implements SeCommsRes {
   public SeResFindAlert(final String text) {
     this.text = text;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeResFindAlert(%s)", text);
+  }
 }

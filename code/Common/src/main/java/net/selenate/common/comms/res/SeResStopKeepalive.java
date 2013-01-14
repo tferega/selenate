@@ -5,4 +5,9 @@ public class SeResStopKeepalive implements SeCommsRes {
 
   public SeResStopKeepalive() {
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeResStopKeepalive()");
+  }
 }

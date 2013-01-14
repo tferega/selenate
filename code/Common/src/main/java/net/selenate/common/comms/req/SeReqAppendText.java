@@ -51,4 +51,16 @@ public class SeReqAppendText implements SeCommsReq {
     this.query     = selector.query;
     this.text      = text;
   }
+
+  @Override
+  public String toString() {
+    String framePathStr = "[";
+    boolean isFirst = true;
+    for (int f : framePath) {
+      framePathStr += (isFirst ? "" : ":") + f;
+      isFirst = false;
+    }
+    framePathStr += "]";
+    return String.format("SeReqAppendText(%s: %s, %s, %s)", framePathStr, method, query, text);
+  }
 }

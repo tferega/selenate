@@ -12,4 +12,9 @@ public class SeReqCapture implements SeCommsReq {
 
     this.name = name;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeReqCapture(%s)", name);
+  }
 }

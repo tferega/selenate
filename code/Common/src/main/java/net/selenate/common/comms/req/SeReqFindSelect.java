@@ -30,4 +30,9 @@ public class SeReqFindSelect implements SeCommsReq {
     this.method    = selector.method;
     this.query     = selector.query;
   }
+
+  @Override
+  public String toString() {
+    return String.format("SeReqFindSelect(%s, %s)", method, query);
+  }
 }

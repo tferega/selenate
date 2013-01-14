@@ -3,6 +3,7 @@ package net.selenate.common.comms.req;
 import java.util.List;
 
 import net.selenate.common.comms.*;
+import net.selenate.common.util.Util;
 
 public class SeReqSelectOption implements SeCommsReq {
   private static final long serialVersionUID = 1L;
@@ -57,5 +58,10 @@ public class SeReqSelectOption implements SeCommsReq {
     this.parentQuery  = parentSelector.query;
     this.optionMethod = optionSelector.method;
     this.optionQuery  = optionSelector.query;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("SeReqSelectOption(%s: %s, %s, %s, %s)", Util.simpleListToString(framePath), parentMethod, parentQuery, optionMethod, optionQuery);
   }
 }

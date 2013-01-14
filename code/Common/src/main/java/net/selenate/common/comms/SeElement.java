@@ -48,15 +48,7 @@ public class SeElement implements SeComms {
 
   @Override
   public String toString() {
-    final String altDescStr;
-    if (getDesc() != null) {
-      altDescStr = String.format(": %s", getDesc());
-    }
-    else {
-      altDescStr = "";
-    }
-
-    return String.format("SeElement(%s%s)", name, altDescStr);
+    return String.format("SeElement(%s, %s)", name, getDesc());
   }
 
   public String getDesc() {
