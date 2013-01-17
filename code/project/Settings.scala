@@ -6,9 +6,9 @@ object Resolvers {
   import Repositories._
 
   lazy val settings = Seq(
-    resolvers := Seq(ElementNexus, ElementReleases, ElementSnapshots),
-    externalResolvers <<= resolvers map { rs =>
-      Resolver.withDefaultResolvers(rs, mavenCentral = false)
+    resolvers := Seq(ElementNexus),
+    externalResolvers <<= resolvers map { r =>
+      Resolver.withDefaultResolvers(r, mavenCentral = false)
     }
   )
 }
@@ -21,10 +21,10 @@ object Publishing {
 
   lazy val settings = Seq(
     credentials        += Credentials(Path.userHome / ".config" / "selenate" / "nexus.config"),
-    crossScalaVersions := Seq("2.9.2", "2.9.1-1", "2.9.1", "2.9.0-1", "2.9.0"),
+    crossScalaVersions := Seq("2.9.3-RC1", "2.9.2", "2.9.1-1", "2.9.1", "2.9.0-1", "2.9.0"),
     publishArtifact in (Compile, packageDoc) := false,
     publishTo <<= (version) { version => Some(
-      if (version.endsWith("SNAPSHOT")) ElementSnapshots else ElementNexus)
+      if (version endsWith "SNAPSHOT") ElementSnapshots else ElementReleases)
     }
   )
 }
@@ -51,7 +51,7 @@ object Default {
   lazy val scalaProject =
     eclipseSettings ++ Seq(
       //projectFlavor := EclipseProjectFlavor.Scala,
-      scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "UTF-8", "-optimise"),
+      scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "UTF-8", "-optimise", "-Xmax-classfile-name", "72"),
       unmanagedSourceDirectories in Compile <<= (scalaSource in Compile)(_ :: Nil)
   )
 
@@ -60,7 +60,7 @@ object Default {
     Resolvers.settings ++ Seq(
       name         := Name,
       organization := "net.selenate",
-      version      := "0.0.0-SNAPSHOT",
+      version      := "0.0.1",
       scalaVersion := "2.9.2",
       unmanagedSourceDirectories in Test := Nil
   )
