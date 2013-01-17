@@ -10,6 +10,7 @@ import akka.util.Timeout
 
 object Overlord {
   private implicit val timeout = Timeout(1 second)
+
   def apply(props: Props, name: String)(implicit overlord: ActorRef): ActorRef = {
     val f  = overlord ? (props, name)
     val tf = f.mapTo[ActorRef]
@@ -20,15 +21,17 @@ object Overlord {
 class Overlord extends Actor {
   import Overlord._
 
+  private val log = Log(classOf[Overlord])
+
   def receive = {
     case (props: Props, name: String) =>
-      println("GOT A REQUEST FOR ACTOR: "+ name)
+      log.info("Actor request: %s" format name)
       val actor = context.children.find(_.path.name == name) match {
         case Some(child) =>
-          println("ACTOR ALREADY EXISTS; RETURNING")
+          log.debug("Actor %s already exists. Returning." format name)
           child
         case None =>
-          println("ACTOR DOES NOT EXIST; CREATING")
+          log.debug("Actor %s does not exist. Creating." format name)
           context.actorOf(props, name)
       }
       sender ! actor

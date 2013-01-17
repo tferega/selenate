@@ -5,6 +5,9 @@ package actors
 import akka.actor.{ Actor, ActorRef, ActorSystem, Address, Props, TypedActor, TypedProps }
 
 object ActorFactory {
+  private val log = Log(ActorFactory.getClass)
+
+  log.info("Firing up main Actor System.")
   val address = Address("akka", "main", "selenate-server", 9070)
   val system = ActorSystem("main")
   private implicit val overlord = system.actorOf(Props[Overlord], name = "overlord")
@@ -12,17 +15,23 @@ object ActorFactory {
 
 
   def shutdown() {
+    log.info("Shutting down main Actor System.")
     system.shutdown
   }
 
   def typed[I <: AnyRef](name: String, instance: I): I = {
+    log.debug("Main System creating a new typed actor: %s [%s].".format(name, instance.getClass.toString));
     val props = TypedProps(getTypedClass(instance), instance)
     TypedActor(system).typedActorOf(props, name)
   }
 
-  def untyped[T <: Actor](name: String)(implicit m: ClassManifest[T]): ActorRef =
+  def untyped[T <: Actor](name: String)(implicit m: ClassManifest[T]): ActorRef = {
+    log.debug("Main System creating a new untyped actor: %s." format name)
     Overlord(Props[T], name)
+  }
 
-  def untyped[T <: Actor](name: String, instanceFactory: () => T): ActorRef =
+  def untyped[T <: Actor](name: String, instanceFactory: () => T): ActorRef = {
+    log.debug("Main System creating a new untyped actor: %s." format name)
     Overlord(Props(instanceFactory()), name)
+  }
 }

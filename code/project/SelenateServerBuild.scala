@@ -45,7 +45,9 @@ object SelenateBuild extends Build {
     ProjectFlavor.Scala,
     Seq(
       akka,
-      selenium),
+      logback,
+      selenium,
+      slf4j),
     Seq(common)
   ) settings (
     Publishing.settings: _*

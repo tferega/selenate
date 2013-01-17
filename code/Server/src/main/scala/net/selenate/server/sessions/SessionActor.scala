@@ -13,12 +13,15 @@ import akka.util.duration._
 import actors.ActorFactory
 
 class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
+  private val log = Log(classOf[SessionActor], sessionID)
+
   import context._
 
+  log.info("Creating session actor for.")
   private val d = new FirefoxDriver(profile)
   private var isKeepalive = false
 
-  private def actionMan: PartialFunction[SeCommsReq, SeCommsRes] = {
+  private def actionMan: PF[SeCommsReq, SeCommsRes] = {
     case arg: SeReqAppendText      => new AppendTextAction(d).act(arg)
     case arg: SeReqCapture         => new CaptureAction(d).act(arg)
     case arg: SeReqClearText       => new ClearTextAction(d).act(arg)
@@ -61,12 +64,14 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
   private def wrap(base: Receive) = new Receive {
     def isDefinedAt(arg: Any) = base.isDefinedAt(arg)
     def apply(arg: Any) = {
+      val clazz = arg.getClass.toString
       try {
-        val clazz = arg.getClass.toString
-        println("SESSION (%s) RECEIVED [%s] FROM %s".format(sessionID, clazz, sender.path.toString))
+        log.info("Received request [%s] from %s.".format(sessionID, clazz, sender.path.toString))
+        log.debug(arg.toString)
         base.apply(arg)
       } catch {
         case e: Exception =>
+          log.warn("An error occured while processing [%s]" format clazz)
           if (sender == ActorFactory.system.deadLetters) {
             e.printStackTrace
           } else {
