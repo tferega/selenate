@@ -127,14 +127,9 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
-  public boolean isAlert() throws IOException {
-    throw new IllegalArgumentException("Not supported");
-  }
-
-  @Override
-  public IAlert findAlert() throws IOException {
-    final SeResFindAlert alert = typedBlock(new SeReqFindAlert(), SeResFindAlert.class);
-    return new ActorAlert(session, alert.text);
+  public String findAlert() throws IOException {
+    final SeResFindAlert res = typedBlock(new SeReqFindAlert(), SeResFindAlert.class);
+    return res.text;
   }
 
   @Override

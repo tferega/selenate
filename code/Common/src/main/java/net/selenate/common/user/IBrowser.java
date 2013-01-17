@@ -29,8 +29,7 @@ public interface IBrowser {
   public List<IElement> findElementList(ElementSelectMethod method, String query) throws IOException;
   public List<IElement> findElementList(ElementSelector selector) throws IOException;
 
-  public boolean isAlert() throws IOException;
-  public IAlert findAlert() throws IOException;
+  public String findAlert() throws IOException;
 
   public void startKeepaliveClick(long delayMillis, ElementSelectMethod method, String query) throws IOException;
   public void startKeepaliveClick(long delayMillis, ElementSelector selector) throws IOException;

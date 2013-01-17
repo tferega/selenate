@@ -21,7 +21,7 @@ class FindAlertAction(val d: FirefoxDriver)
       new SeResFindAlert(text)
     } catch {
       case e: NoAlertPresentException =>
-        throw new IOException("Alert not found!")
+        new SeResFindAlert(null)
     }
   }
 }
