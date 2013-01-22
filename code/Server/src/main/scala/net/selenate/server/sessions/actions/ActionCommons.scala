@@ -201,24 +201,18 @@ return report;
       raw map { case (elem, index) => index }
     }
 
-    def inAllFramesDoit(windowHandle: String, framePath: Vector[Frame], frame: Frame): Stream[T] = {
-      val fullPath = framePath :+ frame
+    def inAllFramesDoit(windowHandle: String, framePath: Vector[Frame], frame: Option[Frame]): Stream[T] = {
+      val fullPath = framePath ++ frame.toIndexedSeq
       switchToFrame(windowHandle, fullPath)
-
-      val result = f
+      val result = f(fullPath)
+      println("###############==========-----> [%s]: %s".format(fullPath.mkString(", "), result))
       val childrenResultList = findAllFrames.toStream flatMap { f =>
-        inAllFramesDoit(windowHandle, fullPath, f)
+        inAllFramesDoit(windowHandle, fullPath, Some(f))
       }
 
-      childrenResultList :+ f(fullPath)
+      childrenResultList :+ result
     }
 
-    d.switchTo.defaultContent
-    val rootFrames = findAllFrames.toStream
-    if (rootFrames.isEmpty) {
-      Stream(f(IndexedSeq.empty))
-    } else {
-      rootFrames.flatMap(inAllFramesDoit(d.getWindowHandle, Vector(), _))
-    }
+    inAllFramesDoit(d.getWindowHandle, Vector(), None)
   }
 }
