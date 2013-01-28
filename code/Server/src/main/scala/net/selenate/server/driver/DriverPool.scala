@@ -13,14 +13,21 @@ import org.openqa.selenium.firefox.FirefoxDriver
 
 import scala.collection.mutable.Queue
 
-class DriverPool(val capacity: Int) extends IDriverPool {
+object DriverPool extends IDriverPool {
+  val size = C.Server.poolSize
+  val pool = ActorFactory.typed[IDriverPool]("driver-pool", new DriverPool(size))
+
+  def get = pool.get
+}
+
+private class DriverPool(val size: Int) extends IDriverPool {
   private case class DriverEntry(uuid: UUID, future: Future[FirefoxDriver])
 
   private val log = Log(classOf[DriverPool])
   private val pool = new Queue[DriverEntry]
 
-  log.info("Firing up Firefox Driver Pool. Initial capacity: %d." format capacity)
-  enqueueNew(capacity)
+  log.info("Firing up Firefox Driver Pool. Initial size: %d." format size)
+  enqueueNew(size)
 
   private def enqueueNew(count: Int) {
     for (i <- 1 to count) {
