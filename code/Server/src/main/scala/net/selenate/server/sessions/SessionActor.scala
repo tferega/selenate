@@ -17,7 +17,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
 
   import context._
 
-  log.info("Creating session actor for.")
+  log.info("Creating session actor for session id: {%s}." format sessionID)
   private val d = DriverPool.get
   private var isKeepalive = false
 
@@ -48,15 +48,22 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
     case "ping" => sender ! "pong"
     case data @ KeepaliveData(delay, reqList) =>
       if (isKeepalive) {
+        log.info("Keepalive tick!")
         data.reqList foreach actionMan
         schedulify(data)
       }
     case arg: SeReqStartKeepalive =>
       sender ! actionMan(arg)
+      if (!isKeepalive) {
+        log.info("Entering keepalive mode.")
+      }
       isKeepalive = true
       val data = KeepaliveData.fromReq(arg)
       schedulify(data)
     case arg: SeCommsReq =>
+      if (isKeepalive) {
+        log.info("Leaving keepalive mode.")
+      }
       isKeepalive = false
       sender ! actionMan(arg)
   }
