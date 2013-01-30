@@ -15,9 +15,10 @@ object Dependencies {
 
   // ---------------------------------------------------------------------------
 
-  val logback   = "ch.qos.logback" %  "logback-classic" % "1.0.6"
-  val scalaTest = "org.scalatest"  %% "scalatest"       % "1.8"
-  val slf4j     = "org.slf4j"      %  "slf4j-api"       % "1.6.4"
+  val configrity = "org.streum"     %% "configrity-core" % "1.0.0"
+  val logback    = "ch.qos.logback" %  "logback-classic" % "1.0.6"
+  val scalaTest  = "org.scalatest"  %% "scalatest"       % "1.8"
+  val slf4j      = "org.slf4j"      %  "slf4j-api"       % "1.6.4"
 
   val akka     = Seq(akkaActor, akkaRemote)
   val jodaTime = Seq(jodaTimeConvert, jodaTimeTime)

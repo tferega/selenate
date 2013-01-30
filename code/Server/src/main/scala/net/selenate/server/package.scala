@@ -40,6 +40,11 @@ package object server {
     }
   }
 
+  implicit def strImpaler(l: String) = new {
+    def /(r: String): String = "%s/%s" format(l, r)
+  }
+
+
   def tryo[T](f: => T): Option[T] =
     try {
       Some(f)

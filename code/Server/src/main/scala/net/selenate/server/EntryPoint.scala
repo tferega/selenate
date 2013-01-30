@@ -3,6 +3,7 @@ package server
 
 import actors.ActorFactory
 import common.sessions.ISessionFactory
+import driver.DriverPool
 import sessions.SessionFactory
 
 import scala.annotation.tailrec
@@ -14,7 +15,8 @@ object EntryPoint extends App {
     log.info("Selenate Server now starting.")
     log.info("Press ENTER to shut down.")
 
-    ActorFactory.typed[ISessionFactory]("session-factory", new SessionFactory)
+    SessionFactory
+    DriverPool
 
     readLine
     log.info("Selenate Server now shutting down.")

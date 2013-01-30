@@ -2,23 +2,23 @@ package net.selenate
 package server
 package sessions
 
-import actions._
 import common.comms.req._
 import common.comms.res._
-import akka.actor.{ Actor, ActorRef }
-import org.openqa.selenium.firefox.{ FirefoxDriver, FirefoxProfile }
-import org.openqa.selenium.OutputType
-import scala.collection.JavaConversions._
-import akka.util.duration._
+import actions._
 import actors.ActorFactory
+import driver.DriverPool
+
+import akka.actor.Actor
+
+import org.openqa.selenium.firefox.FirefoxProfile
 
 class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
-  private val log = Log(classOf[SessionActor], sessionID)
+  private val log  = Log(classOf[SessionActor], sessionID)
 
   import context._
 
-  log.info("Creating session actor for.")
-  private val d = new FirefoxDriver(profile)
+  log.info("Creating session actor for session id: {%s}." format sessionID)
+  private val d = DriverPool.get
   private var isKeepalive = false
 
   private def actionMan: PF[SeCommsReq, SeCommsRes] = {
@@ -48,15 +48,22 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
     case "ping" => sender ! "pong"
     case data @ KeepaliveData(delay, reqList) =>
       if (isKeepalive) {
+        log.info("Keepalive tick!")
         data.reqList foreach actionMan
         schedulify(data)
       }
     case arg: SeReqStartKeepalive =>
       sender ! actionMan(arg)
+      if (!isKeepalive) {
+        log.info("Entering keepalive mode.")
+      }
       isKeepalive = true
       val data = KeepaliveData.fromReq(arg)
       schedulify(data)
     case arg: SeCommsReq =>
+      if (isKeepalive) {
+        log.info("Leaving keepalive mode.")
+      }
       isKeepalive = false
       sender ! actionMan(arg)
   }

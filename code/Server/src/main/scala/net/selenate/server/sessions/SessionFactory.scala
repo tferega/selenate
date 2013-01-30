@@ -13,7 +13,14 @@ import scala.collection.JavaConversions._
 
 import org.openqa.selenium.firefox.FirefoxProfile
 
-class SessionFactory extends ISessionFactory {
+object SessionFactory extends ISessionFactory {
+  val factory = typed[ISessionFactory]("session-factory", new SessionFactory)
+
+  def getSession(sessionID: String, profileMapRaw: JMap[String, String]) = factory.getSession(sessionID, profileMapRaw)
+  def getSession(sessionID: String) = factory.getSession(sessionID)
+}
+
+private class SessionFactory extends ISessionFactory {
   private def updateProfile(p: FirefoxProfile)(kv: (String, String)) {
     p.setPreference(kv._1, kv._2)
   }
