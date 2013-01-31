@@ -133,6 +133,11 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
+  public INavigation navigate() throws IOException {
+    return new ActorNavigation();
+  }
+
+  @Override
   public void startKeepaliveClick(long delayMillis, ElementSelector selector) throws IOException {
     startKeepaliveClick(delayMillis, selector.method, selector.query);
   }
@@ -159,5 +164,23 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   @Override
   public void stopKeepalive() throws IOException {
     typedBlock(new SeReqStopKeepalive(), SeResStopKeepalive.class);
+  }
+
+
+  private class ActorNavigation implements INavigation {
+    @Override
+    public void back() throws IOException {
+      typedBlock(new SeReqNavigateBack(), SeResNavigateBack.class);
+    }
+
+    @Override
+    public void forward() throws IOException {
+      typedBlock(new SeReqNavigateForward(), SeResNavigateForward.class);
+    }
+
+    @Override
+    public void refresh() throws IOException {
+      typedBlock(new SeReqNavigateRefresh(), SeResNavigateRefresh.class);
+    }
   }
 }

@@ -31,6 +31,8 @@ public interface IBrowser {
 
   public String findAlert() throws IOException;
 
+  public INavigation navigate() throws IOException;
+
   public void startKeepaliveClick(long delayMillis, ElementSelectMethod method, String query) throws IOException;
   public void startKeepaliveClick(long delayMillis, ElementSelector selector) throws IOException;
 
