@@ -7,10 +7,9 @@ import common.comms.res._
 import actions._
 import actors.ActorFactory
 import driver.DriverPool
-
 import akka.actor.Actor
-
 import org.openqa.selenium.firefox.FirefoxProfile
+import net.selenate.common.comms.req.SeReqDownload
 
 class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
   private val log  = Log(classOf[SessionActor], sessionID)
@@ -27,6 +26,7 @@ class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
     case arg: SeReqClearText       => new ClearTextAction(d).act(arg)
     case arg: SeReqClick           => new ClickAction(d).act(arg)
     case arg: SeReqClose           => new CloseAction(d).act(arg)
+    case arg: SeReqDownload        => new DownloadAction(d).act(arg)
     case arg: SeReqElementExists   => new ElementExistsAction(d).act(arg)
     case arg: SeReqExecuteScript   => new ExecuteScriptAction(d).act(arg)
     case arg: SeReqFindAlert       => new FindAlertAction(d).act(arg)
