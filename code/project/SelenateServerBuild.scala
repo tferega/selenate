@@ -46,6 +46,7 @@ object SelenateBuild extends Build {
     Seq(
       akka,
       configrity,
+      dispatch,
       logback,
       selenium,
       slf4j),

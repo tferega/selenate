@@ -33,6 +33,8 @@ public interface IBrowser {
 
   public INavigation navigate() throws IOException;
 
+  public byte[] download(String url) throws IOException;
+
   public void startKeepaliveClick(long delayMillis, ElementSelectMethod method, String query) throws IOException;
   public void startKeepaliveClick(long delayMillis, ElementSelector selector) throws IOException;
 

@@ -138,6 +138,12 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
+  public byte[] download(String url) throws IOException {
+    final SeResDownload res = typedBlock(new SeReqDownload(url), SeResDownload.class);
+    return res.body;
+  }
+
+  @Override
   public void startKeepaliveClick(long delayMillis, ElementSelector selector) throws IOException {
     startKeepaliveClick(delayMillis, selector.method, selector.query);
   }
