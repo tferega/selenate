@@ -15,6 +15,8 @@ import java.io.IOException
 class DownloadAction(val d: FirefoxDriver) extends IAction[SeReqDownload, SeResDownload] {
   def act = { arg =>
     val request = url(arg.url)
+    request.setHeader("Referer", d.getCurrentUrl)
+    request.setHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/12.0")
     getCookies foreach request.addCookie
 
     val body =
