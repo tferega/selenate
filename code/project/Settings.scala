@@ -60,7 +60,7 @@ object Default {
     Resolvers.settings ++ Seq(
       name         := Name,
       organization := "net.selenate",
-      version      := "0.0.6",
+      version      := "0.0.9",
       scalaVersion := "2.9.2",
       unmanagedSourceDirectories in Test := Nil
   )
