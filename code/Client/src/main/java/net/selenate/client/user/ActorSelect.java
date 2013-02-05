@@ -57,11 +57,16 @@ public class ActorSelect extends ActorElement implements ISelect {
   }
 
   @Override
-  public ActorSelect select(OptionSelectMethod method, String query)
+  public ISelect select(OptionSelectMethod method, String query)
       throws IOException {
     final SeOptionSelectMethod reqMethod = userToReqOptionSelectMethod(method);
     final SeResSelectOption res = typedBlock(new SeReqSelectOption(getFramePath(), SeElementSelectMethod.UUID, getUuid(), reqMethod, query), SeResSelectOption.class);
     return resToUserSelect(res.select);
+  }
+
+  @Override
+  public ISelect selectByIndex(int index) throws IOException {
+    return select(OptionSelectMethod.INDEX, Integer.toString(index));
   }
 
   @Override
