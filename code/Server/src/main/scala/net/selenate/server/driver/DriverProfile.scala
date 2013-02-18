@@ -54,17 +54,17 @@ object DriverProfile {
 
   private def parseProfile(s: String) = {
     val entryList = s.split(";")
-    new DriverProfile(entryList map parseEntry toMap)
+    new DriverProfile(entryList flatMap parseEntry toMap)
   }
 
-  private def parseEntry(entry: String): (String, AnyRef) = {
+  private def parseEntry(entry: String): Option[(String, AnyRef)] =
     entry.split("=").toList match {
-      case key :: IsBoolean(value) :: Nil => key -> value
-      case key :: IsInt(value)     :: Nil => key -> value
-      case key :: IsString(value)  :: Nil => key -> value
+      case key :: IsBoolean(value) :: Nil => Some(key -> value)
+      case key :: IsInt(value)     :: Nil => Some(key -> value)
+      case key :: IsString(value)  :: Nil => Some(key -> value)
+      case "" :: Nil => None
       case _ => throw new Exception("Error while parsing profile config. Offending entry:\n%s" format entry)
     }
-  }
 
   private def serializeProfile(p: DriverProfile): String = {
     def key(e: (String, AnyRef)) = e._1

@@ -15,7 +15,7 @@ import scala.collection.mutable.Queue
 
 object DriverPool {
   val size           = C.Server.poolSize
-  val defaultProfile = DriverProfile.fromString(C.Server.defaultProfileOpt.getOrElse(""))
+  val defaultProfile = C.Server.defaultProfileOpt map DriverProfile.fromString getOrElse DriverProfile.empty
   println(defaultProfile)
 
   val defaultPool = ActorFactory.typed[IDriverPoolActor]("driver-pool", new DriverPoolActor(defaultProfile, size))
