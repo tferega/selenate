@@ -2,24 +2,26 @@ package net.selenate
 package server
 package sessions
 
-import common.comms.req._
-import common.comms.res._
 import actions._
 import actors.ActorFactory
-import driver.DriverPool
+import common.comms.req._
+import common.comms.res._
+import driver.{ DriverPool, DriverProfile }
+
 import akka.actor.{ Actor, Cancellable }
-import org.openqa.selenium.firefox.FirefoxProfile
-import net.selenate.common.comms.req.SeReqDownload
 import akka.util.Duration
 
+import net.selenate.common.comms.req.SeReqDownload
 
-class SessionActor(sessionID: String, profile: FirefoxProfile) extends Actor {
+import org.openqa.selenium.firefox.FirefoxProfile
+
+class SessionActor(sessionID: String, profile: DriverProfile) extends Actor {
   private val log  = Log(classOf[SessionActor], sessionID)
 
   import context._
 
   log.info("Creating session actor for session id: {%s}." format sessionID)
-  private val d = DriverPool.get
+  private val d = DriverPool.get(profile)
   private var keepaliveScheduler: Option[Cancellable] = None
   private def isKeepalive = keepaliveScheduler.isDefined
 
