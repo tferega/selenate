@@ -1,12 +1,8 @@
 package net.selenate.client.user;
 
 import net.selenate.common.sessions.ISessionFactory;
-import akka.actor.Actor;
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import akka.actor.TypedProps;
-import akka.actor.ActorSystem;
-import akka.actor.TypedActor;
+import net.selenate.common.user.Preferences;
+import akka.actor.*;
 
 public final class ActorFactory {
   private ActorFactory() {}
@@ -27,6 +23,11 @@ public final class ActorFactory {
 
   public static ActorRef getSession(String name) {
     final String sessionPath = sessionFactory.getSession(name);
+    return system.actorFor(sessionPath);
+  }
+
+  public static ActorRef getSession(String name, Preferences preferences) {
+    final String sessionPath = sessionFactory.getSession(name, preferences);
     return system.actorFor(sessionPath);
   }
 

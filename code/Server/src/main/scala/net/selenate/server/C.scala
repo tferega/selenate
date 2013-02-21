@@ -8,6 +8,7 @@ object C {
 
   object Server {
     private val serverConfig = config.detach("server")
-    val poolSize = serverConfig[Int]("pool-size")
+    val poolSize          = serverConfig[Int]("pool-size")
+    val defaultProfileOpt = serverConfig.get[String]("default-profile")
   }
 }
