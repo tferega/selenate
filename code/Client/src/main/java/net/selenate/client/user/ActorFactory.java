@@ -13,7 +13,7 @@ public final class ActorFactory {
   public static <T> T getTyped(Class<T> clazz) {
     return TypedActor.get(system).typedActorOf(
         new TypedProps<T>(clazz),
-        system.actorFor("akka://main@selenate-server:9070/user/session-factory")
+        system.actorFor("akka://main@selenate-server:9072/user/session-factory")
     );
   }
 

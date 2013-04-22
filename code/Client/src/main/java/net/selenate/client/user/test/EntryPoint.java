@@ -22,7 +22,7 @@ public class EntryPoint {
     system = ActorSystem.create("selenium-client");
     sessionFactory = TypedActor.get(system).typedActorOf(
         new TypedProps<ISessionFactory>(ISessionFactory.class),
-        system.actorFor("akka://main@selenate-server:9070/user/session-factory")
+        system.actorFor("akka://main@selenate-server:9072/user/session-factory")
     );
 
     final ActorRef listener = system.actorOf(new Props(Listener.class), "listener");
@@ -130,7 +130,7 @@ public class EntryPoint {
   public static ActorRef getSession(String sessionName) {
     p("REQUESTING SESSION "+ sessionName);
     String sessionActorPath = sessionFactory.getSession(sessionName);
-//        .replace("selenate-server", "server@selenate:9070");
+//        .replace("selenate-server", "server@selenate:9072");
     ActorRef sessionActor = system.actorFor(sessionActorPath);
     p("SESSION PATH: "+ sessionActorPath);
     p("SENDING PING MESSAGE");
