@@ -13,6 +13,8 @@ object Dependencies {
   val seleniumFirefox = "org.seleniumhq.selenium" % "selenium-firefox-driver" % seleniumVersion
   val seleniumServer  = "org.seleniumhq.selenium" % "selenium-server"         % seleniumVersion
 
+  val scalaLibrary    = "org.scala-lang" % "scala-library" % "2.10.1"
+
   // ---------------------------------------------------------------------------
 
   val configrity = "org.streum"              %% "configrity-core" % "1.0.0"

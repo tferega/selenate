@@ -4,14 +4,13 @@ package driver
 
 import actors.ActorFactory
 
-import akka.dispatch.{ Await, Future }
-import akka.util.duration._
-
 import java.util.UUID
 
 import org.openqa.selenium.firefox.FirefoxDriver
 
 import scala.collection.mutable.Queue
+import scala.concurrent.{ Await, Future }
+import scala.concurrent.duration._
 
 object DriverPool {
   val size           = C.Server.poolSize

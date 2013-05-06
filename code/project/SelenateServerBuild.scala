@@ -23,7 +23,11 @@ object SelenateBuild extends Build {
 
   lazy val common = project(
     "Common",
-    ProjectFlavor.Java
+    ProjectFlavor.Java,
+    Seq(
+      akka,
+      scalaLibrary
+    )
   ) settings (
     Publishing.settings: _*
   )

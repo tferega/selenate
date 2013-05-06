@@ -5,8 +5,7 @@ package sessions
 import common.comms.req.SeCommsReq
 import common.comms.req.SeReqStartKeepalive
 
-import akka.util.Duration
-import akka.util.duration._
+import scala.concurrent.duration._
 import scala.collection.JavaConversions._
 
 object KeepaliveData {
@@ -17,4 +16,4 @@ object KeepaliveData {
     KeepaliveData(delay, reqList)
   }
 }
-case class KeepaliveData(delay: Duration, reqList: IndexedSeq[SeCommsReq])
+case class KeepaliveData(delay: FiniteDuration, reqList: IndexedSeq[SeCommsReq])

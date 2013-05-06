@@ -12,10 +12,11 @@ import net.selenate.common.comms.res.SeResCapture;
 import net.selenate.common.user.*;
 
 import akka.actor.ActorRef;
-import akka.dispatch.Await;
-import akka.dispatch.Future;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
+
+import scala.concurrent.Await;
+import scala.concurrent.Future;
 
 public abstract class ActorBase {
   protected static final Timeout timeout = new Timeout(30, TimeUnit.SECONDS);

@@ -4,14 +4,13 @@ package driver
 
 import actors.ActorFactory
 
-import akka.dispatch.{ Await, Future }
-import akka.util.duration._
-
 import java.util.UUID
 
 import org.openqa.selenium.firefox.FirefoxDriver
 
 import scala.collection.mutable.Queue
+import scala.concurrent.{ Await, Future }
+import scala.concurrent.duration._
 
 private[driver] class DriverPoolActor(val profile: DriverProfile, val size: Int) extends IDriverPoolActor {
   private case class DriverEntry(uuid: UUID, future: Future[FirefoxDriver])
@@ -28,8 +27,7 @@ private[driver] class DriverPoolActor(val profile: DriverProfile, val size: Int)
     }
   }
 
-  private def enqueueNew {
-    implicit val system = ActorFactory.system
+  private def enqueueNew() {
     val uuid = UUID.randomUUID
 
     val driverFuture = Future {

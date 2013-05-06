@@ -9,16 +9,15 @@ import common.comms.res._
 import driver.{ DriverPool, DriverProfile }
 
 import akka.actor.{ Actor, Cancellable }
-import akka.util.Duration
 
 import net.selenate.common.comms.req.SeReqDownload
 
 import org.openqa.selenium.firefox.FirefoxProfile
 
+import scala.concurrent.duration.Duration
+
 class SessionActor(sessionID: String, profile: DriverProfile) extends Actor {
   private val log  = Log(classOf[SessionActor], sessionID)
-
-  import context._
 
   log.info("Creating session actor for session id: {%s}." format sessionID)
   private val d = DriverPool.get(profile)
@@ -90,17 +89,17 @@ class SessionActor(sessionID: String, profile: DriverProfile) extends Actor {
   def receive = wrap(receiveBase)
 
   private def schedulify(data: KeepaliveData) {
-    system.scheduler.scheduleOnce(data.delay, self, data)
+    context.system.scheduler.scheduleOnce(data.delay, self, data)
   }
 
   private def startKeepalive(data: KeepaliveData) {
     stopKeepalive
     log.info("Starting keepalive.")
     log.debug(keepaliveStatus)
-    keepaliveScheduler = Some(system.scheduler.schedule(Duration.Zero, data.delay, self, data))
+    keepaliveScheduler = Some(context.system.scheduler.schedule(Duration.Zero, data.delay, self, data))
   }
 
-  private def stopKeepalive {
+  private def stopKeepalive() {
     log.info("Stopping keepalive.")
     log.debug(keepaliveStatus)
     keepaliveScheduler.map(_.cancel)

@@ -4,6 +4,8 @@ package actors
 
 import akka.actor.{ Actor, ActorRef, ActorSystem, Address, Props, TypedActor, TypedProps }
 
+import scala.reflect.ClassTag
+
 object ActorFactory {
   private val log = Log(ActorFactory.getClass)
 
@@ -25,7 +27,7 @@ object ActorFactory {
     TypedActor(system).typedActorOf(props, name)
   }
 
-  def untyped[T <: Actor](name: String)(implicit m: ClassManifest[T]): ActorRef = {
+  def untyped[T <: Actor](name: String)(implicit m: ClassTag[T]): ActorRef = {
     log.debug("Main System creating a new untyped actor: %s." format name)
     Overlord(Props[T], name)
   }

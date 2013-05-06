@@ -10,6 +10,8 @@ import scala.collection.JavaConversions._
 import org.openqa.selenium.firefox.FirefoxProfile
 import net.selenate.server.driver.DriverProfile
 import net.selenate.common.user.Preferences
+import scala.concurrent.Future
+import akka.actor.ActorRef
 
 object SessionFactory extends ISessionFactory {
   val factory = typed[ISessionFactory]("session-factory", new SessionFactory)
@@ -25,19 +27,18 @@ private class SessionFactory extends ISessionFactory {
   private val emptyProfile =
     DriverProfile.empty
 
-  private def getSessionDo(sessionID: String, prefMapOpt: Option[Map[String, AnyRef]]): String = {
+  private def getSessionDo(sessionID: String, prefMapOpt: Option[Map[String, AnyRef]]): Future[ActorRef] = Future {
     val profileOpt = prefMapOpt map getProfile
     val profile    = profileOpt getOrElse emptyProfile
     val name       = sessionID
 
-    val session = untyped(name, () => new SessionActor(sessionID, profile))
-    session.path.toStringWithAddress(address)
+    untyped(name, () => new SessionActor(sessionID, profile))
   }
 
 
   def getSession(sessionID: String, preferences: Preferences) =
-    getSessionDo(sessionID, Option(preferences.getAll.toMap))
+    getSessionDo(sessionID, Some(preferences.getAll.toMap))
 
-  def getSession(sessionID: String): String =
+  def getSession(sessionID: String) =
     getSessionDo(sessionID, None)
 }

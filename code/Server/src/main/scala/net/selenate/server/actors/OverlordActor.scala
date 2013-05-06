@@ -3,16 +3,17 @@ package server
 package actors
 
 import akka.actor.{ Actor, ActorRef, Props }
-import akka.dispatch.Await
 import akka.pattern.ask
-import akka.util.duration._
 import akka.util.Timeout
+
+import scala.concurrent.Await
+import scala.concurrent.duration._
 
 object Overlord {
   private implicit val timeout = Timeout(1 second)
 
   def apply(props: Props, name: String)(implicit overlord: ActorRef): ActorRef = {
-    val f  = overlord ? (props, name)
+    val f  = overlord ? ((props, name))
     val tf = f.mapTo[ActorRef]
     Await.result(tf, 1 second)
   }
