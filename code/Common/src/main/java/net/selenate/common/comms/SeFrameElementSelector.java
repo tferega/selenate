@@ -7,14 +7,16 @@ import net.selenate.common.util.Util;
 public class SeFrameElementSelector implements SeComms {
   private static final long serialVersionUID = 1L;
 
-  public final List<Integer>  framePath;
+  public final String                windowHandle;
+  public final List<Integer>         framePath;
   public final SeElementSelectMethod method;
-  public final String         query;
+  public final String                query;
 
   public SeFrameElementSelector(
-      final List<Integer>  framePath,
+      final String                windowHandle,
+      final List<Integer>         framePath,
       final SeElementSelectMethod method,
-      final String         query) {
+      final String                query) {
     if (framePath == null) {
       throw new IllegalArgumentException("Frame path cannot be null!");
     }
@@ -25,13 +27,14 @@ public class SeFrameElementSelector implements SeComms {
       throw new IllegalArgumentException("Query cannot be null!");
     }
 
-    this.framePath = framePath;
-    this.method    = method;
-    this.query     = query;
+    this.windowHandle = windowHandle;
+    this.framePath    = framePath;
+    this.method       = method;
+    this.query        = query;
   }
 
   @Override
   public String toString() {
-    return String.format("SeFrameElementSelector(%s: %s, %s)", Util.simpleListToString(framePath), method, query);
+    return String.format("SeFrameElementSelector([%s] %s: %s, %s)", windowHandle, Util.simpleListToString(framePath), method, query);
   }
 }

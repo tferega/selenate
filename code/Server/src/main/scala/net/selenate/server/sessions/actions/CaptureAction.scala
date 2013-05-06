@@ -84,7 +84,7 @@ class CaptureAction(val d: FirefoxDriver)
       getFrame(windowHandle, fullPath, f)
     }
 
-    new SeFrame(frame.index, name, src, html, seqToRealJava(frameList))
+    new SeFrame(frame.index, name, src, html, windowHandle, seqToRealJava(frameList))
   }
 
   private implicit def toSelenate(cookie: Cookie): SeCookie = new SeCookie(

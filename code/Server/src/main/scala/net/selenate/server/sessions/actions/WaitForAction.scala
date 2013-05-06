@@ -66,7 +66,7 @@ class WaitForAction(val d: FirefoxDriver)
 
   def elementExists(selector: SeElementSelector): Boolean =
     try {
-      val elemOpt = inAllFrames { framePath =>
+      val elemOpt = inAllWindows { address =>
         tryo {
           findElement(selector.method, selector.query)
         }
