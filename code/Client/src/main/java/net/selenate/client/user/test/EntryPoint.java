@@ -1,14 +1,23 @@
 package net.selenate.client.user.test;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
+import scala.concurrent.Await;
+import scala.concurrent.Future;
+import scala.concurrent.duration.Duration;
 
 import net.selenate.common.comms.req.*;
 import net.selenate.common.sessions.*;
 
 import akka.actor.*;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class EntryPoint {
   private static ActorSystem system;
@@ -22,7 +31,7 @@ public class EntryPoint {
     system = ActorSystem.create("selenium-client");
     sessionFactory = TypedActor.get(system).typedActorOf(
         new TypedProps<ISessionFactory>(ISessionFactory.class),
-        system.actorFor("akka://main@selenate-server:9070/user/session-factory")
+        system.actorFor("akka://main@selenate-server:9072/user/session-factory")
     );
 
     final ActorRef listener = system.actorOf(new Props(Listener.class), "listener");
@@ -127,14 +136,13 @@ public class EntryPoint {
     System.out.println("");
   }
 
-  public static ActorRef getSession(String sessionName) {
+  public static ActorRef getSession(String sessionName) throws Exception {
     p("REQUESTING SESSION "+ sessionName);
-    String sessionActorPath = sessionFactory.getSession(sessionName);
-//        .replace("selenate-server", "server@selenate:9070");
-    ActorRef sessionActor = system.actorFor(sessionActorPath);
-    p("SESSION PATH: "+ sessionActorPath);
+    final Future<ActorRef> sessionFuture = sessionFactory.getSession(sessionName);
+    final ActorRef sessionActor = Await.result(sessionFuture, Duration.create(30, SECONDS));
+    p("SESSION PATH: "+ sessionActor.path());
     p("SENDING PING MESSAGE");
-    sessionActor.tell("ping");
+    sessionActor.tell("ping", sessionActor);
 
     return sessionActor;
   }

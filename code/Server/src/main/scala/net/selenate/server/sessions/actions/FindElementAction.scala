@@ -16,10 +16,10 @@ class FindElementAction(val d: FirefoxDriver)
     with ActionCommons {
 
   def act = { arg =>
-    val resElementList: Stream[Option[SeResFindElement]] = inAllFrames { framePath =>
+    val resElementList: Stream[Option[SeResFindElement]] = inAllWindows { address =>
       tryo {
         val webElement = findElement(arg.method, arg.query)
-        val resElement = parseWebElement(framePath)(webElement)
+        val resElement = parseWebElement(address)(webElement)
         new SeResFindElement(resElement)
       }
     }

@@ -16,6 +16,7 @@ public class SeElement implements SeComms {
   public final boolean isDisplayed;
   public final boolean isEnabled;
   public final boolean isSelected;
+  public final String  windowHandle;
   public final List<Integer>       framePath;
   public final Map<String, String> attributeList;
 
@@ -30,6 +31,7 @@ public class SeElement implements SeComms {
       final boolean isDisplayed,
       final boolean isEnabled,
       final boolean isSelected,
+      final String  windowHandle,
       final List<Integer>       framePath,
       final Map<String, String> attributeList) {
     this.uuid          = uuid;
@@ -42,6 +44,7 @@ public class SeElement implements SeComms {
     this.isDisplayed   = isDisplayed;
     this.isEnabled     = isEnabled;
     this.isSelected    = isSelected;
+    this.windowHandle  = windowHandle;
     this.framePath     = framePath;
     this.attributeList = attributeList;
   }

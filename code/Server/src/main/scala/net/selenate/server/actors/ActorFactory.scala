@@ -4,11 +4,13 @@ package actors
 
 import akka.actor.{ Actor, ActorRef, ActorSystem, Address, Props, TypedActor, TypedProps }
 
+import scala.reflect.ClassTag
+
 object ActorFactory {
   private val log = Log(ActorFactory.getClass)
 
   log.info("Firing up main Actor System.")
-  val address = Address("akka", "main", "selenate-server", 9070)
+  val address = Address("akka", "main", "selenate-server", 9072)
   val system = ActorSystem("main")
   private implicit val overlord = system.actorOf(Props[Overlord], name = "overlord")
   private def getTypedClass[T](i: T) = i.getClass.asInstanceOf[Class[T]]
@@ -25,7 +27,7 @@ object ActorFactory {
     TypedActor(system).typedActorOf(props, name)
   }
 
-  def untyped[T <: Actor](name: String)(implicit m: ClassManifest[T]): ActorRef = {
+  def untyped[T <: Actor](name: String)(implicit m: ClassTag[T]): ActorRef = {
     log.debug("Main System creating a new untyped actor: %s." format name)
     Overlord(Props[T], name)
   }

@@ -1,19 +1,6 @@
 import sbt._
 import Keys._
 
-// =============  PACKS THE REPOSITORIES INTO A SETTINGS VARIABLE  =============
-object Resolvers {
-  import Repositories._
-
-  lazy val settings = Seq(
-    resolvers := Seq(ElementNexus),
-    externalResolvers <<= resolvers map { r =>
-      Resolver.withDefaultResolvers(r, mavenCentral = false)
-    }
-  )
-}
-
-
 
 // ==============  PUBLISHING SETTINGS  ==============
 object Publishing {
@@ -21,7 +8,7 @@ object Publishing {
 
   lazy val settings = Seq(
     credentials        += Credentials(Path.userHome / ".config" / "selenate" / "nexus.config"),
-    crossScalaVersions := Seq("2.9.3-RC1", "2.9.2", "2.9.1-1", "2.9.1", "2.9.0-1", "2.9.0"),
+    crossScalaVersions := Seq("2.10.1"),
     publishArtifact in (Compile, packageDoc) := false,
     publishTo <<= (version) { version => Some(
       if (version endsWith "SNAPSHOT") ElementSnapshots else ElementReleases)
@@ -41,8 +28,14 @@ object Default {
 
   lazy val javaProject =
     eclipseSettings ++ Seq(
-      projectFlavor    := EclipseProjectFlavor.Java,
-      javacOptions     := Seq("-deprecation", "-Xlint:unchecked", "-encoding", "UTF-8", "-source", "1.6", "-target", "1.6"),
+      projectFlavor := EclipseProjectFlavor.Java,
+      javacOptions := Seq(
+        "-deprecation"
+      , "-encoding", "UTF-8"
+      , "-Xlint:unchecked"
+      , "-source", "1.6"
+      , "-target", "1.6"
+      ),
       autoScalaLibrary := false,
       crossPaths       := false,
       unmanagedSourceDirectories in Compile <<= (javaSource in Compile)(_ :: Nil)
@@ -51,17 +44,38 @@ object Default {
   lazy val scalaProject =
     eclipseSettings ++ Seq(
       //projectFlavor := EclipseProjectFlavor.Scala,
-      scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "UTF-8", "-optimise", "-Xmax-classfile-name", "72"),
+      scalacOptions := Seq(
+        "-unchecked"
+      , "-deprecation"
+      , "-optimise"
+      , "-encoding", "UTF-8"
+      //, "-explaintypes"
+      , "-Xcheckinit"
+      //, "-Xfatal-warnings"
+      , "-Yclosure-elim"
+      , "-Ydead-code"
+      //, "-Yinline"
+      //, "-Yinline-warnings"
+      , "-Xmax-classfile-name", "72"
+      , "-Yrepl-sync"
+      , "-Xlint"
+      , "-Xverify"
+      , "-Ywarn-all"
+      , "-feature"
+      , "-language:postfixOps"
+      , "-language:implicitConversions"
+      , "-language:existentials"
+      ),
       unmanagedSourceDirectories in Compile <<= (scalaSource in Compile)(_ :: Nil)
   )
 
   lazy val settings =
     Defaults.defaultSettings ++
-    Resolvers.settings ++ Seq(
+    Seq(
       name         := Name,
       organization := "net.selenate",
-      version      := "0.0.9",
-      scalaVersion := "2.9.2",
+      version      := "0.2.0",
+      scalaVersion := "2.10.1",
       unmanagedSourceDirectories in Test := Nil
   )
 }

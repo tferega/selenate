@@ -1,12 +1,15 @@
 package net.selenate.client.user;
 
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import scala.concurrent.Await;
+import scala.concurrent.Future;
 import net.selenate.common.sessions.ISessionFactory;
-import akka.actor.Actor;
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import akka.actor.TypedProps;
-import akka.actor.ActorSystem;
-import akka.actor.TypedActor;
+import net.selenate.common.user.Preferences;
+import akka.actor.*;
+import scala.concurrent.duration.Duration;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public final class ActorFactory {
   private ActorFactory() {}
@@ -17,7 +20,7 @@ public final class ActorFactory {
   public static <T> T getTyped(Class<T> clazz) {
     return TypedActor.get(system).typedActorOf(
         new TypedProps<T>(clazz),
-        system.actorFor("akka://main@selenate-server:9070/user/session-factory")
+        system.actorFor("akka://main@selenate-server:9072/user/session-factory")
     );
   }
 
@@ -25,9 +28,24 @@ public final class ActorFactory {
     return system.actorOf(new Props(clazz), name);
   }
 
-  public static ActorRef getSession(String name) {
-    final String sessionPath = sessionFactory.getSession(name);
-    return system.actorFor(sessionPath);
+  public static ActorRef getSession(String name, int timeout) throws IOException {
+    try {
+      final Future<ActorRef> sessionFuture = sessionFactory.getSession(name);
+      final ActorRef result = Await.result(sessionFuture, Duration.create(timeout, SECONDS));
+      return result;
+    } catch (final Exception e) {
+      throw new IOException(String.format("An error occured while trying to get a new session (%s)!", name), e);
+    }
+  }
+
+  public static ActorRef getSession(String name, Preferences preferences, int timeout) throws IOException {
+    try {
+      final Future<ActorRef> sessionFuture = sessionFactory.getSession(name, preferences);
+      final ActorRef result = Await.result(sessionFuture, Duration.create(timeout, SECONDS));
+      return result;
+    } catch (final Exception e) {
+      throw new IOException(String.format("An error occured while trying to get a new session (%s)!", name), e);
+    }
   }
 
   public static void shutdown() {

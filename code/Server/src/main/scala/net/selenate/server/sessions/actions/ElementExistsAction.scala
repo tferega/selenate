@@ -16,7 +16,7 @@ class ElementExistsAction(val d: FirefoxDriver)
     with ActionCommons {
 
   def act = { arg =>
-    val resElementList: Stream[Boolean] = inAllFrames { framePath =>
+    val resElementList: Stream[Boolean] = inAllWindows { address =>
       tryb {
         findElement(arg.method, arg.query)
       }

@@ -17,10 +17,10 @@ class FindSelectAction(val d: FirefoxDriver)
     with ActionCommons {
 
   def act = { arg =>
-    val resElementList: Stream[Option[SeSelect]] = inAllFrames { framePath =>
+    val resElementList: Stream[Option[SeSelect]] = inAllWindows { address =>
       tryo {
         val webElement = findElement(arg.method, arg.query)
-        parseSelectElement(framePath)(webElement)
+        parseSelectElement(address)(webElement)
       }
     }
 

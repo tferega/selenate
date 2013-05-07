@@ -9,6 +9,7 @@ public class SeFrame implements SeComms {
   public final String name;
   public final String src;
   public final String html;
+  public final String windowHandle;
   public final List<SeFrame> frameList;
 
   public SeFrame(
@@ -16,12 +17,14 @@ public class SeFrame implements SeComms {
       final String name,
       final String src,
       final String html,
+      final String windowHandle,
       final List<SeFrame> frameList) {
-    this.index      = index;
-    this.name       = name;
-    this.src        = src;
-    this.html       = html;
-    this.frameList  = frameList;
+    this.index        = index;
+    this.name         = name;
+    this.src          = src;
+    this.html         = html;
+    this.windowHandle = windowHandle;
+    this.frameList    = frameList;
   }
 
   @Override
