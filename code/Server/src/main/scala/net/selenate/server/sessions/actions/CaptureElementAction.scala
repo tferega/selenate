@@ -23,7 +23,7 @@ class CaptureElementAction(val d: FirefoxDriver)
 
   def act = { arg =>
     try {
-      switchToFrame(d.getWindowHandle, arg.framePath.map(_.toInt).toIndexedSeq)
+      switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)
       val elem       = findElement(arg.method, arg.query)
       val screen     = d.getScreenshotAs(OutputType.BYTES)
       val bais       = new ByteArrayInputStream(screen)

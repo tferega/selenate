@@ -15,7 +15,7 @@ class ClearTextAction(val d: FirefoxDriver)
     extends IAction[SeReqClearText, SeResClearText]
     with ActionCommons {
   def act = { arg =>
-    switchToFrame(d.getWindowHandle, arg.framePath.map(_.toInt).toIndexedSeq)
+    switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)
     val e = findElement(arg.method, arg.query)
     e.clear
 
