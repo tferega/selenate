@@ -27,6 +27,7 @@ class SessionActor(sessionID: String, profile: DriverProfile) extends Actor {
   private def actionMan: PF[SeCommsReq, SeCommsRes] = {
     case arg: SeReqAppendText      => new AppendTextAction(d).act(arg)
     case arg: SeReqCapture         => new CaptureAction(d).act(arg)
+    case arg: SeReqCaptureElement  => new CaptureElementAction(d).act(arg)
     case arg: SeReqClearText       => new ClearTextAction(d).act(arg)
     case arg: SeReqClick           => new ClickAction(d).act(arg)
     case arg: SeReqClose           => new CloseAction(d).act(arg)
