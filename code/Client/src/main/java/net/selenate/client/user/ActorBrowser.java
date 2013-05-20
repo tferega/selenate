@@ -189,4 +189,19 @@ public class ActorBrowser extends ActorBase implements IBrowser {
       typedBlock(new SeReqNavigateRefresh(), SeResNavigateRefresh.class);
     }
   }
+
+
+  @Override
+  public byte[] captureElement(ElementSelectMethod method, String query) throws IOException {
+    final SeElementSelectMethod reqMethod = userToReqElementSelectMethod(method);
+    final SeResCaptureElement res         = typedBlock(new SeReqCaptureElement(reqMethod, query), SeResCaptureElement.class);
+    return res.body;
+  }
+
+  @Override
+  public byte[] captureElement(ElementSelector selector) throws IOException {
+    final SeElementSelector reqSelector = userToReqSelector(selector);
+    final SeResCaptureElement res       = typedBlock(new SeReqCaptureElement(reqSelector), SeResCaptureElement.class);
+    return res.body;
+  }
 }
