@@ -8,14 +8,19 @@ import net.selenate.common.util.Util;
 public class SeReqClearText implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
+  public final String         windowHandle;
   public final List<Integer>  framePath;
   public final SeElementSelectMethod method;
   public final String         query;
 
   public SeReqClearText(
+      final String         windowHandle,
       final List<Integer>  framePath,
       final SeElementSelectMethod method,
       final String         query) {
+    if (windowHandle == null) {
+      throw new IllegalArgumentException("Window handle cannot be null!");
+    }
     if (framePath == null) {
       throw new IllegalArgumentException("Frame path cannot be null!");
     }
@@ -26,9 +31,10 @@ public class SeReqClearText implements SeCommsReq {
       throw new IllegalArgumentException("Query cannot be null!");
     }
 
-    this.framePath = framePath;
-    this.method    = method;
-    this.query     = query;
+    this.windowHandle = windowHandle;
+    this.framePath    = framePath;
+    this.method       = method;
+    this.query        = query;
   }
 
   public SeReqClearText(final SeFrameElementSelector selector) {
@@ -36,13 +42,14 @@ public class SeReqClearText implements SeCommsReq {
       throw new IllegalArgumentException("Selector cannot be null!");
     }
 
-    this.framePath = selector.framePath;
-    this.method    = selector.method;
-    this.query     = selector.query;
+    this.windowHandle = selector.windowHandle;
+    this.framePath    = selector.framePath;
+    this.method       = selector.method;
+    this.query        = selector.query;
   }
 
   @Override
   public String toString() {
-    return String.format("SeReqClearText(%s: %s, %s)", Util.simpleListToString(framePath), method, query);
+    return String.format("SeReqClearText([%s] %s: %s, %s)", windowHandle, Util.simpleListToString(framePath), method, query);
   }
 }

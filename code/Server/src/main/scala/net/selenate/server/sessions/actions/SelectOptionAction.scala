@@ -16,7 +16,7 @@ class SelectOptionAction(val d: FirefoxDriver)
     extends IAction[SeReqSelectOption, SeResSelectOption]
     with ActionCommons {
   def act = { arg =>
-    switchToFrame(d.getWindowHandle, arg.framePath.map(_.toInt).toIndexedSeq)
+    switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)
     val e = findElement(arg.parentMethod, arg.parentQuery)
     val s = new Select(e)
     selectOption(s, arg.optionMethod, arg.optionQuery)
