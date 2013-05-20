@@ -18,6 +18,7 @@ public class ActorOption extends ActorElement implements IOption {
       final boolean  isDisplayed,
       final boolean  isEnabled,
       final boolean  isSelected,
+      final String   windowHandle,
       final int      optionCount,
       final Integer  selectedIndex,
       final IOption  selectedOption,
@@ -25,12 +26,12 @@ public class ActorOption extends ActorElement implements IOption {
       final List<Integer>       framePath,
       final Map<String, String> attributeList,
       final List<IElement>      children) {
-    super(session, uuid, pos, loc, name, text, isDisplayed, isEnabled, isSelected, framePath, attributeList, children);
+    super(session, uuid, pos, loc, name, text, isDisplayed, isEnabled, isSelected, windowHandle, framePath, attributeList, children);
   }
 
   public ActorOption(
       final ActorRef session,
       final IElement element) {
-    super(session, element.getUuid(), element.getPos(), element.getLoc(), element.getName(), element.getText(), element.getIsDisplayed(), element.getIsEnabled(), element.getIsSelected(), element.getFramePath(), element.getAttributeList(), element.getChildren());
+    super(session, element.getUuid(), element.getPos(), element.getLoc(), element.getName(), element.getText(), element.getIsDisplayed(), element.getIsEnabled(), element.getIsSelected(), element.getWindowHandle(), element.getFramePath(), element.getAttributeList(), element.getChildren());
   }
 }

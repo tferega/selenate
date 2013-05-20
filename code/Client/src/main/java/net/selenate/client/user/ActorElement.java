@@ -20,6 +20,7 @@ public class ActorElement extends ActorBase implements IElement {
   private final boolean  isDisplayed;
   private final boolean  isEnabled;
   private final boolean  isSelected;
+  private final String   windowHandle;
   private final List<Integer>       framePath;
   private final Map<String, String> attributeList;
   private final List<IElement>      children;
@@ -34,6 +35,7 @@ public class ActorElement extends ActorBase implements IElement {
       final boolean  isDisplayed,
       final boolean  isEnabled,
       final boolean  isSelected,
+      final String   windowHandle,
       final List<Integer>       framePath,
       final Map<String, String> attributeList,
       final List<IElement>      children) {
@@ -54,6 +56,9 @@ public class ActorElement extends ActorBase implements IElement {
     if (text == null) {
       throw new IllegalArgumentException("Text cannot be null!");
     }
+    if (windowHandle == null) {
+      throw new IllegalArgumentException("WindowHandle cannot be null!");
+    }
     if (framePath == null) {
       throw new IllegalArgumentException("Frame path cannot be null!");
     }
@@ -72,6 +77,7 @@ public class ActorElement extends ActorBase implements IElement {
     this.isDisplayed   = isDisplayed;
     this.isEnabled     = isEnabled;
     this.isSelected    = isSelected;
+    this.windowHandle  = windowHandle;
     this.framePath     = framePath;
     this.attributeList = attributeList;
     this.children      = children;
@@ -134,6 +140,11 @@ public class ActorElement extends ActorBase implements IElement {
   }
 
   @Override
+  public String getWindowHandle() {
+    return windowHandle;
+  }
+
+  @Override
   public ISelect toSelect() throws IOException {
     final SeResFindSelect res = typedBlock(new SeReqFindSelect(SeElementSelectMethod.UUID, uuid), SeResFindSelect.class);
     return resToUserSelect(res.select);
@@ -141,12 +152,12 @@ public class ActorElement extends ActorBase implements IElement {
 
   @Override
   public void clearText() throws IOException {
-    typedBlock(new SeReqClearText(framePath, SeElementSelectMethod.UUID, uuid), SeResClearText.class);
+    typedBlock(new SeReqClearText(windowHandle, framePath, SeElementSelectMethod.UUID, uuid), SeResClearText.class);
   }
 
   @Override
   public void appendText(String text) throws IOException {
-    typedBlock(new SeReqAppendText(framePath, SeElementSelectMethod.UUID, uuid, text), SeResAppendText.class);
+    typedBlock(new SeReqAppendText(windowHandle, framePath, SeElementSelectMethod.UUID, uuid, text), SeResAppendText.class);
   }
 
   @Override
@@ -157,13 +168,12 @@ public class ActorElement extends ActorBase implements IElement {
 
   @Override
   public void click() throws IOException {
-    typedBlock(new SeReqClick(framePath, SeElementSelectMethod.UUID, uuid), SeResClick.class);
+    typedBlock(new SeReqClick(windowHandle, framePath, SeElementSelectMethod.UUID, uuid), SeResClick.class);
   }
 
   @Override
   public byte[] capture() throws IOException {
-    final SeResCaptureElement res = typedBlock(new SeReqCaptureElement(framePath, SeElementSelectMethod.UUID, uuid), SeResCaptureElement.class);
+    final SeResCaptureElement res = typedBlock(new SeReqCaptureElement(windowHandle, framePath, SeElementSelectMethod.UUID, uuid), SeResCaptureElement.class);
     return res.body;
   }
-
 }

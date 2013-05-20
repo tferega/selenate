@@ -7,16 +7,21 @@ import net.selenate.common.comms.*;
 public class SeReqAppendText implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
+  public final String         windowHandle;
   public final List<Integer>  framePath;
   public final SeElementSelectMethod method;
   public final String         query;
   public final String         text;
 
   public SeReqAppendText(
+      final String                windowHandle,
       final List<Integer>         framePath,
       final SeElementSelectMethod method,
       final String                query,
       final String                text) {
+    if (windowHandle == null) {
+      throw new IllegalArgumentException("Window handle cannot be null!");
+    }
     if (framePath == null) {
       throw new IllegalArgumentException("Frame path cannot be null!");
     }
@@ -30,10 +35,11 @@ public class SeReqAppendText implements SeCommsReq {
       throw new IllegalArgumentException("Text cannot be null!");
     }
 
-    this.framePath = framePath;
-    this.method    = method;
-    this.query     = query;
-    this.text      = text;
+    this.windowHandle = windowHandle;
+    this.framePath    = framePath;
+    this.method       = method;
+    this.query        = query;
+    this.text         = text;
   }
 
   public SeReqAppendText(
@@ -46,10 +52,11 @@ public class SeReqAppendText implements SeCommsReq {
       throw new IllegalArgumentException("Text cannot be null!");
     }
 
-    this.framePath = selector.framePath;
-    this.method    = selector.method;
-    this.query     = selector.query;
-    this.text      = text;
+    this.windowHandle = selector.windowHandle;
+    this.framePath    = selector.framePath;
+    this.method       = selector.method;
+    this.query        = selector.query;
+    this.text         = text;
   }
 
   @Override
@@ -61,6 +68,6 @@ public class SeReqAppendText implements SeCommsReq {
       isFirst = false;
     }
     framePathStr += "]";
-    return String.format("SeReqAppendText(%s: %s, %s, %s)", framePathStr, method, query, text);
+    return String.format("SeReqAppendText([%s] %s: %s, %s, %s)", windowHandle, framePathStr, method, query, text);
   }
 }

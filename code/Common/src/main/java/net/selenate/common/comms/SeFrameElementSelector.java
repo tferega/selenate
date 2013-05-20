@@ -17,6 +17,9 @@ public class SeFrameElementSelector implements SeComms {
       final List<Integer>         framePath,
       final SeElementSelectMethod method,
       final String                query) {
+    if (windowHandle == null) {
+      throw new IllegalArgumentException("Window handle cannot be null!");
+    }
     if (framePath == null) {
       throw new IllegalArgumentException("Frame path cannot be null!");
     }
