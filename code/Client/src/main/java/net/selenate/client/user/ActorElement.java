@@ -159,4 +159,11 @@ public class ActorElement extends ActorBase implements IElement {
   public void click() throws IOException {
     typedBlock(new SeReqClick(framePath, SeElementSelectMethod.UUID, uuid), SeResClick.class);
   }
+
+  @Override
+  public byte[] capture() throws IOException {
+    final SeResCaptureElement res = typedBlock(new SeReqCaptureElement(framePath, SeElementSelectMethod.UUID, uuid), SeResCaptureElement.class);
+    return res.body;
+  }
+
 }
