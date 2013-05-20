@@ -42,7 +42,4 @@ public interface IBrowser {
   public void startKeepalive(long delayMillis, List<SeCommsReq> reqList) throws IOException;
 
   public void stopKeepalive() throws IOException;
-
-  public byte[] captureElement(ElementSelectMethod method, String query) throws IOException;
-  public byte[] captureElement(ElementSelector selector) throws IOException;
 }

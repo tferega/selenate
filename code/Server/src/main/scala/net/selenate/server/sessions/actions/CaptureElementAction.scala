@@ -14,6 +14,7 @@ import org.openqa.selenium.OutputType
 import javax.imageio.ImageIO
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 
 
 class CaptureElementAction(val d: FirefoxDriver)
@@ -21,29 +22,24 @@ class CaptureElementAction(val d: FirefoxDriver)
     with ActionCommons {
 
   def act = { arg =>
-    val resImageList: Stream[Option[SeResCaptureElement]] = inAllWindows { address =>
-      tryo {
-        val webElement = findElement(arg.method, arg.query)
-        val screen     = d.asInstanceOf[TakesScreenshot].getScreenshotAs(OutputType.BYTES)
-        val bais       = new ByteArrayInputStream(screen)
-        val baos       = new ByteArrayOutputStream()
-        val width      = webElement.getSize.getWidth
-        val height     = webElement.getSize.getHeight
-        val img        = ImageIO.read(bais)
-        val dest       = img.getSubimage(webElement.getLocation.getX, webElement.getLocation.getY, width, height)
-        ImageIO.write(dest, "png", baos)
-        val res        = baos.toByteArray()
-        baos.close()
-        bais.close()
-        new SeResCaptureElement(res)
-      }
-    }
+    try {
+      switchToFrame(d.getWindowHandle, arg.framePath.map(_.toInt).toIndexedSeq)
+      val elem       = findElement(arg.method, arg.query)
+      val screen     = d.getScreenshotAs(OutputType.BYTES)
+      val bais       = new ByteArrayInputStream(screen)
+      val baos       = new ByteArrayOutputStream()
+      val width      = elem.getSize.getWidth
+      val height     = elem.getSize.getHeight
+      val img        = ImageIO.read(bais)
+      val dest       = img.getSubimage(elem.getLocation.getX, elem.getLocation.getY, width, height)
+      ImageIO.write(dest, "png", baos)
+      val res        = baos.toByteArray()
+      baos.close()
+      bais.close()
 
-    val e = resImageList.flatten
-    if (e.isEmpty) {
-      throw new IllegalArgumentException("Element [%s, %s] was not found in any frame!".format(arg.method.toString, arg.query))
-    } else {
-      e(0)
+      new SeResCaptureElement(res)
+    } catch {
+      case e: Exception => throw new IOException("An error occured while capturing element (%s, %s)".format(arg.method, arg.query), e)
     }
   }
 }

@@ -11,6 +11,6 @@ public class SeResCaptureElement implements SeCommsRes {
 
   @Override
   public String toString() {
-    return String.format("SeResDownload(%d bytes)", body.length);
+    return String.format("SeResCaptureElement(%d bytes)", body.length);
   }
 }
