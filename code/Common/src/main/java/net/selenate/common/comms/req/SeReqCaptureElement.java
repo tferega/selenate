@@ -2,27 +2,26 @@ package net.selenate.common.comms.req;
 
 import java.util.List;
 
-import net.selenate.common.comms.*;
+import net.selenate.common.comms.SeElementSelectMethod;
+import net.selenate.common.comms.SeFrameElementSelector;
 import net.selenate.common.util.Util;
 
-public class SeReqClearText implements SeCommsReq {
+public class SeReqCaptureElement implements SeCommsReq {
+
   private static final long serialVersionUID = 1L;
 
-  public final String         windowHandle;
-  public final List<Integer>  framePath;
+  public final String                windowHandle;
+  public final List<Integer>         framePath;
   public final SeElementSelectMethod method;
-  public final String         query;
+  public final String                query;
 
-  public SeReqClearText(
-      final String         windowHandle,
-      final List<Integer>  framePath,
+  public SeReqCaptureElement(
+      final String                windowHandle,
+      final List<Integer>         framePath,
       final SeElementSelectMethod method,
-      final String         query) {
+      final String                query) {
     if (windowHandle == null) {
       throw new IllegalArgumentException("Window handle cannot be null!");
-    }
-    if (framePath == null) {
-      throw new IllegalArgumentException("Frame path cannot be null!");
     }
     if (method == null) {
       throw new IllegalArgumentException("Method cannot be null!");
@@ -37,7 +36,7 @@ public class SeReqClearText implements SeCommsReq {
     this.query        = query;
   }
 
-  public SeReqClearText(final SeFrameElementSelector selector) {
+  public SeReqCaptureElement(final SeFrameElementSelector selector) {
     if (selector == null) {
       throw new IllegalArgumentException("Selector cannot be null!");
     }
@@ -50,6 +49,7 @@ public class SeReqClearText implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqClearText([%s] %s: %s, %s)", windowHandle, Util.simpleListToString(framePath), method, query);
+    return String.format("SeReqCaptureElement([%s] %s, %s, %s)", windowHandle, Util.simpleListToString(framePath), method, query);
   }
+
 }

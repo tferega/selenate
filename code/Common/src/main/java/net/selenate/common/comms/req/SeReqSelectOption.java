@@ -8,6 +8,7 @@ import net.selenate.common.util.Util;
 public class SeReqSelectOption implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
+  public final String                windowHandle;
   public final List<Integer>         framePath;
   public final SeElementSelectMethod parentMethod;
   public final String                parentQuery;
@@ -15,11 +16,15 @@ public class SeReqSelectOption implements SeCommsReq {
   public final String                optionQuery;
 
   public SeReqSelectOption(
+      final String                windowHandle,
       final List<Integer>         framePath,
       final SeElementSelectMethod parentMethod,
       final String                parentQuery,
       final SeOptionSelectMethod  optionMethod,
       final String                optionQuery) {
+    if (windowHandle == null) {
+      throw new IllegalArgumentException("Window handle cannot be null!");
+    }
     if (framePath == null) {
       throw new IllegalArgumentException("Frame path cannot be null!");
     }
@@ -36,6 +41,7 @@ public class SeReqSelectOption implements SeCommsReq {
       throw new IllegalArgumentException("Option query cannot be null!");
     }
 
+    this.windowHandle = windowHandle;
     this.framePath    = framePath;
     this.parentMethod = parentMethod;
     this.parentQuery  = parentQuery;
@@ -53,6 +59,7 @@ public class SeReqSelectOption implements SeCommsReq {
       throw new IllegalArgumentException("Option selector cannot be null!");
     }
 
+    this.windowHandle = parentSelector.windowHandle;
     this.framePath    = parentSelector.framePath;
     this.parentMethod = parentSelector.method;
     this.parentQuery  = parentSelector.query;
@@ -62,6 +69,6 @@ public class SeReqSelectOption implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqSelectOption(%s: %s, %s, %s, %s)", Util.simpleListToString(framePath), parentMethod, parentQuery, optionMethod, optionQuery);
+    return String.format("SeReqSelectOption([%s] %s: %s, %s, %s, %s)", windowHandle, Util.simpleListToString(framePath), parentMethod, parentQuery, optionMethod, optionQuery);
   }
 }

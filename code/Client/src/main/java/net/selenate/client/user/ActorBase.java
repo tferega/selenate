@@ -174,6 +174,7 @@ public abstract class ActorBase {
         resElement.isDisplayed,
         resElement.isEnabled,
         resElement.isSelected,
+        resElement.windowHandle,
         resElement.framePath,
         resElement.attributeList,
         new ArrayList<IElement>());

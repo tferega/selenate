@@ -28,6 +28,7 @@ public class ActorSelect extends ActorElement implements ISelect {
       final boolean  isDisplayed,
       final boolean  isEnabled,
       final boolean  isSelected,
+      final String   windowHandle,
       final int      optionCount,
       final Integer  selectedIndex,
       final IOption selectedOption,
@@ -35,7 +36,7 @@ public class ActorSelect extends ActorElement implements ISelect {
       final List<Integer>       framePath,
       final Map<String, String> attributeList,
       final List<IElement>      children) {
-    super(session, uuid, pos, loc, name, text, isDisplayed, isEnabled, isSelected, framePath, attributeList, children);
+    super(session, uuid, pos, loc, name, text, isDisplayed, isEnabled, isSelected, windowHandle, framePath, attributeList, children);
     this.optionCount    = optionCount;
     this.selectedIndex  = selectedIndex;
     this.selectedOption = selectedOption;
@@ -49,7 +50,7 @@ public class ActorSelect extends ActorElement implements ISelect {
       final Integer  selectedIndex,
       final IOption selectedOption,
       final List<IOption> options) {
-    super(session, element.getUuid(), element.getPos(), element.getLoc(), element.getName(), element.getText(), element.getIsDisplayed(), element.getIsEnabled(), element.getIsSelected(), element.getFramePath(), element.getAttributeList(), element.getChildren());
+    super(session, element.getUuid(), element.getPos(), element.getLoc(), element.getName(), element.getText(), element.getIsDisplayed(), element.getIsEnabled(), element.getIsSelected(), element.getWindowHandle(), element.getFramePath(), element.getAttributeList(), element.getChildren());
     this.optionCount    = optionCount;
     this.selectedIndex  = selectedIndex;
     this.selectedOption = selectedOption;
@@ -60,7 +61,7 @@ public class ActorSelect extends ActorElement implements ISelect {
   public void select(OptionSelectMethod method, String query)
       throws IOException {
     final SeOptionSelectMethod reqMethod = userToReqOptionSelectMethod(method);
-    typedBlock(new SeReqSelectOption(getFramePath(), SeElementSelectMethod.UUID, getUuid(), reqMethod, query), SeResSelectOption.class);
+    typedBlock(new SeReqSelectOption(getWindowHandle(), getFramePath(), SeElementSelectMethod.UUID, getUuid(), reqMethod, query), SeResSelectOption.class);
   }
 
   @Override

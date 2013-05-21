@@ -13,6 +13,7 @@ public interface IElement {
   public boolean  getIsDisplayed();
   public boolean  getIsEnabled();
   public boolean  getIsSelected();
+  public String   getWindowHandle();
   public List<Integer>       getFramePath();
   public Map<String, String> getAttributeList();
   public List<IElement>      getChildren();
@@ -23,4 +24,6 @@ public interface IElement {
   public void appendText(String text) throws IOException;
   public void setText(String text) throws IOException;
   public void click() throws IOException;
+
+  public byte[] capture() throws IOException;
 }
