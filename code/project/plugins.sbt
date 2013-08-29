@@ -15,3 +15,10 @@ addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.2.0-RC2")
 // +-------------------------------------------------------------------------------------+
 
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.7.1")
+
+// +-------------------------------------------------------------------------------------+
+// | SBT PGP plugin (http://www.scala-sbt.org/sbt-pgp/index.html)                        |
+// | provides PGP signing for SBT 0.12+.                                                 |
+// +-------------------------------------------------------------------------------------+
+
+addSbtPlugin("com.typesafe.sbt" % "sbt-pgp" % "0.8")

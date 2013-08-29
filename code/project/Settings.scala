@@ -7,12 +7,28 @@ object Publishing {
   import Repositories._
 
   lazy val settings = Seq(
-    credentials        += Credentials(Path.userHome / ".config" / "selenate" / "nexus.config"),
-    crossScalaVersions := Seq("2.10.1"),
+    publishMavenStyle := true,
     publishArtifact in (Compile, packageDoc) := false,
+    publishArtifact in Test := false,
+    pomIncludeRepository := { _ => false },
+    licenses := Seq("BSD-style" -> url("http://opensource.org/licenses/BSD-3-Clause")),
+    homepage := Some(url("https://github.com/tferega/selenate")),
+    pomExtra := (
+      <scm>
+        <url>git@github.com:tferega/selenate.git</url>
+        <connection>scm:git:git@github.com:tferega/selenate.git</connection>
+      </scm>
+      <developers>
+        <developer>
+          <id>tferega</id>
+          <name>Tomo Ferega</name>
+          <email>tferega@gmail.com</email>
+        </developer>
+      </developers>),
     publishTo <<= (version) { version => Some(
-      if (version endsWith "SNAPSHOT") ElementSnapshots else ElementReleases)
-    }
+      if (version endsWith "SNAPSHOT") SonatypeSnapshots else SonatypeReleases)
+    },
+    credentials += Credentials(Path.userHome / ".config" / "selenate" / "sonatype.config")
   )
 }
 
@@ -43,6 +59,7 @@ object Default {
 
   lazy val scalaProject =
     eclipseSettings ++ Seq(
+      com.typesafe.sbt.pgp.PgpKeys.useGpg := true,
       //projectFlavor := EclipseProjectFlavor.Scala,
       scalacOptions := Seq(
         "-unchecked"
@@ -74,7 +91,7 @@ object Default {
     Seq(
       name         := Name,
       organization := "net.selenate",
-      version      := "0.2.1",
+      version      := "0.3.0-SNAPSHOT",
       scalaVersion := "2.10.1",
       unmanagedSourceDirectories in Test := Nil
   )
