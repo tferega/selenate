@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import scala.concurrent.Await;
 import scala.concurrent.Future;
+import net.selenate.client.C;
 import net.selenate.common.sessions.ISessionFactory;
 import net.selenate.common.user.Preferences;
 import akka.actor.*;
@@ -18,9 +19,10 @@ public final class ActorFactory {
   public static ISessionFactory sessionFactory = getTyped(ISessionFactory.class);
 
   public static <T> T getTyped(Class<T> clazz) {
+    final String serverURI = String.format("akka://main@%s:%s/%s", C.ServerHost, C.ServerPort, C.ServerPath);
     return TypedActor.get(system).typedActorOf(
         new TypedProps<T>(clazz),
-        system.actorFor("akka://main@selenate-server:9072/user/session-factory")
+        system.actorFor(serverURI)
     );
   }
 
