@@ -4,6 +4,7 @@ public class SeReqCapture implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public final String name;
+  public boolean takeScreenshot = true;
 
   public SeReqCapture(final String name) {
     if (name == null) {
@@ -13,8 +14,18 @@ public class SeReqCapture implements SeCommsReq {
     this.name = name;
   }
 
+  public SeReqCapture(final String name, final boolean takeScreenshot) {
+    if (name == null) {
+      throw new IllegalArgumentException("name cannot be null!");
+    }
+
+    this.name = name;
+    this.takeScreenshot = takeScreenshot;
+  }
+
+
   @Override
   public String toString() {
-    return String.format("SeReqCapture(%s)", name);
+    return String.format("SeReqCapture(%s, %s)", name, takeScreenshot);
   }
 }
