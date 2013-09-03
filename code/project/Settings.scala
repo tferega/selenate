@@ -8,11 +8,11 @@ object Publishing {
 
   lazy val settings = Seq(
     credentials        += Credentials(Path.userHome / ".config" / "selenate" / "nexus.config"),
-    crossScalaVersions := Seq("2.10.1"),
+    crossScalaVersions := Seq("2.10.2"),
     publishArtifact in (Compile, packageDoc) := false,
-    publishTo <<= (version) { version => Some(
-      if (version endsWith "SNAPSHOT") ElementSnapshots else ElementReleases)
-    }
+    publishTo := Some(
+      if (version.value endsWith "SNAPSHOT") ElementSnapshots else ElementReleases
+    )
   )
 }
 
@@ -38,7 +38,7 @@ object Default {
       ),
       autoScalaLibrary := false,
       crossPaths       := false,
-      unmanagedSourceDirectories in Compile <<= (javaSource in Compile)(_ :: Nil)
+      unmanagedSourceDirectories in Compile := (javaSource in Compile).value :: Nil
   )
 
   lazy val scalaProject =
@@ -66,7 +66,7 @@ object Default {
       , "-language:implicitConversions"
       , "-language:existentials"
       ),
-      unmanagedSourceDirectories in Compile <<= (scalaSource in Compile)(_ :: Nil)
+      unmanagedSourceDirectories in Compile := (scalaSource in Compile).value :: Nil
   )
 
   lazy val settings =
@@ -75,7 +75,7 @@ object Default {
       name         := Name,
       organization := "net.selenate",
       version      := "0.2.2",
-      scalaVersion := "2.10.1",
+      scalaVersion := "2.10.2",
       unmanagedSourceDirectories in Test := Nil
   )
 }
