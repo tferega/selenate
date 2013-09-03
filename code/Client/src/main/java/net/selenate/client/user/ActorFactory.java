@@ -15,11 +15,11 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 public final class ActorFactory {
   private ActorFactory() {}
 
-  public static final ActorSystem system = ActorSystem.create("selenium-client");
+  public static final ActorSystem system = ActorSystem.create("client-system");
   public static ISessionFactory sessionFactory = getTyped(ISessionFactory.class);
 
   public static <T> T getTyped(Class<T> clazz) {
-    final String serverURI = String.format("akka://main@%s:%s/%s", C.ServerHost, C.ServerPort, C.ServerPath);
+    final String serverURI = String.format("akka://server-system@%s:%s/%s", C.ServerHost, C.ServerPort, C.ServerPath);
     return TypedActor.get(system).typedActorOf(
         new TypedProps<T>(clazz),
         system.actorFor(serverURI)

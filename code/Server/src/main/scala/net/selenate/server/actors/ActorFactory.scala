@@ -10,8 +10,7 @@ object ActorFactory {
   private val log = Log(ActorFactory.getClass)
 
   log.info("Firing up main Actor System.")
-  val address = Address("akka", "main", "selenate-server", 9072)
-  val system = ActorSystem("main")
+  val system = ActorSystem("server-system")
   private implicit val overlord = system.actorOf(Props[Overlord], name = "overlord")
   private def getTypedClass[T](i: T) = i.getClass.asInstanceOf[Class[T]]
 
