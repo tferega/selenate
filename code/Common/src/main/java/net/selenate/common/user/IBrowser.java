@@ -8,6 +8,7 @@ import net.selenate.common.comms.req.SeCommsReq;
 public interface IBrowser {
   public void open(String url) throws IOException;
   public Capture capture(String name) throws IOException;
+  public Capture capture(String name, boolean takeScreenshot) throws IOException;
   public String executeScript(String javascript) throws IOException;
   public void resetFrame() throws IOException;
   public void switchFrame(int frame) throws IOException;
