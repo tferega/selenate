@@ -1,4 +1,4 @@
-import sbt._
+import sbt.{ project => _, _ }
 import Keys._
 
 import Dependencies._
