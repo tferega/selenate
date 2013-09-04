@@ -29,6 +29,12 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
+  public Capture capture(final String name, final boolean takeScreenshot) throws IOException {
+    final SeResCapture res = typedBlock(new SeReqCapture(name, takeScreenshot), SeResCapture.class);
+    return resToUserCapture(res);
+  }
+
+  @Override
   public String executeScript(final String javascript) throws IOException {
     final SeResExecuteScript res = typedBlock(new SeReqExecuteScript(javascript), SeResExecuteScript.class);
     return res.result;
