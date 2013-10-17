@@ -139,6 +139,16 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
+  public void deleteCookieNamed(String name) throws IOException {
+    typedBlock(new SeReqDeleteCookieNamed(name), SeResDeleteCookieNamed.class);
+  }
+
+  @Override
+  public void addCookieNamed(String name, String value) throws IOException {
+    typedBlock(new SeReqAddCookieNamed(name, value), SeResAddCookieNamed.class);
+  }
+
+  @Override
   public INavigation navigate() throws IOException {
     return new ActorNavigation();
   }
