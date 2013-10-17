@@ -18,10 +18,8 @@ class AddCookieNamedAction(val d: FirefoxDriver)
 
   def act = { arg =>
     inAllWindows { address =>
-      tryo {
-        val c = new Cookie(arg.name, arg.cookie)
-        d.manage.addCookie(c)
-      }
+      val c = new Cookie(arg.name, arg.value)
+      d.manage.addCookie(c)
     }
     new SeResAddCookieNamed()
   }

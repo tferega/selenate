@@ -17,9 +17,7 @@ class DeleteCookieNamedAction(val d: FirefoxDriver)
 
   def act = { arg =>
     inAllWindows { address =>
-      tryo {
-        d.manage.deleteCookieNamed(arg.name)
-      }
+      d.manage.deleteCookieNamed(arg.name)
     }
     new SeResDeleteCookieNamed()
   }
