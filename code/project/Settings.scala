@@ -74,7 +74,7 @@ object Default {
     Seq(
       name         := Name,
       organization := "net.selenate",
-      version      := "0.2.5",
+      version      := "0.2.6",
       scalaVersion := "2.10.2",
       unmanagedSourceDirectories in Test := Nil
   )
