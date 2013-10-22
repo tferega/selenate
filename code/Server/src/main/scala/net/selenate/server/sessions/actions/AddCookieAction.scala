@@ -12,15 +12,24 @@ import scala.collection.JavaConversions._
 import org.openqa.selenium.Cookie
 
 
-class AddCookieNamedAction(val d: FirefoxDriver)
-    extends IAction[SeReqAddCookieNamed, SeResAddCookieNamed]
+class AddCookieAction(val d: FirefoxDriver)
+    extends IAction[SeReqAddCookie, SeResAddCookie]
     with ActionCommons {
 
   def act = { arg =>
+    val cookie = arg.cookie
     inAllWindows { address =>
-      val c = new Cookie(arg.name, arg.value)
+      // convert from selenate cookie to selenium cookie
+      val c = new Cookie(
+            cookie.getName
+          , cookie.getValue
+          , cookie.getDomain
+          , cookie.getPath
+          , cookie.getExpiry
+          , cookie.isSecure
+          )
       d.manage.addCookie(c)
     }
-    new SeResAddCookieNamed()
+    new SeResAddCookie()
   }
 }

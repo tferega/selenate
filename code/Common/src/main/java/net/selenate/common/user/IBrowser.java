@@ -33,7 +33,7 @@ public interface IBrowser {
   public String findAlert() throws IOException;
 
   public void deleteCookieNamed(String name) throws IOException;
-  public void addCookieNamed(String name, String value) throws IOException;
+  public void addCookie(Cookie cookie) throws IOException;
 
   public INavigation navigate() throws IOException;
 
