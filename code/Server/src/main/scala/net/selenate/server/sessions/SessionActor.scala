@@ -25,7 +25,7 @@ class SessionActor(sessionID: String, profile: DriverProfile) extends Actor {
   private def isKeepalive = keepaliveScheduler.isDefined
 
   private def actionMan: PF[SeCommsReq, SeCommsRes] = {
-    case arg: SeReqAddCookieNamed    => new AddCookieNamedAction(d).act(arg)
+    case arg: SeReqAddCookie         => new AddCookieAction(d).act(arg)
     case arg: SeReqAppendText        => new AppendTextAction(d).act(arg)
     case arg: SeReqCapture           => new CaptureAction(d).act(arg)
     case arg: SeReqCaptureElement    => new CaptureElementAction(d).act(arg)

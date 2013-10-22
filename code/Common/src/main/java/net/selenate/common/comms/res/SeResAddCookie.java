@@ -1,9 +1,9 @@
 package net.selenate.common.comms.res;
 
-public class SeResAddCookieNamed implements SeCommsRes {
+public class SeResAddCookie implements SeCommsRes {
   private static final long serialVersionUID = 1L;
 
-  public SeResAddCookieNamed() {
+  public SeResAddCookie() {
   }
 
   @Override
