@@ -117,6 +117,6 @@ public class Cookie {
 
   public String toString() {
     return String.format("name=%s ; value=%s ; path=%s ; domain=%s ; expiry=%s ; isSecure=%s ; ",
-        name, value, path, domain, expiry.toString(), String.valueOf(isSecure));
+        name, value, path, domain, expiry, String.valueOf(isSecure));
   }
 }
