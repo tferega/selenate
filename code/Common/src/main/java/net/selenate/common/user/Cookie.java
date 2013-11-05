@@ -1,8 +1,11 @@
 package net.selenate.common.user;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Cookie {
+public class Cookie implements Serializable {
+
+  private static final long serialVersionUID = -8895605477477397939L;
 
   private String  domain;
   private Date    expiry;
@@ -117,6 +120,6 @@ public class Cookie {
 
   public String toString() {
     return String.format("name=%s ; value=%s ; path=%s ; domain=%s ; expiry=%s ; isSecure=%s ; ",
-        name, value, path, domain, expiry.toString(), String.valueOf(isSecure));
+        name, value, path, domain, expiry, String.valueOf(isSecure));
   }
 }
