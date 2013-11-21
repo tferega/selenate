@@ -16,6 +16,8 @@ class FindSelectAction(val d: FirefoxDriver)
     extends IAction[SeReqFindSelect, SeResFindSelect]
     with ActionCommons {
 
+  protected val log = Log(classOf[FindSelectAction])
+
   def act = { arg =>
     val resElementList: Stream[Option[SeSelect]] = inAllWindows { address =>
       tryo {

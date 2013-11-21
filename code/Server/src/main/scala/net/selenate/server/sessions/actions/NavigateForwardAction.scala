@@ -9,6 +9,9 @@ import org.openqa.selenium.firefox.FirefoxDriver
 import scala.collection.JavaConversions._
 
 class NavigateForwardAction(val d: FirefoxDriver) extends IAction[SeReqNavigateForward, SeResNavigateForward] {
+
+  protected val log = Log(classOf[NavigateForwardAction])
+
   def act = { arg =>
     d.navigate.forward;
 

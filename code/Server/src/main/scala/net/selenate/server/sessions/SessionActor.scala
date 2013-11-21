@@ -52,6 +52,7 @@ class SessionActor(sessionID: String, profile: DriverProfile) extends Actor {
     case arg: SeReqStopKeepalive     => new StopKeepaliveAction(d).act(arg)
     case arg: SeReqSwitchFrame       => new SwitchFrameAction(d).act(arg)
     case arg: SeReqWaitFor           => new WaitForAction(d).act(arg)
+    case arg: SeReqCaptureFrame      => new CaptureFrameAction(d).act(arg)
   }
 
   private def receiveBase: Receive = {

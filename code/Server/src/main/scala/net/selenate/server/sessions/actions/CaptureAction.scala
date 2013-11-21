@@ -37,6 +37,7 @@ class CaptureAction(val d: FirefoxDriver)
     with ActionCommons {
   import CaptureAction._
 
+  protected val log = Log(classOf[CaptureAction])
 
   private case class FrameInfo(index: Int, name: String, src: String)
 

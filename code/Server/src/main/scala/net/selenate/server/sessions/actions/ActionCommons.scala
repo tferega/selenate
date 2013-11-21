@@ -26,6 +26,7 @@ trait ActionCommons {
 
 
   val d: FirefoxDriver
+  protected val log: net.selenate.server.Log[_]
 
   object JS {
     val getAttributes = """
@@ -57,16 +58,16 @@ return report;
   }
 
   protected def switchToWindow(window: Window) {
-    println("SWITCHING TO DEFAULT CONTENT")
+    log.debug("SWITCHING TO DEFAULT CONTENT")
     d.switchTo.defaultContent
-    println("SWITCHING TO WINDOW "+ window)
+    log.debug("SWITCHING TO WINDOW "+ window)
     d.switchTo.window(window)
   }
 
   protected def switchToFrame(window: Window, framePath: FramePath) {
     switchToWindow(window)
     framePath foreach { e =>
-      println("SWITCHING TO FRAME "+ e)
+      log.debug("SWITCHING TO FRAME "+ e)
       d.switchTo.frame(e)
     }
   }
@@ -216,7 +217,7 @@ return report;
       val fullPath = framePath ++ frame.toIndexedSeq
       switchToFrame(window, fullPath)
       val result = address(Address(window, fullPath))
-      println("###############==========-----> [%s]: %s".format(fullPath.mkString(", "), result))
+      log.debug("###############==========-----> [%s]: %s".format(fullPath.mkString(", "), result))
       val childrenResultList = findAllFrames.toStream flatMap { f =>
         inAllFramesDoit(window, fullPath, Some(f))
       }

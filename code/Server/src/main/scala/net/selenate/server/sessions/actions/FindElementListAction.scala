@@ -15,6 +15,9 @@ import scala.collection.JavaConversions._
 class FindElementListAction(val d: FirefoxDriver)
     extends IAction[SeReqFindElementList, SeResFindElementList]
     with ActionCommons {
+
+  protected val log = Log(classOf[FindElementListAction])
+
   def act = { arg =>
     val resElementList = inAllWindows { address =>
       val webElementList = findElementList(arg.method, arg.query)

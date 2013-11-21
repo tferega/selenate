@@ -14,6 +14,9 @@ import scala.collection.JavaConversions._
 class ClearTextAction(val d: FirefoxDriver)
     extends IAction[SeReqClearText, SeResClearText]
     with ActionCommons {
+
+  protected val log = Log(classOf[ClearTextAction])
+
   def act = { arg =>
     switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)
     val e = findElement(arg.method, arg.query)

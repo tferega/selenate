@@ -13,6 +13,9 @@ import scala.collection.JavaConversions._
 import java.io.IOException
 
 class DownloadAction(val d: FirefoxDriver) extends IAction[SeReqDownload, SeResDownload] {
+
+  protected val log = Log(classOf[DownloadAction])
+
   def act = { arg =>
     val request = url(arg.url)
     request.setHeader("Referer", d.getCurrentUrl)

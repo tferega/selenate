@@ -49,6 +49,8 @@ class WaitForAction(val d: FirefoxDriver)
     with ActionCommons {
   import WaitForAction._
 
+  protected val log = Log(classOf[WaitForAction])
+
   def act = { arg =>
     val res = waitForPageList(arg.pageList.toIndexedSeq)
 

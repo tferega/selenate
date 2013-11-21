@@ -15,6 +15,8 @@ class FindElementAction(val d: FirefoxDriver)
     extends IAction[SeReqFindElement, SeResFindElement]
     with ActionCommons {
 
+  protected val log = Log(classOf[FindElementAction])
+
   def act = { arg =>
     val resElementList: Stream[Option[SeResFindElement]] = inAllWindows { address =>
       tryo {

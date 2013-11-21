@@ -11,6 +11,9 @@ import org.openqa.selenium.firefox.FirefoxDriver
 import scala.collection.JavaConversions._
 
 class QuitAction(val d: FirefoxDriver) extends IAction[SeReqQuit, SeResQuit] {
+
+  protected val log = Log(classOf[QuitAction])
+
   def act = { arg =>
     d.quit
 

@@ -15,6 +15,9 @@ import scala.collection.JavaConversions._
 class AppendTextAction(val d: FirefoxDriver)
     extends IAction[SeReqAppendText, SeResAppendText]
     with ActionCommons {
+
+  protected val log = Log(classOf[AppendTextAction])
+
   def act = { arg =>
     switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)
     val e = findElement(arg.method, arg.query)

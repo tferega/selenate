@@ -15,6 +15,8 @@ class ElementExistsAction(val d: FirefoxDriver)
     extends IAction[SeReqElementExists, SeResElementExists]
     with ActionCommons {
 
+  protected val log = Log(classOf[ElementExistsAction])
+
   def act = { arg =>
     val resElementList: Stream[Boolean] = inAllWindows { address =>
       tryb {

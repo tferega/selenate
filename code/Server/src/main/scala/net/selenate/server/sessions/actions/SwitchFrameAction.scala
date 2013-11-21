@@ -12,6 +12,9 @@ import org.openqa.selenium.{ By, WebElement }
 class SwitchFrameAction(val d: FirefoxDriver)
     extends IAction[SeReqSwitchFrame, SeResSwitchFrame]
     with ActionCommons {
+
+  protected val log = Log(classOf[SwitchFrameAction])
+
   def act = { arg =>
     d.switchTo.frame(arg.frame)
 

@@ -15,6 +15,8 @@ class DeleteCookieNamedAction(val d: FirefoxDriver)
     extends IAction[SeReqDeleteCookieNamed, SeResDeleteCookieNamed]
     with ActionCommons {
 
+  protected val log = Log(classOf[DeleteCookieNamedAction])
+
   def act = { arg =>
     inAllWindows { address =>
       d.manage.deleteCookieNamed(arg.name)

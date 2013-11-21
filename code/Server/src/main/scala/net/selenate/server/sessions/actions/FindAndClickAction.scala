@@ -16,6 +16,8 @@ class FindAndClickAction(val d: FirefoxDriver)
     with ActionCommons {
   type PathElement = (FramePath, RemoteWebElement)
 
+  protected val log = Log(classOf[FindAndClickAction])
+
   def act = { arg =>
     val elementList: Stream[Boolean] =
       inAllWindows { address =>
