@@ -11,11 +11,11 @@ import org.openqa.selenium.{ By, WebElement }
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.io._
 
-class CaptureFrameAction(val d: FirefoxDriver)
-    extends IAction[SeReqCaptureFrame, SeResCaptureFrame]
+class CaptureWindowAction(val d: FirefoxDriver)
+    extends IAction[SeReqCaptureWindow, SeResCaptureWindow]
     with ActionCommons {
 
-  protected val log = Log(classOf[CaptureFrameAction])
+  protected val log = Log(classOf[CaptureWindowAction])
 
   def act = { arg =>
     val html2Canvasplugin = IOUtils.toString(getClass().getResourceAsStream("html2canvas.min.js"))
@@ -33,7 +33,7 @@ class CaptureFrameAction(val d: FirefoxDriver)
 
     val base64Img = d.executeScript("""return document.getElementsByTagName('canvas')[0].toDataURL();""")
 
-    new SeResCaptureFrame(Base64.decodeBase64(base64Img.toString.replace("data:image/png;base64,", "")))
+    new SeResCaptureWindow(Base64.decodeBase64(base64Img.toString.replace("data:image/png;base64,", "")))
   }
 
   private def appendScript(jsplugin: String) = """

@@ -2,14 +2,14 @@ package net.selenate.common.comms.req;
 
 
 
-public class SeReqCaptureFrame implements SeCommsReq {
+public class SeReqCaptureWindow implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
 
-  public SeReqCaptureFrame() {}
+  public SeReqCaptureWindow() {}
 
   @Override
   public String toString() {
-    return String.format("SeReqCaptureFrame");
+    return "SeReqCaptureWindow";
   }
 }
