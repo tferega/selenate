@@ -18,6 +18,8 @@ class CaptureWindowAction(val d: FirefoxDriver)
   protected val log = Log(classOf[CaptureWindowAction])
 
   def act = { arg =>
+    findElement(arg.method, arg.query)
+
     val html2Canvasplugin = IOUtils.toString(getClass().getResourceAsStream("html2canvas.min.js"))
 
     log.debug("Injecting html2canvas.min.js...")
