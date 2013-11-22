@@ -16,6 +16,8 @@ class AddCookieAction(val d: FirefoxDriver)
     extends IAction[SeReqAddCookie, SeResAddCookie]
     with ActionCommons {
 
+  protected val log = Log(classOf[AddCookieAction])
+
   def act = { arg =>
     val cookie = arg.cookie
     inAllWindows { address =>

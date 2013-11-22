@@ -35,6 +35,15 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
+  public byte[] captureWindow(final ElementSelector selector) throws IOException {
+    final SeElementSelectMethod reqMethod = userToReqElementSelectMethod(selector.method);
+    final SeResCaptureWindow res = typedBlock(
+      new SeReqCaptureWindow(reqMethod, selector.query),
+      SeResCaptureWindow.class);
+    return res.screenshot;
+  }
+
+  @Override
   public String executeScript(final String javascript) throws IOException {
     final SeResExecuteScript res = typedBlock(new SeReqExecuteScript(javascript), SeResExecuteScript.class);
     return res.result;

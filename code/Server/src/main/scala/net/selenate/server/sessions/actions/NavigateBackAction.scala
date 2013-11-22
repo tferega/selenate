@@ -9,6 +9,8 @@ import org.openqa.selenium.firefox.FirefoxDriver
 import scala.collection.JavaConversions._
 
 class NavigateBackAction(val d: FirefoxDriver) extends IAction[SeReqNavigateBack, SeResNavigateBack] {
+  protected val log = Log(classOf[NavigateBackAction])
+
   def act = { arg =>
     d.navigate.back;
 

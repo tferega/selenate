@@ -21,6 +21,8 @@ class CaptureElementAction(val d: FirefoxDriver)
     extends IAction[SeReqCaptureElement, SeResCaptureElement]
     with ActionCommons {
 
+  protected val log = Log(classOf[CaptureElementAction])
+
   def act = { arg =>
     try {
       switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)

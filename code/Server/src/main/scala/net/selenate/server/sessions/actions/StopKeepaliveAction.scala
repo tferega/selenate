@@ -9,6 +9,9 @@ import common.comms.req._
 import org.openqa.selenium.firefox.FirefoxDriver
 
 class StopKeepaliveAction(val d: FirefoxDriver) extends IAction[SeReqStopKeepalive, SeResStopKeepalive] {
+
+  protected val log = Log(classOf[StopKeepaliveAction])
+
   def act = { arg =>
     new SeResStopKeepalive()
   }

@@ -13,6 +13,9 @@ import org.openqa.selenium.NoAlertPresentException
 class FindAlertAction(val d: FirefoxDriver)
     extends IAction[SeReqFindAlert, SeResFindAlert]
     with ActionCommons {
+
+  protected val log = Log(classOf[FindAlertAction])
+
   def act = { arg =>
     try {
       val alert = d.switchTo.alert

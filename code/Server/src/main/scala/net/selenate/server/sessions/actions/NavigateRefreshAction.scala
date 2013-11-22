@@ -9,6 +9,8 @@ import org.openqa.selenium.firefox.FirefoxDriver
 import scala.collection.JavaConversions._
 
 class NavigateRefreshAction(val d: FirefoxDriver) extends IAction[SeReqNavigateRefresh, SeResNavigateRefresh] {
+  protected val log = Log(classOf[NavigateRefreshAction])
+
   def act = { SeReqNavigateRefresh =>
     d.navigate.refresh;
 

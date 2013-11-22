@@ -13,6 +13,9 @@ import scala.collection.JavaConversions._
 class CloseAction(val d: FirefoxDriver)
     extends IAction[SeReqClose, SeResClose]
     with ActionCommons {
+
+  protected val log = Log(classOf[CloseAction])
+
   def act = { arg =>
     switchToWindow(arg.windowHandle)
     d.close

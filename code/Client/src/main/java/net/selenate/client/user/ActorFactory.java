@@ -1,7 +1,6 @@
 package net.selenate.client.user;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import scala.concurrent.Await;
 import scala.concurrent.Future;
