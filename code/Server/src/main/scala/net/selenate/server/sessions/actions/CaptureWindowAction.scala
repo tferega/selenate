@@ -18,7 +18,24 @@ class CaptureWindowAction(val d: FirefoxDriver)
   protected val log = Log(classOf[CaptureWindowAction])
 
   def act = { arg =>
-    findElement(arg.method, arg.query)
+    val resScreenshotList: Stream[Option[SeResCaptureWindow]] = inAllWindows { address =>
+      tryo {
+        val webElement   = findElement(arg.method, arg.query)
+        val baScreenshot = getScreenshot()
+        new SeResCaptureWindow(baScreenshot)
+      }
+    }
+
+    val e = resScreenshotList.flatten
+    if (e.isEmpty) {
+      throw new IllegalArgumentException("Couldn't take screenshot." +
+          "Element [%s, %s] was not found in any frame!".format(arg.method.toString, arg.query))
+    } else {
+      e(0)
+    }
+  }
+
+  private def getScreenshot(): Array[Byte] = {
 
     val html2Canvasplugin = IOUtils.toString(getClass().getResourceAsStream("html2canvas.min.js"))
 
@@ -35,7 +52,7 @@ class CaptureWindowAction(val d: FirefoxDriver)
 
     val base64Img = d.executeScript("""return document.getElementsByTagName('canvas')[0].toDataURL();""")
 
-    new SeResCaptureWindow(Base64.decodeBase64(base64Img.toString.replace("data:image/png;base64,", "")))
+    Base64.decodeBase64(base64Img.toString.replace("data:image/png;base64,", ""))
   }
 
   private def appendScript(jsplugin: String) = """
