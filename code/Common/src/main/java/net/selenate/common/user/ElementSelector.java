@@ -1,6 +1,10 @@
 package net.selenate.common.user;
 
-public class ElementSelector {
+import java.io.Serializable;
+
+public class ElementSelector implements Serializable {
+  private static final long serialVersionUID = -3645313388839524989L;
+
   public final ElementSelectMethod method;
   public final String              query;
 

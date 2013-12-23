@@ -6,16 +6,16 @@ package actions
 import common.comms._
 import req._
 import res._
-
 import java.util.ArrayList
-
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.remote.{ RemoteWebDriver, RemoteWebElement, UselessFileDetector }
 import org.openqa.selenium.SearchContext
 import org.openqa.selenium.{ By, WebElement }
 import org.openqa.selenium.support.ui.Select
-
 import scala.collection.JavaConversions._
+import net.selenate.common.user.BrowserPage
+import net.selenate.common.user.ElementSelector
+import net.selenate.common.user.ElementSelectMethod
 
 trait ActionCommons {
   type Window    = String
@@ -226,5 +226,29 @@ return report;
     }
 
     inAllFramesDoit(window, Vector(), None)
+  }
+
+
+  protected def toBrowserPage(page: SePage): BrowserPage = {
+    new BrowserPage(page.name, toElementSelectorList(page.selectorList))
+  }
+
+  protected def toElementSelectorList(seElementList: java.util.List[SeElementSelector]): java.util.List[ElementSelector] = {
+    seElementList.map(e =>
+      new ElementSelector(reqSelectMethodToUserSelectMethod(e.method), e.query)
+      )
+  }
+
+  import SeElementSelectMethod._
+  protected def reqSelectMethodToUserSelectMethod(method: SeElementSelectMethod) =  method match {
+      case CLASS_NAME        => ElementSelectMethod.CLASS_NAME
+      case CSS_SELECTOR      => ElementSelectMethod.CSS_SELECTOR
+      case ID                => ElementSelectMethod.ID
+      case LINK_TEXT         => ElementSelectMethod.LINK_TEXT
+      case NAME              => ElementSelectMethod.NAME
+      case PARTIAL_LINK_TEXT => ElementSelectMethod.PARTIAL_LINK_TEXT
+      case TAG_NAME          => ElementSelectMethod.TAG_NAME
+      case UUID              => ElementSelectMethod.UUID
+      case XPATH             => ElementSelectMethod.XPATH
   }
 }

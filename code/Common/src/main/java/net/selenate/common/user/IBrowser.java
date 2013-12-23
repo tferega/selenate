@@ -19,6 +19,8 @@ public interface IBrowser {
   public boolean waitFor(BrowserPage page) throws IOException;
   public String waitForAny(BrowserPage... pageList) throws IOException;
   public String waitForAny(List<BrowserPage> pageList) throws IOException;
+  public BrowserPage waitForAnyPage(BrowserPage... pageList) throws IOException;
+  public BrowserPage waitForAnyPage(List<BrowserPage> pageList) throws IOException;
 
   public void quit() throws IOException;
 

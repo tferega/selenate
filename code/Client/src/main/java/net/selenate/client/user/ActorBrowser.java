@@ -79,13 +79,12 @@ public class ActorBrowser extends ActorBase implements IBrowser {
 
   @Override
   public String waitForAny(BrowserPage ... pageList) throws IOException {
-    return waitForAny(Arrays.asList(pageList));
+    return waitForAnyPage(Arrays.asList(pageList)).name;
   }
 
   @Override
   public String waitForAny(final List<BrowserPage> pageList) throws IOException {
-    final SeResWaitFor res = typedBlock(new SeReqWaitFor(userToReqPageList(pageList)), SeResWaitFor.class);
-    return res.isSuccessful ? res.foundName : null;
+    return waitForAnyPage(pageList).name;
   }
 
   @Override
@@ -213,5 +212,17 @@ public class ActorBrowser extends ActorBase implements IBrowser {
     public void refresh() throws IOException {
       typedBlock(new SeReqNavigateRefresh(), SeResNavigateRefresh.class);
     }
+  }
+
+  @Override
+  public BrowserPage waitForAnyPage(BrowserPage... pageList) throws IOException {
+    return waitForAnyPage(Arrays.asList(pageList));
+  }
+
+  @Override
+  public BrowserPage waitForAnyPage(List<BrowserPage> pageList) throws IOException {
+    final SeResWaitForBrowserPage res = typedBlock(new SeReqWaitForBrowserPage(userToReqPageList(pageList)), SeResWaitForBrowserPage.class);
+
+    return res.isSuccessful ? res.foundPage : null;
   }
 }
