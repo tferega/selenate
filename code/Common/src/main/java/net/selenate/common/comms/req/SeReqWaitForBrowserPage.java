@@ -33,6 +33,6 @@ public class SeReqWaitForBrowserPage implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqWaitForBrowserPage()%s", Util.multilineListToString(pageList));
+    return String.format("SeReqWaitForBrowserPage(%s)", Util.multilineListToString(pageList));
   }
 }
