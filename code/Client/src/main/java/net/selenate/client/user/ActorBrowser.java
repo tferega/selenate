@@ -79,12 +79,16 @@ public class ActorBrowser extends ActorBase implements IBrowser {
 
   @Override
   public String waitForAny(BrowserPage ... pageList) throws IOException {
-    return waitForAnyPage(Arrays.asList(pageList)).name;
+    final BrowserPage resPage = waitForAnyPage(Arrays.asList(pageList));
+    if(resPage == null) return null;
+    return resPage.name;
   }
 
   @Override
   public String waitForAny(final List<BrowserPage> pageList) throws IOException {
-    return waitForAnyPage(pageList).name;
+    final BrowserPage resPage = waitForAnyPage(pageList);
+    if(resPage == null) return null;
+    return resPage.name;
   }
 
   @Override
