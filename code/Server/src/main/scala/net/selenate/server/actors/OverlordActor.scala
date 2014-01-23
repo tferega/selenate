@@ -10,7 +10,7 @@ import scala.concurrent.Await
 import scala.concurrent.duration._
 
 object Overlord {
-  private implicit val timeout = Timeout(60*60 second)
+  private implicit val timeout = Timeout(10 second)
   private val log = Log(classOf[Overlord])
 
   def apply(props: Props, name: String)(implicit overlord: ActorRef): ActorRef = {
@@ -19,7 +19,7 @@ object Overlord {
 
     val start = System.currentTimeMillis()
 
-    val res = Await.result(tf, 60*60 second)
+    val res = Await.result(tf, 10 second)
 
     tf onComplete {
       case _ =>
