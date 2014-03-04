@@ -40,6 +40,8 @@ private[driver] class DriverPoolActor(val profile: DriverProfile, val size: Int)
     pool.enqueue(driverEntry)
   }
 
+  val signature = profile.signature
+
   def get: FirefoxDriver = {
     enqueueNew
     val driverEntry = pool.dequeue

@@ -13,17 +13,22 @@ import scala.concurrent.{ Await, Future }
 import scala.concurrent.duration._
 
 object DriverPool {
-  val size           = C.Server.poolSize
-  val defaultProfile = C.Server.defaultProfileOpt map DriverProfile.fromString getOrElse DriverProfile.empty
-  println(defaultProfile)
+  private def createPool(ps: ProfileSettings) = {
+    val profile = ps.settings
+        .map(DriverProfile.fromString)
+        .getOrElse(DriverProfile.empty)
+    val actorName = s"driver-pool_${ ps.name }"
+    ActorFactory.typed[IDriverPoolActor](actorName, new DriverPoolActor(profile, ps.size))
+  }
 
-  val defaultPool = ActorFactory.typed[IDriverPoolActor]("driver-pool", new DriverPoolActor(defaultProfile, size))
+  private val poolList = C.Server.Pool.profileSettingsList map createPool
 
   def get(profile: DriverProfile) = {
-    if (profile.signature == defaultProfile.signature) {
-      defaultPool.get
-    } else {
-      new FirefoxDriver(profile.get)
+    poolList.find(_.signature == profile.signature) match {
+      case Some(pool) =>
+        pool.get
+      case None =>
+        new FirefoxDriver(profile.get)
     }
   }
 }
