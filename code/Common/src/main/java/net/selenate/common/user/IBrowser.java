@@ -15,7 +15,7 @@ public interface IBrowser {
   public void switchFrame(int frame) throws IOException;
   public void switchFrame(final ElementSelectMethod method, final String query) throws IOException;
   public void switchFrame(final ElementSelector selector) throws IOException;
-  public void setUseFrames(final Boolean useFrames) throws IOException;
+  public void setAutoFrames(final Boolean useFrames) throws IOException;
 
   public boolean waitFor(List<ElementSelector> selectorList) throws IOException;
   public boolean waitFor(ElementSelector... selectorList) throws IOException;

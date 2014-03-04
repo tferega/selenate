@@ -99,10 +99,12 @@ class CaptureAction(val d: FirefoxDriver)(implicit context: ActionContext)
     cookie.isSecure)
 
   private def findAllFrames: List[FrameInfo] = {
-    val raw = d.findElementsByXPath("//*[local-name()='frame' or local-name()='iframe']").toList.zipWithIndex
-    raw map { case (elem, index) =>
-      FrameInfo(index, elem.getAttribute("name"), elem.getAttribute("name"))
-    }
+    if(context.useFrames) {
+      val raw = d.findElementsByXPath("//*[local-name()='frame' or local-name()='iframe']").toList.zipWithIndex
+      raw map { case (elem, index) =>
+        FrameInfo(index, elem.getAttribute("name"), elem.getAttribute("name"))
+      }
+    } else List.empty
   }
 
 

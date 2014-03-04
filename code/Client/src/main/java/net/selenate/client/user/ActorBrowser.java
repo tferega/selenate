@@ -242,7 +242,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
-  public void setUseFrames(final Boolean useFrames) throws IOException {
+  public void setAutoFrames(final Boolean useFrames) throws IOException {
     typedBlock(new SeReqSetUseFrames(useFrames), SeResSetUseFrames.class);
   }
 }

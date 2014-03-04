@@ -65,8 +65,8 @@ return report;
   }
 
   protected def switchToFrame(window: Window, framePath: FramePath)(implicit context: ActionContext) {
-    switchToWindow(window)
     if(context.useFrames) {
+      switchToWindow(window)
       framePath foreach { e =>
         log.debug("SWITCHING TO FRAME "+ e)
         d.switchTo.frame(e)
