@@ -22,7 +22,8 @@ object SessionFactory extends ISessionFactory {
 
 private class SessionFactory extends ISessionFactory {
   private def getProfile(prefMap: Map[String, AnyRef]) =
-    new DriverProfile(prefMap)
+    new DriverProfile(
+        prefMap = prefMap)
 
   private val emptyProfile =
     DriverProfile.empty

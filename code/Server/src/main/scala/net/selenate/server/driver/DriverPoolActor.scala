@@ -32,7 +32,7 @@ private[driver] class DriverPoolActor(val profile: DriverProfile, val size: Int)
 
     val driverFuture = Future {
       log.info("Driver pool actor starting a new entry: {%s}." format uuid)
-      val driver = new FirefoxDriver(profile.get)
+      val driver = profile.runFirefox()
       log.info("Driver pool actor entry {%s} started." format uuid)
       driver
     }

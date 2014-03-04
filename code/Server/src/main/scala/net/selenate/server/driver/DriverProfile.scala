@@ -2,31 +2,43 @@ package net.selenate
 package server
 package driver
 
-import org.openqa.selenium.firefox.FirefoxProfile
+import java.io.File
+
+import org.openqa.selenium.firefox.{ FirefoxBinary, FirefoxProfile }
 
 object DriverProfile {
   // ###############==========-----> DESERIALIZATION <-----==========###############
   private object Deserialization {
     def apply(s: String): DriverProfile = {
-      s.split("\\|").toList match {
-        case (screenPreference :: entries :: Nil) =>
+      s.split("\\|", -1).toList match {
+        case (screenPreference :: binaryLocation :: prefMap :: Nil) =>
+          val pm = doPrefMap(prefMap)
           val sp = doScreenPreference(screenPreference)
-          val pm = doEntries(entries)
-          new DriverProfile(sp, pm)
-        case (screenPreference :: Nil) =>
-          val sp = doScreenPreference(screenPreference)
-          new DriverProfile(sp)
+          val bl = doBinaryLocation(binaryLocation)
+
+          new DriverProfile(
+              prefMap          = pm,
+              screenPreference = sp,
+              binaryLocation   = bl)
+
         case _ => throw new Exception(s"Error while deserializing DriverProfile. Offending entry: $s")
       }
     }
 
-    private def doScreenPreference(sp: String) =
-      ScreenPreference.fromString(sp)
-
-    private def doEntries(entries: String) = {
-      val entryList = entries.split(";")
+    private def doPrefMap(prefMap: String) = {
+      val entryList = prefMap.split(";")
       entryList.flatMap(doEntry).toMap
     }
+
+   private def doScreenPreference(sp: String) =
+      ScreenPreference.fromString(sp)
+
+   private def doBinaryLocation(bl: String) =
+     bl match {
+       case "" => None
+       case IsFile(file) => Some(file)
+       case _ => throw new Exception(s"Error while deserializing File. Offending entry: $bl")
+     }
 
     private def doEntry(entry: String): Option[(String, AnyRef)] =
       entry.split("=").toList match {
@@ -53,18 +65,20 @@ object DriverProfile {
     private object IsBoolean {
       def unapply(raw: String): Option[java.lang.Boolean] = tryo(raw.toBoolean)
     }
+
+    private object IsFile {
+      def unapply(raw: String): Option[File] = tryo(new File(raw))
+    }
   }
 
   // ###############==========-----> SERIALIZATION <-----==========###############
   private object Serialization {
     def apply(p: DriverProfile): String = {
-      val sp = doScreenPreference(p.screenPreference)
       val pm = doPrefMap(p.prefMap)
-      s"$sp|$pm"
+      val sp = doScreenPreference(p.screenPreference)
+      val bl = doBinaryLocation(p.binaryLocation)
+      s"$pm|$sp|$bl"
     }
-
-    private def doScreenPreference(sp: ScreenPreference) =
-      sp.toString
 
     def key(e: (String, AnyRef)) = e._1
     private def doPrefMap(pm: Map[String, AnyRef]) =
@@ -73,6 +87,13 @@ object DriverProfile {
           .sortBy(key)
           .map(serializeEntry)
           .mkString(";")
+
+    private def doScreenPreference(sp: ScreenPreference) =
+      sp.toString
+
+    private def doBinaryLocation(bl: Option[File]) =
+      bl.map(_.toString) getOrElse ""
+
 
     private def serializeEntry(entry: (String, AnyRef)) =
       s"${ entry._1 }='${ entry._2 }'"
@@ -99,7 +120,19 @@ object DriverProfile {
     }
   }
 
-  def empty = new DriverProfile(ScreenPreference.Default, Map.empty)
+  // ###############==========-----> FireFox Binary <-----==========###############
+  private object FFB {
+    def get(binaryLocation: Option[File]) =
+      binaryLocation match {
+        case Some(bl) => new FirefoxBinary(bl)
+        case None     => new FirefoxBinary()
+      }
+  }
+
+  def empty = new DriverProfile(
+      prefMap          = Map.empty,
+      screenPreference = ScreenPreference.Default,
+      binaryLocation   = None)
   def fromString(s: String) = Deserialization(s)
 }
 
@@ -119,19 +152,17 @@ object ScreenPreference {
 
 
 class DriverProfile(
-    val screenPreference: ScreenPreference,
-    val prefMap: Map[String, AnyRef]) {
+    val prefMap: Map[String, AnyRef]       = Map.empty,
+    val screenPreference: ScreenPreference = ScreenPreference.Default,
+    val binaryLocation: Option[File]       = None) {
   import DriverProfile._
-
-  def this() =
-    this(ScreenPreference.Default, Map.empty[String, AnyRef])
-  def this(prefMap: Map[String, AnyRef]) =
-    this(ScreenPreference.Default, prefMap)
-  def this(screenPreference: ScreenPreference) =
-    this(screenPreference, Map.empty[String, AnyRef])
 
   override def toString = "DriverProfile(%s)" format signature
 
-  /*private[driver]*/ val get = FFP.get(prefMap)
-  /*private[driver]*/ val signature = Serialization(this)
+  val signature = Serialization(this)
+
+  val ffProfile = FFP.get(prefMap)
+  val ffBinary = FFB.get(binaryLocation)
+
+  def runFirefox() = FirefoxRunner.run(this)
 }
