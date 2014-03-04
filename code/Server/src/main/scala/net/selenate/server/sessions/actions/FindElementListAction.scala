@@ -12,7 +12,7 @@ import org.openqa.selenium.remote.RemoteWebElement
 import scala.collection.JavaConversions._
 
 
-class FindElementListAction(val d: FirefoxDriver)
+class FindElementListAction(val d: FirefoxDriver)(implicit context: ActionContext)
     extends IAction[SeReqFindElementList, SeResFindElementList]
     with ActionCommons {
 

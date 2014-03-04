@@ -11,7 +11,7 @@ import org.openqa.selenium.{ By, WebElement }
 
 import scala.collection.JavaConversions._
 
-class ClearTextAction(val d: FirefoxDriver)
+class ClearTextAction(val d: FirefoxDriver)(implicit context: ActionContext)
     extends IAction[SeReqClearText, SeResClearText]
     with ActionCommons {
 

@@ -11,7 +11,7 @@ import org.openqa.selenium.{ By, WebElement }
 import scala.collection.JavaConversions._
 import net.selenate.common.user.BrowserPage
 
-class WaitForBrowserPageAction(val d: FirefoxDriver)
+class WaitForBrowserPageAction(val d: FirefoxDriver)(implicit context: ActionContext)
     extends IAction[SeReqWaitForBrowserPage, SeResWaitForBrowserPage]
     with ActionCommons
     with WaitFor {

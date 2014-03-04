@@ -11,7 +11,7 @@ import org.openqa.selenium.remote.RemoteWebElement
 import scala.collection.JavaConversions._
 
 
-class FindAndClickAction(val d: FirefoxDriver)
+class FindAndClickAction(val d: FirefoxDriver)(implicit context: ActionContext)
     extends IAction[SeReqFindAndClick, SeResFindAndClick]
     with ActionCommons {
   type PathElement = (FramePath, RemoteWebElement)

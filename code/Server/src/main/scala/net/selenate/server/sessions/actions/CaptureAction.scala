@@ -32,7 +32,7 @@ return report;
   }
 }
 
-class CaptureAction(val d: FirefoxDriver)
+class CaptureAction(val d: FirefoxDriver)(implicit context: ActionContext)
     extends IAction[SeReqCapture, SeResCapture]
     with ActionCommons {
   import CaptureAction._

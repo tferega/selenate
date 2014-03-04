@@ -60,6 +60,17 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
+  public void switchFrame(ElementSelectMethod method, String query) throws IOException {
+    switchFrame(new ElementSelector(method, query));
+  }
+
+  @Override
+  public void switchFrame(ElementSelector selector) throws IOException {
+    final SeElementSelector reqSelector = userToReqSelector(selector);
+    typedBlock(new SeReqSwitchFrame(reqSelector), SeResSwitchFrame.class);
+  }
+
+  @Override
   public boolean waitFor(final List<ElementSelector> selectorList) throws IOException {
     return waitFor(new BrowserPage("default", selectorList));
   }
@@ -228,5 +239,10 @@ public class ActorBrowser extends ActorBase implements IBrowser {
     final SeResWaitForBrowserPage res = typedBlock(new SeReqWaitForBrowserPage(userToReqPageList(pageList)), SeResWaitForBrowserPage.class);
 
     return res.isSuccessful ? res.foundPage : null;
+  }
+
+  @Override
+  public void setUseFrames(final Boolean useFrames) throws IOException {
+    typedBlock(new SeReqSetUseFrames(useFrames), SeResSetUseFrames.class);
   }
 }
