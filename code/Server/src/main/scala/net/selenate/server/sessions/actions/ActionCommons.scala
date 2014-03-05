@@ -204,8 +204,13 @@ return report;
 
 
   protected def inAllWindows[T](address: Address => T)(implicit context: ActionContext): Stream[T] = {
-    val windowList: Stream[Window] = d.getWindowHandles().toStream
-    windowList flatMap inAllFrames(address)
+    if(context.useFrames) {
+      val windowList: Stream[Window] = d.getWindowHandles().toStream
+      windowList flatMap inAllFrames(address)
+    } else {
+      val windowList: Stream[Window] = Stream(d.getWindowHandle())
+      windowList flatMap inAllFrames(address)
+    }
   }
 
 
