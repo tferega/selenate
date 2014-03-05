@@ -52,11 +52,13 @@ class CaptureAction(val d: FirefoxDriver)(implicit context: ActionContext)
   private def getCookieList =
     d.manage.getCookies.toSet map toSelenate
 
-  private def getWindowList(takeScreenshot: Boolean) =
-    d.getWindowHandles.toList map { wh => getWindow(wh, takeScreenshot)}
+  private def getWindowList(takeScreenshot: Boolean) = {
+    if(context.useFrames) d.getWindowHandles.toList map { wh => getWindow(wh, takeScreenshot)}
+    else List(getWindow(d.getWindowHandle(), takeScreenshot))
+  }
 
   private def getWindow(windowHandle: String, takeScreenshot: Boolean) = {
-    switchToWindow(windowHandle)
+    if(context.useFrames) switchToWindow(windowHandle)
     new SeWindow(
         d.getTitle,
         d.getCurrentUrl,
