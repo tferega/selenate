@@ -40,10 +40,10 @@ private class SessionFactory extends ISessionFactory {
 
 
   def getSession(sessionID: String, preferences: Preferences) =
-    getSessionDo(sessionID, Some(preferences.getAll.toMap), false)
+    getSessionDo(sessionID, Some(preferences.getAll.toMap), true)
 
   def getSession(sessionID: String) =
-    getSessionDo(sessionID, None, false)
+    getSessionDo(sessionID, None, true)
 
   def getSession(sessionID: String, preferences: Preferences, useFrames: java.lang.Boolean) =
     getSessionDo(sessionID, Some(preferences.getAll.toMap), useFrames)
