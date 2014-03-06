@@ -11,7 +11,7 @@ import org.openqa.selenium.remote.RemoteWebElement
 import scala.collection.JavaConversions._
 
 
-class DeleteCookieNamedAction(val d: FirefoxDriver)
+class DeleteCookieNamedAction(val d: FirefoxDriver)(implicit context: ActionContext)
     extends IAction[SeReqDeleteCookieNamed, SeResDeleteCookieNamed]
     with ActionCommons {
 

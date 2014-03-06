@@ -16,7 +16,13 @@ class SwitchFrameAction(val d: FirefoxDriver)
   protected val log = Log(classOf[SwitchFrameAction])
 
   def act = { arg =>
-    d.switchTo.frame(arg.frame)
+    if(arg.frame != null) {
+      d.switchTo.frame(arg.frame)
+    }
+    else {
+      val webElement = findElement(arg.selector.method, arg.selector.query)
+      d.switchTo().frame(webElement);
+    }
 
     new SeResSwitchFrame()
   }

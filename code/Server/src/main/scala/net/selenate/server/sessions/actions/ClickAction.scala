@@ -11,7 +11,7 @@ import org.openqa.selenium.{ By, WebElement }
 
 import scala.collection.JavaConversions._
 
-class ClickAction(val d: FirefoxDriver)
+class ClickAction(val d: FirefoxDriver)(implicit context: ActionContext)
     extends IAction[SeReqClick, SeResClick]
     with ActionCommons {
 

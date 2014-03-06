@@ -64,11 +64,13 @@ return report;
     d.switchTo.window(window)
   }
 
-  protected def switchToFrame(window: Window, framePath: FramePath) {
-    switchToWindow(window)
-    framePath foreach { e =>
-      log.debug("SWITCHING TO FRAME "+ e)
-      d.switchTo.frame(e)
+  protected def switchToFrame(window: Window, framePath: FramePath)(implicit context: ActionContext) {
+    if(context.useFrames) {
+      switchToWindow(window)
+      framePath foreach { e =>
+        log.debug("SWITCHING TO FRAME "+ e)
+        d.switchTo.frame(e)
+      }
     }
   }
 
@@ -201,16 +203,23 @@ return report;
     }
 
 
-  protected def inAllWindows[T](address: Address => T): Stream[T] = {
-    val windowList: Stream[Window] = d.getWindowHandles().toStream
-    windowList flatMap inAllFrames(address)
+  protected def inAllWindows[T](address: Address => T)(implicit context: ActionContext): Stream[T] = {
+    if(context.useFrames) {
+      val windowList: Stream[Window] = d.getWindowHandles().toStream
+      windowList flatMap inAllFrames(address)
+    } else {
+      val windowList: Stream[Window] = Stream(d.getWindowHandle())
+      windowList flatMap inAllFrames(address)
+    }
   }
 
 
-  protected def inAllFrames[T](address: Address => T)(window: Window): Stream[T] = {
+  protected def inAllFrames[T](address: Address => T)(window: Window)(implicit context: ActionContext): Stream[T] = {
     def findAllFrames: FramePath = {
       val raw = d.findElementsByXPath("//*[local-name()='frame' or local-name()='iframe']").toIndexedSeq.zipWithIndex
-      raw map { case (elem, index) => index }
+      if(context.useFrames) {
+        raw map { case (elem, index) => index }
+      } else IndexedSeq.empty
     }
 
     def inAllFramesDoit(window: Window, framePath: Vector[Frame], frame: Option[Frame]): Stream[T] = {

@@ -12,7 +12,7 @@ import org.openqa.selenium.internal.selenesedriver.SendKeys
 import scala.collection.JavaConversions._
 
 
-class AppendTextAction(val d: FirefoxDriver)
+class AppendTextAction(val d: FirefoxDriver)(implicit context: ActionContext)
     extends IAction[SeReqAppendText, SeResAppendText]
     with ActionCommons {
 

@@ -12,7 +12,7 @@ import scala.collection.JavaConversions._
 import org.openqa.selenium.support.ui.Select
 
 
-class SelectOptionAction(val d: FirefoxDriver)
+class SelectOptionAction(val d: FirefoxDriver)(implicit context: ActionContext)
     extends IAction[SeReqSelectOption, SeResSelectOption]
     with ActionCommons {
 
