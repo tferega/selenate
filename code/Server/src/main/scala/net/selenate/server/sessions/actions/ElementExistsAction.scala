@@ -11,7 +11,7 @@ import org.openqa.selenium.remote.RemoteWebElement
 import scala.collection.JavaConversions._
 
 
-class ElementExistsAction(val d: FirefoxDriver)
+class ElementExistsAction(val d: FirefoxDriver)(implicit context: ActionContext)
     extends IAction[SeReqElementExists, SeResElementExists]
     with ActionCommons {
 

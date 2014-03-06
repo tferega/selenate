@@ -17,7 +17,7 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 
-class CaptureElementAction(val d: FirefoxDriver)
+class CaptureElementAction(val d: FirefoxDriver)(implicit context: ActionContext)
     extends IAction[SeReqCaptureElement, SeResCaptureElement]
     with ActionCommons {
 

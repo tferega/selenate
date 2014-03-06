@@ -32,7 +32,7 @@ return report;
   }
 }
 
-class CaptureAction(val d: FirefoxDriver)
+class CaptureAction(val d: FirefoxDriver)(implicit context: ActionContext)
     extends IAction[SeReqCapture, SeResCapture]
     with ActionCommons {
   import CaptureAction._
@@ -52,11 +52,13 @@ class CaptureAction(val d: FirefoxDriver)
   private def getCookieList =
     d.manage.getCookies.toSet map toSelenate
 
-  private def getWindowList(takeScreenshot: Boolean) =
-    d.getWindowHandles.toList map { wh => getWindow(wh, takeScreenshot)}
+  private def getWindowList(takeScreenshot: Boolean) = {
+    if(context.useFrames) d.getWindowHandles.toList map { wh => getWindow(wh, takeScreenshot)}
+    else List(getWindow(d.getWindowHandle(), takeScreenshot))
+  }
 
   private def getWindow(windowHandle: String, takeScreenshot: Boolean) = {
-    switchToWindow(windowHandle)
+    if(context.useFrames) switchToWindow(windowHandle)
     new SeWindow(
         d.getTitle,
         d.getCurrentUrl,
@@ -99,10 +101,12 @@ class CaptureAction(val d: FirefoxDriver)
     cookie.isSecure)
 
   private def findAllFrames: List[FrameInfo] = {
-    val raw = d.findElementsByXPath("//*[local-name()='frame' or local-name()='iframe']").toList.zipWithIndex
-    raw map { case (elem, index) =>
-      FrameInfo(index, elem.getAttribute("name"), elem.getAttribute("name"))
-    }
+    if(context.useFrames) {
+      val raw = d.findElementsByXPath("//*[local-name()='frame' or local-name()='iframe']").toList.zipWithIndex
+      raw map { case (elem, index) =>
+        FrameInfo(index, elem.getAttribute("name"), elem.getAttribute("name"))
+      }
+    } else List.empty
   }
 
 

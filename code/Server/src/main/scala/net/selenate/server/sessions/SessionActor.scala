@@ -12,14 +12,16 @@ import net.selenate.common.comms.req.SeReqDownload
 import org.openqa.selenium.firefox.FirefoxProfile
 import scala.concurrent.duration.Duration
 import net.selenate.common.comms.req.SeReqWaitForBrowserPage
+import net.selenate.common.comms.req.SeReqSetUseFrames
 
-class SessionActor(sessionID: String, profile: DriverProfile) extends Actor {
+class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean = true) extends Actor {
   private val log  = Log(classOf[SessionActor], sessionID)
 
   log.info("Creating session actor for session id: {%s}." format sessionID)
   private val d = DriverPool.get(profile)
   private var keepaliveScheduler: Option[Cancellable] = None
   private def isKeepalive = keepaliveScheduler.isDefined
+  implicit val actionContext = ActionContext(useFrames)
 
   private def actionMan: PF[SeCommsReq, SeCommsRes] = {
     case arg: SeReqAddCookie          => new AddCookieAction(d).act(arg)
@@ -46,6 +48,7 @@ class SessionActor(sessionID: String, profile: DriverProfile) extends Actor {
     case arg: SeReqQuit               => new QuitAction(d).act(arg)
     case arg: SeReqResetFrame         => new ResetFrameAction(d).act(arg)
     case arg: SeReqSelectOption       => new SelectOptionAction(d).act(arg)
+    case arg: SeReqSetUseFrames       => new SetUseFramesAction(d).act(arg)
     case arg: SeReqStartKeepalive     => new StartKeepaliveAction(d).act(arg)
     case arg: SeReqStopKeepalive      => new StopKeepaliveAction(d).act(arg)
     case arg: SeReqSwitchFrame        => new SwitchFrameAction(d).act(arg)
@@ -61,6 +64,9 @@ class SessionActor(sessionID: String, profile: DriverProfile) extends Actor {
     case arg: SeReqStartKeepalive =>
       sender ! actionMan(arg)
       startKeepalive(KeepaliveData.fromReq(arg))
+    case arg: SeReqSetUseFrames =>
+      actionContext.useFrames = arg.useFrames
+      sender ! actionMan(arg)
     case arg: SeCommsReq =>
       stopKeepalive
       sender ! actionMan(arg)

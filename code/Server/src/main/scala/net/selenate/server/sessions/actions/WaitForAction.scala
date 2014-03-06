@@ -12,7 +12,7 @@ import org.openqa.selenium.{ By, WebElement }
 
 import scala.collection.JavaConversions._
 
-class WaitForAction(val d: FirefoxDriver)
+class WaitForAction(val d: FirefoxDriver)(implicit context: ActionContext)
     extends IAction[SeReqWaitFor, SeResWaitFor]
     with ActionCommons
     with WaitFor {

@@ -12,7 +12,7 @@ import scala.collection.JavaConversions._
 import org.openqa.selenium.Cookie
 
 
-class AddCookieAction(val d: FirefoxDriver)
+class AddCookieAction(val d: FirefoxDriver)(implicit context: ActionContext)
     extends IAction[SeReqAddCookie, SeResAddCookie]
     with ActionCommons {
 

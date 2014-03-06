@@ -18,6 +18,9 @@ object SessionFactory extends ISessionFactory {
 
   def getSession(sessionID: String, preferences: Preferences) = factory.getSession(sessionID, preferences)
   def getSession(sessionID: String) = factory.getSession(sessionID)
+
+  def getSession(sessionID: String, preferences: Preferences, useFrames: java.lang.Boolean) = factory.getSession(sessionID, preferences, useFrames)
+  def getSession(sessionID: String, useFrames: java.lang.Boolean) = factory.getSession(sessionID, useFrames)
 }
 
 private class SessionFactory extends ISessionFactory {
@@ -27,18 +30,24 @@ private class SessionFactory extends ISessionFactory {
   private val emptyProfile =
     DriverProfile.empty
 
-  private def getSessionDo(sessionID: String, prefMapOpt: Option[Map[String, AnyRef]]): Future[ActorRef] = Future {
+  private def getSessionDo(sessionID: String, prefMapOpt: Option[Map[String, AnyRef]], useFrames: java.lang.Boolean): Future[ActorRef] = Future {
     val profileOpt = prefMapOpt map getProfile
     val profile    = profileOpt getOrElse emptyProfile
     val name       = sessionID
 
-    untyped(name, () => new SessionActor(sessionID, profile))
+    untyped(name, () => new SessionActor(sessionID, profile, useFrames))
   }
 
 
   def getSession(sessionID: String, preferences: Preferences) =
-    getSessionDo(sessionID, Some(preferences.getAll.toMap))
+    getSessionDo(sessionID, Some(preferences.getAll.toMap), true)
 
   def getSession(sessionID: String) =
-    getSessionDo(sessionID, None)
+    getSessionDo(sessionID, None, true)
+
+  def getSession(sessionID: String, preferences: Preferences, useFrames: java.lang.Boolean) =
+    getSessionDo(sessionID, Some(preferences.getAll.toMap), useFrames)
+
+  def getSession(sessionID: String, useFrames: java.lang.Boolean) =
+    getSessionDo(sessionID, None, useFrames)
 }

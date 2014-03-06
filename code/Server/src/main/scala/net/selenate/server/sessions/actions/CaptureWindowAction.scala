@@ -11,7 +11,7 @@ import org.openqa.selenium.{ By, WebElement }
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.io._
 
-class CaptureWindowAction(val d: FirefoxDriver)
+class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
     extends IAction[SeReqCaptureWindow, SeResCaptureWindow]
     with ActionCommons {
 
