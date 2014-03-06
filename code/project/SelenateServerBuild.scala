@@ -52,6 +52,7 @@ object SelenateBuild extends Build {
       configrity,
       dispatch,
       logback,
+      procrun,
       selenium,
       slf4j),
     Seq(common)
