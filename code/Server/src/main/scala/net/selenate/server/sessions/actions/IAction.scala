@@ -1,7 +1,5 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
 import org.openqa.selenium.firefox.FirefoxDriver
 

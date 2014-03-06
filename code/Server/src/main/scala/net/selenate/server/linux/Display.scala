@@ -1,4 +1,5 @@
-package net.selenate.server.linux
+package net.selenate.server
+package linux
 
 import com.ferega.procrun._
 import scala.annotation.tailrec

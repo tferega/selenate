@@ -1,21 +1,13 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms.res._
-import common.comms.req._
-import java.util.ArrayList
-import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.remote.RemoteWebElement
-import scala.collection.JavaConversions._
-import org.openqa.selenium.TakesScreenshot
-import org.openqa.selenium.OutputType
+import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, IOException }
 import javax.imageio.ImageIO
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.IOException
-
+import net.selenate.common.comms.req.SeReqCaptureElement
+import net.selenate.common.comms.res.SeResCaptureElement
+import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.OutputType
+import scala.collection.JavaConversions._
 
 class CaptureElementAction(val d: FirefoxDriver)(implicit context: ActionContext)
     extends IAction[SeReqCaptureElement, SeResCaptureElement]

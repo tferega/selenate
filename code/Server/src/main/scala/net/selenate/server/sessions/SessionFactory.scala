@@ -1,17 +1,14 @@
-package net.selenate
-package server
+package net.selenate.server
 package sessions
 
-import common.sessions.ISessionFactory
-import actors.ActorFactory._
-import java.util.{ Map => JMap }
-import scala.collection.JavaConverters._
-import scala.collection.JavaConversions._
-import org.openqa.selenium.firefox.FirefoxProfile
-import net.selenate.server.driver.DriverProfile
-import net.selenate.common.user.Preferences
-import scala.concurrent.Future
+import actors.ActorFactory.{ typed, untyped }
+
 import akka.actor.ActorRef
+import net.selenate.common.sessions.ISessionFactory
+import net.selenate.common.user.Preferences
+import net.selenate.server.driver.DriverProfile
+import scala.collection.JavaConversions._
+import scala.concurrent.Future
 
 object SessionFactory extends ISessionFactory {
   val factory = typed[ISessionFactory]("session-factory", new SessionFactory)

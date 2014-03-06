@@ -1,9 +1,7 @@
-package net.selenate
-package server
+package net.selenate.server
 package driver
 
 import java.io.File
-
 import org.openqa.selenium.firefox.{ FirefoxBinary, FirefoxProfile }
 
 object DriverProfile {

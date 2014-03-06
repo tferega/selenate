@@ -1,3 +1,4 @@
-package net.selenate.server.sessions.actions
+package net.selenate.server
+package sessions.actions
 
-case class ActionContext(var useFrames: Boolean) {}
+case class ActionContext(var useFrames: Boolean)

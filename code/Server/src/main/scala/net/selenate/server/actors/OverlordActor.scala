@@ -1,11 +1,9 @@
-package net.selenate
-package server
+package net.selenate.server
 package actors
 
 import akka.actor.{ Actor, ActorRef, Props }
 import akka.pattern.ask
 import akka.util.Timeout
-
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
@@ -19,7 +17,7 @@ object Overlord {
 
     val start = System.currentTimeMillis()
 
-    val res = Await.result(tf, 10 second)
+    val res = Await.result(tf, 10 seconds)
 
     tf onComplete {
       case _ =>

@@ -30,5 +30,4 @@ trait WaitFor {
     val end = System.currentTimeMillis + timeout
     waitForDoit(end, resolution, predicate)
   }
-
 }

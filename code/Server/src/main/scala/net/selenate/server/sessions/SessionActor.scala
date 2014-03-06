@@ -1,18 +1,14 @@
-package net.selenate
-package server
+package net.selenate.server
 package sessions
 
 import actions._
 import actors.ActorFactory
-import common.comms.req._
-import common.comms.res._
 import driver.{ DriverPool, DriverProfile }
+
 import akka.actor.{ Actor, Cancellable }
-import net.selenate.common.comms.req.SeReqDownload
-import org.openqa.selenium.firefox.FirefoxProfile
+import net.selenate.common.comms.req._
+import net.selenate.common.comms.res.SeCommsRes
 import scala.concurrent.duration.Duration
-import net.selenate.common.comms.req.SeReqWaitForBrowserPage
-import net.selenate.common.comms.req.SeReqSetUseFrames
 
 class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean = true) extends Actor {
   private val log  = Log(classOf[SessionActor], sessionID)

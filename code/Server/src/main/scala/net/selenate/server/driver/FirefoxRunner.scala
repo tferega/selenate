@@ -1,4 +1,5 @@
-package net.selenate.server.driver
+package net.selenate.server
+package driver
 
 import org.openqa.selenium.firefox.FirefoxDriver
 

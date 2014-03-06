@@ -1,15 +1,11 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms.res._
-import common.comms.req._
+import net.selenate.common.comms.req.SeReqNavigateForward
+import net.selenate.common.comms.res.SeResNavigateForward
 import org.openqa.selenium.firefox.FirefoxDriver
-import scala.collection.JavaConversions._
 
 class NavigateForwardAction(val d: FirefoxDriver) extends IAction[SeReqNavigateForward, SeResNavigateForward] {
-
   protected val log = Log(classOf[NavigateForwardAction])
 
   def act = { arg =>

@@ -1,18 +1,13 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms.res._
-import common.comms.req._
-
+import net.selenate.common.comms.req.SeReqSwitchFrame
+import net.selenate.common.comms.res.SeResSwitchFrame
 import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.{ By, WebElement }
 
 class SwitchFrameAction(val d: FirefoxDriver)
     extends IAction[SeReqSwitchFrame, SeResSwitchFrame]
     with ActionCommons {
-
   protected val log = Log(classOf[SwitchFrameAction])
 
   def act = { arg =>

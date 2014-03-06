@@ -1,13 +1,8 @@
-package net.selenate
-package server
+package net.selenate.server
 package driver
 
-import actors.ActorFactory
-
 import java.util.UUID
-
 import org.openqa.selenium.firefox.FirefoxDriver
-
 import scala.collection.mutable.Queue
 import scala.concurrent.{ Await, Future }
 import scala.concurrent.duration._

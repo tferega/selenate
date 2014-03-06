@@ -1,11 +1,10 @@
-package net.selenate
-package server
+package net.selenate.server
 
 import actors.ActorFactory
-import common.sessions.ISessionFactory
 import driver.DriverPool
 import sessions.SessionFactory
 
+import net.selenate.common.sessions.ISessionFactory
 import scala.annotation.tailrec
 
 object EntryPoint extends App {

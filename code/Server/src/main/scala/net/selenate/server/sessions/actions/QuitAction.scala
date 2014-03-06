@@ -1,22 +1,15 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms.res._
-import common.comms.req._
-
+import net.selenate.common.comms.req.SeReqQuit
+import net.selenate.common.comms.res.SeResQuit
 import org.openqa.selenium.firefox.FirefoxDriver
 
-import scala.collection.JavaConversions._
-
 class QuitAction(val d: FirefoxDriver) extends IAction[SeReqQuit, SeResQuit] {
-
   protected val log = Log(classOf[QuitAction])
 
   def act = { arg =>
     d.quit
-
     new SeResQuit()
   }
 }

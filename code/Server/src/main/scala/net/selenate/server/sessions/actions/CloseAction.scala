@@ -1,19 +1,13 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms.res._
-import common.comms.req._
-
+import net.selenate.common.comms.req.SeReqClose
+import net.selenate.common.comms.res.SeResClose
 import org.openqa.selenium.firefox.FirefoxDriver
-
-import scala.collection.JavaConversions._
 
 class CloseAction(val d: FirefoxDriver)
     extends IAction[SeReqClose, SeResClose]
     with ActionCommons {
-
   protected val log = Log(classOf[CloseAction])
 
   def act = { arg =>

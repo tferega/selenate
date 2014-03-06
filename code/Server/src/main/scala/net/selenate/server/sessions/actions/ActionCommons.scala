@@ -1,21 +1,15 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms._
-import req._
-import res._
 import java.util.ArrayList
+import net.selenate.common.comms._
+import net.selenate.common.user.{ BrowserPage, ElementSelector, ElementSelectMethod }
+import org.openqa.selenium.By
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.remote.{ RemoteWebDriver, RemoteWebElement, UselessFileDetector }
 import org.openqa.selenium.SearchContext
-import org.openqa.selenium.{ By, WebElement }
 import org.openqa.selenium.support.ui.Select
 import scala.collection.JavaConversions._
-import net.selenate.common.user.BrowserPage
-import net.selenate.common.user.ElementSelector
-import net.selenate.common.user.ElementSelectMethod
 
 trait ActionCommons {
   type Window    = String

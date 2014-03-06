@@ -1,18 +1,13 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms.res._
-import common.comms.req._
-
+import net.selenate.common.comms.req.SeReqResetFrame
+import net.selenate.common.comms.res.SeResResetFrame
 import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.{ By, WebElement }
 
 class ResetFrameAction(val d: FirefoxDriver)
     extends IAction[SeReqResetFrame, SeResResetFrame]
     with ActionCommons {
-
   protected val log = Log(classOf[ResetFrameAction])
 
   def act = { arg =>

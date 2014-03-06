@@ -7,7 +7,7 @@ import scala.concurrent.ExecutionContext
 package object server {
   type PF[A, R] = PartialFunction[A, R]
 
-  implicit val ec = ExecutionContext.fromExecutor(ju.concurrent.Executors.newCachedThreadPool())
+  implicit val ec = ExecutionContext.fromExecutor(java.util.concurrent.Executors.newCachedThreadPool())
 
   implicit class ImpaleException(e: Exception) {
     def stackTrace: String = {
