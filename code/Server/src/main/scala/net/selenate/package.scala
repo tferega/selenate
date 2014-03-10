@@ -1,6 +1,6 @@
 package net.selenate
 
-import java.io.{ PrintWriter, StringWriter }
+import java.io.{ File, PrintWriter, StringWriter }
 import java.{ util => ju }
 import scala.concurrent.ExecutionContext
 
@@ -9,7 +9,7 @@ package object server {
 
   implicit val ec = ExecutionContext.fromExecutor(java.util.concurrent.Executors.newCachedThreadPool())
 
-  implicit class ImpaleException(e: Exception) {
+  implicit class RichException(e: Exception) {
     def stackTrace: String = {
       val sw = new StringWriter
       val pw = new PrintWriter(sw)
@@ -21,10 +21,13 @@ package object server {
     }
   }
 
-  implicit class ImpaleString(l: String) {
-    def /(r: String): String = "%s/%s" format(l, r)
+  implicit class RichString(s: String) {
+    def file: File = new File(s)
   }
 
+  implicit class RichFile(l: File) {
+    def /(r: String) = new File(l, r)
+  }
 
   def tryo[T](f: => T): Option[T] =
     try {
