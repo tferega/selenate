@@ -1,11 +1,12 @@
 package net.selenate.server
 package sessions.actions
 
+import driver.selenium.SelenateFirefox
+
 import net.selenate.common.comms.req.SeReqSwitchFrame
 import net.selenate.common.comms.res.SeResSwitchFrame
-import org.openqa.selenium.firefox.FirefoxDriver
 
-class SwitchFrameAction(val d: FirefoxDriver)
+class SwitchFrameAction(val d: SelenateFirefox)
     extends IAction[SeReqSwitchFrame, SeResSwitchFrame]
     with ActionCommons {
   protected val log = Log(classOf[SwitchFrameAction])

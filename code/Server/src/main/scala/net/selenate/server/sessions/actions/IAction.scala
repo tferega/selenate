@@ -1,10 +1,10 @@
 package net.selenate.server
 package sessions.actions
 
-import org.openqa.selenium.firefox.FirefoxDriver
+import driver.selenium.SelenateFirefox
 
 trait IAction[A, R] {
-  val d: FirefoxDriver
+  val d: SelenateFirefox
 
   def act: (A) => R
 }

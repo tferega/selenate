@@ -3,14 +3,14 @@ package sessions
 
 import actions._
 import actors.ActorFactory
-import driver.{ DriverPool, DriverProfile }
+import driver.{ DriverPool, ProfileInfo }
 
 import akka.actor.{ Actor, Cancellable }
 import net.selenate.common.comms.req._
 import net.selenate.common.comms.res.SeCommsRes
 import scala.concurrent.duration.Duration
 
-class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean = true) extends Actor {
+class SessionActor(sessionID: String, profile: ProfileInfo, useFrames: Boolean = true) extends Actor {
   private val log  = Log(classOf[SessionActor], sessionID)
 
   log.info("Creating session actor for session id: {%s}." format sessionID)

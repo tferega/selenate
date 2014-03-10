@@ -1,11 +1,12 @@
 package net.selenate.server
 package sessions.actions
 
+import driver.selenium.SelenateFirefox
+
 import net.selenate.common.comms.req.SeReqClose
 import net.selenate.common.comms.res.SeResClose
-import org.openqa.selenium.firefox.FirefoxDriver
 
-class CloseAction(val d: FirefoxDriver)
+class CloseAction(val d: SelenateFirefox)
     extends IAction[SeReqClose, SeResClose]
     with ActionCommons {
   protected val log = Log(classOf[CloseAction])

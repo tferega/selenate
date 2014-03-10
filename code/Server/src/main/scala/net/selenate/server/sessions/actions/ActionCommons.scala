@@ -1,11 +1,12 @@
 package net.selenate.server
 package sessions.actions
 
+import driver.selenium.SelenateFirefox
+
 import java.util.ArrayList
 import net.selenate.common.comms._
 import net.selenate.common.user.{ BrowserPage, ElementSelector, ElementSelectMethod }
 import org.openqa.selenium.By
-import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.remote.{ RemoteWebDriver, RemoteWebElement, UselessFileDetector }
 import org.openqa.selenium.SearchContext
 import org.openqa.selenium.support.ui.Select
@@ -19,7 +20,7 @@ trait ActionCommons {
   case class Address(window: Window, framePath: FramePath)
 
 
-  val d: FirefoxDriver
+  val d: SelenateFirefox
   protected val log: net.selenate.server.Log[_]
 
   object JS {

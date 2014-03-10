@@ -1,12 +1,13 @@
 package net.selenate.server
 package sessions.actions
 
+import driver.selenium.SelenateFirefox
+
 import net.selenate.common.comms.req.SeReqClick
 import net.selenate.common.comms.res.SeResClick
-import org.openqa.selenium.firefox.FirefoxDriver
 import scala.collection.JavaConversions._
 
-class ClickAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class ClickAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqClick, SeResClick]
     with ActionCommons {
   protected val log = Log(classOf[ClickAction])

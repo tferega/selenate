@@ -1,12 +1,13 @@
 package net.selenate.server
 package sessions.actions
 
+import driver.selenium.SelenateFirefox
+
 import net.selenate.common.comms.req.SeReqFindAndClick
 import net.selenate.common.comms.res.SeResFindAndClick
-import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.remote.RemoteWebElement
 
-class FindAndClickAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class FindAndClickAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqFindAndClick, SeResFindAndClick]
     with ActionCommons {
   type PathElement = (FramePath, RemoteWebElement)

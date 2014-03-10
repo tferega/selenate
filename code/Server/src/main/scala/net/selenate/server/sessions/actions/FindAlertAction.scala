@@ -1,12 +1,13 @@
 package net.selenate.server
 package sessions.actions
 
+import driver.selenium.SelenateFirefox
+
 import net.selenate.common.comms.req.SeReqFindAlert
 import net.selenate.common.comms.res.SeResFindAlert
-import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.NoAlertPresentException
 
-class FindAlertAction(val d: FirefoxDriver)
+class FindAlertAction(val d: SelenateFirefox)
     extends IAction[SeReqFindAlert, SeResFindAlert]
     with ActionCommons {
   protected val log = Log(classOf[FindAlertAction])

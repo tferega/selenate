@@ -1,15 +1,16 @@
 package net.selenate.server
 package sessions.actions
 
+import driver.selenium.SelenateFirefox
+
 import com.ning.http.client.Cookie
 import dispatch._
 import java.io.IOException
 import net.selenate.common.comms.req.SeReqDownload
 import net.selenate.common.comms.res.SeResDownload
-import org.openqa.selenium.firefox.FirefoxDriver
 import scala.collection.JavaConversions._
 
-class DownloadAction(val d: FirefoxDriver) extends IAction[SeReqDownload, SeResDownload] {
+class DownloadAction(val d: SelenateFirefox) extends IAction[SeReqDownload, SeResDownload] {
   protected val log = Log(classOf[DownloadAction])
 
   def act = { arg =>

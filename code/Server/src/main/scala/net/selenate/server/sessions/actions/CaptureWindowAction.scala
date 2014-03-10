@@ -1,13 +1,14 @@
 package net.selenate.server
 package sessions.actions
 
+import driver.selenium.SelenateFirefox
+
 import net.selenate.common.comms.req.SeReqCaptureWindow
 import net.selenate.common.comms.res.SeResCaptureWindow
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.io.IOUtils
-import org.openqa.selenium.firefox.FirefoxDriver
 
-class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class CaptureWindowAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqCaptureWindow, SeResCaptureWindow]
     with ActionCommons {
 

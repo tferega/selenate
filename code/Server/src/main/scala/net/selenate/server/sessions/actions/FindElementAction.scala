@@ -1,11 +1,12 @@
 package net.selenate.server
 package sessions.actions
 
+import driver.selenium.SelenateFirefox
+
 import net.selenate.common.comms.req.SeReqFindElement
 import net.selenate.common.comms.res.SeResFindElement
-import org.openqa.selenium.firefox.FirefoxDriver
 
-class FindElementAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class FindElementAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqFindElement, SeResFindElement]
     with ActionCommons {
   protected val log = Log(classOf[FindElementAction])

@@ -4,22 +4,22 @@ package driver
 import java.io.File
 import org.openqa.selenium.firefox.{ FirefoxBinary, FirefoxProfile }
 
-object DriverProfile {
+object ProfileInfo {
   // ###############==========-----> DESERIALIZATION <-----==========###############
   private object Deserialization {
-    def apply(s: String): DriverProfile = {
+    def apply(s: String): ProfileInfo = {
       s.split("\\|", -1).toList match {
         case (screenPreference :: binaryLocation :: prefMap :: Nil) =>
           val pm = doPrefMap(prefMap)
           val sp = doScreenPreference(screenPreference)
           val bl = doBinaryLocation(binaryLocation)
 
-          new DriverProfile(
+          new ProfileInfo(
               prefMap          = pm,
               screenPreference = sp,
               binaryLocation   = bl)
 
-        case _ => throw new Exception(s"Error while deserializing DriverProfile. Offending entry: $s")
+        case _ => throw new Exception(s"Error while deserializing ProfileInfo. Offending entry: $s")
       }
     }
 
@@ -71,10 +71,10 @@ object DriverProfile {
 
   // ###############==========-----> SERIALIZATION <-----==========###############
   private object Serialization {
-    def apply(p: DriverProfile): String = {
-      val pm = doPrefMap(p.prefMap)
-      val sp = doScreenPreference(p.screenPreference)
-      val bl = doBinaryLocation(p.binaryLocation)
+    def apply(profile: ProfileInfo): String = {
+      val pm = doPrefMap(profile.prefMap)
+      val sp = doScreenPreference(profile.screenPreference)
+      val bl = doBinaryLocation(profile.binaryLocation)
       s"$pm|$sp|$bl"
     }
 
@@ -97,37 +97,8 @@ object DriverProfile {
       s"${ entry._1 }='${ entry._2 }'"
   }
 
-  // ###############==========-----> FireFox Profile <-----==========###############
-  private object FFP {
-    def get(prefMap: Map[String, AnyRef]) = {
-      val ffp = new FirefoxProfile
-      prefMap foreach addPref(ffp)
-      ffp
-    }
-
-    private def addPref(ffp: FirefoxProfile)(pref: (String, AnyRef)) {
-      val k = pref._1
-      val v = pref._2
-
-      v match {
-        case x: java.lang.Boolean => ffp.setPreference(k, x)
-        case x: java.lang.Integer => ffp.setPreference(k, x)
-        case x: java.lang.String  => ffp.setPreference(k, x)
-        case x => throw new IllegalArgumentException("Unsupported type: %s" format x.getClass.getCanonicalName)
-      }
-    }
-  }
-
-  // ###############==========-----> FireFox Binary <-----==========###############
-  private object FFB {
-    def get(binaryLocation: Option[File]) =
-      binaryLocation match {
-        case Some(bl) => new FirefoxBinary(bl)
-        case None     => new FirefoxBinary()
-      }
-  }
-
-  def empty = new DriverProfile(
+  // ###############==========-----> GENERAL <-----==========###############
+  def empty = new ProfileInfo(
       prefMap          = Map.empty,
       screenPreference = ScreenPreference.Default,
       binaryLocation   = None)
@@ -149,18 +120,13 @@ object ScreenPreference {
 }
 
 
-class DriverProfile(
+class ProfileInfo(
     val prefMap: Map[String, AnyRef]       = Map.empty,
     val screenPreference: ScreenPreference = ScreenPreference.Default,
     val binaryLocation: Option[File]       = None) {
-  import DriverProfile._
+  import ProfileInfo._
 
-  override def toString = "DriverProfile(%s)" format signature
+  override def toString = s"ProfileInfo($signature)"
 
   val signature = Serialization(this)
-
-  val ffProfile = FFP.get(prefMap)
-  val ffBinary = FFB.get(binaryLocation)
-
-  def runFirefox() = FirefoxRunner.run(this)
 }

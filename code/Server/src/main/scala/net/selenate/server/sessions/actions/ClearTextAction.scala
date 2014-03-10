@@ -1,12 +1,13 @@
 package net.selenate.server
 package sessions.actions
 
+import driver.selenium.SelenateFirefox
+
 import net.selenate.common.comms.req.SeReqClearText
 import net.selenate.common.comms.res.SeResClearText
-import org.openqa.selenium.firefox.FirefoxDriver
 import scala.collection.JavaConversions._
 
-class ClearTextAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class ClearTextAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqClearText, SeResClearText]
     with ActionCommons {
   protected val log = Log(classOf[ClearTextAction])

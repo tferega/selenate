@@ -2,11 +2,11 @@ package net.selenate.server
 package sessions
 
 import actors.ActorFactory.{ typed, untyped }
+import driver.ProfileInfo
 
 import akka.actor.ActorRef
 import net.selenate.common.sessions.ISessionFactory
 import net.selenate.common.user.Preferences
-import net.selenate.server.driver.DriverProfile
 import scala.collection.JavaConversions._
 import scala.concurrent.Future
 
@@ -22,11 +22,11 @@ object SessionFactory extends ISessionFactory {
 
 private class SessionFactory extends ISessionFactory {
   private def getProfile(prefMap: Map[String, AnyRef]) =
-    new DriverProfile(
+    new ProfileInfo(
         prefMap = prefMap)
 
   private val emptyProfile =
-    DriverProfile.empty
+    ProfileInfo.empty
 
   private def getSessionDo(sessionID: String, prefMapOpt: Option[Map[String, AnyRef]], useFrames: java.lang.Boolean): Future[ActorRef] = Future {
     val profileOpt = prefMapOpt map getProfile

@@ -1,12 +1,13 @@
 package net.selenate.server
 package sessions.actions
 
+import driver.selenium.SelenateFirefox
+
 import net.selenate.common.comms._
 import net.selenate.common.comms.req.SeReqCapture
 import net.selenate.common.comms.res.SeResCapture
 import org.apache.commons.codec.binary.Base64
 import org.openqa.selenium.{ Cookie, OutputType}
-import org.openqa.selenium.firefox.FirefoxDriver
 import scala.collection.JavaConversions._
 
 object CaptureAction {
@@ -29,7 +30,7 @@ return report;
   }
 }
 
-class CaptureAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class CaptureAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqCapture, SeResCapture]
     with ActionCommons {
   import CaptureAction._

@@ -1,12 +1,13 @@
 package net.selenate.server
 package sessions.actions
 
+import driver.selenium.SelenateFirefox
+
 import net.selenate.common.comms.req.SeReqAddCookie
 import net.selenate.common.comms.res.SeResAddCookie
 import org.openqa.selenium.Cookie
-import org.openqa.selenium.firefox.FirefoxDriver
 
-class AddCookieAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class AddCookieAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqAddCookie, SeResAddCookie]
     with ActionCommons {
   protected val log = Log(classOf[AddCookieAction])

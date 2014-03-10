@@ -1,13 +1,14 @@
 package net.selenate.server
 package sessions.actions
 
+import driver.selenium.SelenateFirefox
+
 import net.selenate.common.comms.req.SeReqWaitFor
 import net.selenate.common.comms.res.SeResWaitFor
 import net.selenate.common.comms.{ SeElementSelector, SePage }
-import org.openqa.selenium.firefox.FirefoxDriver
 import scala.collection.JavaConversions._
 
-class WaitForAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class WaitForAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqWaitFor, SeResWaitFor]
     with ActionCommons
     with WaitFor {

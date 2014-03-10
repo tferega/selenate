@@ -1,11 +1,12 @@
 package net.selenate.server
 package sessions.actions
 
+import driver.selenium.SelenateFirefox
+
 import net.selenate.common.comms.req.SeReqExecuteScript
 import net.selenate.common.comms.res.SeResExecuteScript
-import org.openqa.selenium.firefox.FirefoxDriver
 
-class ExecuteScriptAction(val d: FirefoxDriver) extends IAction[SeReqExecuteScript, SeResExecuteScript] {
+class ExecuteScriptAction(val d: SelenateFirefox) extends IAction[SeReqExecuteScript, SeResExecuteScript] {
   protected val log = Log(classOf[ExecuteScriptAction])
 
   def act = { arg =>

@@ -1,15 +1,16 @@
 package net.selenate.server
 package sessions.actions
 
+import driver.selenium.SelenateFirefox
+
 import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, IOException }
 import javax.imageio.ImageIO
 import net.selenate.common.comms.req.SeReqCaptureElement
 import net.selenate.common.comms.res.SeResCaptureElement
-import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.OutputType
 import scala.collection.JavaConversions._
 
-class CaptureElementAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class CaptureElementAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqCaptureElement, SeResCaptureElement]
     with ActionCommons {
 
