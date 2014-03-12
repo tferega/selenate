@@ -2,32 +2,35 @@ package net.selenate.server
 package sessions
 
 import actors.ActorFactory.{ typed, untyped }
-import driver.ProfileInfo
+import info.{ DisplayInfo, ProfileInfo }
+
 import akka.actor.ActorRef
-import net.selenate.common.sessions.ISessionFactory
-import net.selenate.common.user.Options
+import net.selenate.common.sessions.{ ISessionFactory, SessionDisplay, SessionOptions }
 import scala.collection.JavaConversions._
 import scala.concurrent.Future
-import net.selenate.server.driver.ScreenPreference
 
 object SessionFactory extends ISessionFactory {
   val factory = typed[ISessionFactory]("session-factory", new SessionFactory)
 
-  def getSession(sessionID: String, options: Options) = factory.getSession(sessionID, options)
+  def getSession(sessionID: String, options: SessionOptions) = factory.getSession(sessionID, options)
   def getSession(sessionID: String) = factory.getSession(sessionID)
 }
 
 private class SessionFactory extends ISessionFactory {
-  private def getProfile(options: Options) =
+  private def getProfile(options: SessionOptions) =
     new ProfileInfo(
-        prefMap          = options.getPreferences.getAll.toMap,
-        screenPreference = if (options.getUseScreen) ScreenPreference.FirstFree else ScreenPreference.Default,
-        binaryLocation   = Option(options.getBinaryLocation))
+        prefMap = options.getPreferences.getAll.toMap,
+        display = options.getDisplay match {
+          case main: SessionDisplay.Main           => DisplayInfo.Main
+          case firstFree: SessionDisplay.FirstFree => DisplayInfo.FirstFree
+          case specific: SessionDisplay.Specific   => DisplayInfo.Specific(specific.getNum)
+        },
+        binaryLocation  = Option(options.getBinaryLocation))
 
   private val emptyProfile =
     ProfileInfo.empty
 
-  private def getSessionDo(sessionID: String, optionsOpt: Option[Options]): Future[ActorRef] = Future {
+  private def getSessionDo(sessionID: String, optionsOpt: Option[SessionOptions]): Future[ActorRef] = Future {
     val profileOpt = optionsOpt map getProfile
     val profile    = profileOpt getOrElse emptyProfile
     val name       = sessionID
@@ -36,7 +39,7 @@ private class SessionFactory extends ISessionFactory {
   }
 
 
-  def getSession(sessionID: String, options: Options) =
+  def getSession(sessionID: String, options: SessionOptions) =
     getSessionDo(sessionID, Some(options))
 
   def getSession(sessionID: String) =

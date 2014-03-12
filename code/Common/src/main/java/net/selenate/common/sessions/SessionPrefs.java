@@ -1,15 +1,15 @@
-package net.selenate.common.user;
+package net.selenate.common.sessions;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Preferences implements Serializable {
+public class SessionPrefs implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private final Map<String, Object> entryList;
 
-  public Preferences() {
+  public SessionPrefs() {
     entryList = new HashMap<String, Object>();
   }
 

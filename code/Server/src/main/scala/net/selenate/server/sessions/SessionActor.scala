@@ -3,7 +3,8 @@ package sessions
 
 import actions._
 import actors.ActorFactory
-import driver.{ DriverPool, ProfileInfo }
+import driver. DriverPool
+import info.ProfileInfo
 
 import akka.actor.{ Actor, Cancellable }
 import net.selenate.common.comms.req._

@@ -2,6 +2,8 @@ package net.selenate.server
 package driver
 package selenium
 
+import info.ProfileInfo
+
 import java.io.File
 import org.openqa.selenium.firefox.FirefoxProfile
 

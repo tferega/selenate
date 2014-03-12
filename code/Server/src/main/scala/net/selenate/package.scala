@@ -44,6 +44,35 @@ package object server {
       case e: Exception => false
     }
 
+  object IsString {
+    private val R = """'(.*)'"""r
+    def unapply(raw: String): Option[java.lang.String] =
+      tryo {
+        val R(extracted) = raw
+        extracted
+      }
+  }
+
+  object IsInteger {
+    def unapply(raw: String): Option[java.lang.Integer] = tryo(raw.toInt)
+  }
+
+  object IsInt {
+    def unapply(raw: String): Option[Int] = tryo(raw.toInt)
+  }
+
+  object IsBoolean {
+    def unapply(raw: String): Option[java.lang.Boolean] = tryo(raw.toBoolean)
+  }
+
+  object IsBool {
+    def unapply(raw: String): Option[Boolean] = tryo(raw.toBoolean)
+  }
+
+  object IsFile {
+    def unapply(raw: String): Option[File] = tryo(new File(raw))
+  }
+
   // scala.collection.JavaConversions and scala.collection.JavaConverters are not adequate.
   // They create instances of scala.collection.JavaConversions$SeqWrapper (or similar), which subclass
   // java lists.

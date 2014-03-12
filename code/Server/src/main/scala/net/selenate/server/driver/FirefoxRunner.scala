@@ -1,30 +1,36 @@
 package net.selenate.server
 package driver
 
+import info.{ DisplayInfo, ProfileInfo }
 import linux.{ Display, Files }
 import selenium.{ SelenateBinary, SelenateFirefox, SelenateProfile }
 
 import java.io.File
-import org.apache.commons.io.FileUtils
 
 object FirefoxRunner {
   def run(profile: ProfileInfo) =
-    profile.screenPreference match {
-      case ScreenPreference.Default   => runInDefaultScreen(profile)
-      case ScreenPreference.FirstFree => runInFirstFreeScreen(profile)
+    profile.display match {
+      case DisplayInfo.Main          => runInMain(profile)
+      case DisplayInfo.FirstFree     => runInFirstFree(profile)
+      case DisplayInfo.Specific(num) => runInSpecific(num, profile)
     }
 
-  private def runInDefaultScreen(profile: ProfileInfo) =
+  private def runInMain(profile: ProfileInfo) =
     SelenateFirefox.fromProfileInfo(profile)
 
-  private def runInFirstFreeScreen(profile: ProfileInfo) = {
+  private def runInFirstFree(profile: ProfileInfo) = {
     val binaryLocation = profile.binaryLocation getOrElse SelenateBinary.DefaultBinaryLocation
     val displayInfo = Display.create()
+    println(displayInfo)
     val script = createScript(displayInfo.num, binaryLocation)
     val binaryFile = Files.createTempScript(script)
     val ffBinary = new SelenateBinary(binaryFile)
     val ffProfile = SelenateProfile.fromProfileInfo(profile)
     new SelenateFirefox(ffBinary, ffProfile)
+  }
+
+  private def runInSpecific(num: Int, profile: ProfileInfo) = {
+    throw new UnsupportedOperationException("Specific displays not yet supported.")
   }
 
   def createScript(displayNum: Int, binaryLocation: File) =

@@ -4,7 +4,6 @@ import actors.ActorFactory
 import driver.DriverPool
 import sessions.SessionFactory
 
-import net.selenate.common.sessions.ISessionFactory
 import scala.annotation.tailrec
 
 object EntryPoint extends App {

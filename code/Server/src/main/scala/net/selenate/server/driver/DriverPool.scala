@@ -2,24 +2,33 @@ package net.selenate.server
 package driver
 
 import actors.ActorFactory
+import driver.selenium.SelenateFirefox
+import info.{ PoolInfo, ProfileInfo }
 
 object DriverPool {
-  private def createPool(ps: ProfileSettings) = {
-    val profile = ps.settings
-        .map(ProfileInfo.fromString)
-        .getOrElse(ProfileInfo.empty)
-    val actorName = s"driver-pool_${ ps.name }"
-    ActorFactory.typed[IDriverPoolActor](actorName, new DriverPoolActor(profile, ps.size))
+  private def createPool(poolInfo: PoolInfo) = {
+    val actorName = s"driver-pool_${ poolInfo.name }"
+    val poolActor = ActorFactory.typed[IDriverPoolActor](actorName, new DriverPoolActor(poolInfo))
+    poolInfo.name -> poolActor
   }
 
-  private val poolList = C.Server.Pool.profileSettingsList map createPool
+  private val poolMap = C.Server.Pool.poolInfoList.map(createPool).toMap
+  private def findByProfile(profile: ProfileInfo): Option[String] =
+    poolMap.collect {
+      case(k, v) if v.profile === profile => k
+    }.headOption
 
-  def get(profile: ProfileInfo) = {
-    poolList.find(_.signature == profile.signature) match {
-      case Some(pool) =>
-        pool.get
-      case None =>
-        FirefoxRunner.run(profile)
+  def get(name: String): SelenateFirefox = {
+    poolMap.get(name) match {
+      case Some(pool) => pool.get
+      case None       => throw new IllegalArgumentException(s"""Pool named "$name" does not exist.""")
+    }
+  }
+
+  def get(profile: ProfileInfo): SelenateFirefox = {
+    findByProfile(profile) match {
+      case Some(name) => get(name)
+      case None       => FirefoxRunner.run(profile)
     }
   }
 }
