@@ -3,7 +3,7 @@ package linux
 
 import com.ferega.procrun._
 
-object Proc {
+object LinuxProc {
   def runAndEnd(args: Seq[Any]): String = {
     val p = new ProcessRunner(args)
     val e = p.end

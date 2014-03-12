@@ -2,7 +2,7 @@ package net.selenate.server
 package driver
 
 import info.{ DisplayInfo, ProfileInfo }
-import linux.{ Display, Files }
+import linux.{ LinuxDisplay, LinuxFile }
 import selenium.{ SelenateBinary, SelenateFirefox, SelenateProfile }
 
 import java.io.File
@@ -20,10 +20,10 @@ object FirefoxRunner {
 
   private def runInFirstFree(profile: ProfileInfo) = {
     val binaryLocation = profile.binaryLocation getOrElse SelenateBinary.DefaultBinaryLocation
-    val displayInfo = Display.create()
+    val displayInfo = LinuxDisplay.create()
     println(displayInfo)
     val script = createScript(displayInfo.num, binaryLocation)
-    val binaryFile = Files.createTempScript(script)
+    val binaryFile = LinuxFile.createTempScript(script)
     val ffBinary = new SelenateBinary(binaryFile)
     val ffProfile = SelenateProfile.fromProfileInfo(profile)
     new SelenateFirefox(ffBinary, ffProfile)

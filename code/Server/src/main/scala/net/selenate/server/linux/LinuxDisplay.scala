@@ -6,7 +6,7 @@ import scala.annotation.tailrec
 
 case class DisplayInfo(num: Int, port: Int)
 
-object Display {
+object LinuxDisplay {
   private val BaseNum = 200
 
   def create(): DisplayInfo = {
@@ -44,11 +44,11 @@ object Display {
     }
   }
 
-  private def runXvfb(num: Int)     = Proc.runAndVerify("Xvfb" | s":$num" | "-screen" | "0" | "1024x768x16" | "-ac")
-  private def runIceWM(num: Int)    = Proc.runAndVerify("icewm" | s"--display=:$num")
-  private def runX11vnc(num: Int)   = Proc.runAndVerify("x11vnc" | "-display" | s":$num" | "-listen" | "localhost" | "-nopw" | "-xkb" | "-shared" | "-forever")
-  private def runXdpyInfo(num: Int) = Proc.runAndEnd("xdpyinfo" | "-display" | s":$num")
-  private def runPkill(pattern: String) = Proc.runAndEnd("pkill" | "-f" | pattern)
+  private def runXvfb(num: Int)         = LinuxProc.runAndVerify("Xvfb" | s":$num" | "-screen" | "0" | "1024x768x16" | "-ac")
+  private def runIceWM(num: Int)        = LinuxProc.runAndVerify("icewm" | s"--display=:$num")
+  private def runX11vnc(num: Int)       = LinuxProc.runAndVerify("x11vnc" | "-display" | s":$num" | "-listen" | "localhost" | "-nopw" | "-xkb" | "-shared" | "-forever")
+  private def runXdpyInfo(num: Int)     = LinuxProc.runAndEnd("xdpyinfo" | "-display" | s":$num")
+  private def runPkill(pattern: String) = LinuxProc.runAndEnd("pkill" | "-f" | pattern)
 
   @tailrec
   private def getFirstFree(num: Int = BaseNum): Int =
