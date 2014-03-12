@@ -6,7 +6,7 @@ import scala.concurrent.Await;
 import scala.concurrent.Future;
 import net.selenate.client.C;
 import net.selenate.common.sessions.ISessionFactory;
-import net.selenate.common.user.Preferences;
+import net.selenate.common.user.Options;
 import akka.actor.*;
 import scala.concurrent.duration.Duration;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -39,9 +39,9 @@ public final class ActorFactory {
     }
   }
 
-  public static ActorRef getSession(String name, Preferences preferences, int timeout) throws IOException {
+  public static ActorRef getSession(String name, Options options, int timeout) throws IOException {
     try {
-      final Future<ActorRef> sessionFuture = sessionFactory.getSession(name, preferences);
+      final Future<ActorRef> sessionFuture = sessionFactory.getSession(name, options);
       final ActorRef result = Await.result(sessionFuture, Duration.create(timeout, SECONDS));
       return result;
     } catch (final Exception e) {

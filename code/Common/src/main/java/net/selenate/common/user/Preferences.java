@@ -17,15 +17,30 @@ public class Preferences implements Serializable {
     return new HashMap<String, Object>(entryList);
   }
 
-  public void putBoolean(String key, boolean value) {
+  public void putBoolean(final String key, final boolean value) {
+    if (key == null) {
+      throw new IllegalArgumentException("Key cannot be null!");
+    }
+
     entryList.put(key, value);
   }
 
-  public void putInt(String key, int value) {
+  public void putInt(final String key, final int value) {
+    if (key == null) {
+      throw new IllegalArgumentException("Key cannot be null!");
+    }
+
     entryList.put(key, value);
   }
 
-  public void putString(String key, String value) {
+  public void putString(final String key, final String value) {
+    if (key == null) {
+      throw new IllegalArgumentException("Key cannot be null!");
+    }
+    if (value == null) {
+      throw new IllegalArgumentException("Value cannot be null!");
+    }
+
     entryList.put(key, value);
   }
 }
