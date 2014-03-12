@@ -1,6 +1,5 @@
 package net.selenate.server
-package driver
-package selenium
+package extensions
 
 import info.ProfileInfo
 

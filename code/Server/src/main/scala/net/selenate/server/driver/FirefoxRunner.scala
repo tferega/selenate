@@ -1,9 +1,9 @@
 package net.selenate.server
 package driver
 
+import extensions.{ SelenateBinary, SelenateFirefox, SelenateProfile }
 import info.{ DisplayInfo, ProfileInfo }
 import linux.{ LinuxDisplay, LinuxFile }
-import selenium.{ SelenateBinary, SelenateFirefox, SelenateProfile }
 
 import java.io.File
 

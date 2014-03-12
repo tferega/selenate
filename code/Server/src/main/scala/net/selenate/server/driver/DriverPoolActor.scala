@@ -1,8 +1,8 @@
 package net.selenate.server
 package driver
 
+import extensions.SelenateFirefox
 import info.PoolInfo
-import selenium.SelenateFirefox
 
 import java.util.UUID
 import scala.collection.mutable.Queue

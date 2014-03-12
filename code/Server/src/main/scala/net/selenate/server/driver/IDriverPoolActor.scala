@@ -1,8 +1,8 @@
 package net.selenate.server
 package driver
 
+import extensions.SelenateFirefox
 import info.{ PoolInfo, ProfileInfo }
-import selenium.SelenateFirefox
 
 private[driver] trait IDriverPoolActor {
   def info: PoolInfo

@@ -1,7 +1,7 @@
 package net.selenate.server
 package sessions.actions
 
-import driver.selenium.SelenateFirefox
+import extensions.SelenateFirefox
 
 import net.selenate.common.comms.req.SeReqCaptureWindow
 import net.selenate.common.comms.res.SeResCaptureWindow

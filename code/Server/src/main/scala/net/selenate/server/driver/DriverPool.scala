@@ -2,7 +2,7 @@ package net.selenate.server
 package driver
 
 import actors.ActorFactory
-import driver.selenium.SelenateFirefox
+import extensions.SelenateFirefox
 import info.{ PoolInfo, ProfileInfo }
 
 object DriverPool {
