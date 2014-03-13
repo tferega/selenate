@@ -50,6 +50,7 @@ class SessionActor(sessionID: String, profile: ProfileInfo, useFrames: Boolean =
     case arg: SeReqStopKeepalive      => new StopKeepaliveAction(d).act(arg)
     case arg: SeReqSwitchFrame        => new SwitchFrameAction(d).act(arg)
     case arg: SeReqSystemClick        => new SystemClickAction(d).act(arg)
+    case arg: SeReqSystemInput        => new SystemInputAction(d).act(arg)
     case arg: SeReqWaitFor            => new WaitForAction(d).act(arg)
     case arg: SeReqWaitForBrowserPage => new WaitForBrowserPageAction(d).act(arg)
   }

@@ -28,6 +28,11 @@ object LinuxWindow {
     moveMouseRelative(num, windowInfo, relX, relY)
   }
 
+  def input(num: Option[Int], input: String) {
+    val preparedInput = input.toSeq
+    runXdotoolInput(num, preparedInput)
+  }
+
   private def getWindowInfo(num: Option[Int], titlePart: String) = {
     val rawList = runWmctrl(num).split("\n")
     val rawOpt = rawList.filter(_.contains(titlePart)).headOption
@@ -47,4 +52,5 @@ object LinuxWindow {
   private def runXdotoolActivate(num: Option[Int], windowID: String) = LinuxProc.runAndEnd("xdotool", "windowactivate" | windowID, num = num)
   private def runXdotoolMove(num: Option[Int], x: Int, y: Int) = LinuxProc.runAndEnd("xdotool", "mousemove" | x | y, num = num)
   private def runXdotoolClick(num: Option[Int]) = LinuxProc.runAndEnd("xdotool", "click" | 1, num = num)
+  private def runXdotoolInput(num: Option[Int], input: Seq[Char]) = LinuxProc.runAndEnd("xdotool", Seq("key") ++ input, num = num)
 }

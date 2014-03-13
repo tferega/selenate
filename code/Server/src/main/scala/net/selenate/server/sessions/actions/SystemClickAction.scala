@@ -6,7 +6,6 @@ import linux.LinuxWindow
 import extensions.SelenateFirefox
 import net.selenate.common.comms.req.SeReqSystemClick
 import net.selenate.common.comms.res.SeResSystemClick
-import org.openqa.selenium.Cookie
 import java.util.UUID
 
 class SystemClickAction(val d: SelenateFirefox)(implicit context: ActionContext)

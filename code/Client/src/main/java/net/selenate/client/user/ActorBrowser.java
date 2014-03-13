@@ -250,4 +250,9 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   public void systemClick(final int x, final int y) throws IOException {
     typedBlock(new SeReqSystemClick(x, y), SeResSystemClick.class);
   }
+
+  @Override
+  public void systemInput(final String input) throws IOException {
+    typedBlock(new SeReqSystemInput(input), SeResSystemInput.class);
+  }
 }
