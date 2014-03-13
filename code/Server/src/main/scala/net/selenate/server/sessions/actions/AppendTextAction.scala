@@ -1,21 +1,16 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms.res._
-import common.comms.req._
-import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.{ By, WebElement }
+import extensions.SelenateFirefox
+
+import net.selenate.common.comms.req.SeReqAppendText
+import net.selenate.common.comms.res.SeResAppendText
 import org.openqa.selenium.internal.selenesedriver.SendKeys
-
 import scala.collection.JavaConversions._
 
-
-class AppendTextAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class AppendTextAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqAppendText, SeResAppendText]
     with ActionCommons {
-
   protected val log = Log(classOf[AppendTextAction])
 
   def act = { arg =>

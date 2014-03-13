@@ -1,14 +1,12 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms.res._
-import common.comms.req._
-import org.openqa.selenium.firefox.FirefoxDriver
-import scala.collection.JavaConversions._
+import extensions.SelenateFirefox
 
-class NavigateRefreshAction(val d: FirefoxDriver) extends IAction[SeReqNavigateRefresh, SeResNavigateRefresh] {
+import net.selenate.common.comms.req.SeReqNavigateRefresh
+import net.selenate.common.comms.res.SeResNavigateRefresh
+
+class NavigateRefreshAction(val d: SelenateFirefox) extends IAction[SeReqNavigateRefresh, SeResNavigateRefresh] {
   protected val log = Log(classOf[NavigateRefreshAction])
 
   def act = { SeReqNavigateRefresh =>

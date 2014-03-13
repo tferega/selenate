@@ -1,15 +1,15 @@
 package net.selenate
 
-import java.io.{ PrintWriter, StringWriter }
+import java.io.{ File, PrintWriter, StringWriter }
 import java.{ util => ju }
 import scala.concurrent.ExecutionContext
 
 package object server {
   type PF[A, R] = PartialFunction[A, R]
 
-  implicit val ec = ExecutionContext.fromExecutor(ju.concurrent.Executors.newCachedThreadPool())
+  implicit val ec = ExecutionContext.fromExecutor(java.util.concurrent.Executors.newCachedThreadPool())
 
-  implicit class ImpaleException(e: Exception) {
+  implicit class RichException(e: Exception) {
     def stackTrace: String = {
       val sw = new StringWriter
       val pw = new PrintWriter(sw)
@@ -21,10 +21,13 @@ package object server {
     }
   }
 
-  implicit class ImpaleString(l: String) {
-    def /(r: String): String = "%s/%s" format(l, r)
+  implicit class RichString(s: String) {
+    def file: File = new File(s)
   }
 
+  implicit class RichFile(l: File) {
+    def /(r: String) = new File(l, r)
+  }
 
   def tryo[T](f: => T): Option[T] =
     try {
@@ -40,6 +43,35 @@ package object server {
     } catch {
       case e: Exception => false
     }
+
+  object IsString {
+    private val R = """'(.*)'"""r
+    def unapply(raw: String): Option[java.lang.String] =
+      tryo {
+        val R(extracted) = raw
+        extracted
+      }
+  }
+
+  object IsInteger {
+    def unapply(raw: String): Option[java.lang.Integer] = tryo(raw.toInt)
+  }
+
+  object IsInt {
+    def unapply(raw: String): Option[Int] = tryo(raw.toInt)
+  }
+
+  object IsBoolean {
+    def unapply(raw: String): Option[java.lang.Boolean] = tryo(raw.toBoolean)
+  }
+
+  object IsBool {
+    def unapply(raw: String): Option[Boolean] = tryo(raw.toBoolean)
+  }
+
+  object IsFile {
+    def unapply(raw: String): Option[File] = tryo(new File(raw))
+  }
 
   // scala.collection.JavaConversions and scala.collection.JavaConverters are not adequate.
   // They create instances of scala.collection.JavaConversions$SeqWrapper (or similar), which subclass

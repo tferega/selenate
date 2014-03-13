@@ -1,21 +1,15 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms.res._
-import common.comms.req._
-import java.util.ArrayList
-import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.remote.RemoteWebElement
-import scala.collection.JavaConversions._
+import extensions.SelenateFirefox
+
+import net.selenate.common.comms.req.SeReqAddCookie
+import net.selenate.common.comms.res.SeResAddCookie
 import org.openqa.selenium.Cookie
 
-
-class AddCookieAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class AddCookieAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqAddCookie, SeResAddCookie]
     with ActionCommons {
-
   protected val log = Log(classOf[AddCookieAction])
 
   def act = { arg =>

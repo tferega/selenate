@@ -1,15 +1,12 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms.res._
-import common.comms.req._
+import extensions.SelenateFirefox
 
-import org.openqa.selenium.firefox.FirefoxDriver
+import net.selenate.common.comms.req.SeReqSetUseFrames
+import net.selenate.common.comms.res.SeResSetUseFrames
 
-class SetUseFramesAction(val d: FirefoxDriver) extends IAction[SeReqSetUseFrames, SeResSetUseFrames] {
-
+class SetUseFramesAction(val d: SelenateFirefox) extends IAction[SeReqSetUseFrames, SeResSetUseFrames] {
   protected val log = Log(classOf[SetUseFramesAction])
 
   def act = { arg =>

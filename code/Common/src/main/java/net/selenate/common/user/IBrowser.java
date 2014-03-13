@@ -52,4 +52,7 @@ public interface IBrowser {
   public void startKeepalive(long delayMillis, List<SeCommsReq> reqList) throws IOException;
 
   public void stopKeepalive() throws IOException;
+
+  public void systemClick(int x, int y) throws IOException;
+  public void systemInput(String input) throws IOException;
 }

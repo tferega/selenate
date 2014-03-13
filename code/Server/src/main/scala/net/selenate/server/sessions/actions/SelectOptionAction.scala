@@ -1,21 +1,16 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms.res._
-import common.comms.req._
-import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.{ By, WebElement }
-import org.openqa.selenium.internal.selenesedriver.SendKeys
-import scala.collection.JavaConversions._
+import extensions.SelenateFirefox
+
+import net.selenate.common.comms.req.SeReqSelectOption
+import net.selenate.common.comms.res.SeResSelectOption
 import org.openqa.selenium.support.ui.Select
+import scala.collection.JavaConversions._
 
-
-class SelectOptionAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class SelectOptionAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqSelectOption, SeResSelectOption]
     with ActionCommons {
-
   protected val log = Log(classOf[SelectOptionAction])
 
   def act = { arg =>

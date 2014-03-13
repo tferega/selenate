@@ -1,20 +1,17 @@
-package net.selenate
-package server
+package net.selenate.server
 package sessions
 
 import actions._
 import actors.ActorFactory
-import common.comms.req._
-import common.comms.res._
-import driver.{ DriverPool, DriverProfile }
-import akka.actor.{ Actor, Cancellable }
-import net.selenate.common.comms.req.SeReqDownload
-import org.openqa.selenium.firefox.FirefoxProfile
-import scala.concurrent.duration.Duration
-import net.selenate.common.comms.req.SeReqWaitForBrowserPage
-import net.selenate.common.comms.req.SeReqSetUseFrames
+import driver. DriverPool
+import info.ProfileInfo
 
-class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean = true) extends Actor {
+import akka.actor.{ Actor, Cancellable }
+import net.selenate.common.comms.req._
+import net.selenate.common.comms.res.SeCommsRes
+import scala.concurrent.duration.Duration
+
+class SessionActor(sessionID: String, profile: ProfileInfo, useFrames: Boolean = true) extends Actor {
   private val log  = Log(classOf[SessionActor], sessionID)
 
   log.info("Creating session actor for session id: {%s}." format sessionID)
@@ -52,6 +49,8 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
     case arg: SeReqStartKeepalive     => new StartKeepaliveAction(d).act(arg)
     case arg: SeReqStopKeepalive      => new StopKeepaliveAction(d).act(arg)
     case arg: SeReqSwitchFrame        => new SwitchFrameAction(d).act(arg)
+    case arg: SeReqSystemClick        => new SystemClickAction(d).act(arg)
+    case arg: SeReqSystemInput        => new SystemInputAction(d).act(arg)
     case arg: SeReqWaitFor            => new WaitForAction(d).act(arg)
     case arg: SeReqWaitForBrowserPage => new WaitForBrowserPageAction(d).act(arg)
   }

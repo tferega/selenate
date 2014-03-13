@@ -1,29 +1,34 @@
-package net.selenate
-package server
+package net.selenate.server
 package driver
 
 import actors.ActorFactory
-
-import java.util.UUID
-
-import org.openqa.selenium.firefox.FirefoxDriver
-
-import scala.collection.mutable.Queue
-import scala.concurrent.{ Await, Future }
-import scala.concurrent.duration._
+import extensions.SelenateFirefox
+import info.{ PoolInfo, ProfileInfo }
 
 object DriverPool {
-  val size           = C.Server.poolSize
-  val defaultProfile = C.Server.defaultProfileOpt map DriverProfile.fromString getOrElse DriverProfile.empty
-  println(defaultProfile)
+  private def createPool(poolInfo: PoolInfo) = {
+    val actorName = s"driver-pool_${ poolInfo.name }"
+    val poolActor = ActorFactory.typed[IDriverPoolActor](actorName, new DriverPoolActor(poolInfo))
+    poolInfo.name -> poolActor
+  }
 
-  val defaultPool = ActorFactory.typed[IDriverPoolActor]("driver-pool", new DriverPoolActor(defaultProfile, size))
+  private val poolMap = C.Server.Pool.poolInfoList.map(createPool).toMap
+  private def findByProfile(profile: ProfileInfo): Option[String] =
+    poolMap.collect {
+      case(k, v) if v.profile === profile => k
+    }.headOption
 
-  def get(profile: DriverProfile) = {
-    if (profile.signature == defaultProfile.signature) {
-      defaultPool.get
-    } else {
-      new FirefoxDriver(profile.get)
+  def get(name: String): SelenateFirefox = {
+    poolMap.get(name) match {
+      case Some(pool) => pool.get
+      case None       => throw new IllegalArgumentException(s"""Pool named "$name" does not exist.""")
+    }
+  }
+
+  def get(profile: ProfileInfo): SelenateFirefox = {
+    findByProfile(profile) match {
+      case Some(name) => get(name)
+      case None       => FirefoxRunner.run(profile)
     }
   }
 }

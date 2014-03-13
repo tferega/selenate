@@ -1,15 +1,15 @@
 package net.selenate.client.user;
 
-import java.io.IOException;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
-import scala.concurrent.Await;
-import scala.concurrent.Future;
+import akka.actor.*;
+import java.io.IOException;
 import net.selenate.client.C;
 import net.selenate.common.sessions.ISessionFactory;
-import net.selenate.common.user.Preferences;
-import akka.actor.*;
+import net.selenate.common.sessions.SessionOptions;
+import scala.concurrent.Await;
+import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
-import static java.util.concurrent.TimeUnit.SECONDS;
 
 public final class ActorFactory {
   private ActorFactory() {}
@@ -39,9 +39,9 @@ public final class ActorFactory {
     }
   }
 
-  public static ActorRef getSession(String name, Preferences preferences, int timeout) throws IOException {
+  public static ActorRef getSession(String name, SessionOptions options, int timeout) throws IOException {
     try {
-      final Future<ActorRef> sessionFuture = sessionFactory.getSession(name, preferences);
+      final Future<ActorRef> sessionFuture = sessionFactory.getSession(name, options);
       final ActorRef result = Await.result(sessionFuture, Duration.create(timeout, SECONDS));
       return result;
     } catch (final Exception e) {

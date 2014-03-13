@@ -1,10 +1,7 @@
-package net.selenate
-package server
+package net.selenate.server
 package sessions
 
-import common.comms.req.SeCommsReq
-import common.comms.req.SeReqStartKeepalive
-
+import net.selenate.common.comms.req.{ SeCommsReq, SeReqStartKeepalive }
 import scala.concurrent.duration._
 import scala.collection.JavaConversions._
 
