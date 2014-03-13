@@ -1,6 +1,6 @@
 package net.selenate.client.user;
 
-import net.selenate.common.comms.req.SeReqClickRelativeLocation;
+import net.selenate.common.comms.req.SeReqSystemClick;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -247,7 +247,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
-  public void clickRelativeLocation(final int x, final int y) throws IOException {
-    typedBlock(new SeReqClickRelativeLocation(x, y), SeResClickRelativeLocation.class);
+  public void systemClick(final int x, final int y) throws IOException {
+    typedBlock(new SeReqSystemClick(x, y), SeResSystemClick.class);
   }
 }

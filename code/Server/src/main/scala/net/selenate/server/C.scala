@@ -27,10 +27,6 @@ object C {
       }
 
       val poolInfoList = poolConfig.detachAll map getPoolInfo
-
-      println("-"*50)
-      println(poolInfoList.map(_.profile.display))
-      println("-"*50)
     }
   }
 }

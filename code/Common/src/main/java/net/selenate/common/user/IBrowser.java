@@ -53,5 +53,5 @@ public interface IBrowser {
 
   public void stopKeepalive() throws IOException;
 
-  public void clickRelativeLocation(int x, int y) throws IOException;
+  public void systemClick(int x, int y) throws IOException;
 }

@@ -16,17 +16,17 @@ object FirefoxRunner {
     }
 
   private def runInMain(profile: ProfileInfo) =
-    SelenateFirefox.fromProfileInfo(profile)
+    SelenateFirefox.fromProfileInfo(None, profile)
 
   private def runInFirstFree(profile: ProfileInfo) = {
     val binaryLocation = profile.binaryLocation getOrElse SelenateBinary.DefaultBinaryLocation
     val displayInfo = LinuxDisplay.create()
-    println(displayInfo)
+    println("#"*50 + "==========> " + displayInfo)
     val script = createScript(displayInfo.num, binaryLocation)
     val binaryFile = LinuxFile.createTempScript(script)
     val ffBinary = new SelenateBinary(binaryFile)
     val ffProfile = SelenateProfile.fromProfileInfo(profile)
-    new SelenateFirefox(ffBinary, ffProfile)
+    new SelenateFirefox(Some(displayInfo.num), ffBinary, ffProfile)
   }
 
   private def runInSpecific(num: Int, profile: ProfileInfo) = {

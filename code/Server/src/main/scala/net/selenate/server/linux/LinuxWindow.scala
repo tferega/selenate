@@ -25,13 +25,11 @@ case class WindowInfo(
 object LinuxWindow {
   def clickRelative(num: Option[Int], titlePart: String, relX: Int, relY: Int) {
     val windowInfo = getWindowInfo(num, titlePart)
-    println(windowInfo)
     moveMouseRelative(num, windowInfo, relX, relY)
   }
 
   private def getWindowInfo(num: Option[Int], titlePart: String) = {
     val rawList = runWmctrl(num).split("\n")
-    println(rawList)
     val rawOpt = rawList.filter(_.contains(titlePart)).headOption
     val raw = rawOpt.getOrElse(throw new IllegalArgumentException(s"""Error while searching for a window. Window with title containing "$titlePart" not found."""))
     WindowInfo.fromString(raw)

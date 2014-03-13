@@ -13,7 +13,6 @@ object LinuxProc {
 
   def runAndVerify(command: String, arguments: Seq[Any], num: Option[Int] = None): Either[String, RunningProcess] = {
     val p = init(command, arguments, num)
-
     val r = p.run
     Thread.sleep(250)
     if (r.isStopped) {
