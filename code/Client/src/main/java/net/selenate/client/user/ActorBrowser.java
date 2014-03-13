@@ -1,15 +1,15 @@
 package net.selenate.client.user;
 
+import net.selenate.common.comms.req.SeReqClickRelativeLocation;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import net.selenate.common.comms.*;
 import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
 import net.selenate.common.user.*;
-
 import akka.actor.ActorRef;
 
 public class ActorBrowser extends ActorBase implements IBrowser {
@@ -244,5 +244,10 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   @Override
   public void setAutoFrames(final Boolean useFrames) throws IOException {
     typedBlock(new SeReqSetUseFrames(useFrames), SeResSetUseFrames.class);
+  }
+
+  @Override
+  public void clickRelativeLocation(final int x, final int y) throws IOException {
+    typedBlock(new SeReqClickRelativeLocation(x, y), SeResClickRelativeLocation.class);
   }
 }

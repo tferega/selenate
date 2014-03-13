@@ -4,16 +4,15 @@ package linux
 import com.ferega.procrun._
 
 object LinuxProc {
-  def runAndEnd(args: Seq[Any]): String = {
-    val p = new ProcessRunner(args)
+  def runAndEnd(command: String, arguments: Seq[Any], num: Option[Int] = None): String = {
+    val p = init(command, arguments, num)
     val e = p.end
 
     e.stdOut + "\n" + e.stdErr
   }
 
-  def runAndVerify(args: Seq[Any]): Either[String, RunningProcess] = {
-    val p = new ProcessRunner(args)
-    val command = p.command
+  def runAndVerify(command: String, arguments: Seq[Any], num: Option[Int] = None): Either[String, RunningProcess] = {
+    val p = init(command, arguments, num)
 
     val r = p.run
     Thread.sleep(250)
@@ -24,6 +23,15 @@ object LinuxProc {
       Left(s"$command failed to start! Exit code: $exitCode. Output:\n$out")
     } else {
       Right(r)
+    }
+  }
+
+  private def init(command: String, arguments: Seq[Any], numOpt: Option[Int]): ProcessRunner = {
+    numOpt match {
+      case Some(num) =>
+        new DisplayProcessRunner(num, command, arguments)
+      case None =>
+        new ProcessRunner(command, arguments)
     }
   }
 }

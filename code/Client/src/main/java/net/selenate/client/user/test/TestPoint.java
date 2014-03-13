@@ -1,3 +1,4 @@
+/*
 package net.selenate.client.user.test;
 
 import net.selenate.common.sessions.*;
@@ -21,3 +22,4 @@ public class TestPoint {
     }
   }
 }
+*/
