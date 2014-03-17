@@ -6,10 +6,20 @@ public class SessionDisplay {
 
   public static class Main implements ISessionDisplay {
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public String toString() {
+      return "SessionDisplay.Main";
+    }
   }
 
   public static class FirstFree implements ISessionDisplay {
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public String toString() {
+      return "SessionDisplay.FirstFree";
+    }
   }
 
   public static class Specific implements ISessionDisplay {
@@ -23,6 +33,11 @@ public class SessionDisplay {
 
     public int getNum() {
       return num;
+    }
+
+    @Override
+    public String toString() {
+      return String.format("SessionDisplay.Specific(%d)", num);
     }
   }
 }
