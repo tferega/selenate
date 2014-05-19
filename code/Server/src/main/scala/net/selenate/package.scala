@@ -3,8 +3,10 @@ package net.selenate
 import java.io.{ PrintWriter, StringWriter }
 import java.{ util => ju }
 import scala.concurrent.ExecutionContext
+import net.selenate.server.Log
 
 package object server {
+  private val log = Log(this.getClass)
   type PF[A, R] = PartialFunction[A, R]
 
   implicit val ec = ExecutionContext.fromExecutor(ju.concurrent.Executors.newCachedThreadPool())
@@ -30,7 +32,9 @@ package object server {
     try {
       Some(f)
     } catch {
-      case e: Exception => None
+      case e: Exception =>
+        log.trace("Error in tryo: ", e)
+        None
     }
 
   def tryb[T](f: => T): Boolean =
