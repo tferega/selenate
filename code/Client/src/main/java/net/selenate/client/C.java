@@ -60,4 +60,9 @@ public final class C {
 
     return (s1 == null) ? s2 : s1;
   }
+
+  public static String getBranch() {
+    return System.getProperty("branch");
+  }
+
 }

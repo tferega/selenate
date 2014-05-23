@@ -2,6 +2,9 @@ package net.selenate.client.user;
 
 import java.io.IOException;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+
 import scala.concurrent.Await;
 import scala.concurrent.Future;
 import net.selenate.client.C;
@@ -14,7 +17,9 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 public final class ActorFactory {
   private ActorFactory() {}
 
-  public static final ActorSystem system = ActorSystem.create("client-system");
+  private static final String branch     = C.getBranch();
+  private static final Config config     = ConfigFactory.load("application_" + branch + ".conf");
+  public static final ActorSystem system = ActorSystem.create("client-system", config);
   public static ISessionFactory sessionFactory = getTyped(ISessionFactory.class);
 
   public static <T> T getTyped(Class<T> clazz) {

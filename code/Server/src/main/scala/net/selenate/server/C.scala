@@ -4,7 +4,8 @@ import org.streum.configrity.Configuration
 
 object C {
   private val configPath = sys.props("user.home") / ".config" / "selenate" / "server.config"
-  private val config = Configuration.load(configPath)
+  private val config     = Configuration.load(configPath)
+  lazy val branch        = (scala.io.Source.fromFile("../branch.config").getLines.mkString).trim
 
   object Server {
     private val serverConfig = config.detach("server")
