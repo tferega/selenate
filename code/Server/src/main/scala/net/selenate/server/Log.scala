@@ -20,5 +20,5 @@ class Log[T] private (clazz: Class[T], prefix: Option[String]) {
   def info(s:  => String)                  = logger.info(p(s))
   def debug(s: => String)                  = logger.debug(p(s))
   def trace(s: => String)                  = logger.trace(p(s))
-  def trace(s: => String, t: Throwable)    = logger.trace(p(s), t)
+  def trace(s: => String, t: => Throwable) = logger.trace(p(s), t)
 }

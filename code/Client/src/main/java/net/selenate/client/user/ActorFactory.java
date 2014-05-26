@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigValue;
+import com.typesafe.config.ConfigValueFactory;
 
 import scala.concurrent.Await;
 import scala.concurrent.Future;
@@ -17,8 +19,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 public final class ActorFactory {
   private ActorFactory() {}
 
-  private static final String branch     = C.getBranch();
-  private static final Config config     = ConfigFactory.load("application_" + branch + ".conf");
+  private static final Config config     = loadConfig();
   public static final ActorSystem system = ActorSystem.create("client-system", config);
   public static ISessionFactory sessionFactory = getTyped(ISessionFactory.class);
 
@@ -28,6 +29,12 @@ public final class ActorFactory {
         new TypedProps<T>(clazz),
         system.actorFor(serverURI)
     );
+  }
+
+  public static Config loadConfig() {
+    Config config        = ConfigFactory.load();
+    ConfigValue hostname = ConfigValueFactory.fromAnyRef(C.ClientHost);
+    return config.withValue("akka.remote.netty.hostname", hostname);
   }
 
   public static ActorRef getUntyped(String name, Class<? extends Actor> clazz) {

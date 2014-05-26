@@ -7,8 +7,10 @@ import java.io.IOException;
 public final class C {
   private C() {}
 
-  private static final String configPath = System.getProperty("user.home") + "/" + ".config" + "/" + "selenate" + "/" + "client.config";
+  public  static final String branch     = getBranch();
+  private static final String configPath = System.getProperty("user.home") + "/.config/selenate/" + branch + "/client.config";
   public static final String ServerHost;
+  public static final String ClientHost;
   public static final String ServerPort;
   public static final String ServerPath;
 
@@ -29,14 +31,17 @@ public final class C {
       }
 
       final String configServerHost = getNonNullProperty(config, "server.host");
+      final String configClientHost = getNonNullProperty(config, "client.host");
       final String configServerPort = getNonNullProperty(config, "server.port");
       final String configServerPath = getNonNullProperty(config, "server.path");
 
       final String propsServerHost  = props.getProperty("server.host");
+      final String propsClientHost  = props.getProperty("client.host");
       final String propsServerPort  = props.getProperty("server.port");
       final String propsServerPath  = props.getProperty("server.path");
 
       ServerHost = orElse(propsServerHost, configServerHost);
+      ClientHost = orElse(propsClientHost, configClientHost);
       ServerPort = orElse(propsServerPort, configServerPort);
       ServerPath = orElse(propsServerPath, configServerPath);
     } catch (Exception e) {
