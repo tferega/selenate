@@ -6,7 +6,7 @@ package actions
 import common.comms.res._
 import common.comms.req._
 import dispatch._
-import com.ning.http.client.Cookie
+import com.ning.http.client.cookie.Cookie
 import java.{ util => ju }
 import org.openqa.selenium.firefox.FirefoxDriver
 import scala.collection.JavaConversions._
@@ -35,13 +35,16 @@ class DownloadAction(val d: FirefoxDriver) extends IAction[SeReqDownload, SeResD
 
   private def getCookies =
     d.manage.getCookies.map { c =>
-      new Cookie(c.getDomain, c.getName, c.getValue, c.getPath, expiryToInt(c.getExpiry), c.isSecure)
+    val rawValue = ???
+    val maxAge = -1
+    val isHttpOnly = ???
+      Cookie.newValidCookie(c.getName, c.getValue, c.getDomain, rawValue, c.getPath, expiryToLong(c.getExpiry), maxAge, c.isSecure, isHttpOnly)
   }
 
-  private def expiryToInt(expiry: ju.Date) =
+  private def expiryToLong(expiry: ju.Date) =
     if (expiry == null) {
-      -1
+      -1L
     } else {
-      (expiry.getTime / 1000).toInt
+      expiry.getTime / 1000L
     }
 }

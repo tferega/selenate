@@ -39,7 +39,7 @@ object ActorFactory {
     Overlord(Props[T], name)
   }
 
-  def untyped[T <: Actor](name: String, instanceFactory: () => T): ActorRef = {
+  def untyped[T <: Actor](name: String, instanceFactory: () => T)(implicit m: ClassTag[T]): ActorRef = {
     log.debug("Main System creating a new untyped actor: %s." format name)
     Overlord(Props(instanceFactory()), name)
   }

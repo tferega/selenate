@@ -38,7 +38,7 @@ public final class ActorFactory {
   }
 
   public static ActorRef getUntyped(String name, Class<? extends Actor> clazz) {
-    return system.actorOf(new Props(clazz), name);
+    return system.actorOf(Props.create(clazz), name);
   }
 
   public static ActorRef getSession(String name, int timeout) throws IOException {
