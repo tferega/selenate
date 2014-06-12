@@ -1,32 +1,14 @@
 package net.selenate
 
-import java.io.{ PrintWriter, StringWriter }
 import java.{ util => ju }
 import scala.concurrent.ExecutionContext
 import net.selenate.server.Log
 
-package object server {
+package object server extends RichClasses {
   private val log = Log(this.getClass)
   type PF[A, R] = PartialFunction[A, R]
 
   implicit val ec = ExecutionContext.fromExecutor(ju.concurrent.Executors.newCachedThreadPool())
-
-  implicit class ImpaleException(e: Exception) {
-    def stackTrace: String = {
-      val sw = new StringWriter
-      val pw = new PrintWriter(sw)
-      e.printStackTrace(pw)
-      val s = sw.toString
-      pw.close
-      sw.close
-      s
-    }
-  }
-
-  implicit class ImpaleString(l: String) {
-    def /(r: String): String = "%s/%s" format(l, r)
-  }
-
 
   def tryo[T](f: => T): Option[T] =
     try {

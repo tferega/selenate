@@ -27,7 +27,7 @@ public final class ActorFactory {
     final String serverURI = String.format("akka://server-system@%s:%s/%s", C.ServerHost, C.ServerPort, C.ServerPath);
     return TypedActor.get(system).typedActorOf(
         new TypedProps<T>(clazz),
-        system.actorFor(serverURI)
+        system.actorSelection(serverURI).anchor()
     );
   }
 

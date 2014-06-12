@@ -7,6 +7,7 @@ import driver.DriverPool
 import sessions.SessionFactory
 
 import scala.annotation.tailrec
+import scala.io.StdIn.readLine
 
 object EntryPoint extends App {
   private val log = Log(EntryPoint.getClass)
