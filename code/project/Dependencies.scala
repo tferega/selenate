@@ -15,7 +15,7 @@ trait Dependencies {
 
   // ---------------------------------------------------------------------------
 
-  val propsLoaderVersion = "0.0.0-SNAPSHOT"
+  val propsLoaderVersion = "0.0.1"
 
   val dispatch         = "net.databinder.dispatch" %% "dispatch-core"        % "0.11.1"
   val logback          = "ch.qos.logback"          %  "logback-classic"      % "1.1.2"
