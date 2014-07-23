@@ -6,8 +6,9 @@ import org.streum.configrity.Configuration
 import scala.io.Source
 
 object C {
-  private val configFile = sys.props("user.home").file / ".config" / "selenate" / "server.config"
-  private val config = Configuration.load(Source.fromFile(configFile))
+  val branch             = sys.props("branch")
+  private val configPath = sys.props("user.home") / ".config" / "selenate" / branch / "server.config"
+  private val config     = Configuration.load(configPath)
 
   object Server {
     private val serverConfig = config.detach ("server")

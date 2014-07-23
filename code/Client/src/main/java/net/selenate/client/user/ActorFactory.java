@@ -7,6 +7,11 @@ import java.io.IOException;
 import net.selenate.client.C;
 import net.selenate.common.sessions.ISessionFactory;
 import net.selenate.common.sessions.SessionOptions;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigValue;
+import com.typesafe.config.ConfigValueFactory;
+
 import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
@@ -14,7 +19,8 @@ import scala.concurrent.duration.Duration;
 public final class ActorFactory {
   private ActorFactory() {}
 
-  public static final ActorSystem system = ActorSystem.create("client-system");
+  private static final Config config     = loadConfig();
+  public static final ActorSystem system = ActorSystem.create("client-system", config);
   public static ISessionFactory sessionFactory = getTyped(ISessionFactory.class);
 
   public static <T> T getTyped(Class<T> clazz) {
@@ -23,6 +29,12 @@ public final class ActorFactory {
         new TypedProps<T>(clazz),
         system.actorFor(serverURI)
     );
+  }
+
+  public static Config loadConfig() {
+    Config config        = ConfigFactory.load();
+    ConfigValue hostname = ConfigValueFactory.fromAnyRef(C.ClientHost);
+    return config.withValue("akka.remote.netty.hostname", hostname);
   }
 
   public static ActorRef getUntyped(String name, Class<? extends Actor> clazz) {

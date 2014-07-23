@@ -13,9 +13,11 @@ class Log[T] private (clazz: Class[T], prefix: Option[String]) {
   private def p(s: String) =
     prefix.map("[%s] => " format _).getOrElse("") + s
 
-  def error(s: => String) = logger.error(p(s))
-  def warn(s:  => String) = logger.warn(p(s))
-  def info(s:  => String) = logger.info(p(s))
-  def debug(s: => String) = logger.debug(p(s))
-  def trace(s: => String) = logger.trace(p(s))
+  def error(s: => String)                  = logger.error(p(s))
+  def error(s: => String, t: => Throwable) = logger.error(p(s), t)
+  def warn(s:  => String)                  = logger.warn(p(s))
+  def info(s:  => String)                  = logger.info(p(s))
+  def debug(s: => String)                  = logger.debug(p(s))
+  def trace(s: => String)                  = logger.trace(p(s))
+  def trace(s: => String, t: => Throwable) = logger.trace(p(s), t)
 }

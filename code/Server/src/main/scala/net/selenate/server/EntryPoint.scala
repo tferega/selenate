@@ -13,6 +13,11 @@ object EntryPoint extends App {
     log.info("Selenate Server now starting.")
     log.info("Press ENTER to shut down.")
 
+    log.info("Loading Configs for server...")
+    log.info("  Branch     : " + C.branch)
+    log.info("  ServerHost : " + C.Server.host)
+    log.info("  PoolSize   : " + C.Server.poolSize.toString)
+
     SessionFactory
     DriverPool
 
