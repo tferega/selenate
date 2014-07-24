@@ -2,7 +2,7 @@
 <configuration scan="true" debug="false">
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>[%d{yyyy-MM-dd HH:mm:ss}] %-5level %X{akkaSource} - %msg%n</pattern>
+      <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%-5level] [%c{36}]  - %msg%n</pattern>
     </encoder>
   </appender>
   <appender name="FILE-GLOBAL" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -14,18 +14,18 @@
       <fileNamePattern>../logs/selenate-server-%d{yyyy-MM-dd}.log</fileNamePattern>
     </rollingPolicy>
   </appender>
-  <appender name="TRACE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <appender name="FILE-TRACE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <File>../logs/selenate-server-trace.log</File>
     <encoder>
-      <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%-5level] [%t] [%c{36}] - %m%n</pattern>
+      <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%-5level] [%t] [%c{36}].%M - %m%n</pattern>
     </encoder>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <fileNamePattern>../logs/selenate-server-trace%d{yyyy-MM-dd}.log</fileNamePattern>
       <maxHistory>7</maxHistory>
     </rollingPolicy>
   </appender>
-  <logger name="net.selenate" level="TRACE" additivity="false">
-    <appender-ref ref="TRACE"/>
+  <logger name="net.selenate" level="TRACE" additivity="true">
+    <appender-ref ref="FILE-TRACE"/>
   </logger>
   <root level="DEBUG">
     <appender-ref ref="STDOUT"/>

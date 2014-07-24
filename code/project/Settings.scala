@@ -8,7 +8,7 @@ object Publishing {
 
   lazy val settings = Seq(
     credentials        += Credentials(Path.userHome / ".config" / "selenate" / "nexus.config"),
-    crossScalaVersions := Seq("2.10.2"),
+    crossScalaVersions := Seq("2.10.4"),
     publishArtifact in (Compile, packageDoc) := false,
     publishTo := Some(
       if (version.value endsWith "SNAPSHOT") ElementSnapshots else ElementReleases
@@ -33,8 +33,8 @@ object Default {
         "-deprecation"
       , "-encoding", "UTF-8"
       , "-Xlint:unchecked"
-      , "-source", "1.6"
-      , "-target", "1.6"
+      , "-source", "1.8"
+      , "-target", "1.8"
       ),
       autoScalaLibrary := false,
       crossPaths       := false,
@@ -74,8 +74,8 @@ object Default {
     Seq(
       name         := Name,
       organization := "net.selenate",
-      version      := "0.2.16",
-      scalaVersion := "2.10.2",
+      version      := "0.2.17-SCREENS",
+      scalaVersion := "2.10.4",
       unmanagedSourceDirectories in Test := Nil
   )
 }

@@ -8,6 +8,7 @@ import linux.{ LinuxDisplay, LinuxFile }
 import java.io.File
 
 object FirefoxRunner {
+  private val log = Log(FirefoxRunner.getClass)
   def run(profile: ProfileInfo) =
     profile.display match {
       case DisplayInfo.Main          => runInMain(profile)
@@ -21,7 +22,7 @@ object FirefoxRunner {
   private def runInFirstFree(profile: ProfileInfo) = {
     val binaryLocation = profile.binaryLocation getOrElse SelenateBinary.DefaultBinaryLocation
     val displayInfo = LinuxDisplay.create()
-    println("#"*50 + "==========> " + displayInfo)
+    log.info("#"*50 + "==========> " + displayInfo)
     val script = createScript(displayInfo.num, binaryLocation)
     val binaryFile = LinuxFile.createTempScript(script)
     val ffBinary = new SelenateBinary(binaryFile)

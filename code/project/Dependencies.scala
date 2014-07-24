@@ -19,7 +19,7 @@ object Dependencies {
 
   val configrity = "org.streum"              %% "configrity-core" % "1.0.0"
   val dispatch   = "net.databinder.dispatch" %% "dispatch-core"   % "0.10.0"
-  val logback    = "ch.qos.logback"          %  "logback-classic" % "1.0.13"
+  val logback    = "ch.qos.logback"          %  "logback-classic" % "1.1.2"
   val scalaTest  = "org.scalatest"           %% "scalatest"       % "1.9.1"
   val slf4j      = "org.slf4j"               %  "slf4j-api"       % "1.7.5"
   val procrun    = "com.ferega"              %% "processrunner"   % "0.0.3-SNAPSHOT"
