@@ -5,7 +5,6 @@ import extensions.SelenateFirefox
 
 import net.selenate.common.comms.req.SeReqAppendText
 import net.selenate.common.comms.res.SeResAppendText
-import org.openqa.selenium.internal.selenesedriver.SendKeys
 import scala.collection.JavaConversions._
 
 class AppendTextAction(val d: SelenateFirefox)(implicit context: ActionContext)

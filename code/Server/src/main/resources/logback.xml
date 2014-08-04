@@ -24,7 +24,7 @@
       <maxHistory>7</maxHistory>
     </rollingPolicy>
   </appender>
-  <logger name="net.selenate" level="TRACE" additivity="true">
+  <logger name="net.selenate" level="DEBUG" additivity="true">
     <appender-ref ref="FILE-TRACE"/>
   </logger>
   <root level="DEBUG">
