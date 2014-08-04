@@ -14,8 +14,8 @@ class SystemClickAction(val d: SelenateFirefox)(implicit context: ActionContext)
   protected val log = Log(classOf[SystemClickAction])
 
   def act = { arg =>
-//    val title = UUID.randomUUID.toString
-//    d.title = title
+    val title = UUID.randomUUID.toString
+    d.title = title
     LinuxWindow.clickRelative(d.parentNum, d.title, arg.x, arg.y)
     new SeResSystemClick()
   }
