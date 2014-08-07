@@ -30,27 +30,21 @@ object LinuxDisplay {
   val PortR = """PORT=(\d+)"""r
   private def create(num: Int): DisplayInfo = {
     log.info("Creting new display for display number[:" + num + "]")
+    val result = for {
+      xvfb   <- runXvfb(num).right
+      iceWM  <- runIceWM(num).right
+      x11vnc <- runX11vnc(num).right
+    } yield {
+      val out = x11vnc.stdOutSoFar.trim
 
-    runXvfb(num) match {
-      case Left(msg) => sys.error(s"Could not spawn Xvfb at $num:\n$msg")
-      case _ => DisplayInfo(num, 0)
+      val PortR(port) = out
+      port.toInt
     }
 
-
-//    val result = for {
-//      iceWM  <- runIceWM(num).right
-//      x11vnc <- runX11vnc(num).right
-//    } yield {
-//      val out = x11vnc.stdOutSoFar.trim
-//
-//      val PortR(port) = out
-//      port.toInt
-//    }
-//
-//    result match {
-//      case Left(msg)   => throw new Exception(s"An error occured while creating screen $num:\n$msg")
-//      case Right(port) => DisplayInfo(num, port)
-//    }
+    result match {
+      case Left(msg)   => throw new Exception(s"An error occured while creating screen $num:\n$msg")
+      case Right(port) => DisplayInfo(num, port)
+    }
   }
 
   private def runXvfb(num: Int)         = {
