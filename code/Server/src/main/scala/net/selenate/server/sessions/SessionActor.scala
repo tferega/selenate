@@ -81,12 +81,12 @@ class SessionActor(sessionID: String, profile: ProfileInfo, useFrames: Boolean =
         base.apply(arg)
       } catch {
         case e: Exception =>
-          log.warn("An error occured while processing [%s]" format clazz)
-          if (sender == ActorFactory.system.deadLetters) {
-            e.printStackTrace
-          } else {
-            println(e.toString)
-          }
+          log.error("An error occured while processing [%s]" format clazz, e)
+//          if (sender == ActorFactory.system.deadLetters) {
+//            e.printStackTrace
+//          } else {
+//            println(e.toString)
+//          }
 
           sender ! new Exception(e.stackTrace)
       }

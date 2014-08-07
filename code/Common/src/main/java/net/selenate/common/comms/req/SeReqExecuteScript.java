@@ -15,6 +15,6 @@ public class SeReqExecuteScript implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqExecuteScript(%s)", javascript);
+    return String.format("SeReqExecuteScript(%s)", javascript.substring(0, 50));
   }
 }
