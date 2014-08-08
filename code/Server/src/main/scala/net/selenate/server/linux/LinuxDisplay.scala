@@ -16,13 +16,13 @@ object LinuxDisplay {
   }
 
   def destroy(num: Int) {
-    runPkill(s"x11vnc.*:$num")
+//    runPkill(s"x11vnc.*:$num")
     runPkill(s"icewm.*:$num")
     runPkill(s"Xvfb.*:$num")
   }
 
   def destroyAll() {
-    runPkill(s"x11vnc.*")
+//    runPkill(s"x11vnc.*")
     runPkill(s"icewm.*")
     runPkill(s"Xvfb.*")
   }
@@ -35,10 +35,12 @@ object LinuxDisplay {
       iceWM  <- runIceWM(num).right
       x11vnc <- runX11vnc(num).right
     } yield {
-      val out = x11vnc.stdOutSoFar.trim
-
-      val PortR(port) = out
-      port.toInt
+//      val out = x11vnc.stdOutSoFar.trim
+//      log.trace("X11vnc.stdOutSoFar.trim output = " +  out)
+//
+//      val PortR(port) = out
+//      port.toInt
+      0
     }
 
     result match {

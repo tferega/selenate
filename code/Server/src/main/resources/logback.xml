@@ -27,7 +27,7 @@
   <logger name="net.selenate" level="DEBUG" additivity="true">
     <appender-ref ref="FILE-TRACE"/>
   </logger>
-  <root level="DEBUG">
+  <root level="TRACE">
     <appender-ref ref="STDOUT"/>
     <appender-ref ref="FILE-GLOBAL"/>
   </root>
