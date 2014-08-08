@@ -36,9 +36,11 @@ object LinuxDisplay {
       x11vnc <- runX11vnc(num).right
     } yield {
       val out = x11vnc.stdOutSoFar.trim
+      log.trace("X11vnc.stdOutSoFar.trim output = " +  out)
 
       val PortR(port) = out
       port.toInt
+//      0
     }
 
     result match {

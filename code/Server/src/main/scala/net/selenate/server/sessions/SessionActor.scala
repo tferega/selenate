@@ -5,17 +5,17 @@ import actions._
 import actors.ActorFactory
 import driver. DriverPool
 import info.ProfileInfo
-
 import akka.actor.{ Actor, Cancellable }
 import net.selenate.common.comms.req._
 import net.selenate.common.comms.res.SeCommsRes
 import scala.concurrent.duration.Duration
+import net.selenate.server.extensions.SelenateFirefox
 
 class SessionActor(sessionID: String, profile: ProfileInfo, useFrames: Boolean = true) extends Actor {
   private val log  = Log(classOf[SessionActor], sessionID)
 
   log.info("Creating session actor for session id: {%s}." format sessionID)
-  private val d = DriverPool.get(profile)
+  private val d = getDriverFromPool(profile)
   private var keepaliveScheduler: Option[Cancellable] = None
   private def isKeepalive = keepaliveScheduler.isDefined
   implicit val actionContext = ActionContext(useFrames)
@@ -53,6 +53,19 @@ class SessionActor(sessionID: String, profile: ProfileInfo, useFrames: Boolean =
     case arg: SeReqSystemInput        => new SystemInputAction(d).act(arg)
     case arg: SeReqWaitFor            => new WaitForAction(d).act(arg)
     case arg: SeReqWaitForBrowserPage => new WaitForBrowserPageAction(d).act(arg)
+  }
+
+  private def getDriverFromPool(profile: ProfileInfo): SelenateFirefox = {
+    var sfOpt: Option[SelenateFirefox] = None
+
+    try {
+      sfOpt = Some(DriverPool.get(profile))
+    } catch {
+      case e: Exception =>
+        log.error("Exception while trying to create SelenateFirefox.", e)
+        throw e
+    }
+    sfOpt.get
   }
 
   private def receiveBase: Receive = {
