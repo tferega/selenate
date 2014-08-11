@@ -29,11 +29,11 @@ object LinuxDisplay {
 
   val PortR = """PORT=(\d+)"""r
   private def create(num: Int): DisplayInfo = {
-    log.info("Creting new display for display number[:" + num + "]")
+    log.info("Creating new display for display number[:" + num + "]")
     val result = for {
       xvfb   <- runXvfb(num).right
       iceWM  <- runIceWM(num).right
-      x11vnc <- runX11vnc(num).right
+//      x11vnc <- runX11vnc(num).right
     } yield {
 //      val out = x11vnc.stdOutSoFar.trim
 //      log.trace("X11vnc.stdOutSoFar.trim output = " +  out)
