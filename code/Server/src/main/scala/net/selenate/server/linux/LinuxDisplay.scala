@@ -4,7 +4,7 @@ package linux
 import com.ferega.procrun._
 import scala.annotation.tailrec
 
-case class DisplayInfo(num: Int, port: Int)
+case class DisplayInfo(num: Int, port: Option[Int])
 
 object LinuxDisplay {
   private val log = Log(LinuxDisplay.getClass)
@@ -35,19 +35,25 @@ object LinuxDisplay {
     val result = for {
       xvfb   <- runXvfb(num).right
       iceWM  <- runIceWM(num).right
-      x11vnc <- runX11vnc(num).right
     } yield {
-      val out = x11vnc.stdOutSoFar.trim
-      log.trace("X11vnc.stdOutSoFar.trim output = " +  out)
+      val x11vnc = runX11vnc(num)
 
-      val PortR(port) = out
-      port.toInt
-//      0
+      val portOpt: Option[Int] = x11vnc match {
+        case Right(x) =>
+          val out = x.stdOutSoFar.trim
+          val PortR(port) = out // possibly volatile, try catch this?
+          log.trace("X11vnc.stdOutSoFar.trim output = " +  out)
+          Some(port.toInt)
+        case Left(x)  =>
+          log.error("Failed to create X11vnc for diplay num %s.\n %s" format( num, x))
+          None
+      }
+      portOpt
     }
 
     result match {
-      case Left(msg)   => throw new Exception(s"An error occured while creating screen $num:\n$msg")
-      case Right(port) => DisplayInfo(num, port)
+      case Left(msg)      => throw new Exception(s"An error occured while creating screen $num:\n$msg")
+      case Right(portOpt) => DisplayInfo(num, portOpt)
     }
   }
 
@@ -102,7 +108,7 @@ object LinuxDisplay {
     }
   }
 
-  private def clearBuffer : Unit = {
+  private def clearBuffer() : Unit = {
     Lock.synchronized{
       screenStatusBuffer.clear()
     }
