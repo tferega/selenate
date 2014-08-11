@@ -16,15 +16,17 @@ object LinuxDisplay {
   }
 
   def destroy(num: Int) {
-//    runPkill(s"x11vnc.*:$num")
+    runPkill(s"x11vnc.*:$num")
     runPkill(s"icewm.*:$num")
     runPkill(s"Xvfb.*:$num")
+    removeFromBuffer(num)
   }
 
   def destroyAll() {
-//    runPkill(s"x11vnc.*")
+    runPkill(s"x11vnc.*")
     runPkill(s"icewm.*")
     runPkill(s"Xvfb.*")
+    clearBuffer
   }
 
   val PortR = """PORT=(\d+)"""r
@@ -33,14 +35,14 @@ object LinuxDisplay {
     val result = for {
       xvfb   <- runXvfb(num).right
       iceWM  <- runIceWM(num).right
-//      x11vnc <- runX11vnc(num).right
+      x11vnc <- runX11vnc(num).right
     } yield {
-//      val out = x11vnc.stdOutSoFar.trim
-//      log.trace("X11vnc.stdOutSoFar.trim output = " +  out)
-//
-//      val PortR(port) = out
-//      port.toInt
-      0
+      val out = x11vnc.stdOutSoFar.trim
+      log.trace("X11vnc.stdOutSoFar.trim output = " +  out)
+
+      val PortR(port) = out
+      port.toInt
+//      0
     }
 
     result match {
@@ -78,6 +80,7 @@ object LinuxDisplay {
 
   private case object Lock
   private val screenStatusBuffer: scala.collection.mutable.Set[Int] = scala.collection.mutable.Set.empty
+
   private def isFree(num: Int) = {
     Lock.synchronized {
       if (screenStatusBuffer.contains(num)) {
@@ -91,5 +94,17 @@ object LinuxDisplay {
 //    val freeMsg = if(free) "" else " not"
 //    log.trace("Display [%s] is%s free!" format (num, freeMsg))
 //    free
+  }
+
+  private def removeFromBuffer(num: Int) : Unit = {
+    Lock.synchronized{
+      screenStatusBuffer.remove(num)
+    }
+  }
+
+  private def clearBuffer : Unit = {
+    Lock.synchronized{
+      screenStatusBuffer.clear()
+    }
   }
 }
