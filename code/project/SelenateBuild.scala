@@ -7,7 +7,7 @@ object SelenateBuild extends Build with Settings with Dependencies {
     file("Client"),
     settings = java ++ publishing ++ Seq(
       name := "Selenate-Client",
-      libraryDependencies := akka ++ Seq(propsLoaderJava)
+      libraryDependencies := akka ++ Seq(config)
     )
   ) dependsOn(common)
 
@@ -25,7 +25,7 @@ object SelenateBuild extends Build with Settings with Dependencies {
     file("Server"),
     settings = scala ++ publishing ++ Seq(
       name := "Selenate-Server",
-      libraryDependencies := akka ++ selenium ++ Seq(dispatch, logback, propsLoaderScala, slf4j)
+      libraryDependencies := akka ++ selenium ++ Seq(config, dispatch, logback, procrun, slf4j)
     )
   ) dependsOn(common)
 }

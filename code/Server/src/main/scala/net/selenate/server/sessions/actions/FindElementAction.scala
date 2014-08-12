@@ -1,20 +1,14 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms.res._
-import common.comms.req._
-import java.util.ArrayList
-import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.remote.RemoteWebElement
-import scala.collection.JavaConversions._
+import extensions.SelenateFirefox
 
+import net.selenate.common.comms.req.SeReqFindElement
+import net.selenate.common.comms.res.SeResFindElement
 
-class FindElementAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class FindElementAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqFindElement, SeResFindElement]
     with ActionCommons {
-
   protected val log = Log(classOf[FindElementAction])
 
   def act = { arg =>

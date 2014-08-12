@@ -1,14 +1,12 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms.res._
-import common.comms.req._
-import org.openqa.selenium.firefox.FirefoxDriver
-import scala.collection.JavaConversions._
+import extensions.SelenateFirefox
 
-class NavigateBackAction(val d: FirefoxDriver) extends IAction[SeReqNavigateBack, SeResNavigateBack] {
+import net.selenate.common.comms.req.SeReqNavigateBack
+import net.selenate.common.comms.res.SeResNavigateBack
+
+class NavigateBackAction(val d: SelenateFirefox) extends IAction[SeReqNavigateBack, SeResNavigateBack] {
   protected val log = Log(classOf[NavigateBackAction])
 
   def act = { arg =>

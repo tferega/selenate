@@ -2,7 +2,7 @@ import sbt._
 import Keys._
 
 import com.typesafe.sbteclipse.plugin.EclipsePlugin
-import EclipsePlugin.{ EclipseKeys, EclipseProjectFlavor}
+import EclipsePlugin.{ EclipseCreateSrc, EclipseKeys, EclipseProjectFlavor }
 import net.virtualvoid.sbt.graph.{ Plugin => GraphPlugin }
 
 trait Settings {
@@ -12,7 +12,8 @@ trait Settings {
     GraphPlugin.graphSettings ++ Seq(
       organization := "com.ferega",
       version      := "0.3.0-SNAPSHOT",
-      scalaVersion := "2.11.1"
+      scalaVersion := "2.11.1",
+      EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource  
     )
 
   val scala =

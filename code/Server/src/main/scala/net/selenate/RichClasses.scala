@@ -1,9 +1,9 @@
 package net.selenate
 
-import java.io.{ PrintWriter, StringWriter }
+import java.io.{ File, PrintWriter, StringWriter }
 
 trait RichClasses {
-  implicit class ImpaleException(e: Exception) {
+  implicit class RichExceptionSelenate(e: Exception) {
     def stackTrace: String = {
       val sw = new StringWriter
       val pw = new PrintWriter(sw)
@@ -15,7 +15,11 @@ trait RichClasses {
     }
   }
 
-  implicit class ImpaleString(l: String) {
-    def /(r: String): String = "%s/%s" format(l, r)
+  implicit class RichStringSelenate(s: String) {
+    def file: File = new File(s)
+  }
+
+  implicit class RichFileSelenate(l: File) {
+    def /(r: String) = new File(l, r)
   }
 }

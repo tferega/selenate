@@ -1,8 +1,7 @@
-package net.selenate
-package server
+package net.selenate.server
 package actors
 
-import akka.actor.{ Actor, ActorRef, ActorSystem, Address, Props, TypedActor, TypedProps }
+import akka.actor._
 import scala.reflect.ClassTag
 import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigValueFactory

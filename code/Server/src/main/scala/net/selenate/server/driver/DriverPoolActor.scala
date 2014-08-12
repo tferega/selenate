@@ -1,25 +1,23 @@
-package net.selenate
-package server
+package net.selenate.server
 package driver
 
-import actors.ActorFactory
+import extensions.SelenateFirefox
+import info.PoolInfo
 
 import java.util.UUID
-
-import org.openqa.selenium.firefox.FirefoxDriver
-
 import scala.collection.mutable.Queue
 import scala.concurrent.{ Await, Future }
 import scala.concurrent.duration._
 
-private[driver] class DriverPoolActor(val profile: DriverProfile, val size: Int) extends IDriverPoolActor {
-  private case class DriverEntry(uuid: UUID, future: Future[FirefoxDriver])
+private[driver] class DriverPoolActor(val info: PoolInfo) extends IDriverPoolActor {
+  private case class DriverEntry(uuid: UUID, future: Future[SelenateFirefox])
 
   private val log = Log(classOf[DriverPoolActor])
   private val pool = new Queue[DriverEntry]
+  val profile = info.profile
 
-  log.info("Firing up Firefox Driver Pool Actor. Initial size: %d." format size)
-  enqueueNew(size)
+  log.info("Firing up Firefox Driver Pool Actor. Initial size: %d." format info.size)
+  enqueueNew(info.size)
 
   private def enqueueNew(count: Int) {
     for (i <- 1 to count) {
@@ -32,7 +30,7 @@ private[driver] class DriverPoolActor(val profile: DriverProfile, val size: Int)
 
     val driverFuture = Future {
       log.info("Driver pool actor starting a new entry: {%s}." format uuid)
-      val driver = new FirefoxDriver(profile.get)
+      val driver = FirefoxRunner.run(profile)
       log.info("Driver pool actor entry {%s} started." format uuid)
       driver
     }
@@ -40,7 +38,7 @@ private[driver] class DriverPoolActor(val profile: DriverProfile, val size: Int)
     pool.enqueue(driverEntry)
   }
 
-  def get: FirefoxDriver = {
+  def get: SelenateFirefox = {
     enqueueNew
     val driverEntry = pool.dequeue
     log.info("Driver pool actor waiting for entry {%s}" format driverEntry.uuid)

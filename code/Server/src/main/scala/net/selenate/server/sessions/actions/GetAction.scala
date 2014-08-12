@@ -1,20 +1,16 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms.res._
-import common.comms.req._
+import extensions.SelenateFirefox
 
-import org.openqa.selenium.firefox.FirefoxDriver
+import net.selenate.common.comms.req.SeReqGet
+import net.selenate.common.comms.res.SeResGet
 
-class GetAction(val d: FirefoxDriver) extends IAction[SeReqGet, SeResGet] {
-
+class GetAction(val d: SelenateFirefox) extends IAction[SeReqGet, SeResGet] {
   protected val log = Log(classOf[GetAction])
 
   def act = { arg =>
     d.get(arg.url)
-
     new SeResGet()
   }
 }

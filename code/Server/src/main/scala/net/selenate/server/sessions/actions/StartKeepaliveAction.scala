@@ -1,15 +1,12 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms.res._
-import common.comms.req._
+import extensions.SelenateFirefox
 
-import org.openqa.selenium.firefox.FirefoxDriver
+import net.selenate.common.comms.req.SeReqStartKeepalive
+import net.selenate.common.comms.res.SeResStartKeepalive
 
-class StartKeepaliveAction(val d: FirefoxDriver) extends IAction[SeReqStartKeepalive, SeResStartKeepalive] {
-
+class StartKeepaliveAction(val d: SelenateFirefox) extends IAction[SeReqStartKeepalive, SeResStartKeepalive] {
   protected val log = Log(classOf[StartKeepaliveAction])
 
   def act = { arg =>

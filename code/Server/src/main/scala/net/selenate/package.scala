@@ -4,7 +4,7 @@ import java.{ util => ju }
 import scala.concurrent.ExecutionContext
 import net.selenate.server.Log
 
-package object server extends RichClasses {
+package object server extends RichClasses with Extractors {
   private val log = Log(this.getClass)
   type PF[A, R] = PartialFunction[A, R]
 
@@ -24,7 +24,9 @@ package object server extends RichClasses {
       f
       true
     } catch {
-      case e: Exception => false
+      case e: Exception =>
+        log.trace("Error in tryb: ", e)
+        false
     }
 
   // scala.collection.JavaConversions and scala.collection.JavaConverters are not adequate.

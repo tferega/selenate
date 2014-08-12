@@ -1,53 +1,44 @@
-package net.selenate
-package server
+package net.selenate.server
 package sessions
 
-import common.sessions.ISessionFactory
-import actors.ActorFactory._
-import java.util.{ Map => JMap }
-import scala.collection.JavaConverters._
-import scala.collection.JavaConversions._
-import org.openqa.selenium.firefox.FirefoxProfile
-import net.selenate.server.driver.DriverProfile
-import net.selenate.common.user.Preferences
-import scala.concurrent.Future
+import actors.ActorFactory.{ typed, untyped }
+import info.{ DisplayInfo, ProfileInfo }
+
 import akka.actor.ActorRef
+import net.selenate.common.sessions.{ ISessionFactory, SessionDisplay, SessionOptions }
+import scala.collection.JavaConversions._
+import scala.concurrent.Future
 
 object SessionFactory extends ISessionFactory {
   val factory = typed[ISessionFactory]("session-factory", new SessionFactory)
 
-  def getSession(sessionID: String, preferences: Preferences) = factory.getSession(sessionID, preferences)
+  def getSession(sessionID: String, options: SessionOptions) = factory.getSession(sessionID, options)
   def getSession(sessionID: String) = factory.getSession(sessionID)
-
-  def getSession(sessionID: String, preferences: Preferences, useFrames: java.lang.Boolean) = factory.getSession(sessionID, preferences, useFrames)
-  def getSession(sessionID: String, useFrames: java.lang.Boolean) = factory.getSession(sessionID, useFrames)
 }
 
 private class SessionFactory extends ISessionFactory {
-  private def getProfile(prefMap: Map[String, AnyRef]) =
-    new DriverProfile(prefMap)
+  private def getProfile(options: SessionOptions) =
+    new ProfileInfo(
+        prefMap = options.getPreferences.getAll.toMap,
+        display = options.getDisplay match {
+          case main: SessionDisplay.Main           => DisplayInfo.Main
+          case firstFree: SessionDisplay.FirstFree => DisplayInfo.FirstFree
+          case specific: SessionDisplay.Specific   => DisplayInfo.Specific(specific.getNum)
+        },
+        binaryLocation  = Option(options.getBinaryLocation))
 
-  private val emptyProfile =
-    DriverProfile.empty
-
-  private def getSessionDo(sessionID: String, prefMapOpt: Option[Map[String, AnyRef]], useFrames: java.lang.Boolean): Future[ActorRef] = Future {
-    val profileOpt = prefMapOpt map getProfile
-    val profile    = profileOpt getOrElse emptyProfile
+  private def getSessionDo(sessionID: String, optionsOpt: Option[SessionOptions]): Future[ActorRef] = Future {
+    val profileOpt = optionsOpt map getProfile
+    val profile    = profileOpt getOrElse ProfileInfo.default
     val name       = sessionID
 
-    untyped(name, () => new SessionActor(sessionID, profile, useFrames))
+    untyped(name, () => new SessionActor(sessionID, profile))
   }
 
 
-  def getSession(sessionID: String, preferences: Preferences) =
-    getSessionDo(sessionID, Some(preferences.getAll.toMap), true)
+  def getSession(sessionID: String, options: SessionOptions) =
+    getSessionDo(sessionID, Some(options))
 
   def getSession(sessionID: String) =
-    getSessionDo(sessionID, None, true)
-
-  def getSession(sessionID: String, preferences: Preferences, useFrames: java.lang.Boolean) =
-    getSessionDo(sessionID, Some(preferences.getAll.toMap), useFrames)
-
-  def getSession(sessionID: String, useFrames: java.lang.Boolean) =
-    getSessionDo(sessionID, None, useFrames)
+    getSessionDo(sessionID, None)
 }

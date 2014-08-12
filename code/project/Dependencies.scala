@@ -14,14 +14,12 @@ trait Dependencies {
   val seleniumServer  = "org.seleniumhq.selenium" % "selenium-server"         % seleniumVersion
 
   // ---------------------------------------------------------------------------
-
-  val propsLoaderVersion = "0.0.1"
-
+  
+  val config           = "com.typesafe"            %  "config"               % "1.2.1"
   val dispatch         = "net.databinder.dispatch" %% "dispatch-core"        % "0.11.1"
   val logback          = "ch.qos.logback"          %  "logback-classic"      % "1.1.2"
-  val propsLoaderScala = "com.ferega.props"        %% "propsloader-scalaapi" % propsLoaderVersion
-  val propsLoaderJava  = "com.ferega.props"        %  "propsloader-javaapi"  % propsLoaderVersion
   val slf4j            = "org.slf4j"               %  "slf4j-api"            % "1.7.7"
+  val procrun          = "com.ferega.procrun"      %% "processrunner"        % "0.1.0"
 
   val akka     = Seq(akkaActor, akkaRemote)
   val jodaTime = Seq(jodaTimeConvert, jodaTimeTime)

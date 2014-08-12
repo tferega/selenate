@@ -1,9 +1,11 @@
-package net.selenate
-package server
+package net.selenate.server
 package driver
 
-import org.openqa.selenium.firefox.FirefoxDriver
+import extensions.SelenateFirefox
+import info.{ PoolInfo, ProfileInfo }
 
 private[driver] trait IDriverPoolActor {
-  def get: FirefoxDriver
+  def info: PoolInfo
+  def profile: ProfileInfo
+  def get: SelenateFirefox
 }

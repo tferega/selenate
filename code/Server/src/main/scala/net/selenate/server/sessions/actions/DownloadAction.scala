@@ -1,19 +1,16 @@
-package net.selenate
-package server
-package sessions
-package actions
+package net.selenate.server
+package sessions.actions
 
-import common.comms.res._
-import common.comms.req._
-import dispatch._
+import extensions.SelenateFirefox
+
 import com.ning.http.client.cookie.Cookie
-import java.{ util => ju }
-import org.openqa.selenium.firefox.FirefoxDriver
-import scala.collection.JavaConversions._
+import dispatch._
 import java.io.IOException
+import net.selenate.common.comms.req.SeReqDownload
+import net.selenate.common.comms.res.SeResDownload
+import scala.collection.JavaConversions._
 
-class DownloadAction(val d: FirefoxDriver) extends IAction[SeReqDownload, SeResDownload] {
-
+class DownloadAction(val d: SelenateFirefox) extends IAction[SeReqDownload, SeResDownload] {
   protected val log = Log(classOf[DownloadAction])
 
   def act = { arg =>
@@ -41,7 +38,7 @@ class DownloadAction(val d: FirefoxDriver) extends IAction[SeReqDownload, SeResD
       Cookie.newValidCookie(c.getName, c.getValue, c.getDomain, rawValue, c.getPath, expiryToLong(c.getExpiry), maxAge, c.isSecure, isHttpOnly)
   }
 
-  private def expiryToLong(expiry: ju.Date) =
+  private def expiryToLong(expiry: java.util.Date) =
     if (expiry == null) {
       -1L
     } else {

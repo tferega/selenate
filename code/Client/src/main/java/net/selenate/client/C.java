@@ -1,12 +1,14 @@
 package net.selenate.client;
 
-import com.ferega.props.japi.PropsPath;
-import com.ferega.props.japi.PropsLoader;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigParseOptions;
+import com.typesafe.config.ConfigSyntax;
+import java.io.File;
 
 public final class C {
   private C() {}
 
-  public static final String Branch;
   public static final String ClientHost;
   public static final String ServerHost;
   public static final String ServerPort;
@@ -14,15 +16,43 @@ public final class C {
 
   static {
     try {
-      final PropsLoader props = new PropsLoader(true, new PropsPath("%user.home%", ".config", "selenate", "%branch%", "server.config"));
+      final Config defaultConfig = loadConfig("client.reference.config");
+      final Config userConfig    = loadConfig(getConfigFile());
+      final Config config        = userConfig.withFallback(defaultConfig);
 
-      Branch     = props.get("branch");
-      ClientHost = props.get("client.host");
-      ServerHost = props.get("server.host");
-      ServerPort = props.get("server.port");
-      ServerPath = props.get("server.path");
+      ClientHost = config.getString("client.host");
+      ServerHost = config.getString("server.host");
+      ServerPort = config.getString("server.port");
+      ServerPath = config.getString("server.path");
     } catch (Exception e) {
       throw new RuntimeException("An error occured while loading configuration!", e);
     }
+  }
+
+  private static File getConfigFile() {
+    final String userHome = System.getProperty("user.home");
+    final String branch   = System.getProperty("Selenate.branch");
+    final File configFile;
+    if (branch == null) {
+      configFile = new File(userHome + "/.config/selenate/client.config");
+    } else {
+      configFile = new File(userHome + "/.config/selenate_" + branch + "/client.config");
+    }
+    return configFile;
+  }
+
+  private static ConfigParseOptions getParseOpts() {
+    return ConfigParseOptions
+      .defaults()
+      .setAllowMissing(false)
+      .setSyntax(ConfigSyntax.PROPERTIES);
+  }
+
+  private static Config loadConfig(String name) {
+    return ConfigFactory.parseResources(name, getParseOpts());
+  }
+
+  private static Config loadConfig(File path) {
+    return ConfigFactory.parseFile(path, getParseOpts());
   }
 }

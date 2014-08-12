@@ -1,5 +1,4 @@
-package net.selenate
-package server
+package net.selenate.server
 
 import org.slf4j.LoggerFactory
 
