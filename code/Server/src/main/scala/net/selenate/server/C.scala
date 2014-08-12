@@ -1,27 +1,20 @@
 package net.selenate.server
 
-import net.ceedubs.ficus.Ficus._
-import scala.collection.JavaConversions._
-import com.typesafe.config.ConfigValue
-import net.selenate.server.info.PoolInfo
 import com.typesafe.config.Config
+import net.selenate.server.info.PoolInfo
+import scala.collection.JavaConversions._
 
 object C {
   import CUtils._
 
-  def main(args: Array[String]) {
-    println(Server.Pool.poolInfoList)
-    println(Server.Pool.defaultPool)
-  }
-
-  private val defaultConfig = CUtils.loadConfig("server.reference.config");
-  private val userConfig    = loadConfig(configFile());
+  private val defaultConfig = CUtils.loadConfig("server.reference.config")
+  private val userConfig    = loadConfig(configFile())
   private val config        = userConfig withFallback defaultConfig
-println(config)
+
   object Server {
     private val serverConfig = config.getConfig("server")
 
-    val host = serverConfig.as[String]("host")
+    val host = serverConfig.getString("host")
 
     object Pool {
       private val poolConfig = serverConfig.getConfig("pool")
@@ -36,7 +29,7 @@ println(config)
       private def getPoolInfo(p: (String, Config)) = {
         val userPoolEntryConfig = p._2
         val poolEntryConfig     = userPoolEntryConfig withFallback defaultPoolEntryConfig
-println(poolEntryConfig)
+
         val name           = p._1
         val size           = poolEntryConfig.getString("size")
         val prefs          = poolEntryConfig.getObject("prefs").unwrapped.toMap.mapValues(_.toString)
