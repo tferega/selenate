@@ -2,7 +2,7 @@ import sbt._
 import Keys._
 
 trait Dependencies {
-  val akkaVersion = "2.3.3"
+  val akkaVersion = "2.3.4"
   val akkaActor   = "com.typesafe.akka" %% "akka-actor"  % akkaVersion
   val akkaRemote  = "com.typesafe.akka" %% "akka-remote" % akkaVersion
 

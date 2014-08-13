@@ -8,16 +8,16 @@ import scala.annotation.tailrec
 import scala.io.StdIn.readLine
 
 object EntryPoint extends App {
-  private val log = Log(EntryPoint.getClass)
+  private val log = Log(EntryPoint.getClass, "MAIN")
 
   try {
     log.info("Selenate Server now starting.")
     log.info("Press ENTER to shut down.")
 
-    log.info("Loading Configs for server...")
-//    log.info("  Branch     : " + C.branch)
-    log.info("  ServerHost : " + C.Server.host)
-//    log.info("  PoolSize   : " + C.Server.poolSize.toString)
+    log.info("Loading configuration...")
+    log.info("  Branch:       " + C.branch)
+    log.info("  ServerHost:   " + C.Server.host)
+    log.info("  Loaded pools: " + C.Server.Pool.poolInfoList.map(_.name ))
 
     SessionFactory
     DriverPool
