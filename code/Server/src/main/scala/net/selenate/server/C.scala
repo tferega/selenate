@@ -6,7 +6,7 @@ import scala.collection.JavaConversions._
 
 object C {
   import CUtils._
-  private val log = Log(this.getClass, "Config")
+  private val log = Log(this.getClass)
 
   private val defaultConfig = CUtils.loadDefaultConfig("server.reference.config")
   private val userConfig    = loadUserConfig(configFile())

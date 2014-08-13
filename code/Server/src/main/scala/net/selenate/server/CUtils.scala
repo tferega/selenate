@@ -8,7 +8,7 @@ import scala.collection.JavaConversions._
 import com.typesafe.config.Config
 
 private object CUtils {
-  private val log = Log(this.getClass, "Config")
+  private val log = Log(this.getClass)
 
   val branch = sys.props.get("Selenate.branch")
 

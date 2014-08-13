@@ -8,7 +8,7 @@ import scala.annotation.tailrec
 import scala.io.StdIn.readLine
 
 object EntryPoint extends App {
-  private val log = Log(EntryPoint.getClass, "MAIN")
+  private val log = Log(EntryPoint.getClass)
 
   try {
     log.info("Selenate Server now starting.")

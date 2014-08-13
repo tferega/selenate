@@ -12,7 +12,7 @@ import net.selenate.common.comms.res.SeCommsRes
 import scala.concurrent.duration.Duration
 
 class SessionActor(sessionID: String, profile: ProfileInfo, useFrames: Boolean = true) extends Actor {
-  private val log  = Log(classOf[SessionActor], sessionID)
+  private val log  = Log(classOf[SessionActor])
 
   log.info("Creating session actor for session id: {%s}." format sessionID)
   private val d = DriverPool.get(profile)
