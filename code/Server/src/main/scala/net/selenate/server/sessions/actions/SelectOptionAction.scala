@@ -11,7 +11,7 @@ import scala.collection.JavaConversions._
 class SelectOptionAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqSelectOption, SeResSelectOption]
     with ActionCommons {
-  protected val log = Log(classOf[SelectOptionAction])
+  protected val log = Log(this.getClass)
 
   def act = { arg =>
     switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)

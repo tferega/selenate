@@ -2,20 +2,21 @@ package net.selenate.server
 package sessions
 
 import actions._
-import actors.ActorFactory
-import driver. DriverPool
-import info.ProfileInfo
+import extensions.SelenateFirefox
 
-import akka.actor.{ Actor, Cancellable }
+import akka.actor.{ Actor, Cancellable, Props }
 import net.selenate.common.comms.req._
 import net.selenate.common.comms.res.SeCommsRes
 import scala.concurrent.duration.Duration
 
-class SessionActor(sessionID: String, profile: ProfileInfo, useFrames: Boolean = true) extends Actor {
-  private val log  = Log(classOf[SessionActor])
+object SessionActor {
+  def props(sessionID: String, d: SelenateFirefox, useFrames: Boolean) = Props(new SessionActor(sessionID, d, useFrames))
+}
 
-  log.info("Creating session actor for session id: {%s}." format sessionID)
-  private val d = DriverPool.get(profile)
+class SessionActor(sessionID: String, d: SelenateFirefox, useFrames: Boolean = true) extends Actor {
+  private val log  = Log(this.getClass)
+
+  log.info(s"""Session actor for session "$sessionID" started""" format sessionID)
   private var keepaliveScheduler: Option[Cancellable] = None
   private def isKeepalive = keepaliveScheduler.isDefined
   implicit val actionContext = ActionContext(useFrames)
@@ -82,7 +83,7 @@ class SessionActor(sessionID: String, profile: ProfileInfo, useFrames: Boolean =
       } catch {
         case e: Exception =>
           log.warn("An error occured while processing [%s]" format clazz)
-          if (sender == ActorFactory.system.deadLetters) {
+          if (sender == actors.system.deadLetters) {
             e.printStackTrace
           } else {
             println(e.toString)

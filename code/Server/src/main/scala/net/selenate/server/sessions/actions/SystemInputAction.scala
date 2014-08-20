@@ -10,7 +10,7 @@ import net.selenate.common.comms.res.SeResSystemInput
 class SystemInputAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqSystemInput, SeResSystemInput]
     with ActionCommons {
-  protected val log = Log(classOf[SystemInputAction])
+  protected val log = Log(this.getClass)
 
   def act = { arg =>
     LinuxWindow.input(d.parentNum, arg.input)

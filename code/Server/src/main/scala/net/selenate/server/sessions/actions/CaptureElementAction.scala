@@ -14,7 +14,7 @@ class CaptureElementAction(val d: SelenateFirefox)(implicit context: ActionConte
     extends IAction[SeReqCaptureElement, SeResCaptureElement]
     with ActionCommons {
 
-  protected val log = Log(classOf[CaptureElementAction])
+  protected val log = Log(this.getClass)
 
   def act = { arg =>
     try {

@@ -9,7 +9,7 @@ import net.selenate.common.comms.res.SeResFindElement
 class FindElementAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqFindElement, SeResFindElement]
     with ActionCommons {
-  protected val log = Log(classOf[FindElementAction])
+  protected val log = Log(this.getClass)
 
   def act = { arg =>
     val resElementList: Stream[Option[SeResFindElement]] = inAllWindows { address =>

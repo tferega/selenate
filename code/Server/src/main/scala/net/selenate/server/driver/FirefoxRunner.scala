@@ -8,20 +8,35 @@ import linux.{ LinuxDisplay, LinuxFile }
 import java.io.File
 
 object FirefoxRunner {
-  def run(profile: ProfileInfo) =
-    profile.display match {
-      case DisplayInfo.Main          => runInMain(profile)
-      case DisplayInfo.FirstFree     => runInFirstFree(profile)
-      case DisplayInfo.Specific(num) => runInSpecific(num, profile)
+  val log = Log(this.getClass)
+
+  def run(profile: ProfileInfo) = {
+    try {
+      profile.display match {
+        case DisplayInfo.Main          => runInMain(profile)
+        case DisplayInfo.FirstFree     => runInFirstFree(profile)
+        case DisplayInfo.Specific(num) => runInSpecific(num, profile)
+      }
+    } catch {
+      case e: Exception =>
+        val msg = "An error occured while starting up Firefox!"
+        log.error(msg, e)
+        throw new IllegalArgumentException(msg, e)
     }
+  }
 
   private def runInMain(profile: ProfileInfo) =
     SelenateFirefox.fromProfileInfo(None, profile)
 
   private def runInFirstFree(profile: ProfileInfo) = {
+    if (!C.osName.contains("Linux")) {
+      val msg = s"""Display support is available only in Linux (detected OS name: "${ C.osName }")!"""
+      log.error(msg)
+      throw new UnsupportedOperationException(msg)
+    }
+
     val binaryLocation = profile.binaryLocation getOrElse SelenateBinary.DefaultBinaryLocation
     val displayInfo = LinuxDisplay.create()
-    println("#"*50 + "==========> " + displayInfo)
     val script = createScript(displayInfo.num, binaryLocation)
     val binaryFile = LinuxFile.createTempScript(script)
     val ffBinary = new SelenateBinary(binaryFile)
@@ -30,7 +45,7 @@ object FirefoxRunner {
   }
 
   private def runInSpecific(num: Int, profile: ProfileInfo) = {
-    throw new UnsupportedOperationException("Specific displays not yet supported.")
+    throw new UnsupportedOperationException("Specific displays not yet supported!")
   }
 
   def createScript(displayNum: Int, binaryLocation: File) =

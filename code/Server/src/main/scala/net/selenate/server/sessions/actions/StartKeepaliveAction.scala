@@ -7,7 +7,7 @@ import net.selenate.common.comms.req.SeReqStartKeepalive
 import net.selenate.common.comms.res.SeResStartKeepalive
 
 class StartKeepaliveAction(val d: SelenateFirefox) extends IAction[SeReqStartKeepalive, SeResStartKeepalive] {
-  protected val log = Log(classOf[StartKeepaliveAction])
+  protected val log = Log(this.getClass)
 
   def act = { arg =>
     new SeResStartKeepalive()

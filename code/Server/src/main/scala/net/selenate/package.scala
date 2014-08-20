@@ -1,8 +1,9 @@
 package net.selenate
 
+import server.Log
+
 import java.{ util => ju }
 import scala.concurrent.ExecutionContext
-import net.selenate.server.Log
 
 package object server extends RichClasses with Extractors {
   private val log = Log(this.getClass)

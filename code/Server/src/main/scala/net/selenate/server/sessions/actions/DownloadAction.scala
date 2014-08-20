@@ -11,7 +11,7 @@ import net.selenate.common.comms.res.SeResDownload
 import scala.collection.JavaConversions._
 
 class DownloadAction(val d: SelenateFirefox) extends IAction[SeReqDownload, SeResDownload] {
-  protected val log = Log(classOf[DownloadAction])
+  protected val log = Log(this.getClass)
 
   def act = { arg =>
     val request = url(arg.url)

@@ -7,7 +7,7 @@ import net.selenate.common.comms.req.SeReqNavigateBack
 import net.selenate.common.comms.res.SeResNavigateBack
 
 class NavigateBackAction(val d: SelenateFirefox) extends IAction[SeReqNavigateBack, SeResNavigateBack] {
-  protected val log = Log(classOf[NavigateBackAction])
+  protected val log = Log(this.getClass)
 
   def act = { arg =>
     d.navigate.back;

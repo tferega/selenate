@@ -34,9 +34,9 @@ public final class C {
     final String branch   = System.getProperty("Selenate.branch");
     final File configFile;
     if (branch == null) {
-      configFile = new File(userHome + "/.config/selenate/client.config");
+      configFile = new File(userHome + "/.props/selenate/client.config");
     } else {
-      configFile = new File(userHome + "/.config/selenate_" + branch + "/client.config");
+      configFile = new File(userHome + "/.props/selenate_" + branch + "/client.config");
     }
     return configFile;
   }

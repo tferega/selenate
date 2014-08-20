@@ -10,7 +10,7 @@ import scala.collection.JavaConversions._
 class AppendTextAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqAppendText, SeResAppendText]
     with ActionCommons {
-  protected val log = Log(classOf[AppendTextAction])
+  protected val log = Log(this.getClass)
 
   def act = { arg =>
     switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)

@@ -33,5 +33,4 @@ trait Extractors {
   object IsFile {
     def unapply(raw: String): Option[File] = tryo(new File(raw))
   }
-
 }

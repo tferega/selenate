@@ -9,7 +9,7 @@ import net.selenate.common.comms.res.SeResDeleteCookieNamed
 class DeleteCookieNamedAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqDeleteCookieNamed, SeResDeleteCookieNamed]
     with ActionCommons {
-  protected val log = Log(classOf[DeleteCookieNamedAction])
+  protected val log = Log(this.getClass)
 
   def act = { arg =>
     inAllWindows { address =>

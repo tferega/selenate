@@ -10,7 +10,7 @@ import scala.collection.JavaConversions._
 class ClearTextAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqClearText, SeResClearText]
     with ActionCommons {
-  protected val log = Log(classOf[ClearTextAction])
+  protected val log = Log(this.getClass)
 
   def act = { arg =>
     switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)

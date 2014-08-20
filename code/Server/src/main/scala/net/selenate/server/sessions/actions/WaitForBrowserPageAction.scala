@@ -12,7 +12,7 @@ class WaitForBrowserPageAction(val d: SelenateFirefox)(implicit context: ActionC
     extends IAction[SeReqWaitForBrowserPage, SeResWaitForBrowserPage]
     with ActionCommons
     with WaitFor {
-  protected val log = Log(classOf[WaitForBrowserPageAction])
+  protected val log = Log(this.getClass)
 
   def act = { arg =>
     val res = waitForPageList(arg.pageList.toIndexedSeq)

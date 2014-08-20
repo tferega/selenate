@@ -4,46 +4,59 @@ package driver
 import extensions.SelenateFirefox
 import info.PoolInfo
 
-import java.util.UUID
+import akka.actor.{ Actor, Props }
 import scala.collection.mutable.Queue
-import scala.concurrent.{ Await, Future }
-import scala.concurrent.duration._
+import scala.concurrent.Future
 
-private[driver] class DriverPoolActor(val info: PoolInfo) extends IDriverPoolActor {
-  private case class DriverEntry(uuid: UUID, future: Future[SelenateFirefox])
+object DriverPoolActor {
+  def props(info: PoolInfo): Props = Props(new DriverPoolActor(info))
 
-  private val log = Log(classOf[DriverPoolActor])
+  case class Dequeue(sessionID: String)
+  private case object Enqueue
+
+  private val uuidFactory = new NamedUUID("Driver")
+  case class DriverEntry(uuid: String, future: Future[SelenateFirefox])
+}
+
+class DriverPoolActor(val info: PoolInfo) extends Actor {
+  import DriverPoolActor._
+
+  private val log = Log(this.getClass)
   private val pool = new Queue[DriverEntry]
   val profile = info.profile
 
-  log.info("Firing up Firefox Driver Pool Actor. Initial size: %d." format info.size)
-  enqueueNew(info.size)
-
-  private def enqueueNew(count: Int) {
-    for (i <- 1 to count) {
-      enqueueNew
-    }
+  log.debug(s"""Driver pool with size ${ info.size } created""")
+  for (i <- 1 to info.size) {
+    self ! Enqueue
   }
 
-  private def enqueueNew() {
-    val uuid = UUID.randomUUID
+  private def dequeue(): DriverEntry = {
+    val driverEntry = pool.dequeue
+    log.debug(s"""Driver pool returning an entry: ${ driverEntry.uuid }""")
+    driverEntry
+  }
+
+  private def enqueue() {
+    val uuid = uuidFactory.random
 
     val driverFuture = Future {
-      log.info("Driver pool actor starting a new entry: {%s}." format uuid)
+      log.debug(s"""Driver pool starting a new entry: $uuid""")
       val driver = FirefoxRunner.run(profile)
-      log.info("Driver pool actor entry {%s} started." format uuid)
+      log.debug(s"""Driver pool entry $uuid started""")
       driver
     }
     val driverEntry = DriverEntry(uuid, driverFuture)
     pool.enqueue(driverEntry)
   }
 
-  def get: SelenateFirefox = {
-    enqueueNew
-    val driverEntry = pool.dequeue
-    log.info("Driver pool actor waiting for entry {%s}" format driverEntry.uuid)
-    val driver = Await.result(driverEntry.future, 30 seconds)
-    log.info("Driver pool actor returning entry {%s}" format driverEntry.uuid)
-    driver
+  def receive = {
+    case Dequeue(sessionID) =>
+      log.debug(s"""Received Dequeue($sessionID)""")
+      self ! Enqueue
+      sender ! ((sessionID, dequeue()))
+
+    case Enqueue =>
+      log.debug("Received Enqueue")
+      enqueue()
   }
 }

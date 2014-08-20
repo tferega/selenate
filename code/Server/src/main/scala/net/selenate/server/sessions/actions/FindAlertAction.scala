@@ -10,7 +10,7 @@ import org.openqa.selenium.NoAlertPresentException
 class FindAlertAction(val d: SelenateFirefox)
     extends IAction[SeReqFindAlert, SeResFindAlert]
     with ActionCommons {
-  protected val log = Log(classOf[FindAlertAction])
+  protected val log = Log(this.getClass)
 
   def act = { arg =>
     try {

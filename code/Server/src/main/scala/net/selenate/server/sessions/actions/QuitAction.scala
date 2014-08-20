@@ -7,7 +7,7 @@ import net.selenate.common.comms.req.SeReqQuit
 import net.selenate.common.comms.res.SeResQuit
 
 class QuitAction(val d: SelenateFirefox) extends IAction[SeReqQuit, SeResQuit] {
-  protected val log = Log(classOf[QuitAction])
+  protected val log = Log(this.getClass)
 
   def act = { arg =>
     d.quit

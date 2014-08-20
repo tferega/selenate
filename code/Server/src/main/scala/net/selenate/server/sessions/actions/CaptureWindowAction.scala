@@ -12,7 +12,7 @@ class CaptureWindowAction(val d: SelenateFirefox)(implicit context: ActionContex
     extends IAction[SeReqCaptureWindow, SeResCaptureWindow]
     with ActionCommons {
 
-  protected val log = Log(classOf[CaptureWindowAction])
+  protected val log = Log(this.getClass)
 
   def act = { arg =>
     val resScreenshotList: Stream[Option[SeResCaptureWindow]] = inAllWindows { address =>
