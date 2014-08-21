@@ -5,6 +5,7 @@ trait Dependencies {
   val akkaVersion = "2.3.4"
   val akkaActor   = "com.typesafe.akka" %% "akka-actor"  % akkaVersion
   val akkaRemote  = "com.typesafe.akka" %% "akka-remote" % akkaVersion
+  val akkaSlf4j   = "com.typesafe.akka" %% "akka-slf4j"  % akkaVersion
 
   val jodaTimeConvert = "org.joda"  % "joda-convert" % "1.6"
   val jodaTimeTime    = "joda-time" % "joda-time"    % "2.3"
@@ -21,7 +22,7 @@ trait Dependencies {
   val slf4j            = "org.slf4j"               %  "slf4j-api"            % "1.7.7"
   val procrun          = "com.ferega.procrun"      %% "processrunner"        % "0.1.0"
 
-  val akka     = Seq(akkaActor, akkaRemote)
+  val akka     = Seq(akkaActor, akkaRemote, akkaSlf4j)
   val jodaTime = Seq(jodaTimeConvert, jodaTimeTime)
   val selenium = Seq(seleniumFirefox, seleniumServer)
 }

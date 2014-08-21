@@ -34,7 +34,7 @@ object C {
 
   object Akka {
     private val hostnameVal = ConfigValueFactory.fromAnyRef(Server.host)
-    val config = CUtils.loadResourceConfig("akka.config").withValue("akka.remote.netty.hostname", hostnameVal)
+    val config = CUtils.loadResourceConfig("akka.config").withValue("akka.remote.netty.tcp.hostname", hostnameVal)
 
     log.trace(s"""Akka configuration content: $config""")
   }

@@ -1,6 +1,10 @@
 package net.selenate.common.sessions;
 
-public class SessionRequest {
+import java.io.Serializable;
+
+public class SessionRequest implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   private final String sessionID;
 
   public SessionRequest(final String sessionID) {

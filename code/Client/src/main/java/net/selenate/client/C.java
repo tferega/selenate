@@ -1,9 +1,6 @@
 package net.selenate.client;
 
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigParseOptions;
-import com.typesafe.config.ConfigSyntax;
+import com.typesafe.config.*;
 import java.io.File;
 
 public final class C {
@@ -12,18 +9,18 @@ public final class C {
   public static final String ClientHost;
   public static final String ServerHost;
   public static final String ServerPort;
-  public static final String ServerPath;
+  public static final Config AkkaConfig;
 
   static {
     try {
-      final Config defaultConfig = loadConfig("client.reference.config");
-      final Config userConfig    = loadConfig(getConfigFile());
+      final Config defaultConfig = loadResourceConfig("client.reference.config");
+      final Config userConfig    = loadFileConfig(getConfigFile());
       final Config config        = userConfig.withFallback(defaultConfig);
 
       ClientHost = config.getString("client.host");
       ServerHost = config.getString("server.host");
       ServerPort = config.getString("server.port");
-      ServerPath = config.getString("server.path");
+      AkkaConfig = loadAkkaConfig(ClientHost);
     } catch (Exception e) {
       throw new RuntimeException("An error occured while loading configuration!", e);
     }
@@ -41,18 +38,25 @@ public final class C {
     return configFile;
   }
 
-  private static ConfigParseOptions getParseOpts() {
+  private static ConfigParseOptions getParseOpts(final boolean allowMissing) {
     return ConfigParseOptions
       .defaults()
-      .setAllowMissing(false)
+      .setAllowMissing(allowMissing)
       .setSyntax(ConfigSyntax.PROPERTIES);
   }
 
-  private static Config loadConfig(String name) {
-    return ConfigFactory.parseResources(name, getParseOpts());
+  private static Config loadAkkaConfig(final String clientHost) {
+    final ConfigValue hostnameVal = ConfigValueFactory.fromAnyRef(clientHost);
+    final Config c = ConfigFactory.parseResources("akka.config").withValue("akka.remote.netty.tcp.hostname", hostnameVal);
+    System.out.println(c);
+    return c;
   }
 
-  private static Config loadConfig(File path) {
-    return ConfigFactory.parseFile(path, getParseOpts());
+  private static Config loadResourceConfig(String name) {
+    return ConfigFactory.parseResources(name, getParseOpts(false));
+  }
+
+  private static Config loadFileConfig(File path) {
+    return ConfigFactory.parseFile(path, getParseOpts(true));
   }
 }
