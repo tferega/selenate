@@ -5,6 +5,7 @@ import extensions.SelenateFirefox
 import info.PoolInfo
 
 import akka.actor.{ Actor, Props }
+import net.selenate.common.util.NamedUUID
 import scala.collection.mutable.Queue
 import scala.concurrent.Future
 
