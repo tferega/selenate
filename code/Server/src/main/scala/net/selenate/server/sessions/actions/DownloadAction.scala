@@ -10,9 +10,9 @@ import net.selenate.common.comms.req.SeReqDownload
 import net.selenate.common.comms.res.SeResDownload
 import scala.collection.JavaConversions._
 
-class DownloadAction(val d: SelenateFirefox) extends IAction[SeReqDownload, SeResDownload] {
-  protected val log = Log(this.getClass)
-
+class DownloadAction(val d: SelenateFirefox)
+    extends IAction[SeReqDownload, SeResDownload]
+    with ActionCommons {
   def act = { arg =>
     val request = url(arg.url)
     request.setHeader("Referer", d.getCurrentUrl)

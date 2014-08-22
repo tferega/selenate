@@ -9,8 +9,6 @@ import net.selenate.common.comms.res.SeResClose
 class CloseAction(val d: SelenateFirefox)
     extends IAction[SeReqClose, SeResClose]
     with ActionCommons {
-  protected val log = Log(this.getClass)
-
   def act = { arg =>
     switchToWindow(arg.windowHandle)
     d.close

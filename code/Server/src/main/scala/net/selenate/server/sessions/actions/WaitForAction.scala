@@ -12,8 +12,6 @@ class WaitForAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqWaitFor, SeResWaitFor]
     with ActionCommons
     with WaitFor {
-  protected val log = Log(this.getClass)
-
   def act = { arg =>
     val res = waitForPageList(arg.pageList.toIndexedSeq)
 

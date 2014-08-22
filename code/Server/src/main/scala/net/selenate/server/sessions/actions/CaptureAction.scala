@@ -35,8 +35,6 @@ class CaptureAction(val d: SelenateFirefox)(implicit context: ActionContext)
     with ActionCommons {
   import CaptureAction._
 
-  protected val log = Log(this.getClass)
-
   private case class FrameInfo(index: Int, name: String, src: String)
 
   def act = { arg =>

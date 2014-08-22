@@ -6,9 +6,9 @@ import extensions.SelenateFirefox
 import net.selenate.common.comms.req.SeReqSetUseFrames
 import net.selenate.common.comms.res.SeResSetUseFrames
 
-class SetUseFramesAction(val d: SelenateFirefox) extends IAction[SeReqSetUseFrames, SeResSetUseFrames] {
-  protected val log = Log(this.getClass)
-
+class SetUseFramesAction(val d: SelenateFirefox)
+    extends IAction[SeReqSetUseFrames, SeResSetUseFrames]
+    with ActionCommons {
   def act = { arg =>
     new SeResSetUseFrames()
   }

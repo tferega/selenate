@@ -9,8 +9,6 @@ import net.selenate.common.comms.res.SeResElementExists
 class ElementExistsAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqElementExists, SeResElementExists]
     with ActionCommons {
-  protected val log = Log(this.getClass)
-
   def act = { arg =>
     val resElementList: Stream[Boolean] = inAllWindows { address =>
       tryb {

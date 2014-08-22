@@ -7,9 +7,7 @@ import linux.{ LinuxDisplay, LinuxFile }
 
 import java.io.File
 
-object FirefoxRunner {
-  val log = Log(this.getClass)
-
+object FirefoxRunner extends Loggable {
   def run(profile: ProfileInfo) = {
     try {
       profile.display match {
@@ -20,7 +18,7 @@ object FirefoxRunner {
     } catch {
       case e: Exception =>
         val msg = "An error occured while starting up Firefox!"
-        log.error(msg, e)
+        logError(msg, e)
         throw new IllegalArgumentException(msg, e)
     }
   }
@@ -31,7 +29,7 @@ object FirefoxRunner {
   private def runInFirstFree(profile: ProfileInfo) = {
     if (!C.osName.contains("Linux")) {
       val msg = s"""Display support is available only in Linux (detected OS name: "${ C.osName }")!"""
-      log.error(msg)
+      logError(msg)
       throw new UnsupportedOperationException(msg)
     }
 

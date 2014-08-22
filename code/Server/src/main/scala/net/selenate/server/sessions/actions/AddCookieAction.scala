@@ -10,8 +10,6 @@ import org.openqa.selenium.Cookie
 class AddCookieAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqAddCookie, SeResAddCookie]
     with ActionCommons {
-  protected val log = Log(this.getClass)
-
   def act = { arg =>
     val cookie = arg.cookie
     inAllWindows { address =>

@@ -11,7 +11,6 @@ class FindAndClickAction(val d: SelenateFirefox)(implicit context: ActionContext
     extends IAction[SeReqFindAndClick, SeResFindAndClick]
     with ActionCommons {
   type PathElement = (FramePath, RemoteWebElement)
-  protected val log = Log(this.getClass)
 
   def act = { arg =>
     val elementList: Stream[Boolean] =

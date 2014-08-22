@@ -9,8 +9,6 @@ import net.selenate.common.comms.res.SeResSwitchFrame
 class SwitchFrameAction(val d: SelenateFirefox)
     extends IAction[SeReqSwitchFrame, SeResSwitchFrame]
     with ActionCommons {
-  protected val log = Log(this.getClass)
-
   def act = { arg =>
     if(arg.frame != null) {
       d.switchTo.frame(arg.frame)

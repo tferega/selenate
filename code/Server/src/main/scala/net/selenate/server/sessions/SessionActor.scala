@@ -13,10 +13,10 @@ object SessionActor {
   def props(sessionID: String, d: SelenateFirefox, useFrames: Boolean) = Props(new SessionActor(sessionID, d, useFrames))
 }
 
-class SessionActor(sessionID: String, d: SelenateFirefox, useFrames: Boolean = true) extends Actor {
-  private val log  = Log(this.getClass)
-
-  log.info(s"""Session actor for session "$sessionID" started""" format sessionID)
+class SessionActor(sessionID: String, d: SelenateFirefox, useFrames: Boolean = true)
+    extends Actor
+    with Loggable {
+  logInfo(s"""Session actor for session "$sessionID" started""" format sessionID)
   private var keepaliveScheduler: Option[Cancellable] = None
   private def isKeepalive = keepaliveScheduler.isDefined
   implicit val actionContext = ActionContext(useFrames)
@@ -59,7 +59,7 @@ class SessionActor(sessionID: String, d: SelenateFirefox, useFrames: Boolean = t
   private def receiveBase: Receive = {
     case "ping" => sender ! "pong"
     case data @ KeepaliveData(delay, reqList) =>
-      log.info("Keepalive tick!")
+      logInfo("Keepalive tick!")
       data.reqList foreach actionMan
     case arg: SeReqStartKeepalive =>
       sender ! actionMan(arg)
@@ -77,12 +77,12 @@ class SessionActor(sessionID: String, d: SelenateFirefox, useFrames: Boolean = t
     def apply(arg: Any) = {
       val clazz = arg.getClass.toString
       try {
-        log.info("Received request [%s] from %s.".format(sessionID, clazz, sender.path.toString))
-        log.debug(arg.toString)
+        logInfo("Received request [%s] from %s.".format(sessionID, clazz, sender.path.toString))
+        logDebug(arg.toString)
         base.apply(arg)
       } catch {
         case e: Exception =>
-          log.warn("An error occured while processing [%s]" format clazz)
+          logWarn("An error occured while processing [%s]" format clazz)
           if (sender == actors.system.deadLetters) {
             e.printStackTrace
           } else {
@@ -102,14 +102,14 @@ class SessionActor(sessionID: String, d: SelenateFirefox, useFrames: Boolean = t
 
   private def startKeepalive(data: KeepaliveData) {
     stopKeepalive
-    log.info("Starting keepalive.")
-    log.debug(keepaliveStatus)
+    logInfo("Starting keepalive.")
+    logDebug(keepaliveStatus)
     keepaliveScheduler = Some(context.system.scheduler.schedule(Duration.Zero, data.delay, self, data))
   }
 
   private def stopKeepalive() {
-    log.info("Stopping keepalive.")
-    log.debug(keepaliveStatus)
+    logInfo("Stopping keepalive.")
+    logDebug(keepaliveStatus)
     keepaliveScheduler.map(_.cancel)
     keepaliveScheduler = None
   }

@@ -11,9 +11,6 @@ import org.apache.commons.io.IOUtils
 class CaptureWindowAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqCaptureWindow, SeResCaptureWindow]
     with ActionCommons {
-
-  protected val log = Log(this.getClass)
-
   def act = { arg =>
     val resScreenshotList: Stream[Option[SeResCaptureWindow]] = inAllWindows { address =>
       tryo {
@@ -36,10 +33,10 @@ class CaptureWindowAction(val d: SelenateFirefox)(implicit context: ActionContex
 
     val html2Canvasplugin = IOUtils.toString(getClass().getResourceAsStream("html2canvas.min.js"))
 
-    log.debug("Injecting html2canvas.min.js...")
+    logDebug("Injecting html2canvas.min.js...")
     d.executeScript(appendScript(html2Canvasplugin))
 
-    log.debug("Injecting canvas to the body")
+    logDebug("Injecting canvas to the body")
     d.executeScript("""html2canvas(document.body, {
         onrendered: function(canvas) {
             document.body.appendChild(canvas);

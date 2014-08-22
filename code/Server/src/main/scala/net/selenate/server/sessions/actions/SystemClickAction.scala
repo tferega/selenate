@@ -11,8 +11,6 @@ import java.util.UUID
 class SystemClickAction(val d: SelenateFirefox)(implicit context: ActionContext)
     extends IAction[SeReqSystemClick, SeResSystemClick]
     with ActionCommons {
-  protected val log = Log(this.getClass)
-
   def act = { arg =>
     val title = UUID.randomUUID.toString
     d.title = title

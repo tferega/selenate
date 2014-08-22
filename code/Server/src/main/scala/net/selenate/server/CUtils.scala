@@ -3,9 +3,7 @@ package net.selenate.server
 import com.typesafe.config.{ Config, ConfigFactory, ConfigParseOptions, ConfigSyntax }
 import java.io.File
 
-private object CUtils {
-  private val log = Log(this.getClass)
-
+private object CUtils extends Loggable {
   val branch = sys.props.get("Selenate.branch")
   val userHome = sys.props.get("user.home").getOrElse(throw new RuntimeException("""Key "user.home" not defined in system properties!"""))
   val configPath = {
@@ -15,9 +13,9 @@ private object CUtils {
     }
   }
 
-  log.trace(s"""Detected branch: $branch""")
-  log.trace(s"""Detected user home: $userHome""")
-  log.trace(s"""Detected confing path: $configPath""")
+  logTrace(s"""Detected branch: $branch""")
+  logTrace(s"""Detected user home: $userHome""")
+  logTrace(s"""Detected confing path: $configPath""")
 
   def parseOpts(allowMissing: Boolean) = ConfigParseOptions
       .defaults()
@@ -27,13 +25,13 @@ private object CUtils {
   def loadResourceConfig(name: String): Config = {
     try {
       val config = ConfigFactory.parseResources(name, parseOpts(false))
-      log.debug(s"""Successfully loaded config resource "$name"""")
-      log.trace(s"""Config resource "$name" content: ${ config.toString } }""")
+      logDebug(s"""Successfully loaded config resource "$name"""")
+      logTrace(s"""Config resource "$name" content: ${ config.toString } }""")
       config
     } catch {
       case e: Exception =>
         val msg = s"""An error occured while loading config resource "$name"!"""
-        log.error(msg, e)
+        logError(msg, e)
         throw new RuntimeException(msg, e)
     }
   }
@@ -41,13 +39,13 @@ private object CUtils {
   def loadFileConfig(path: File): Config = {
     try {
       val config = ConfigFactory.parseFile(path, parseOpts(true))
-      log.debug(s"""Successfully loaded config file "$path"""")
-      log.trace(s"""Config file "$path" content: $config }""")
+      logDebug(s"""Successfully loaded config file "$path"""")
+      logTrace(s"""Config file "$path" content: $config }""")
       config
     } catch {
       case e: Exception =>
         val msg = s"""An error occured while loading config file "$path"!"""
-        log.error(msg, e)
+        logError(msg, e)
         throw new RuntimeException(msg, e)
     }
   }

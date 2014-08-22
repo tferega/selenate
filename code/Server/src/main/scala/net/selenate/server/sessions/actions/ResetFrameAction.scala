@@ -9,8 +9,6 @@ import net.selenate.common.comms.res.SeResResetFrame
 class ResetFrameAction(val d: SelenateFirefox)
     extends IAction[SeReqResetFrame, SeResResetFrame]
     with ActionCommons {
-  protected val log = Log(this.getClass)
-
   def act = { arg =>
     d.switchTo.defaultContent
 

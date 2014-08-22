@@ -1,12 +1,13 @@
 package net.selenate
 
-import server.Log
+import server.Loggable
 
 import java.{ util => ju }
 import scala.concurrent.ExecutionContext
 
-package object server extends RichClasses with Extractors {
-  private val log = Log(this.getClass)
+package object server
+    extends RichClasses
+    with Extractors with Loggable {
   type PF[A, R] = PartialFunction[A, R]
 
   implicit val ec = ExecutionContext.fromExecutor(ju.concurrent.Executors.newCachedThreadPool())
@@ -16,7 +17,7 @@ package object server extends RichClasses with Extractors {
       Some(f)
     } catch {
       case e: Exception =>
-        log.trace("Error in tryo: ", e)
+        logTrace("Error in tryo", e)
         None
     }
 
@@ -26,7 +27,7 @@ package object server extends RichClasses with Extractors {
       true
     } catch {
       case e: Exception =>
-        log.trace("Error in tryb: ", e)
+        logTrace("Error in tryb", e)
         false
     }
 

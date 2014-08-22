@@ -4,14 +4,12 @@ import com.typesafe.config.ConfigValueFactory
 import net.selenate.server.info.PoolInfo
 import scala.collection.JavaConversions._
 
-object C {
-  private val log = Log(this.getClass)
-
+object C extends Loggable {
   private val defaultConfig = CUtils.loadResourceConfig("server.reference.config")
   private val userConfig    = CUtils.loadFileConfig(CUtils.configPath)
   private val config        = userConfig withFallback defaultConfig
 
-  log.trace(s"""Final configuration content: $config""")
+  logTrace(s"""Final configuration content: $config""")
 
   val branch = CUtils.branch
   val osName = sys.props("os.name")
@@ -36,6 +34,6 @@ object C {
     private val hostnameVal = ConfigValueFactory.fromAnyRef(Server.host)
     val config = CUtils.loadResourceConfig("akka.config").withValue("akka.remote.netty.tcp.hostname", hostnameVal)
 
-    log.trace(s"""Akka configuration content: $config""")
+    logTrace(s"""Akka configuration content: $config""")
   }
 }
