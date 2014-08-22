@@ -6,6 +6,7 @@ import java.io.File;
 public final class C {
   private C() {}
 
+  public static final int    WaitingTimeout;
   public static final String ClientHost;
   public static final String ServerHost;
   public static final String ServerPort;
@@ -17,10 +18,11 @@ public final class C {
       final Config userConfig    = loadFileConfig(getConfigFile());
       final Config config        = userConfig.withFallback(defaultConfig);
 
-      ClientHost = config.getString("client.host");
-      ServerHost = config.getString("server.host");
-      ServerPort = config.getString("server.port");
-      AkkaConfig = loadAkkaConfig(ClientHost);
+      WaitingTimeout = config.getInt("waiting.timeout");
+      ClientHost     = config.getString("client.host");
+      ServerHost     = config.getString("server.host");
+      ServerPort     = config.getString("server.port");
+      AkkaConfig     = loadAkkaConfig(ClientHost);
     } catch (Exception e) {
       throw new RuntimeException("An error occured while loading configuration!", e);
     }
