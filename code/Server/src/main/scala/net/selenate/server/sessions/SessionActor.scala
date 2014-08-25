@@ -16,7 +16,7 @@ object SessionActor {
 class SessionActor(sessionID: String, d: SelenateFirefox, useFrames: Boolean = true)
     extends Actor
     with Loggable {
-  logInfo(s"""Session actor for session "$sessionID" started""" format sessionID)
+  logInfo(s"""Session actor for session $sessionID started""")
   private var keepaliveScheduler: Option[Cancellable] = None
   private def isKeepalive = keepaliveScheduler.isDefined
   implicit val actionContext = ActionContext(useFrames)
@@ -95,6 +95,11 @@ class SessionActor(sessionID: String, d: SelenateFirefox, useFrames: Boolean = t
   }
 
   def receive = wrap(receiveBase)
+
+  override def postStop() {
+    d.quit()
+    logInfo(s"""Session actor for session $sessionID stopped""")
+  }
 
   private def schedulify(data: KeepaliveData) {
     context.system.scheduler.scheduleOnce(data.delay, self, data)

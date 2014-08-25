@@ -28,4 +28,8 @@ class SessionFactoryActor
           context.actorOf(SessionActor.props(sessionID, driver, false), sessionID)
       }
   }
+
+  override def postStop() {
+    logDebug("Session factory stopped")
+  }
 }

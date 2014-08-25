@@ -3,11 +3,11 @@ package driver
 
 import extensions.SelenateFirefox
 import info.PoolInfo
-
 import akka.actor.{ Actor, Props }
 import net.selenate.common.util.NamedUUID
 import scala.collection.mutable.Queue
-import scala.concurrent.Future
+import scala.concurrent.{ Await, Future }
+import scala.concurrent.duration._
 
 object DriverPoolActor {
   def props(info: PoolInfo): Props = Props(new DriverPoolActor(info))
@@ -27,7 +27,7 @@ class DriverPoolActor(val info: PoolInfo)
   private val pool = new Queue[DriverEntry]
   val profile = info.profile
 
-  logDebug(s"""Driver pool with size ${ info.size } created""")
+  logDebug(s"""Driver pool with size ${ info.size } started""")
   for (i <- 1 to info.size) {
     self ! Enqueue
   }
@@ -60,5 +60,13 @@ class DriverPoolActor(val info: PoolInfo)
     case Enqueue =>
       logDebug("Received Enqueue")
       enqueue()
+  }
+
+  override def postStop() {
+    val futureList: List[Future[SelenateFirefox]] = pool.toList.map(_.future)
+    val listFuture: Future[List[SelenateFirefox]] = Future.sequence(futureList)
+    val driverList = Await.result(listFuture, 30 seconds)
+    driverList.foreach(_.quit)
+    logDebug("Driver pool stopped")
   }
 }
