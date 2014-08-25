@@ -6,7 +6,8 @@ import scala.annotation.tailrec
 
 case class DisplayInfo(num: Int, port: Int)
 
-object LinuxDisplay {
+object LinuxDisplay extends Loggable {
+  private val screenCache = new SetCache[Int]()
   private val BaseNum = 200
 
   def create(): DisplayInfo = {
@@ -15,12 +16,14 @@ object LinuxDisplay {
   }
 
   def destroy(num: Int) {
+    logDebug(s"""Destroying screen $num""")
     runPkill(s"x11vnc.*:$num")
     runPkill(s"icewm.*:$num")
     runPkill(s"Xvfb.*:$num")
   }
 
   def destroyAll() {
+    logDebug(s"""Destroying all screens""")
     runPkill(s"x11vnc.*")
     runPkill(s"icewm.*")
     runPkill(s"Xvfb.*")
@@ -28,6 +31,9 @@ object LinuxDisplay {
 
   val PortR = """PORT=(\d+)"""r
   private def create(num: Int): DisplayInfo = {
+    logDebug(s"""Creating screen number $num""")
+    screenCache.add(num)
+
     val result = for {
       xvfb   <- runXvfb(num).right
       iceWM  <- runIceWM(num).right
@@ -39,8 +45,13 @@ object LinuxDisplay {
     }
 
     result match {
-      case Left(msg)   => throw new Exception(s"An error occured while creating screen $num:\n$msg")
-      case Right(port) => DisplayInfo(num, port)
+      case Left(message)   =>
+        val msg = s"""An error occured while creating screen $num:\n$message"""
+        logError(msg)
+        throw new Exception(msg)
+      case Right(port) =>
+        logDebug(s"""Screen $num successfully created on port $port""")
+        DisplayInfo(num, port)
     }
   }
 
@@ -54,6 +65,9 @@ object LinuxDisplay {
   private def getFirstFree(num: Int = BaseNum): Int =
     if (isFree(num)) num else getFirstFree(num+1)
 
-  private def isFree(num: Int) =
-    runXdpyInfo(num).contains("unable to open display")
+  private def isFree(num: Int) = {
+    (num > BaseNum) &&                                      // Sanity check
+    runXdpyInfo(num).contains("unable to open display") &&  // System
+    !screenCache.contains(num)                              // Thread-safe cache
+  }
 }

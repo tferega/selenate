@@ -14,4 +14,4 @@ object DisplayProcessRunner {
   }
 }
 
-class DisplayProcessRunner(num: Int, command: String, arguments: Seq[Any]) extends ProcessRunner(DisplayProcessRunner.createDisplayScript(num, command), arguments)
+class DisplayProcessRunner(uuid: String, num: Int, command: String, arguments: Seq[Any]) extends ProcessRunner(uuid, DisplayProcessRunner.createDisplayScript(num, command), arguments)
