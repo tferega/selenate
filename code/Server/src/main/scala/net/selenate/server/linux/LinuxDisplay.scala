@@ -4,8 +4,6 @@ package linux
 import com.ferega.procrun._
 import scala.annotation.tailrec
 
-case class DisplayInfo(num: Int, port: Int)
-
 object LinuxDisplay extends Loggable {
   private val screenCache = new SetCache[Int]()
   private val BaseNum = 200

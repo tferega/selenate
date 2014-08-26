@@ -39,7 +39,7 @@ object FirefoxRunner extends Loggable {
     val binaryFile = LinuxFile.createTempScript(script)
     val ffBinary = new SelenateBinary(binaryFile)
     val ffProfile = SelenateProfile.fromProfileSettings(profile)
-    new SelenateFirefox(Some(displayInfo.num), ffBinary, ffProfile)
+    new SelenateFirefox(Some(displayInfo), ffBinary, ffProfile)
   }
 
   private def runInSpecific(num: Int, profile: ProfileSettings) = {

@@ -11,7 +11,7 @@ class SystemInputAction(val sessionID: String, val d: SelenateFirefox)(implicit 
     extends Action[SeReqSystemInput, SeResSystemInput]
     with ActionCommons {
   def act = { arg =>
-    LinuxWindow.input(d.parentNum, arg.input)
+    LinuxWindow.input(d.displayInfo.map(_.num), arg.input)
     new SeResSystemInput()
   }
 }

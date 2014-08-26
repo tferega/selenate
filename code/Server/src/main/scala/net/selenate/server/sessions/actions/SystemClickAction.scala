@@ -14,7 +14,7 @@ class SystemClickAction(val sessionID: String, val d: SelenateFirefox)(implicit 
   def act = { arg =>
     val title = UUID.randomUUID.toString
     d.title = title
-    LinuxWindow.clickRelative(d.parentNum, title, arg.x, arg.y)
+    LinuxWindow.clickRelative(d.displayInfo.map(_.num), title, arg.x, arg.y)
     new SeResSystemClick()
   }
 }
