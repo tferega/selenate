@@ -13,7 +13,8 @@ trait Settings {
       organization := "com.ferega",
       version      := "0.3.0-SNAPSHOT",
       scalaVersion := "2.11.1",
-      EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource  
+      EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource,
+      EclipseKeys.eclipseOutput := Some("bin")
     )
 
   val scala =
