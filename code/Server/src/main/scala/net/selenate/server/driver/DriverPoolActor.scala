@@ -2,7 +2,7 @@ package net.selenate.server
 package driver
 
 import extensions.SelenateFirefox
-import info.PoolInfo
+import settings.PoolSettings
 import akka.actor.{ Actor, Props }
 import net.selenate.common.util.NamedUUID
 import scala.collection.mutable.Queue
@@ -10,7 +10,7 @@ import scala.concurrent.{ Await, Future }
 import scala.concurrent.duration._
 
 object DriverPoolActor {
-  def props(info: PoolInfo): Props = Props(new DriverPoolActor(info))
+  def props(settings: PoolSettings): Props = Props(new DriverPoolActor(settings))
 
   case class Dequeue(sessionID: String)
   private case object Enqueue
@@ -19,16 +19,16 @@ object DriverPoolActor {
   case class DriverEntry(uuid: String, future: Future[SelenateFirefox])
 }
 
-class DriverPoolActor(val info: PoolInfo)
+class DriverPoolActor(val settings: PoolSettings)
     extends Actor
     with Loggable {
   import DriverPoolActor._
 
   private val pool = new Queue[DriverEntry]
-  val profile = info.profile
+  val profile = settings.profile
 
-  logDebug(s"""Driver pool with size ${ info.size } started""")
-  for (i <- 1 to info.size) {
+  logDebug(s"""Driver pool with size ${ settings.size } started""")
+  for (i <- 1 to settings.size) {
     self ! Enqueue
   }
 

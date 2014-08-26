@@ -1,13 +1,13 @@
 package net.selenate.server
 package extensions
 
-import info.ProfileInfo
+import settings.ProfileSettings
 
 import java.io.File
 import org.openqa.selenium.firefox.FirefoxBinary
 
 object SelenateBinary {
-  def fromProfileInfo(profile: ProfileInfo) =
+  def fromProfileSettings(profile: ProfileSettings) =
     new SelenateBinary(profile.binaryLocation)
 
   def DefaultBinaryLocation = new SelenateBinary().binaryLocation

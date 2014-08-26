@@ -1,7 +1,7 @@
 package net.selenate.server
-package info
+package settings
 
-object PoolInfo {
+object PoolSettings {
   private def parseSize(size: String): Int =
     size match {
       case IsInt(i) => i
@@ -12,9 +12,9 @@ object PoolInfo {
       size: String,
       prefs: Map[String, String],
       display: String,
-      binaryLocation: Option[String]) = new PoolInfo(
+      binaryLocation: Option[String]) = new PoolSettings(
     size    = parseSize(size),
-    profile = ProfileInfo.fromConfig(prefs, display, binaryLocation))
+    profile = ProfileSettings.fromConfig(prefs, display, binaryLocation))
 }
 
-case class PoolInfo(size: Int, profile: ProfileInfo)
+case class PoolSettings(size: Int, profile: ProfileSettings)

@@ -2,18 +2,18 @@ package net.selenate.server
 package driver
 
 import extensions.{ SelenateBinary, SelenateFirefox, SelenateProfile }
-import info.{ DisplayInfo, ProfileInfo }
+import settings.{ DisplaySettings, ProfileSettings }
 import linux.{ LinuxDisplay, LinuxFile }
 
 import java.io.File
 
 object FirefoxRunner extends Loggable {
-  def run(profile: ProfileInfo) = {
+  def run(profile: ProfileSettings) = {
     try {
       profile.display match {
-        case DisplayInfo.Main          => runInMain(profile)
-        case DisplayInfo.FirstFree     => runInFirstFree(profile)
-        case DisplayInfo.Specific(num) => runInSpecific(num, profile)
+        case DisplaySettings.Main          => runInMain(profile)
+        case DisplaySettings.FirstFree     => runInFirstFree(profile)
+        case DisplaySettings.Specific(num) => runInSpecific(num, profile)
       }
     } catch {
       case e: Exception =>
@@ -23,10 +23,10 @@ object FirefoxRunner extends Loggable {
     }
   }
 
-  private def runInMain(profile: ProfileInfo) =
-    SelenateFirefox.fromProfileInfo(None, profile)
+  private def runInMain(profile: ProfileSettings) =
+    SelenateFirefox.fromProfileSettings(None, profile)
 
-  private def runInFirstFree(profile: ProfileInfo) = {
+  private def runInFirstFree(profile: ProfileSettings) = {
     if (!C.osName.contains("Linux")) {
       val msg = s"""Display support is available only in Linux (detected OS name: "${ C.osName }")!"""
       logError(msg)
@@ -38,11 +38,11 @@ object FirefoxRunner extends Loggable {
     val script = createScript(displayInfo.num, binaryLocation)
     val binaryFile = LinuxFile.createTempScript(script)
     val ffBinary = new SelenateBinary(binaryFile)
-    val ffProfile = SelenateProfile.fromProfileInfo(profile)
+    val ffProfile = SelenateProfile.fromProfileSettings(profile)
     new SelenateFirefox(Some(displayInfo.num), ffBinary, ffProfile)
   }
 
-  private def runInSpecific(num: Int, profile: ProfileInfo) = {
+  private def runInSpecific(num: Int, profile: ProfileSettings) = {
     throw new UnsupportedOperationException("Specific displays not yet supported!")
   }
 

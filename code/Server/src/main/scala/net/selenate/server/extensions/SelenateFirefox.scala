@@ -1,16 +1,16 @@
 package net.selenate.server
 package extensions
 
-import info.ProfileInfo
+import settings.ProfileSettings
 
 import org.openqa.selenium.firefox.FirefoxDriver
 
 object SelenateFirefox {
-  def fromProfileInfo(parentNum: Option[Int], profile: ProfileInfo) =
+  def fromProfileSettings(parentNum: Option[Int], profile: ProfileSettings) =
     new SelenateFirefox(
         parentNum,
-        SelenateBinary.fromProfileInfo(profile),
-        SelenateProfile.fromProfileInfo(profile))
+        SelenateBinary.fromProfileSettings(profile),
+        SelenateProfile.fromProfileSettings(profile))
 }
 
 class SelenateFirefox(val parentNum: Option[Int], val selenateBinary: SelenateBinary, val selenateProfile: SelenateProfile) extends FirefoxDriver(selenateBinary, selenateProfile) {

@@ -1,9 +1,9 @@
 package net.selenate.server
-package info
+package settings
 
 import java.io.File
 
-object ProfileInfo {
+object ProfileSettings {
   private def parsePrefs(prefs: Map[String, String]): Map[String, AnyRef] =
     prefs.mapValues { entry =>
       entry match {
@@ -14,11 +14,11 @@ object ProfileInfo {
       }
     }
 
-  private def parseDisplay(display: String): DisplayInfo =
+  private def parseDisplay(display: String): DisplaySettings =
     display.toLowerCase match {
-      case "main"      => DisplayInfo.Main
-      case "firstfree" => DisplayInfo.FirstFree
-      case IsInt(num)  => DisplayInfo.Specific(num)
+      case "main"      => DisplaySettings.Main
+      case "firstfree" => DisplaySettings.FirstFree
+      case IsInt(num)  => DisplaySettings.Specific(num)
       case _ => throw new IllegalArgumentException(s"""Error while parsing configuration. Offending entry: server.pool.display. Expected one of ["Main", "FirstFree", num], received "$display".""")
     }
 
@@ -33,14 +33,14 @@ object ProfileInfo {
   def fromConfig(
       prefs: Map[String, String],
       display: String,
-      binaryLocation: Option[String]) = new ProfileInfo(
+      binaryLocation: Option[String]) = new ProfileSettings(
     prefMap        = parsePrefs(prefs),
     display        = parseDisplay(display),
     binaryLocation = binaryLocation map parseBinaryLocation)
 }
 
 
-case class ProfileInfo(
+case class ProfileSettings(
     val prefMap: Map[String, AnyRef],
-    val display: DisplayInfo,
+    val display: DisplaySettings,
     val binaryLocation: Option[File])

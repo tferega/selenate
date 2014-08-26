@@ -1,7 +1,8 @@
 package net.selenate.server
 
+import settings.PoolSettings
+
 import com.typesafe.config.ConfigValueFactory
-import net.selenate.server.info.PoolInfo
 import scala.collection.JavaConversions._
 
 object C extends Loggable {
@@ -26,7 +27,7 @@ object C extends Loggable {
       private val display        = poolConfig.getString("display")
       private val binaryLocation = if (poolConfig.hasPath("binary")) Some(poolConfig.getString("binary")) else None
 
-      val poolInfo = PoolInfo.fromConfig(size, prefs, display, binaryLocation)
+      val poolInfo = PoolSettings.fromConfig(size, prefs, display, binaryLocation)
     }
   }
 
