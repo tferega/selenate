@@ -18,7 +18,8 @@ object C extends Loggable {
   object Server {
     private val serverConfig = config.getConfig("server")
 
-    val host = serverConfig.getString("host")
+    val host   = serverConfig.getString("host")
+    val record = serverConfig.getBoolean("record")
 
     object Pool {
       private val poolConfig     = serverConfig.getConfig("pool")

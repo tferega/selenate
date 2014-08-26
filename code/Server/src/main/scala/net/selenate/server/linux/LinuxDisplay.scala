@@ -3,6 +3,7 @@ package linux
 
 import com.ferega.procrun._
 import scala.annotation.tailrec
+import org.joda.time.DateTime
 
 object LinuxDisplay extends Loggable {
   private val screenCache = new SetCache[Int]()
@@ -13,9 +14,17 @@ object LinuxDisplay extends Loggable {
     create(num)
   }
 
+  def record(uuid: String, num: Int): String = {
+    val dt = formattedCurrentDateTime()
+    val filename = s"${ dt }_${ uuid }_recording.mp4"
+    runFFmpeg(filename, num)
+    filename
+  }
+
   def destroy(displayInfo: DisplayInfo) {
     val num = displayInfo.num
     logDebug(s"""Destroying screen $num""")
+    runPkill(s"ffmpeg.*:$num")
     runPkill(s"x11vnc.*:$num")
     runPkill(s"icewm.*:$num")
     runPkill(s"Xvfb.*:$num")
@@ -23,6 +32,7 @@ object LinuxDisplay extends Loggable {
 
   def destroyAll() {
     logDebug(s"""Destroying all screens""")
+    runPkill(s"ffmpeg.*")
     runPkill(s"x11vnc.*")
     runPkill(s"icewm.*")
     runPkill(s"Xvfb.*")
@@ -59,6 +69,19 @@ object LinuxDisplay extends Loggable {
   private def runX11vnc(num: Int)       = LinuxProc.runAndVerify("x11vnc", "-display" | s":$num" | "-listen" | "localhost" | "-nopw" | "-xkb" | "-shared" | "-forever")
   private def runXdpyInfo(num: Int)     = LinuxProc.runAndEnd("xdpyinfo", "-display" | s":$num")
   private def runPkill(pattern: String) = LinuxProc.runAndEnd("pkill", "-f" | pattern)
+  private def runFFmpeg(filename: String, num: Int) = LinuxProc.runAndVerify("ffmpeg",
+        "-y"       |
+        "-t"       | "30"        |
+        "-f"       | "x11grab"   |
+        "-qscale"  | "2"         |
+        "-r"       | "15"        |
+        "-i"       | s":$num"    |
+        "-s"       | "1920x1080" |
+        "-vcodec"  | "libx264"   |
+        "-vpre"    | "medium"    |
+        "-crf"     | "22"        |
+        "-threads" | "0"         |
+        filename)
 
   @tailrec
   private def getFirstFree(num: Int = BaseNum): Int =
@@ -69,4 +92,7 @@ object LinuxDisplay extends Loggable {
     runXdpyInfo(num).contains("unable to open display") &&  // System
     !screenCache.contains(num)                              // Thread-safe cache
   }
+
+  private def formattedCurrentDateTime(): String =
+    DateTime.now().toString("YYYY-MM-dd'T'HHmmss")
 }

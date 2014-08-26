@@ -4,11 +4,11 @@ package sessions
 import actions._
 import extensions.SelenateFirefox
 import linux.LinuxDisplay
-
 import akka.actor.{ Actor, Cancellable, Props }
 import net.selenate.common.comms.req._
 import net.selenate.common.comms.res.SeCommsRes
 import scala.concurrent.duration.Duration
+import net.selenate.server.linux.DisplayInfo
 
 object SessionActor {
   def props(sessionID: String, d: SelenateFirefox) = Props(new SessionActor(sessionID, d))
@@ -23,6 +23,14 @@ class SessionActor(sessionID: String, d: SelenateFirefox)
   private var keepaliveScheduler: Option[Cancellable] = None
   private def isKeepalive = keepaliveScheduler.isDefined
   implicit val actionContext = ActionContext(true)
+
+  (C.Server.record, d.displayInfo) match {
+    case (true, Some(DisplayInfo(displayNum, _))) =>
+      val filename = LinuxDisplay.record(sessionID, displayNum)
+      logDebug(s"Recording session to: $filename")
+    case _ =>
+      logDebug("Session not recorded")
+  }
 
   private def actionMan: PF[SeCommsReq, SeCommsRes] = {
     case arg: SeReqAddCookie          => new AddCookieAction         (sessionID, d).act(arg)
