@@ -12,7 +12,7 @@ import org.openqa.selenium.SearchContext
 import org.openqa.selenium.support.ui.Select
 import scala.collection.JavaConversions._
 
-trait ActionCommons extends Loggable {
+trait ActionCommons { self: Loggable =>
   type Window    = String
   type Frame     = Int
   type FramePath = IndexedSeq[Frame]
@@ -51,9 +51,7 @@ return report;
   }
 
   protected def switchToWindow(window: Window) {
-    logDebug("SWITCHING TO DEFAULT CONTENT")
     d.switchTo.defaultContent
-    logDebug("SWITCHING TO WINDOW "+ window)
     d.switchTo.window(window)
   }
 
@@ -61,7 +59,6 @@ return report;
     if(context.useFrames) {
       switchToWindow(window)
       framePath foreach { e =>
-        logDebug("SWITCHING TO FRAME "+ e)
         d.switchTo.frame(e)
       }
     }
@@ -219,7 +216,6 @@ return report;
       val fullPath = framePath ++ frame.toIndexedSeq
       switchToFrame(window, fullPath)
       val result = address(Address(window, fullPath))
-      logDebug("###############==========-----> [%s]: %s".format(fullPath.mkString(", "), result))
       val childrenResultList = findAllFrames.toStream flatMap { f =>
         inAllFramesDoit(window, fullPath, Some(f))
       }

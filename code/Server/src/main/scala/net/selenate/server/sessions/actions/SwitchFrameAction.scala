@@ -6,7 +6,7 @@ import extensions.SelenateFirefox
 import net.selenate.common.comms.req.SeReqSwitchFrame
 import net.selenate.common.comms.res.SeResSwitchFrame
 
-class SwitchFrameAction(val d: SelenateFirefox)
+class SwitchFrameAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqSwitchFrame, SeResSwitchFrame]
     with ActionCommons {
   def act = { arg =>

@@ -8,7 +8,7 @@ import net.selenate.common.comms.res.SeResWaitForBrowserPage
 import net.selenate.common.comms.{ SeElementSelector, SePage }
 import scala.collection.JavaConversions._
 
-class WaitForBrowserPageAction(val d: SelenateFirefox)(implicit context: ActionContext)
+class WaitForBrowserPageAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqWaitForBrowserPage, SeResWaitForBrowserPage]
     with ActionCommons
     with WaitFor {

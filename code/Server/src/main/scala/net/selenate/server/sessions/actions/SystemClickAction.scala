@@ -8,7 +8,7 @@ import net.selenate.common.comms.req.SeReqSystemClick
 import net.selenate.common.comms.res.SeResSystemClick
 import java.util.UUID
 
-class SystemClickAction(val d: SelenateFirefox)(implicit context: ActionContext)
+class SystemClickAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqSystemClick, SeResSystemClick]
     with ActionCommons {
   def act = { arg =>

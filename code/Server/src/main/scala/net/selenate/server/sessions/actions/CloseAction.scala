@@ -6,7 +6,7 @@ import extensions.SelenateFirefox
 import net.selenate.common.comms.req.SeReqClose
 import net.selenate.common.comms.res.SeResClose
 
-class CloseAction(val d: SelenateFirefox)
+class CloseAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqClose, SeResClose]
     with ActionCommons {
   def act = { arg =>

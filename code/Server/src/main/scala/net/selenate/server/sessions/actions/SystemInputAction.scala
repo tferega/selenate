@@ -7,7 +7,7 @@ import extensions.SelenateFirefox
 import net.selenate.common.comms.req.SeReqSystemInput
 import net.selenate.common.comms.res.SeResSystemInput
 
-class SystemInputAction(val d: SelenateFirefox)(implicit context: ActionContext)
+class SystemInputAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqSystemInput, SeResSystemInput]
     with ActionCommons {
   def act = { arg =>

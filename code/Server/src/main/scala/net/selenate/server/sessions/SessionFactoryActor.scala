@@ -25,7 +25,7 @@ class SessionFactoryActor
       driverFuture.onSuccess {
         case driver =>
           logDebug(s"""Driver future for session "$sessionID" completed""")
-          context.actorOf(SessionActor.props(sessionID, driver, false), sessionID)
+          context.actorOf(SessionActor.props(sessionID, driver), sessionID)
       }
   }
 

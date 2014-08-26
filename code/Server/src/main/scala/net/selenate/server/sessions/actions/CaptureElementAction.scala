@@ -10,7 +10,7 @@ import net.selenate.common.comms.res.SeResCaptureElement
 import org.openqa.selenium.OutputType
 import scala.collection.JavaConversions._
 
-class CaptureElementAction(val d: SelenateFirefox)(implicit context: ActionContext)
+class CaptureElementAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqCaptureElement, SeResCaptureElement]
     with ActionCommons {
   def act = { arg =>

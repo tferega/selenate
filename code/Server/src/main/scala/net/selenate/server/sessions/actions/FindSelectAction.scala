@@ -7,7 +7,7 @@ import net.selenate.common.comms.req.SeReqFindSelect
 import net.selenate.common.comms.res.SeResFindSelect
 import net.selenate.common.comms.SeSelect
 
-class FindSelectAction(val d: SelenateFirefox)(implicit context: ActionContext)
+class FindSelectAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqFindSelect, SeResFindSelect]
     with ActionCommons {
   def act = { arg =>

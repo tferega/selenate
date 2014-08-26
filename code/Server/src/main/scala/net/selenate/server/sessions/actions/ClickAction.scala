@@ -7,7 +7,7 @@ import net.selenate.common.comms.req.SeReqClick
 import net.selenate.common.comms.res.SeResClick
 import scala.collection.JavaConversions._
 
-class ClickAction(val d: SelenateFirefox)(implicit context: ActionContext)
+class ClickAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqClick, SeResClick]
     with ActionCommons {
   def act = { arg =>

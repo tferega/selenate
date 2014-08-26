@@ -8,7 +8,7 @@ import net.selenate.common.comms.res.SeResSelectOption
 import org.openqa.selenium.support.ui.Select
 import scala.collection.JavaConversions._
 
-class SelectOptionAction(val d: SelenateFirefox)(implicit context: ActionContext)
+class SelectOptionAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqSelectOption, SeResSelectOption]
     with ActionCommons {
   def act = { arg =>

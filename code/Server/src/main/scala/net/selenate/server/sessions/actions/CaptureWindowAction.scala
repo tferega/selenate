@@ -8,7 +8,7 @@ import net.selenate.common.comms.res.SeResCaptureWindow
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.io.IOUtils
 
-class CaptureWindowAction(val d: SelenateFirefox)(implicit context: ActionContext)
+class CaptureWindowAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqCaptureWindow, SeResCaptureWindow]
     with ActionCommons {
   def act = { arg =>

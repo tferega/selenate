@@ -10,7 +10,7 @@ import net.selenate.common.comms.req.SeReqDownload
 import net.selenate.common.comms.res.SeResDownload
 import scala.collection.JavaConversions._
 
-class DownloadAction(val d: SelenateFirefox)
+class DownloadAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqDownload, SeResDownload]
     with ActionCommons {
   def act = { arg =>

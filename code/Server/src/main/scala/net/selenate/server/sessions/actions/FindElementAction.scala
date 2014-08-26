@@ -6,7 +6,7 @@ import extensions.SelenateFirefox
 import net.selenate.common.comms.req.SeReqFindElement
 import net.selenate.common.comms.res.SeResFindElement
 
-class FindElementAction(val d: SelenateFirefox)(implicit context: ActionContext)
+class FindElementAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqFindElement, SeResFindElement]
     with ActionCommons {
   def act = { arg =>

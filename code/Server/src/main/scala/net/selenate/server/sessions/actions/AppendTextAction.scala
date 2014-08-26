@@ -7,7 +7,7 @@ import net.selenate.common.comms.req.SeReqAppendText
 import net.selenate.common.comms.res.SeResAppendText
 import scala.collection.JavaConversions._
 
-class AppendTextAction(val d: SelenateFirefox)(implicit context: ActionContext)
+class AppendTextAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqAppendText, SeResAppendText]
     with ActionCommons {
   def act = { arg =>

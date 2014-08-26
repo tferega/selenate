@@ -7,7 +7,7 @@ import net.selenate.common.comms.req.SeReqFindAndClick
 import net.selenate.common.comms.res.SeResFindAndClick
 import org.openqa.selenium.remote.RemoteWebElement
 
-class FindAndClickAction(val d: SelenateFirefox)(implicit context: ActionContext)
+class FindAndClickAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqFindAndClick, SeResFindAndClick]
     with ActionCommons {
   type PathElement = (FramePath, RemoteWebElement)

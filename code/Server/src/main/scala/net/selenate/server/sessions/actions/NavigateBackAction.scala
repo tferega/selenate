@@ -6,7 +6,7 @@ import extensions.SelenateFirefox
 import net.selenate.common.comms.req.SeReqNavigateBack
 import net.selenate.common.comms.res.SeResNavigateBack
 
-class NavigateBackAction(val d: SelenateFirefox)
+class NavigateBackAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqNavigateBack, SeResNavigateBack]
     with ActionCommons {
   def act = { arg =>

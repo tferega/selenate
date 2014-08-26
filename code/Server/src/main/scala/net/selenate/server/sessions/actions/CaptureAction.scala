@@ -30,7 +30,7 @@ return report;
   }
 }
 
-class CaptureAction(val d: SelenateFirefox)(implicit context: ActionContext)
+class CaptureAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqCapture, SeResCapture]
     with ActionCommons {
   import CaptureAction._

@@ -6,7 +6,7 @@ import extensions.SelenateFirefox
 import net.selenate.common.comms.req.SeReqElementExists
 import net.selenate.common.comms.res.SeResElementExists
 
-class ElementExistsAction(val d: SelenateFirefox)(implicit context: ActionContext)
+class ElementExistsAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqElementExists, SeResElementExists]
     with ActionCommons {
   def act = { arg =>

@@ -8,7 +8,7 @@ import net.selenate.common.comms.res.SeResWaitFor
 import net.selenate.common.comms.{ SeElementSelector, SePage }
 import scala.collection.JavaConversions._
 
-class WaitForAction(val d: SelenateFirefox)(implicit context: ActionContext)
+class WaitForAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
     extends Action[SeReqWaitFor, SeResWaitFor]
     with ActionCommons
     with WaitFor {

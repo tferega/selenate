@@ -10,56 +10,59 @@ import net.selenate.common.comms.res.SeCommsRes
 import scala.concurrent.duration.Duration
 
 object SessionActor {
-  def props(sessionID: String, d: SelenateFirefox, useFrames: Boolean) = Props(new SessionActor(sessionID, d, useFrames))
+  def props(sessionID: String, d: SelenateFirefox) = Props(new SessionActor(sessionID, d))
 }
 
-class SessionActor(sessionID: String, d: SelenateFirefox, useFrames: Boolean = true)
+class SessionActor(sessionID: String, d: SelenateFirefox)
     extends Actor
     with Loggable {
-  logInfo(s"""Session actor for session $sessionID started""")
+  override lazy val logPrefix = Some(sessionID)
+  logInfo(s"""Session actor started""")
+
   private var keepaliveScheduler: Option[Cancellable] = None
   private def isKeepalive = keepaliveScheduler.isDefined
-  implicit val actionContext = ActionContext(useFrames)
+  implicit val actionContext = ActionContext(true)
 
   private def actionMan: PF[SeCommsReq, SeCommsRes] = {
-    case arg: SeReqAddCookie          => new AddCookieAction(d).act(arg)
-    case arg: SeReqAppendText         => new AppendTextAction(d).act(arg)
-    case arg: SeReqCapture            => new CaptureAction(d).act(arg)
-    case arg: SeReqCaptureElement     => new CaptureElementAction(d).act(arg)
-    case arg: SeReqCaptureWindow      => new CaptureWindowAction(d).act(arg)
-    case arg: SeReqClearText          => new ClearTextAction(d).act(arg)
-    case arg: SeReqClick              => new ClickAction(d).act(arg)
-    case arg: SeReqClose              => new CloseAction(d).act(arg)
-    case arg: SeReqDeleteCookieNamed  => new DeleteCookieNamedAction(d).act(arg)
-    case arg: SeReqDownload           => new DownloadAction(d).act(arg)
-    case arg: SeReqElementExists      => new ElementExistsAction(d).act(arg)
-    case arg: SeReqExecuteScript      => new ExecuteScriptAction(d).act(arg)
-    case arg: SeReqFindAlert          => new FindAlertAction(d).act(arg)
-    case arg: SeReqFindAndClick       => new FindAndClickAction(d).act(arg)
-    case arg: SeReqFindElement        => new FindElementAction(d).act(arg)
-    case arg: SeReqFindElementList    => new FindElementListAction(d).act(arg)
-    case arg: SeReqFindSelect         => new FindSelectAction(d).act(arg)
-    case arg: SeReqGet                => new GetAction(d).act(arg)
-    case arg: SeReqNavigateBack       => new NavigateBackAction(d).act(arg)
-    case arg: SeReqNavigateForward    => new NavigateForwardAction(d).act(arg)
-    case arg: SeReqNavigateRefresh    => new NavigateRefreshAction(d).act(arg)
-    case arg: SeReqQuit               => new QuitAction(d).act(arg)
-    case arg: SeReqResetFrame         => new ResetFrameAction(d).act(arg)
-    case arg: SeReqSelectOption       => new SelectOptionAction(d).act(arg)
-    case arg: SeReqSetUseFrames       => new SetUseFramesAction(d).act(arg)
-    case arg: SeReqStartKeepalive     => new StartKeepaliveAction(d).act(arg)
-    case arg: SeReqStopKeepalive      => new StopKeepaliveAction(d).act(arg)
-    case arg: SeReqSwitchFrame        => new SwitchFrameAction(d).act(arg)
-    case arg: SeReqSystemClick        => new SystemClickAction(d).act(arg)
-    case arg: SeReqSystemInput        => new SystemInputAction(d).act(arg)
-    case arg: SeReqWaitFor            => new WaitForAction(d).act(arg)
-    case arg: SeReqWaitForBrowserPage => new WaitForBrowserPageAction(d).act(arg)
+    case arg: SeReqAddCookie          => new AddCookieAction         (sessionID, d).act(arg)
+    case arg: SeReqAppendText         => new AppendTextAction        (sessionID, d).act(arg)
+    case arg: SeReqCapture            => new CaptureAction           (sessionID, d).act(arg)
+    case arg: SeReqCaptureElement     => new CaptureElementAction    (sessionID, d).act(arg)
+    case arg: SeReqCaptureWindow      => new CaptureWindowAction     (sessionID, d).act(arg)
+    case arg: SeReqClearText          => new ClearTextAction         (sessionID, d).act(arg)
+    case arg: SeReqClick              => new ClickAction             (sessionID, d).act(arg)
+    case arg: SeReqClose              => new CloseAction             (sessionID, d).act(arg)
+    case arg: SeReqDeleteCookieNamed  => new DeleteCookieNamedAction (sessionID, d).act(arg)
+    case arg: SeReqDownload           => new DownloadAction          (sessionID, d).act(arg)
+    case arg: SeReqElementExists      => new ElementExistsAction     (sessionID, d).act(arg)
+    case arg: SeReqExecuteScript      => new ExecuteScriptAction     (sessionID, d).act(arg)
+    case arg: SeReqFindAlert          => new FindAlertAction         (sessionID, d).act(arg)
+    case arg: SeReqFindAndClick       => new FindAndClickAction      (sessionID, d).act(arg)
+    case arg: SeReqFindElement        => new FindElementAction       (sessionID, d).act(arg)
+    case arg: SeReqFindElementList    => new FindElementListAction   (sessionID, d).act(arg)
+    case arg: SeReqFindSelect         => new FindSelectAction        (sessionID, d).act(arg)
+    case arg: SeReqGet                => new GetAction               (sessionID, d).act(arg)
+    case arg: SeReqNavigateBack       => new NavigateBackAction      (sessionID, d).act(arg)
+    case arg: SeReqNavigateForward    => new NavigateForwardAction   (sessionID, d).act(arg)
+    case arg: SeReqNavigateRefresh    => new NavigateRefreshAction   (sessionID, d).act(arg)
+    case arg: SeReqQuit               => new QuitAction              (sessionID, d).act(arg)
+    case arg: SeReqResetFrame         => new ResetFrameAction        (sessionID, d).act(arg)
+    case arg: SeReqSelectOption       => new SelectOptionAction      (sessionID, d).act(arg)
+    case arg: SeReqSetUseFrames       => new SetUseFramesAction      (sessionID, d).act(arg)
+    case arg: SeReqStartKeepalive     => new StartKeepaliveAction    (sessionID, d).act(arg)
+    case arg: SeReqStopKeepalive      => new StopKeepaliveAction     (sessionID, d).act(arg)
+    case arg: SeReqSwitchFrame        => new SwitchFrameAction       (sessionID, d).act(arg)
+    case arg: SeReqSystemClick        => new SystemClickAction       (sessionID, d).act(arg)
+    case arg: SeReqSystemInput        => new SystemInputAction       (sessionID, d).act(arg)
+    case arg: SeReqWaitFor            => new WaitForAction           (sessionID, d).act(arg)
+    case arg: SeReqWaitForBrowserPage => new WaitForBrowserPageAction(sessionID, d).act(arg)
   }
 
   private def receiveBase: Receive = {
-    case "ping" => sender ! "pong"
+    case "ping" =>
+      sender ! "pong"
     case data @ KeepaliveData(delay, reqList) =>
-      logInfo("Keepalive tick!")
+      logTrace("Keepalive tick")
       data.reqList foreach actionMan
     case arg: SeReqStartKeepalive =>
       sender ! actionMan(arg)
@@ -76,20 +79,15 @@ class SessionActor(sessionID: String, d: SelenateFirefox, useFrames: Boolean = t
     def isDefinedAt(arg: Any) = base.isDefinedAt(arg)
     def apply(arg: Any) = {
       val clazz = arg.getClass.toString
+      val senderName = sender.path.toString
       try {
-        logInfo("Received request [%s] from %s.".format(sessionID, clazz, sender.path.toString))
-        logDebug(arg.toString)
+        logDebug(s"""Received $clazz from $senderName: ${ arg.toString }""")
         base.apply(arg)
       } catch {
         case e: Exception =>
-          logWarn("An error occured while processing [%s]" format clazz)
-          if (sender == actors.system.deadLetters) {
-            e.printStackTrace
-          } else {
-            println(e.toString)
-          }
-
-          sender ! new Exception(e.stackTrace)
+          val msg = s"""An error occured while processing message $clazz from $senderName: ${ arg.toString }"""
+          logWarn(msg, e)
+          sender ! new Exception(e)
       }
     }
   }
@@ -98,27 +96,21 @@ class SessionActor(sessionID: String, d: SelenateFirefox, useFrames: Boolean = t
 
   override def postStop() {
     d.quit()
-    logInfo(s"""Session actor for session $sessionID stopped""")
-  }
-
-  private def schedulify(data: KeepaliveData) {
-    context.system.scheduler.scheduleOnce(data.delay, self, data)
+    logInfo(s"""Session actor stopped""")
   }
 
   private def startKeepalive(data: KeepaliveData) {
-    stopKeepalive
-    logInfo("Starting keepalive.")
-    logDebug(keepaliveStatus)
-    keepaliveScheduler = Some(context.system.scheduler.schedule(Duration.Zero, data.delay, self, data))
+    if (!isKeepalive) {
+      logTrace("Starting keepalive.")
+      keepaliveScheduler = Some(context.system.scheduler.schedule(Duration.Zero, data.delay, self, data))
+    }
   }
 
   private def stopKeepalive() {
-    logInfo("Stopping keepalive.")
-    logDebug(keepaliveStatus)
-    keepaliveScheduler.map(_.cancel)
-    keepaliveScheduler = None
+    if (isKeepalive) {
+      logTrace("Stopping keepalive.")
+      keepaliveScheduler.map(_.cancel)
+      keepaliveScheduler = None
+    }
   }
-
-  private def keepaliveStatus =
-    "Previous status: %s.".format(if (isKeepalive) "running" else "stopped")
 }
