@@ -6,3 +6,6 @@ bin
 .metadata
 target
 branch.config
+
+logs/*.log
+recordings/*.mp4

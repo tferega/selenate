@@ -14,9 +14,9 @@ object LinuxDisplay extends Loggable {
     create(num)
   }
 
-  def record(uuid: String, num: Int): String = {
+  def record(name: String, num: Int): String = {
     val dt = formattedCurrentDateTime()
-    val filename = s"${ dt }_${ uuid }_recording.mp4"
+    val filename = s"../recordings/${ dt }_${ name }_recording.mp4"
     runFFmpeg(filename, num)
     filename
   }
@@ -71,7 +71,6 @@ object LinuxDisplay extends Loggable {
   private def runPkill(pattern: String) = LinuxProc.runAndEnd("pkill", "-f" | pattern)
   private def runFFmpeg(filename: String, num: Int) = LinuxProc.runAndVerify("ffmpeg",
         "-y"       |
-        "-t"       | "30"        |
         "-f"       | "x11grab"   |
         "-qscale"  | "2"         |
         "-r"       | "15"        |
