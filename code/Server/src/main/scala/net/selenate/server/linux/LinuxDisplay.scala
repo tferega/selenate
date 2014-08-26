@@ -13,7 +13,8 @@ object LinuxDisplay extends Loggable {
     create(num)
   }
 
-  def destroy(num: Int) {
+  def destroy(displayInfo: DisplayInfo) {
+    val num = displayInfo.num
     logDebug(s"""Destroying screen $num""")
     runPkill(s"x11vnc.*:$num")
     runPkill(s"icewm.*:$num")

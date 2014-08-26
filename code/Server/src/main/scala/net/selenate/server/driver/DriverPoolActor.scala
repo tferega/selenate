@@ -2,7 +2,9 @@ package net.selenate.server
 package driver
 
 import extensions.SelenateFirefox
+import linux.LinuxDisplay
 import settings.PoolSettings
+
 import akka.actor.{ Actor, Props }
 import net.selenate.common.util.NamedUUID
 import scala.collection.mutable.Queue
@@ -66,7 +68,10 @@ class DriverPoolActor(val settings: PoolSettings)
     val futureList: List[Future[SelenateFirefox]] = pool.toList.map(_.future)
     val listFuture: Future[List[SelenateFirefox]] = Future.sequence(futureList)
     val driverList = Await.result(listFuture, 30 seconds)
-    driverList.foreach(_.quit)
+    driverList foreach { driver =>
+      driver.quit
+      driver.displayInfo foreach LinuxDisplay.destroy
+    }
     logDebug("Driver pool stopped")
   }
 }

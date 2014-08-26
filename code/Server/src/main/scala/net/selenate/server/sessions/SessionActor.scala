@@ -3,6 +3,7 @@ package sessions
 
 import actions._
 import extensions.SelenateFirefox
+import linux.LinuxDisplay
 
 import akka.actor.{ Actor, Cancellable, Props }
 import net.selenate.common.comms.req._
@@ -96,6 +97,7 @@ class SessionActor(sessionID: String, d: SelenateFirefox)
 
   override def postStop() {
     d.quit()
+    d.displayInfo foreach LinuxDisplay.destroy
     logInfo(s"""Session actor stopped""")
   }
 
