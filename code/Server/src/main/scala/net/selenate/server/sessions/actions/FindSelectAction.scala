@@ -8,7 +8,7 @@ import net.selenate.common.comms.res.SeResFindSelect
 import net.selenate.common.comms.SeSelect
 
 class FindSelectAction(val d: SelenateFirefox)(implicit context: ActionContext)
-    extends IAction[SeReqFindSelect, SeResFindSelect]
+    extends Action[SeReqFindSelect, SeResFindSelect]
     with ActionCommons {
   def act = { arg =>
     val resElementList: Stream[Option[SeSelect]] = inAllWindows { address =>

@@ -7,7 +7,7 @@ import net.selenate.common.comms.req.SeReqFindElementList
 import net.selenate.common.comms.res.SeResFindElementList
 
 class FindElementListAction(val d: SelenateFirefox)(implicit context: ActionContext)
-    extends IAction[SeReqFindElementList, SeResFindElementList]
+    extends Action[SeReqFindElementList, SeResFindElementList]
     with ActionCommons {
   def act = { arg =>
     val resElementList = inAllWindows { address =>

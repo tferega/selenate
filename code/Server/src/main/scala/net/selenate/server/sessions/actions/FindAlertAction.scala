@@ -8,7 +8,7 @@ import net.selenate.common.comms.res.SeResFindAlert
 import org.openqa.selenium.NoAlertPresentException
 
 class FindAlertAction(val d: SelenateFirefox)
-    extends IAction[SeReqFindAlert, SeResFindAlert]
+    extends Action[SeReqFindAlert, SeResFindAlert]
     with ActionCommons {
   def act = { arg =>
     try {

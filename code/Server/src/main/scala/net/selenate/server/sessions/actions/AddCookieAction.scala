@@ -8,7 +8,7 @@ import net.selenate.common.comms.res.SeResAddCookie
 import org.openqa.selenium.Cookie
 
 class AddCookieAction(val d: SelenateFirefox)(implicit context: ActionContext)
-    extends IAction[SeReqAddCookie, SeResAddCookie]
+    extends Action[SeReqAddCookie, SeResAddCookie]
     with ActionCommons {
   def act = { arg =>
     val cookie = arg.cookie

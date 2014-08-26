@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.Select
 import scala.collection.JavaConversions._
 
 class SelectOptionAction(val d: SelenateFirefox)(implicit context: ActionContext)
-    extends IAction[SeReqSelectOption, SeResSelectOption]
+    extends Action[SeReqSelectOption, SeResSelectOption]
     with ActionCommons {
   def act = { arg =>
     switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)

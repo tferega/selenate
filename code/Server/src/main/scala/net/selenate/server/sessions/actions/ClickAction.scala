@@ -8,7 +8,7 @@ import net.selenate.common.comms.res.SeResClick
 import scala.collection.JavaConversions._
 
 class ClickAction(val d: SelenateFirefox)(implicit context: ActionContext)
-    extends IAction[SeReqClick, SeResClick]
+    extends Action[SeReqClick, SeResClick]
     with ActionCommons {
   def act = { arg =>
     switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)

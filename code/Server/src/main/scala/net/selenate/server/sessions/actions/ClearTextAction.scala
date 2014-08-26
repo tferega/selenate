@@ -8,7 +8,7 @@ import net.selenate.common.comms.res.SeResClearText
 import scala.collection.JavaConversions._
 
 class ClearTextAction(val d: SelenateFirefox)(implicit context: ActionContext)
-    extends IAction[SeReqClearText, SeResClearText]
+    extends Action[SeReqClearText, SeResClearText]
     with ActionCommons {
   def act = { arg =>
     switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)

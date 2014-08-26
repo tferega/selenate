@@ -3,7 +3,7 @@ package sessions.actions
 
 import extensions.SelenateFirefox
 
-trait IAction[A, R] {
+trait Action[A, R] {
   val d: SelenateFirefox
 
   def act: (A) => R

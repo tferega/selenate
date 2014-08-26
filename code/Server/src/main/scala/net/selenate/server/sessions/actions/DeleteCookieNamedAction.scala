@@ -7,7 +7,7 @@ import net.selenate.common.comms.req.SeReqDeleteCookieNamed
 import net.selenate.common.comms.res.SeResDeleteCookieNamed
 
 class DeleteCookieNamedAction(val d: SelenateFirefox)(implicit context: ActionContext)
-    extends IAction[SeReqDeleteCookieNamed, SeResDeleteCookieNamed]
+    extends Action[SeReqDeleteCookieNamed, SeResDeleteCookieNamed]
     with ActionCommons {
   def act = { arg =>
     inAllWindows { address =>

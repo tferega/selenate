@@ -31,7 +31,7 @@ return report;
 }
 
 class CaptureAction(val d: SelenateFirefox)(implicit context: ActionContext)
-    extends IAction[SeReqCapture, SeResCapture]
+    extends Action[SeReqCapture, SeResCapture]
     with ActionCommons {
   import CaptureAction._
 

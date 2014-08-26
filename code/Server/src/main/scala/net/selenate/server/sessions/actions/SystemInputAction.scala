@@ -8,7 +8,7 @@ import net.selenate.common.comms.req.SeReqSystemInput
 import net.selenate.common.comms.res.SeResSystemInput
 
 class SystemInputAction(val d: SelenateFirefox)(implicit context: ActionContext)
-    extends IAction[SeReqSystemInput, SeResSystemInput]
+    extends Action[SeReqSystemInput, SeResSystemInput]
     with ActionCommons {
   def act = { arg =>
     LinuxWindow.input(d.parentNum, arg.input)

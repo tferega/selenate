@@ -9,7 +9,7 @@ import org.apache.commons.codec.binary.Base64
 import org.apache.commons.io.IOUtils
 
 class CaptureWindowAction(val d: SelenateFirefox)(implicit context: ActionContext)
-    extends IAction[SeReqCaptureWindow, SeResCaptureWindow]
+    extends Action[SeReqCaptureWindow, SeResCaptureWindow]
     with ActionCommons {
   def act = { arg =>
     val resScreenshotList: Stream[Option[SeResCaptureWindow]] = inAllWindows { address =>

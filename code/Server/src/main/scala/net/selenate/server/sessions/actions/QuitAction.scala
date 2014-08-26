@@ -7,7 +7,7 @@ import net.selenate.common.comms.req.SeReqQuit
 import net.selenate.common.comms.res.SeResQuit
 
 class QuitAction(val d: SelenateFirefox)
-    extends IAction[SeReqQuit, SeResQuit]
+    extends Action[SeReqQuit, SeResQuit]
     with ActionCommons {
   def act = { arg =>
     d.quit

@@ -9,7 +9,7 @@ import net.selenate.common.comms.{ SeElementSelector, SePage }
 import scala.collection.JavaConversions._
 
 class WaitForAction(val d: SelenateFirefox)(implicit context: ActionContext)
-    extends IAction[SeReqWaitFor, SeResWaitFor]
+    extends Action[SeReqWaitFor, SeResWaitFor]
     with ActionCommons
     with WaitFor {
   def act = { arg =>

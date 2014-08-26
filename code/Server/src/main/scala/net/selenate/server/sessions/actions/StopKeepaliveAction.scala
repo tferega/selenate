@@ -7,7 +7,7 @@ import net.selenate.common.comms.req.SeReqStopKeepalive
 import net.selenate.common.comms.res.SeResStopKeepalive
 
 class StopKeepaliveAction(val d: SelenateFirefox)
-    extends IAction[SeReqStopKeepalive, SeResStopKeepalive]
+    extends Action[SeReqStopKeepalive, SeResStopKeepalive]
     with ActionCommons {
   def act = { arg =>
     new SeResStopKeepalive()

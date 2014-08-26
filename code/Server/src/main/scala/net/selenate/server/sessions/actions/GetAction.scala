@@ -7,7 +7,7 @@ import net.selenate.common.comms.req.SeReqGet
 import net.selenate.common.comms.res.SeResGet
 
 class GetAction(val d: SelenateFirefox)
-    extends IAction[SeReqGet, SeResGet]
+    extends Action[SeReqGet, SeResGet]
     with ActionCommons {
   def act = { arg =>
     d.get(arg.url)

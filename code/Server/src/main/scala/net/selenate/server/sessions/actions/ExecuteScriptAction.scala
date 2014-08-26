@@ -7,7 +7,7 @@ import net.selenate.common.comms.req.SeReqExecuteScript
 import net.selenate.common.comms.res.SeResExecuteScript
 
 class ExecuteScriptAction(val d: SelenateFirefox)
-    extends IAction[SeReqExecuteScript, SeResExecuteScript]
+    extends Action[SeReqExecuteScript, SeResExecuteScript]
     with ActionCommons {
   def act = { arg =>
     val result = d.executeScript(arg.javascript)

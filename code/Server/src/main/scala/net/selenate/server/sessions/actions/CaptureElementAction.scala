@@ -11,7 +11,7 @@ import org.openqa.selenium.OutputType
 import scala.collection.JavaConversions._
 
 class CaptureElementAction(val d: SelenateFirefox)(implicit context: ActionContext)
-    extends IAction[SeReqCaptureElement, SeResCaptureElement]
+    extends Action[SeReqCaptureElement, SeResCaptureElement]
     with ActionCommons {
   def act = { arg =>
     try {

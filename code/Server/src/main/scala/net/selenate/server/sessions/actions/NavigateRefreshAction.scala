@@ -7,7 +7,7 @@ import net.selenate.common.comms.req.SeReqNavigateRefresh
 import net.selenate.common.comms.res.SeResNavigateRefresh
 
 class NavigateRefreshAction(val d: SelenateFirefox)
-    extends IAction[SeReqNavigateRefresh, SeResNavigateRefresh]
+    extends Action[SeReqNavigateRefresh, SeResNavigateRefresh]
     with ActionCommons {
   def act = { SeReqNavigateRefresh =>
     d.navigate.refresh;
