@@ -105,6 +105,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   @Override
   public void quit() throws IOException {
     typedBlock(new SeReqQuit(), SeResQuit.class);
+    typedBlock(new SeReqDestroySession(), SeResDestroySession.class);
   }
 
   @Override

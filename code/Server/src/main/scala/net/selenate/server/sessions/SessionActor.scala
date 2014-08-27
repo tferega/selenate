@@ -4,7 +4,7 @@ package sessions
 import actions._
 import extensions.SelenateFirefox
 import linux.LinuxDisplay
-import akka.actor.{ Actor, Cancellable, Props }
+import akka.actor.{ Actor, Cancellable, PoisonPill, Props }
 import net.selenate.common.comms.req._
 import net.selenate.common.comms.res.SeCommsRes
 import scala.concurrent.duration.Duration
@@ -42,6 +42,7 @@ class SessionActor(sessionID: String, d: SelenateFirefox)
     case arg: SeReqClick              => new ClickAction             (sessionID, d).act(arg)
     case arg: SeReqClose              => new CloseAction             (sessionID, d).act(arg)
     case arg: SeReqDeleteCookieNamed  => new DeleteCookieNamedAction (sessionID, d).act(arg)
+    case arg: SeReqDestroySession     => new DestroySessionAction    (sessionID, d).act(arg)
     case arg: SeReqDownload           => new DownloadAction          (sessionID, d).act(arg)
     case arg: SeReqElementExists      => new ElementExistsAction     (sessionID, d).act(arg)
     case arg: SeReqExecuteScript      => new ExecuteScriptAction     (sessionID, d).act(arg)
@@ -73,6 +74,8 @@ class SessionActor(sessionID: String, d: SelenateFirefox)
     case data @ KeepaliveData(delay, reqList) =>
       logTrace("Keepalive tick")
       data.reqList foreach actionMan
+    case arg: SeReqDestroySession =>
+      self ! PoisonPill
     case arg: SeReqStartKeepalive =>
       sender ! actionMan(arg)
       startKeepalive(KeepaliveData.fromReq(arg))
