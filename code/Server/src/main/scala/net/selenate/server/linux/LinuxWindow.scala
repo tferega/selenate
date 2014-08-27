@@ -22,9 +22,11 @@ case class WindowInfo(
     client: String,
     title: String)
 
-object LinuxWindow {
+object LinuxWindow extends Loggable {
   def clickRelative(num: Option[Int], titlePart: String, relX: Int, relY: Int) {
+    logDebug(s"Clicking on relative coordinates ($relX, $relY) within window $titlePart in screen $num")
     val windowInfo = getWindowInfo(num, titlePart)
+    logTrace(s"Window info: $windowInfo")
     moveMouseRelative(num, windowInfo, relX, relY)
   }
 
@@ -36,7 +38,11 @@ object LinuxWindow {
   private def getWindowInfo(num: Option[Int], titlePart: String) = {
     val rawList = runWmctrl(num).split("\n")
     val rawOpt = rawList.filter(_.contains(titlePart)).headOption
-    val raw = rawOpt.getOrElse(throw new IllegalArgumentException(s"""Error while searching for a window. Window with title containing "$titlePart" not found."""))
+    val raw = rawOpt.getOrElse {
+      val msg = s"""Error while searching for a window. Window with title containing $titlePart not found."""
+      logError(msg)
+      throw new IllegalArgumentException(msg)
+    }
     WindowInfo.fromString(raw)
   }
 
@@ -48,9 +54,18 @@ object LinuxWindow {
     runXdotoolClick(num)
   }
 
-  private def runWmctrl(num: Option[Int]) = LinuxProc.runAndEnd("wmctrl", "-l" | "-G", num = num)
-  private def runXdotoolActivate(num: Option[Int], windowID: String) = LinuxProc.runAndEnd("xdotool", "windowactivate" | windowID, num = num)
-  private def runXdotoolMove(num: Option[Int], x: Int, y: Int) = LinuxProc.runAndEnd("xdotool", "mousemove" | x | y, num = num)
-  private def runXdotoolClick(num: Option[Int]) = LinuxProc.runAndEnd("xdotool", "click" | 1, num = num)
-  private def runXdotoolInput(num: Option[Int], input: Seq[Char]) = LinuxProc.runAndEnd("xdotool", Seq("key") ++ input, num = num)
+  private def runWmctrl(num: Option[Int]) =
+    LinuxProc.runAndEnd("wmctrl", "-l" | "-G", num = num)
+
+  private def runXdotoolActivate(num: Option[Int], windowID: String) =
+    LinuxProc.runAndEnd("xdotool", "windowactivate" | windowID, num = num)
+
+  private def runXdotoolMove(num: Option[Int], x: Int, y: Int) =
+    LinuxProc.runAndEnd("xdotool", "mousemove" | x | y, num = num)
+
+  private def runXdotoolClick(num: Option[Int]) =
+    LinuxProc.runAndEnd("xdotool", "click" | 1, num = num)
+
+  private def runXdotoolInput(num: Option[Int], input: Seq[Char]) =
+    LinuxProc.runAndEnd("xdotool", Seq("key") ++ input, num = num)
 }
