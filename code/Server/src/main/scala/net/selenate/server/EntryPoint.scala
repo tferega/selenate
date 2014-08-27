@@ -1,8 +1,9 @@
 package net.selenate.server
 
+import driver.DriverPoolActor
 import sessions.SessionFactoryActor
+import settings.PoolSettings
 
-import net.selenate.server.driver.DriverPoolActor
 import scala.io.StdIn.readLine
 
 object EntryPoint extends App with Loggable {
@@ -11,7 +12,7 @@ object EntryPoint extends App with Loggable {
     logInfo("Press ENTER to shut down.")
     startup()
 
-    readLine
+    readLine // ==========-----> MAIN RUNTIME <-----==========
 
     logInfo("Selenate Server now shutting down...")
     shutdown()
@@ -24,11 +25,13 @@ object EntryPoint extends App with Loggable {
 
   private def startup() {
     logInfo("Loading configuration...")
-    logInfo("Branch: " + C.branch)
-    logInfo("ServerHost: " + C.Server.host)
+    logInfo("Branch: " + C.BRANCH)
+    logInfo("ServerHost: " + C.Server.HOST)
 
     logInfo("Starting main Actor system...")
-    actors.system.actorOf(DriverPoolActor.props(C.Server.Pool.poolInfo), "driver-pool")
+    val pool = C.Server.Pool
+    val poolInfo = PoolSettings.fromConfig(pool.SIZE, pool.DISPLAY, pool.RECORD, pool.BINARY, pool.PREFS)
+    actors.system.actorOf(DriverPoolActor.props(poolInfo), "driver-pool")
     actors.system.actorOf(SessionFactoryActor.props, "session-factory")
   }
 

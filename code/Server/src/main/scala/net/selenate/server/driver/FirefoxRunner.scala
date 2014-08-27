@@ -6,6 +6,7 @@ import settings.{ DisplaySettings, ProfileSettings }
 import linux.{ LinuxDisplay, LinuxFile }
 
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 object FirefoxRunner extends Loggable {
   def run(profile: ProfileSettings) = {
@@ -27,8 +28,8 @@ object FirefoxRunner extends Loggable {
     SelenateFirefox.fromProfileSettings(None, profile)
 
   private def runInFirstFree(profile: ProfileSettings) = {
-    if (!C.osName.contains("Linux")) {
-      val msg = s"""Display support is available only in Linux (detected OS name: "${ C.osName }")!"""
+    if (!C.OS_NAME.contains("Linux")) {
+      val msg = s"""Display support is available only in Linux (detected OS name: "${ C.OS_NAME }")!"""
       logError(msg)
       throw new UnsupportedOperationException(msg)
     }
@@ -39,7 +40,9 @@ object FirefoxRunner extends Loggable {
     val binaryFile = LinuxFile.createTempScript(script)
     val ffBinary = new SelenateBinary(binaryFile)
     val ffProfile = SelenateProfile.fromProfileSettings(profile)
-    new SelenateFirefox(Some(displayInfo), ffBinary, ffProfile)
+    val d = new SelenateFirefox(profile, Some(displayInfo), ffBinary, ffProfile)
+    d.manage.timeouts.pageLoadTimeout(C.Server.Timeouts.PAGE_LOAD , TimeUnit.SECONDS)
+    d
   }
 
   private def runInSpecific(num: Int, profile: ProfileSettings) = {

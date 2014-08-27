@@ -24,7 +24,7 @@ class SessionActor(sessionID: String, d: SelenateFirefox)
   private def isKeepalive = keepaliveScheduler.isDefined
   implicit val actionContext = ActionContext(true)
 
-  (C.Server.record, d.displayInfo) match {
+  (d.profile.record, d.displayInfo) match {
     case (true, Some(DisplayInfo(displayNum, _))) =>
       val filename = LinuxDisplay.record(sessionID, displayNum)
       logDebug(s"Recording session to: $filename")

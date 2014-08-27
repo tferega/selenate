@@ -4,17 +4,19 @@ package settings
 object PoolSettings {
   private def parseSize(size: String): Int =
     size match {
-      case IsInt(i) => i
+      case IsInt(i) if i > 0 => i
+      case IsInt(i) => throw new IllegalArgumentException(s"""Error while parsing configuration. Offending entry: server.pool.size. Size must be greater than zero, received "$size".""")
       case _ => throw new IllegalArgumentException(s"""Error while parsing configuration. Offending entry: server.pool.size. Expected a number, received "$size".""")
     }
 
   def fromConfig(
       size: String,
-      prefs: Map[String, String],
       display: String,
-      binaryLocation: Option[String]) = new PoolSettings(
+      record: String,
+      binaryLocation: Option[String],
+      prefs: Map[String, String]) = new PoolSettings(
     size    = parseSize(size),
-    profile = ProfileSettings.fromConfig(prefs, display, binaryLocation))
+    profile = ProfileSettings.fromConfig(display, record, binaryLocation, prefs))
 }
 
 case class PoolSettings(size: Int, profile: ProfileSettings)

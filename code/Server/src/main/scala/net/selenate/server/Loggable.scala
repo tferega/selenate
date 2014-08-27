@@ -8,7 +8,6 @@ trait Loggable {
 
   lazy val logger = LoggerFactory.getLogger(clazz)
 
-
   private def p(s: String) =
     logPrefix.map("[%s] => " format _).getOrElse("") + s
 

@@ -7,9 +7,10 @@ import net.selenate.common.comms.req.SeReqGet
 import net.selenate.common.comms.res.SeResGet
 
 class GetAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
-    extends Action[SeReqGet, SeResGet]
+    extends RetryableAction[SeReqGet, SeResGet]
     with ActionCommons {
-  def act = { arg =>
+  def retryableAct = { arg =>
+    d.executeScript("return window.stop();")
     d.get(arg.url)
     new SeResGet()
   }

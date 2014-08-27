@@ -16,7 +16,9 @@ object LinuxDisplay extends Loggable {
 
   def record(name: String, num: Int): String = {
     val dt = formattedCurrentDateTime()
-    val filename = s"../recordings/${ dt }_${ name }_recording.mp4"
+    val filename = C.Server.Locations.RECORDINGS
+        .replace("$DT", dt)
+        .replace("$NAME", name)
     runFFmpeg(filename, num)
     filename
   }

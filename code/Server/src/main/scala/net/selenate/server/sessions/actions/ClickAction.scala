@@ -8,9 +8,9 @@ import net.selenate.common.comms.res.SeResClick
 import scala.collection.JavaConversions._
 
 class ClickAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
-    extends Action[SeReqClick, SeResClick]
+    extends RetryableAction[SeReqClick, SeResClick]
     with ActionCommons {
-  def act = { arg =>
+  def retryableAct = { arg =>
     switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)
     val e = findElement(arg.method, arg.query)
     e.click
