@@ -36,7 +36,6 @@ object C extends CUtils {
     object Pool extends ConfigSection("server.pool") {
       val SIZE    = config.getString("size")
       val DISPLAY = config.getString("display")
-      val RECORD  = config.getString("record")
       val BINARY  = if (config.hasPath("binary")) Some(config.getString("binary")) else None
       val PREFS   = config.getObject("prefs").unwrapped.toMap.mapValues(_.toString)
     }

@@ -49,9 +49,9 @@ public final class ActorFactory {
     }
   }
 
-  public static ActorRef waitForSession(String sessionID) throws IOException {
+  public static ActorRef waitForSession(String sessionID, Boolean isRecorded) throws IOException {
     try {
-      sessionFactory.tell(new SessionRequest(sessionID), null);
+      sessionFactory.tell(new SessionRequest(sessionID, isRecorded), null);
       final ActorRef session = waitForActor("session-factory/" + sessionID);
       return session;
     } catch (final Exception e) {

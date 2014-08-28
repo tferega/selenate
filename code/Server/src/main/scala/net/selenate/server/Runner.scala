@@ -18,7 +18,7 @@ object Runner extends Loggable {
 
       logInfo("Starting main Actor system...")
       val pool = C.Server.Pool
-      val poolInfo = PoolSettings.fromConfig(pool.SIZE, pool.DISPLAY, pool.RECORD, pool.BINARY, pool.PREFS)
+      val poolInfo = PoolSettings.fromConfig(pool.SIZE, pool.DISPLAY, pool.BINARY, pool.PREFS)
       actors.system.actorOf(DriverPoolActor.props(poolInfo), "driver-pool")
       actors.system.actorOf(SessionFactoryActor.props, "session-factory")
 

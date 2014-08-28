@@ -12,12 +12,6 @@ object ProfileSettings {
       case _ => throw new IllegalArgumentException(s"""Error while parsing configuration. Offending entry: server.pool.display. Expected one of ["Main", "FirstFree", num], received "$display".""")
     }
 
-  private def parseRecord(record: String): Boolean =
-    record match {
-      case IsBoolean(bool) => bool
-      case _ => throw new IllegalArgumentException(s"""Error while parsing configuration. Offending entry: server.pool.record. Expected one of ["True", "False"], received "$record".""")
-    }
-
   private def parseBinaryLocation(binaryLocation: String): File = {
     val file = new File(binaryLocation)
     if (!file.exists)     throw new IllegalArgumentException(s"""Error while parsing configuration. Offending entry: server.pool.binary. Path "$binaryLocation" does not exist.""")
@@ -38,11 +32,9 @@ object ProfileSettings {
 
   def fromConfig(
       display: String,
-      record: String,
       binaryLocation: Option[String],
       prefs: Map[String, String]) = new ProfileSettings(
     display        = parseDisplay(display),
-    record         = parseRecord(record),
     binaryLocation = binaryLocation map parseBinaryLocation,
     prefMap        = parsePrefs(prefs))
 }
@@ -50,6 +42,5 @@ object ProfileSettings {
 
 case class ProfileSettings(
     val display: DisplaySettings,
-    val record: Boolean,
     val binaryLocation: Option[File],
     val prefMap: Map[String, AnyRef])

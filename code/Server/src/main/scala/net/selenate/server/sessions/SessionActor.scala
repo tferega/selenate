@@ -4,19 +4,24 @@ package sessions
 import actions._
 import extensions.SelenateFirefox
 import linux.LinuxDisplay
+
 import akka.actor.{ Actor, Cancellable, PoisonPill, Props }
 import net.selenate.common.comms.req._
 import net.selenate.common.comms.res.SeCommsRes
+import net.selenate.common.sessions.SessionRequest
 import scala.concurrent.duration.Duration
 import net.selenate.server.linux.DisplayInfo
 
 object SessionActor {
-  def props(sessionID: String, d: SelenateFirefox) = Props(new SessionActor(sessionID, d))
+  def props(sessionRequest: SessionRequest, d: SelenateFirefox) = Props(new SessionActor(sessionRequest, d))
 }
 
-class SessionActor(sessionID: String, d: SelenateFirefox)
+class SessionActor(sessionRequest: SessionRequest, d: SelenateFirefox)
     extends Actor
     with Loggable {
+  val sessionID  = sessionRequest.getSessionID
+  val isRecorded: Boolean = sessionRequest.getIsRecorded
+
   override lazy val logPrefix = Some(sessionID)
   logInfo(s"""Session actor started""")
 
@@ -24,7 +29,7 @@ class SessionActor(sessionID: String, d: SelenateFirefox)
   private def isKeepalive = keepaliveScheduler.isDefined
   implicit val actionContext = ActionContext(true)
 
-  (d.profile.record, d.displayInfo) match {
+  (isRecorded, d.displayInfo) match {
     case (true, Some(DisplayInfo(displayNum, _))) =>
       val filename = LinuxDisplay.record(sessionID, displayNum)
       logDebug(s"Recording session to: $filename")

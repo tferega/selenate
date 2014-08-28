@@ -12,11 +12,10 @@ object PoolSettings {
   def fromConfig(
       size: String,
       display: String,
-      record: String,
       binaryLocation: Option[String],
       prefs: Map[String, String]) = new PoolSettings(
     size    = parseSize(size),
-    profile = ProfileSettings.fromConfig(display, record, binaryLocation, prefs))
+    profile = ProfileSettings.fromConfig(display, binaryLocation, prefs))
 }
 
 case class PoolSettings(size: Int, profile: ProfileSettings)

@@ -6,6 +6,7 @@ import linux.LinuxDisplay
 import settings.PoolSettings
 
 import akka.actor.{ Actor, Props }
+import net.selenate.common.sessions.SessionRequest
 import net.selenate.common.util.NamedUUID
 import scala.collection.mutable.Queue
 import scala.concurrent.{ Await, Future }
@@ -14,7 +15,7 @@ import scala.concurrent.duration._
 object DriverPoolActor {
   def props(settings: PoolSettings): Props = Props(new DriverPoolActor(settings))
 
-  case class Dequeue(sessionID: String)
+  case class Dequeue(sessionRequest: SessionRequest)
   private case object Enqueue
 
   private val uuidFactory = new NamedUUID("Driver")
@@ -54,10 +55,10 @@ class DriverPoolActor(val settings: PoolSettings)
   }
 
   def receive = {
-    case Dequeue(sessionID) =>
-      logDebug(s"""Received Dequeue($sessionID)""")
+    case Dequeue(sessionRequest) =>
+      logDebug(s"""Received Dequeue($sessionRequest)""")
       self ! Enqueue
-      sender ! ((sessionID, dequeue()))
+      sender ! ((sessionRequest, dequeue()))
 
     case Enqueue =>
       logDebug("Received Enqueue")

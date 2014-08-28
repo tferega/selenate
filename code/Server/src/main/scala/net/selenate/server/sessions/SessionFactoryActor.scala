@@ -18,14 +18,16 @@ class SessionFactoryActor
   def receive = {
     case req: SessionRequest =>
       logDebug(s"""Received SessionRequest(${ req.getSessionID })""")
-      context.actorSelection("akka://server-system/user/driver-pool") ! DriverPoolActor.Dequeue(req.getSessionID)
+      context.actorSelection("akka://server-system/user/driver-pool") ! DriverPoolActor.Dequeue(req)
 
-    case (sessionID: String, DriverPoolActor.DriverEntry(uuid, driverFuture)) =>
+    case (sessionRequest: SessionRequest, DriverPoolActor.DriverEntry(uuid, driverFuture)) =>
+      val sessionID = sessionRequest.getSessionID
+
       logDebug(s"""Received DriverEntry($uuid) for session "$sessionID"""")
       driverFuture.onSuccess {
         case driver =>
           logDebug(s"""Driver future for session "$sessionID" completed""")
-          context.actorOf(SessionActor.props(sessionID, driver), sessionID)
+          context.actorOf(SessionActor.props(sessionRequest, driver), sessionID)
       }
   }
 
