@@ -75,6 +75,7 @@ class SessionActor(sessionID: String, d: SelenateFirefox)
       logTrace("Keepalive tick")
       data.reqList foreach actionMan
     case arg: SeReqDestroySession =>
+      sender ! actionMan(arg)
       self ! PoisonPill
     case arg: SeReqStartKeepalive =>
       sender ! actionMan(arg)
