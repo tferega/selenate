@@ -3,7 +3,7 @@ package net.selenate.server
 import com.typesafe.config.{ Config, ConfigFactory, ConfigParseOptions, ConfigSyntax }
 import java.io.File
 
-private object CUtils extends Loggable {
+trait CBase {
   val branch = sys.props.get("Selenate.branch")
   val userHome = sys.props.get("user.home").getOrElse(throw new RuntimeException("""Key "user.home" not defined in system properties!"""))
   val configPath = {
@@ -13,18 +13,26 @@ private object CUtils extends Loggable {
     }
   }
 
-  logTrace(s"""Detected branch: $branch""")
-  logTrace(s"""Detected user home: $userHome""")
-  logTrace(s"""Detected confing path: $configPath""")
-
   def parseOpts(allowMissing: Boolean) = ConfigParseOptions
       .defaults()
       .setAllowMissing(allowMissing)
       .setSyntax(ConfigSyntax.CONF);
 
-  def loadResourceConfig(name: String): Config = {
+  def loadResourceConfig(name: String): Config =
+    ConfigFactory.parseResources(name, parseOpts(false))
+
+  def loadFileConfig(path: File): Config =
+    ConfigFactory.parseFile(path, parseOpts(true))
+}
+
+trait CUtils extends CBase with Loggable {
+  logTrace(s"""Detected branch: $branch""")
+  logTrace(s"""Detected user home: $userHome""")
+  logTrace(s"""Detected confing path: $configPath""")
+
+  override def loadResourceConfig(name: String): Config = {
     try {
-      val config = ConfigFactory.parseResources(name, parseOpts(false))
+      val config = super.loadResourceConfig(name)
       logDebug(s"""Successfully loaded config resource "$name"""")
       logTrace(s"""Config resource "$name" content: ${ config.toString } }""")
       config
@@ -36,9 +44,9 @@ private object CUtils extends Loggable {
     }
   }
 
-  def loadFileConfig(path: File): Config = {
+  override def loadFileConfig(path: File): Config = {
     try {
-      val config = ConfigFactory.parseFile(path, parseOpts(true))
+      val config = super.loadFileConfig(path)
       logDebug(s"""Successfully loaded config file "$path"""")
       logTrace(s"""Config file "$path" content: $config }""")
       config

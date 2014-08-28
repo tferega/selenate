@@ -1,45 +1,26 @@
 package net.selenate.server
 
-import driver.DriverPoolActor
-import sessions.SessionFactoryActor
-import settings.PoolSettings
+import ch.qos.logback.classic.LoggerContext
+import ch.qos.logback.classic.util.ContextInitializer
+import ch.qos.logback.core.util.StatusPrinter
+import org.slf4j.LoggerFactory
 
-import scala.io.StdIn.readLine
+object Main extends App with CBase {
+  initLog
+  Runner.start
 
-object EntryPoint extends App with Loggable {
-  try {
-    logInfo("Selenate Server now starting...")
-    logInfo("Press ENTER to shut down.")
-    startup()
+  private def initLog() {
+    val defaultConfig = loadResourceConfig("server.reference.config")
+    val userConfig    = loadFileConfig(configPath)
+    val config        = userConfig withFallback defaultConfig
 
-    readLine // ==========-----> MAIN RUNTIME <-----==========
+    val logLocation = config.getString("server.locations.log")
+    System.setProperty("LOG_LOCATION", logLocation)
 
-    logInfo("Selenate Server now shutting down...")
-    shutdown()
-  } catch {
-    case e: Exception =>
-      logError("An unexpected error occured!", e)
-      logError("HALTING!")
-      Runtime.getRuntime.halt(1)
-  }
-
-  private def startup() {
-    logInfo("Loading configuration...")
-    logInfo("Branch: " + C.BRANCH)
-    logInfo("ServerHost: " + C.Server.HOST)
-
-    logInfo("Starting main Actor system...")
-    val pool = C.Server.Pool
-    val poolInfo = PoolSettings.fromConfig(pool.SIZE, pool.DISPLAY, pool.RECORD, pool.BINARY, pool.PREFS)
-    actors.system.actorOf(DriverPoolActor.props(poolInfo), "driver-pool")
-    actors.system.actorOf(SessionFactoryActor.props, "session-factory")
-  }
-
-  private def shutdown() {
-    logInfo("Shutting down main actor system...")
-    actors.shutdown
-
-    logInfo("HALTING")
-    Runtime.getRuntime.halt(0)
+    val lc = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
+    val ci = new ContextInitializer(lc);
+    lc.reset();
+    ci.autoConfig();
+    StatusPrinter.printInCaseOfErrorsOrWarnings(lc);
   }
 }

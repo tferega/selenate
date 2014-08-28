@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true" debug="false">
+<configuration scan="true" debug="true">
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <pattern>%d{yyyy-MM-dd HH:mm:ss} | %level | %t | %c{36} | %m%n</pattern>
     </encoder>
   </appender>
 
-  <logger name="net.selenate" level="TRACE" additivity="false">
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss} | %level | %t | %c{36} | %m%n</pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_LOCATION}</fileNamePattern>
+      <maxHistory>7</maxHistory>
+    </rollingPolicy>
+  </appender>
+
+  <logger name="net.selenate" level="INFO">
     <appender-ref ref="STDOUT"/>
   </logger>
 
-  <root level="TRACE">
-    <appender-ref ref="STDOUT"/>
+  <root level="ALL">
+    <appender-ref ref="FILE"/>
   </root>
 </configuration>
 
