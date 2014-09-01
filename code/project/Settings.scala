@@ -54,12 +54,12 @@ trait Settings {
       )
     )
 
-  val publishing = Seq(/*
-    credentials        += Credentials(Path.userHome / ".config" / "selenate" / "nexus.config"),
-    crossScalaVersions := Seq("2.10.2"),
-    publishArtifact in (Compile, packageDoc) := false,
-    publishTo := Some(
-      if (version.value endsWith "SNAPSHOT") ElementSnapshots else ElementReleases
-    )
-  */)
+  val publishing = Seq(
+    // credentials        += Credentials(Path.userHome / ".config" / "selenate" / "nexus.config"),
+    crossScalaVersions := Seq("2.11.2", "2.10.4"),
+    publishArtifact in (Compile, packageDoc) := false
+    // publishTo := Some(
+    //   if (version.value endsWith "SNAPSHOT") ElementSnapshots else ElementReleases
+    // )
+  )
 }
