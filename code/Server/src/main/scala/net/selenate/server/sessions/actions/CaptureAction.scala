@@ -6,6 +6,7 @@ import extensions.SelenateFirefox
 import net.selenate.common.comms._
 import net.selenate.common.comms.req.SeReqCapture
 import net.selenate.common.comms.res.SeResCapture
+import net.selenate.common.user.{ Cookie => SelenateCookie }
 import org.apache.commons.codec.binary.Base64
 import org.openqa.selenium.{ Cookie, OutputType}
 import scala.collection.JavaConversions._
@@ -88,12 +89,12 @@ class CaptureAction(val sessionID: String, val d: SelenateFirefox)(implicit cont
     new SeFrame(frame.index, name, src, html, windowHandle, seqToRealJava(frameList))
   }
 
-  private implicit def toSelenate(cookie: Cookie): SeCookie = new SeCookie(
-    cookie.getDomain,
-    cookie.getExpiry,
+  private implicit def toSelenate(cookie: Cookie): SelenateCookie = new SelenateCookie(
     cookie.getName,
-    cookie.getPath,
     cookie.getValue,
+    cookie.getDomain,
+    cookie.getPath,
+    cookie.getExpiry,
     cookie.isSecure)
 
   private def findAllFrames: List[FrameInfo] = {

@@ -99,19 +99,19 @@ public abstract class ActorBase {
         resToUserWindowList(resCapture.windowList));
   }
 
-  protected CaptureCookie resToUserCookie(final SeCookie resCookie) {
+  protected CaptureCookie resToUserCookie(final Cookie resCookie) {
     return new CaptureCookie(
-        resCookie.domain,
-        resCookie.expiry,
-        resCookie.name,
-        resCookie.path,
-        resCookie.value,
-        resCookie.isSecure);
+        resCookie.getDomain(),
+        resCookie.getExpiry(),
+        resCookie.getName(),
+        resCookie.getPath(),
+        resCookie.getValue(),
+        resCookie.isSecure());
   }
 
-  protected Set<CaptureCookie> resToUserCookieList(final Set<SeCookie> resCookieList) {
+  protected Set<CaptureCookie> resToUserCookieList(final Set<Cookie> resCookieList) {
     final Set<CaptureCookie> userCookieList = new HashSet<CaptureCookie>();
-    for (final SeCookie resCookie : resCookieList) {
+    for (final Cookie resCookie : resCookieList) {
       final CaptureCookie cookie = resToUserCookie(resCookie);
       userCookieList.add(cookie);
     }
