@@ -50,6 +50,7 @@ public class SeReqClick implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqClick([%s] %s: %s, %s)", windowHandle, Util.simpleListToString(framePath), method, query);
+    return String.format("SeReqClick(%s, %s, %s, %s)",
+        windowHandle, Util.listToString(framePath), method, query);
   }
 }

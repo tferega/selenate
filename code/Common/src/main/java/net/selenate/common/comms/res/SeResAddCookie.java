@@ -8,6 +8,6 @@ public class SeResAddCookie implements SeCommsRes {
 
   @Override
   public String toString() {
-    return String.format("SeResAddCookieNamed()");
+    return String.format("SeResAddCookie()");
   }
 }

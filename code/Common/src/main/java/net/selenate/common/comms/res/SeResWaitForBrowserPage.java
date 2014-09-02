@@ -24,7 +24,9 @@ public class SeResWaitForBrowserPage implements SeCommsRes {
 
   @Override
   public String toString() {
-    return String.format("SeResWaitForBrowserPage(%s, %s)", isSuccessful, foundPage.name);
+    final String foundPageName = (foundPage == null) ? null : foundPage.name;
+    return String.format("SeResWaitForBrowserPage(%s, %s)",
+        isSuccessful, foundPageName);
   }
 }
 

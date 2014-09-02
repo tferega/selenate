@@ -45,6 +45,7 @@ public class SePage implements SeComms {
 
   @Override
   public String toString() {
-    return String.format("SePage(%s)%s", name, Util.multilineListToString(selectorList));
+    return String.format("SePage(%s, %s)",
+        name, Util.listToString(selectorList));
   }
 }

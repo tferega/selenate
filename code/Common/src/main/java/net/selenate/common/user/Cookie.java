@@ -1,11 +1,12 @@
 package net.selenate.common.user;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Cookie implements Serializable {
-
   private static final long serialVersionUID = -8895605477477397939L;
+  private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HHmmss");
 
   private String  domain;
   private Date    expiry;
@@ -13,7 +14,6 @@ public class Cookie implements Serializable {
   private String  path;
   private String  value;
   private boolean isSecure;
-
 
   public Cookie(String name, String value, String path, Date expiry) {
     this(name, value, null, path, expiry);
@@ -119,7 +119,8 @@ public class Cookie implements Serializable {
   }
 
   public String toString() {
-    return String.format("name=%s ; value=%s ; path=%s ; domain=%s ; expiry=%s ; isSecure=%s ; ",
-        name, value, path, domain, expiry, String.valueOf(isSecure));
+    final String formattedExpiry = (expiry == null) ? null : dateFormatter.format(expiry);
+    return String.format("Cookie(%s, %s, %s, %s, %s, %s)",
+        domain, formattedExpiry, name, path, value, String.valueOf(isSecure));
   }
 }

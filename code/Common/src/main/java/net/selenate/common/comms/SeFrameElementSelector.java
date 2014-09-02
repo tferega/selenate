@@ -38,6 +38,7 @@ public class SeFrameElementSelector implements SeComms {
 
   @Override
   public String toString() {
-    return String.format("SeFrameElementSelector([%s] %s: %s, %s)", windowHandle, Util.simpleListToString(framePath), method, query);
+    return String.format("SeFrameElementSelector(%s, %s, %s, %s)",
+        windowHandle, Util.listToString(framePath), method, query);
   }
 }

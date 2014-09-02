@@ -1,8 +1,8 @@
 package net.selenate.common.comms.req;
 
 import java.util.List;
-
 import net.selenate.common.comms.*;
+import net.selenate.common.util.Util;
 
 public class SeReqAppendText implements SeCommsReq {
   private static final long serialVersionUID = 1L;
@@ -61,13 +61,7 @@ public class SeReqAppendText implements SeCommsReq {
 
   @Override
   public String toString() {
-    String framePathStr = "[";
-    boolean isFirst = true;
-    for (int f : framePath) {
-      framePathStr += (isFirst ? "" : ":") + f;
-      isFirst = false;
-    }
-    framePathStr += "]";
-    return String.format("SeReqAppendText([%s] %s: %s, %s, %s)", windowHandle, framePathStr, method, query, text);
+    return String.format("SeReqAppendText(%s, %s, %s, %s, %s)",
+        windowHandle, Util.listToString(framePath), method, query, text);
   }
 }

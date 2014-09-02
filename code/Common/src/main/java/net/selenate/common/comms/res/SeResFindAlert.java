@@ -6,6 +6,10 @@ public class SeResFindAlert implements SeCommsRes {
   public final String text;
 
   public SeResFindAlert(final String text) {
+    if (text == null) {
+      throw new IllegalArgumentException("Text cannot be null!");
+    }
+
     this.text = text;
   }
 

@@ -24,6 +24,6 @@ public class SeReqStartKeepalive implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqStartKeepalive(%d)%s", delayMillis, Util.multilineListToString(reqList));
+    return String.format("SeReqStartKeepalive(%d, %s)", delayMillis, Util.listToString(reqList));
   }
 }

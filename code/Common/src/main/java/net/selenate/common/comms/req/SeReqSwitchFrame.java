@@ -29,6 +29,6 @@ public class SeReqSwitchFrame implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqSwitchFrame(%d, %s)", frame, selector.toString());
+    return String.format("SeReqSwitchFrame(%d, %s)", frame, selector);
   }
 }

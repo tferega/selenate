@@ -1,9 +1,11 @@
 package net.selenate.common.comms;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SeCookie implements SeComms {
   private static final long serialVersionUID = 1L;
+  private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HHmmss");
 
   public final String  domain;
   public final Date    expiry;
@@ -29,6 +31,8 @@ public class SeCookie implements SeComms {
 
   @Override
   public String toString() {
-    return String.format("SeCookie(%s)", name);
+    final String formattedExpiry = (expiry == null) ? null : dateFormatter.format(expiry);
+    return String.format("SeCookie(%s, %s, %s, %s, %s, %s)",
+        domain, formattedExpiry, name, path, value, isSecure);
   }
 }

@@ -33,6 +33,6 @@ public class SeReqWaitFor implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqWaitFor()%s", Util.multilineListToString(pageList));
+    return String.format("SeReqWaitFor(%s)", Util.listToString(pageList));
   }
 }

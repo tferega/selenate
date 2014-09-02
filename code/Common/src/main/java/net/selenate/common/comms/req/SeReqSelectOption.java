@@ -69,6 +69,7 @@ public class SeReqSelectOption implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqSelectOption([%s] %s: %s, %s, %s, %s)", windowHandle, Util.simpleListToString(framePath), parentMethod, parentQuery, optionMethod, optionQuery);
+    return String.format("SeReqSelectOption(%s, %s, %s, %s, %s, %s)",
+        windowHandle, Util.listToString(framePath), parentMethod, parentQuery, optionMethod, optionQuery);
   }
 }

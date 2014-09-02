@@ -8,11 +8,15 @@ public class SeResFindSelect implements SeCommsRes {
   public final SeSelect select;
 
   public SeResFindSelect(final SeSelect select) {
+    if (select == null) {
+      throw new IllegalArgumentException("Select cannot be null!");
+    }
+
     this.select = select;
   }
 
   @Override
   public String toString() {
-    return String.format("SeResFindSelect(%s)", select.element.getDesc());
+    return String.format("SeResFindSelect(%s)", select);
   }
 }

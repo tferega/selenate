@@ -8,11 +8,15 @@ public class SeResFindElement implements SeCommsRes {
   public final SeElement element;
 
   public SeResFindElement(final SeElement element) {
+    if (element == null) {
+      throw new IllegalArgumentException("Element cannot be null!");
+    }
+
     this.element = element;
   }
 
   @Override
   public String toString() {
-    return String.format("SeResFindElement(%s, %s)", element.name, element.getDesc());
+    return String.format("SeResFindElement(%s)", element);
   }
 }

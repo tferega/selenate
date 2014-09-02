@@ -26,6 +26,6 @@ public class SeReqCaptureWindow implements SeCommsReq {
 
   @Override
   public String toString() {
-    return "SeReqCaptureWindow";
+    return String.format("SeReqCaptureWindow()", method, query);
   }
 }

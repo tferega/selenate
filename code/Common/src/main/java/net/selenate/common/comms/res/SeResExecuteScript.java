@@ -6,6 +6,9 @@ public class SeResExecuteScript implements SeCommsRes {
   public final String result;
 
   public SeResExecuteScript(final String result) {
+    if (result == null) {
+      throw new IllegalArgumentException("Result cannot be null!");
+    }
     this.result = result;
   }
 

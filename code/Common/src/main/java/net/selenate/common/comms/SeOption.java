@@ -11,6 +11,6 @@ public class SeOption implements SeComms {
 
   @Override
   public String toString() {
-    return String.format("SeOption(%s)", element.getDesc());
+    return String.format("SeOption(%s)", element);
   }
 }

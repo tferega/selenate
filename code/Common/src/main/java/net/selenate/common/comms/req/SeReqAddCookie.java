@@ -17,6 +17,6 @@ public class SeReqAddCookie implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqAddCookie(Cookie = [%s])", cookie.toString());
+    return String.format("SeReqAddCookie(%s)", cookie);
   }
 }
