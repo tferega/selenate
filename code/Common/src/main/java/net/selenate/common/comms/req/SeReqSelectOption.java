@@ -1,7 +1,6 @@
 package net.selenate.common.comms.req;
 
-import java.util.List;
-import net.selenate.common.SelenateUtils;
+import net.selenate.common.comms.SeAddress;
 import net.selenate.common.comms.SeElementSelectMethod;
 import net.selenate.common.comms.SeFrameElementSelector;
 import net.selenate.common.comms.SeOptionSelectMethod;
@@ -10,25 +9,20 @@ import net.selenate.common.comms.SeOptionSelector;
 public class SeReqSelectOption implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
-  public final String                windowHandle;
-  public final List<Integer>         framePath;
+  public final SeAddress             address;
   public final SeElementSelectMethod parentMethod;
   public final String                parentQuery;
   public final SeOptionSelectMethod  optionMethod;
   public final String                optionQuery;
 
   public SeReqSelectOption(
-      final String                windowHandle,
-      final List<Integer>         framePath,
+      final SeAddress             address,
       final SeElementSelectMethod parentMethod,
       final String                parentQuery,
       final SeOptionSelectMethod  optionMethod,
       final String                optionQuery) {
-    if (windowHandle == null) {
-      throw new IllegalArgumentException("Window handle cannot be null!");
-    }
-    if (framePath == null) {
-      throw new IllegalArgumentException("Frame path cannot be null!");
+    if (address == null) {
+      throw new IllegalArgumentException("Address cannot be null!");
     }
     if (parentMethod == null) {
       throw new IllegalArgumentException("Parent method cannot be null!");
@@ -43,8 +37,7 @@ public class SeReqSelectOption implements SeCommsReq {
       throw new IllegalArgumentException("Option query cannot be null!");
     }
 
-    this.windowHandle = windowHandle;
-    this.framePath    = framePath;
+    this.address      = address;
     this.parentMethod = parentMethod;
     this.parentQuery  = parentQuery;
     this.optionMethod = optionMethod;
@@ -61,8 +54,7 @@ public class SeReqSelectOption implements SeCommsReq {
       throw new IllegalArgumentException("Option selector cannot be null!");
     }
 
-    this.windowHandle = parentSelector.windowHandle;
-    this.framePath    = parentSelector.framePath;
+    this.address      = parentSelector.address;
     this.parentMethod = parentSelector.method;
     this.parentQuery  = parentSelector.query;
     this.optionMethod = optionSelector.method;
@@ -71,7 +63,7 @@ public class SeReqSelectOption implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqSelectOption(%s, %s, %s, %s, %s, %s)",
-        windowHandle, SelenateUtils.listToString(framePath), parentMethod, parentQuery, optionMethod, optionQuery);
+    return String.format("SeReqSelectOption(%s, %s, %s, %s, %s)",
+        address, parentMethod, parentQuery, optionMethod, optionQuery);
   }
 }

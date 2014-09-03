@@ -1,28 +1,22 @@
 package net.selenate.common.comms.req;
 
-import java.util.List;
-import net.selenate.common.SelenateUtils;
+import net.selenate.common.comms.SeAddress;
 import net.selenate.common.comms.SeElementSelectMethod;
 import net.selenate.common.comms.SeFrameElementSelector;
 
 public class SeReqClearText implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
-  public final String         windowHandle;
-  public final List<Integer>  framePath;
+  public final SeAddress             address;
   public final SeElementSelectMethod method;
-  public final String         query;
+  public final String                query;
 
   public SeReqClearText(
-      final String         windowHandle,
-      final List<Integer>  framePath,
+      final SeAddress             address,
       final SeElementSelectMethod method,
       final String         query) {
-    if (windowHandle == null) {
-      throw new IllegalArgumentException("Window handle cannot be null!");
-    }
-    if (framePath == null) {
-      throw new IllegalArgumentException("Frame path cannot be null!");
+    if (address == null) {
+      throw new IllegalArgumentException("Address cannot be null!");
     }
     if (method == null) {
       throw new IllegalArgumentException("Method cannot be null!");
@@ -31,10 +25,9 @@ public class SeReqClearText implements SeCommsReq {
       throw new IllegalArgumentException("Query cannot be null!");
     }
 
-    this.windowHandle = windowHandle;
-    this.framePath    = framePath;
-    this.method       = method;
-    this.query        = query;
+    this.address = address;
+    this.method  = method;
+    this.query   = query;
   }
 
   public SeReqClearText(final SeFrameElementSelector selector) {
@@ -42,15 +35,14 @@ public class SeReqClearText implements SeCommsReq {
       throw new IllegalArgumentException("Selector cannot be null!");
     }
 
-    this.windowHandle = selector.windowHandle;
-    this.framePath    = selector.framePath;
-    this.method       = selector.method;
-    this.query        = selector.query;
+    this.address = selector.address;
+    this.method  = selector.method;
+    this.query   = selector.query;
   }
 
   @Override
   public String toString() {
-    return String.format("SeReqClearText(%s, %s, %s, %s)",
-        windowHandle, SelenateUtils.listToString(framePath), method, query);
+    return String.format("SeReqClearText(%s, %s, %s)",
+        address, method, query);
   }
 }
