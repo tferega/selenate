@@ -2,8 +2,7 @@ package net.selenate.common.comms;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import net.selenate.common.util.Util;
+import net.selenate.common.SelenateUtils;
 
 public class SePage implements SeComms {
   private static final long serialVersionUID = 1L;
@@ -46,6 +45,6 @@ public class SePage implements SeComms {
   @Override
   public String toString() {
     return String.format("SePage(%s, %s)",
-        name, Util.listToString(selectorList));
+        name, SelenateUtils.listToString(selectorList));
   }
 }

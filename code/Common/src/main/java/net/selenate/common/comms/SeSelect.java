@@ -1,7 +1,7 @@
 package net.selenate.common.comms;
 
 import java.util.List;
-import net.selenate.common.util.Util;
+import net.selenate.common.SelenateUtils;
 
 public class SeSelect implements SeComms {
   private static final long serialVersionUID = 1L;
@@ -29,6 +29,6 @@ public class SeSelect implements SeComms {
   @Override
   public String toString() {
     return String.format("SeSelect(%s, %d, %d, %s, %s)",
-        element, optionCount, selectedIndex, selectedOption, Util.listToString(options));
+        element, optionCount, selectedIndex, selectedOption, SelenateUtils.listToString(options));
   }
 }

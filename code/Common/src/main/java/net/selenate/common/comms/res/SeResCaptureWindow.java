@@ -1,6 +1,6 @@
 package net.selenate.common.comms.res;
 
-import net.selenate.common.util.Util;
+import net.selenate.common.SelenateUtils;
 
 public class SeResCaptureWindow implements SeCommsRes{
   private static final long serialVersionUID = 1L;
@@ -16,6 +16,6 @@ public class SeResCaptureWindow implements SeCommsRes{
 
   @Override
   public String toString() {
-    return String.format("SeResCaptureWindow(%s)", Util.byteArrToString(screenshot));
+    return String.format("SeResCaptureWindow(%s)", SelenateUtils.byteArrToString(screenshot));
   }
 }

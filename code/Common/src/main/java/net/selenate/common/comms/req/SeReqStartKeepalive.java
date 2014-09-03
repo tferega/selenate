@@ -1,8 +1,7 @@
 package net.selenate.common.comms.req;
 
 import java.util.List;
-
-import net.selenate.common.util.Util;
+import net.selenate.common.SelenateUtils;
 
 public class SeReqStartKeepalive implements SeCommsReq {
   private static final long serialVersionUID = 1L;
@@ -24,6 +23,6 @@ public class SeReqStartKeepalive implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqStartKeepalive(%d, %s)", delayMillis, Util.listToString(reqList));
+    return String.format("SeReqStartKeepalive(%d, %s)", delayMillis, SelenateUtils.listToString(reqList));
   }
 }

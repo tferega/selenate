@@ -1,10 +1,9 @@
 package net.selenate.common.comms.req;
 
 import java.util.List;
-
+import net.selenate.common.SelenateUtils;
 import net.selenate.common.comms.SeElementSelectMethod;
 import net.selenate.common.comms.SeFrameElementSelector;
-import net.selenate.common.util.Util;
 
 public class SeReqCaptureElement implements SeCommsReq {
 
@@ -50,7 +49,7 @@ public class SeReqCaptureElement implements SeCommsReq {
   @Override
   public String toString() {
     return String.format("SeReqCaptureElement(%s, %s, %s, %s)",
-        windowHandle, Util.listToString(framePath), method, query);
+        windowHandle, SelenateUtils.listToString(framePath), method, query);
   }
 
 }

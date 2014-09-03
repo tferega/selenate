@@ -1,8 +1,7 @@
 package net.selenate.common.comms;
 
 import java.util.List;
-
-import net.selenate.common.util.Util;
+import net.selenate.common.SelenateUtils;
 
 public class SeFrameElementSelector implements SeComms {
   private static final long serialVersionUID = 1L;
@@ -39,6 +38,6 @@ public class SeFrameElementSelector implements SeComms {
   @Override
   public String toString() {
     return String.format("SeFrameElementSelector(%s, %s, %s, %s)",
-        windowHandle, Util.listToString(framePath), method, query);
+        windowHandle, SelenateUtils.listToString(framePath), method, query);
   }
 }

@@ -1,4 +1,4 @@
-package net.selenate.common.util;
+package net.selenate.common;
 
 import java.io.Serializable;
 import java.util.UUID;

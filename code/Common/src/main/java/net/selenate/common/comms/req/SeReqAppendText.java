@@ -1,8 +1,9 @@
 package net.selenate.common.comms.req;
 
 import java.util.List;
-import net.selenate.common.comms.*;
-import net.selenate.common.util.Util;
+import net.selenate.common.SelenateUtils;
+import net.selenate.common.comms.SeElementSelectMethod;
+import net.selenate.common.comms.SeFrameElementSelector;
 
 public class SeReqAppendText implements SeCommsReq {
   private static final long serialVersionUID = 1L;
@@ -62,6 +63,6 @@ public class SeReqAppendText implements SeCommsReq {
   @Override
   public String toString() {
     return String.format("SeReqAppendText(%s, %s, %s, %s, %s)",
-        windowHandle, Util.listToString(framePath), method, query, text);
+        windowHandle, SelenateUtils.listToString(framePath), method, query, text);
   }
 }

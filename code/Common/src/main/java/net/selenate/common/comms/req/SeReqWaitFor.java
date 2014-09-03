@@ -2,9 +2,8 @@ package net.selenate.common.comms.req;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import net.selenate.common.comms.*;
-import net.selenate.common.util.Util;
+import net.selenate.common.SelenateUtils;
+import net.selenate.common.comms.SePage;
 
 public class SeReqWaitFor implements SeCommsReq {
   private static final long serialVersionUID = 1L;
@@ -33,6 +32,6 @@ public class SeReqWaitFor implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqWaitFor(%s)", Util.listToString(pageList));
+    return String.format("SeReqWaitFor(%s)", SelenateUtils.listToString(pageList));
   }
 }

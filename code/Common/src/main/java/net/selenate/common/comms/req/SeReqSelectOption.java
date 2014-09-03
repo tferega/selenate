@@ -1,9 +1,11 @@
 package net.selenate.common.comms.req;
 
 import java.util.List;
-
-import net.selenate.common.comms.*;
-import net.selenate.common.util.Util;
+import net.selenate.common.SelenateUtils;
+import net.selenate.common.comms.SeElementSelectMethod;
+import net.selenate.common.comms.SeFrameElementSelector;
+import net.selenate.common.comms.SeOptionSelectMethod;
+import net.selenate.common.comms.SeOptionSelector;
 
 public class SeReqSelectOption implements SeCommsReq {
   private static final long serialVersionUID = 1L;
@@ -70,6 +72,6 @@ public class SeReqSelectOption implements SeCommsReq {
   @Override
   public String toString() {
     return String.format("SeReqSelectOption(%s, %s, %s, %s, %s, %s)",
-        windowHandle, Util.listToString(framePath), parentMethod, parentQuery, optionMethod, optionQuery);
+        windowHandle, SelenateUtils.listToString(framePath), parentMethod, parentQuery, optionMethod, optionQuery);
   }
 }

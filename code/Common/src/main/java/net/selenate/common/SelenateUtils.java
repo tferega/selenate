@@ -1,11 +1,11 @@
-package net.selenate.common.util;
+package net.selenate.common;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public final class Util {
-  private Util() { }
+public final class SelenateUtils {
+  private SelenateUtils() { }
 
   public static String byteArrToString(byte[] byteArr) {
     return String.valueOf(byteArr.length);

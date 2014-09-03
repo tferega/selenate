@@ -1,9 +1,10 @@
 package net.selenate.common.comms.res;
 
+import net.selenate.common.SelenateUtils;
+
 import java.util.List;
 import java.util.Set;
 import net.selenate.common.comms.*;
-import net.selenate.common.util.Util;
 
 public class SeResCapture implements SeCommsRes {
   private static final long serialVersionUID = 1L;
@@ -27,6 +28,6 @@ public class SeResCapture implements SeCommsRes {
   @Override
   public String toString() {
     return String.format("SeResCapture(%s, %d, %s, %s)",
-        name, time, Util.setToString(cookieList), Util.listToString(windowList));
+        name, time, SelenateUtils.setToString(cookieList), SelenateUtils.listToString(windowList));
   }
 }
