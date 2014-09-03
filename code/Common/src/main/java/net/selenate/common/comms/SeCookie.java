@@ -1,10 +1,9 @@
-package net.selenate.common.user;
+package net.selenate.common.comms;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Cookie implements Serializable {
+public class SeCookie implements SeComms {
   private static final long serialVersionUID = -8895605477477397939L;
   private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HHmmss");
 
@@ -15,15 +14,15 @@ public class Cookie implements Serializable {
   private String  value;
   private boolean isSecure;
 
-  public Cookie(String name, String value, String path, Date expiry) {
+  public SeCookie(String name, String value, String path, Date expiry) {
     this(name, value, null, path, expiry);
   }
 
-  public Cookie(String name, String value, String domain, String path, Date expiry) {
+  public SeCookie(String name, String value, String domain, String path, Date expiry) {
     this(name, value, domain, path, expiry, false);
   }
 
-  public Cookie(String name, String value, String domain, String path, Date expiry, boolean isSecure) {
+  public SeCookie(String name, String value, String domain, String path, Date expiry, boolean isSecure) {
     this.name     = name;
     this.value    = value;
     this.path     = path == null || "".equals(path) ? "/" : path;
@@ -38,11 +37,11 @@ public class Cookie implements Serializable {
     validate();
   }
 
-  public Cookie(String name, String value) {
+  public SeCookie(String name, String value) {
     this(name, value, "/", null);
   }
 
-  public Cookie(String name, String value, String path) {
+  public SeCookie(String name, String value, String path) {
     this(name, value, path, null);
   }
 
@@ -70,32 +69,32 @@ public class Cookie implements Serializable {
     return isSecure;
   }
 
-  public Cookie setDomain(String domain) {
+  public SeCookie setDomain(String domain) {
     this.domain = domain;
     return this;
   }
 
-  public Cookie setExpiry(Date expiry) {
+  public SeCookie setExpiry(Date expiry) {
     this.expiry = expiry;
     return this;
   }
 
-  public Cookie setName(String name) {
+  public SeCookie setName(String name) {
     this.name = name;
     return this;
   }
 
-  public Cookie setPath(String path) {
+  public SeCookie setPath(String path) {
     this.path = path;
     return this;
   }
 
-  public Cookie setValue(String value) {
+  public SeCookie setValue(String value) {
     this.value = value;
     return this;
   }
 
-  public Cookie setSecure(boolean isSecure) {
+  public SeCookie setSecure(boolean isSecure) {
     this.isSecure = isSecure;
     return this;
   }
