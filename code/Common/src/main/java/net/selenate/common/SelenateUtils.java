@@ -1,11 +1,15 @@
 package net.selenate.common;
 
+import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 public final class SelenateUtils {
   private SelenateUtils() { }
+
+  public static final SimpleDateFormat ISO_8601_FORMAT = new SimpleDateFormat("yyyy-MM-dd HHmmss");
 
   public static String byteArrToString(byte[] byteArr) {
     return String.valueOf(byteArr.length);
