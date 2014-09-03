@@ -1,7 +1,8 @@
 package net.selenate.server
 package sessions
 
-import actions._
+import actions.ActionContext
+import actions.workers._
 import extensions.SelenateFirefox
 import linux.LinuxDisplay
 
