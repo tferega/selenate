@@ -3,22 +3,21 @@ package net.selenate.common.comms;
 import java.util.List;
 import net.selenate.common.SelenateUtils;
 
-public class SeSelect implements SeComms {
-  private static final long serialVersionUID = 1L;
+public final class SeSelect implements SeComms {
+  private static final long serialVersionUID = 45749879L;
 
-  public final SeElement element;
-  public final int       optionCount;
-  public final Integer   selectedIndex;
-  public final SeOption  selectedOption;
-  public final List<SeOption> options;
+  private final SeElement      element;
+  private final int            optionCount;
+  private final int            selectedIndex;
+  private final SeOption       selectedOption;
+  private final List<SeOption> options;
 
   public SeSelect(
-      final SeElement element,
-      final int       optionCount,
-      final Integer   selectedIndex,
-      final SeOption  selectedOption,
+      final SeElement      element,
+      final int            optionCount,
+      final int            selectedIndex,
+      final SeOption       selectedOption,
       final List<SeOption> options) {
-    if (options == null) throw new IllegalArgumentException("Options cannot be null!");
     this.element        = element;
     this.optionCount    = optionCount;
     this.selectedIndex  = selectedIndex;
@@ -26,9 +25,107 @@ public class SeSelect implements SeComms {
     this.options        = options;
   }
 
+  public SeElement getElement() {
+    return element;
+  }
+
+  public int getOptionCount() {
+    return optionCount;
+  }
+
+  public int getSelectedIndex() {
+    return selectedIndex;
+  }
+
+  public SeOption getSelectedOption() {
+    return selectedOption;
+  }
+
+  public List<SeOption> getOptions() {
+    return options;
+  }
+
+  public SeSelect withElement(final SeElement newElement) {
+    return new SeSelect(newElement, this.optionCount, this.selectedIndex, this.selectedOption, this.options);
+  }
+
+  public SeSelect withOptionCount(final int newOptionCount) {
+    return new SeSelect(this.element, newOptionCount, this.selectedIndex, this.selectedOption, this.options);
+  }
+
+  public SeSelect withSelectedIndex(final Integer newSelectedIndex) {
+    return new SeSelect(this.element, this.optionCount, newSelectedIndex, this.selectedOption, this.options);
+  }
+
+  public SeSelect withSelectedOption(final SeOption newSelectedOption) {
+    return new SeSelect(this.element, this.optionCount, this.selectedIndex, newSelectedOption, this.options);
+  }
+
+  public SeSelect withOptions(final List<SeOption> newOptions) {
+    return new SeSelect(this.element, this.optionCount, this.selectedIndex, this.selectedOption, newOptions);
+  }
+
+  public void validate() {
+    if (element == null) {
+      throw new IllegalArgumentException("element cannot be null!");
+    }
+
+    if (selectedOption == null) {
+      throw new IllegalArgumentException("selectedOption cannot be null!");
+    }
+
+    if (options == null) {
+      throw new IllegalArgumentException("options cannot be null!");
+    }
+  }
+
   @Override
   public String toString() {
     return String.format("SeSelect(%s, %d, %d, %s, %s)",
         element, optionCount, selectedIndex, selectedOption, SelenateUtils.listToString(options));
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((element == null) ? 0 : element.hashCode());
+    result = prime * result + optionCount;
+    result = prime * result + ((options == null) ? 0 : options.hashCode());
+    result = prime * result + selectedIndex;
+    result = prime * result
+        + ((selectedOption == null) ? 0 : selectedOption.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    SeSelect other = (SeSelect) obj;
+    if (element == null) {
+      if (other.element != null)
+        return false;
+    } else if (!element.equals(other.element))
+      return false;
+    if (optionCount != other.optionCount)
+      return false;
+    if (options == null) {
+      if (other.options != null)
+        return false;
+    } else if (!options.equals(other.options))
+      return false;
+    if (selectedIndex != other.selectedIndex)
+      return false;
+    if (selectedOption == null) {
+      if (other.selectedOption != null)
+        return false;
+    } else if (!selectedOption.equals(other.selectedOption))
+      return false;
+    return true;
   }
 }

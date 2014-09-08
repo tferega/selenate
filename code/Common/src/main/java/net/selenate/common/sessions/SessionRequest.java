@@ -3,24 +3,17 @@ package net.selenate.common.sessions;
 import java.io.Serializable;
 
 public class SessionRequest implements Serializable {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 45749879L;
 
   private final String sessionID;
-  private final Boolean isRecorded;
+  private final boolean isRecorded;
 
   public SessionRequest(
       final String sessionID,
       final Boolean isRecorded) {
-    if (sessionID == null) {
-      throw new IllegalArgumentException("Session ID cannot be null!");
-    }
-
-    if (isRecorded == null) {
-      throw new IllegalArgumentException("Is recorded cannot be null!");
-    }
-
     this.sessionID = sessionID;
     this.isRecorded = isRecorded;
+    validate();
   }
 
   public String getSessionID() {
@@ -31,8 +24,23 @@ public class SessionRequest implements Serializable {
     return isRecorded;
   }
 
+  public SessionRequest withSessionID(final String newSessionID) {
+    return new SessionRequest(newSessionID, this.isRecorded);
+  }
+
+  public SessionRequest withIsRecorded(final boolean newIsRecorded) {
+    return new SessionRequest(this.sessionID, newIsRecorded);
+  }
+
+  private void validate() {
+    if (sessionID == null) {
+      throw new IllegalArgumentException("Session ID cannot be null!");
+    }
+  }
+
   @Override
   public String toString() {
-    return String.format("SessionRequest(%s, %s)", sessionID, String.valueOf(isRecorded));
+    return String.format("SessionRequest(%s, %s)",
+        sessionID, String.valueOf(isRecorded));
   }
 }

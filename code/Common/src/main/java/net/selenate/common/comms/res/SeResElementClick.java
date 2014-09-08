@@ -1,13 +1,13 @@
 package net.selenate.common.comms.res;
 
-public final class SeResSystemInput implements SeCommsRes {
+public final class SeResElementClick implements SeCommsRes {
   private static final long serialVersionUID = 45749879L;
 
-  public SeResSystemInput() {
+  public SeResElementClick() {
   }
 
   @Override
   public String toString() {
-    return String.format("SeResSystemInput()");
+    return String.format("SeResElementClick()");
   }
 }

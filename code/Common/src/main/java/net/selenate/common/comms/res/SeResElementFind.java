@@ -1,11 +1,13 @@
-package net.selenate.common.comms;
+package net.selenate.common.comms.res;
 
-public final class SeOption implements SeComms {
+import net.selenate.common.comms.SeElement;
+
+public final class SeResElementFind implements SeCommsRes {
   private static final long serialVersionUID = 45749879L;
 
   private final SeElement element;
 
-  public SeOption(final SeElement element) {
+  public SeResElementFind(final SeElement element) {
     this.element = element;
     validate();
   }
@@ -14,11 +16,11 @@ public final class SeOption implements SeComms {
     return element;
   }
 
-  public SeOption withElement(final SeElement newElement) {
-    return new SeOption(newElement);
+  public SeResElementFind withElement(final SeElement newElement) {
+    return new SeResElementFind(newElement);
   }
 
-  public void validate() {
+  private void validate() {
     if (element == null) {
       throw new IllegalArgumentException("Element cannot be null!");
     }
@@ -26,7 +28,7 @@ public final class SeOption implements SeComms {
 
   @Override
   public String toString() {
-    return String.format("SeOption(%s)", element);
+    return String.format("SeResElementFind(%s)", element);
   }
 
   @Override
@@ -45,7 +47,7 @@ public final class SeOption implements SeComms {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    SeOption other = (SeOption) obj;
+    SeResElementFind other = (SeResElementFind) obj;
     if (element == null) {
       if (other.element != null)
         return false;

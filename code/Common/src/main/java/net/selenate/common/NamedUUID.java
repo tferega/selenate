@@ -22,6 +22,11 @@ public class NamedUUID implements Serializable {
 
   public String random() {
     final String uuid = UUID.randomUUID().toString();
-    return String.format("%s:%s", name, uuid);
+    return String.format("{%s:%s}", name, uuid);
+  }
+
+  @Override
+  public String toString() {
+    return String.format("NamedUUID(%s)", name);
   }
 }

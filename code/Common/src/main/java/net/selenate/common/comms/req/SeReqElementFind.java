@@ -2,12 +2,12 @@ package net.selenate.common.comms.req;
 
 import net.selenate.common.comms.SeElementSelector;
 
-public final class SeReqElementExists implements SeCommsReq {
+public final class SeReqElementFind implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
 
   private final SeElementSelector selector;
 
-  public SeReqElementExists(final SeElementSelector selector) {
+  public SeReqElementFind(final SeElementSelector selector) {
     this.selector = selector;
     validate();
   }
@@ -16,8 +16,8 @@ public final class SeReqElementExists implements SeCommsReq {
     return selector;
   }
 
-  public SeReqElementExists withSelector(final SeElementSelector newSelector) {
-    return new SeReqElementExists(newSelector);
+  public SeReqElementFind withSelector(final SeElementSelector newSelector) {
+    return new SeReqElementFind(newSelector);
   }
 
   private void validate() {
@@ -28,7 +28,7 @@ public final class SeReqElementExists implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqElementExists(%s)", selector);
+    return String.format("SeReqElementFind(%s)", selector);
   }
 
   @Override
@@ -47,7 +47,7 @@ public final class SeReqElementExists implements SeCommsReq {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    SeReqElementExists other = (SeReqElementExists) obj;
+    SeReqElementFind other = (SeReqElementFind) obj;
     if (selector == null) {
       if (other.selector != null)
         return false;

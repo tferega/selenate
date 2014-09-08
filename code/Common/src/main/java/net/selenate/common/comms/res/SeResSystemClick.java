@@ -1,7 +1,7 @@
 package net.selenate.common.comms.res;
 
-public class SeResSystemClick implements SeCommsRes {
-  private static final long serialVersionUID = 1L;
+public final class SeResSystemClick implements SeCommsRes {
+  private static final long serialVersionUID = 45749879L;
 
   public SeResSystemClick() {
   }

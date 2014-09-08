@@ -13,40 +13,6 @@ public final class SeCookie implements SeComms {
   private final Date    expiry;
   private final boolean isSecure;
 
-  private static String stripPort(final String domain) {
-    return (domain == null) ? null : domain.split(":")[0];
-  }
-
-  public SeCookie(
-      final String name,
-      final String value) {
-    this(name, value, null, "/", null, false);
-  }
-
-  public SeCookie(
-      final String name,
-      final String value,
-      final String path) {
-    this(name, value, null, path, null, false);
-  }
-
-  public SeCookie(
-      final String name,
-      final String value,
-      final String path,
-      final Date expiry) {
-    this(name, value, null, path, expiry, false);
-  }
-
-  public SeCookie(
-      final String name,
-      final String value,
-      final String domain,
-      final String path,
-      final Date expiry) {
-    this(name, value, domain, path, expiry, false);
-  }
-
   public SeCookie(
       final String name,
       final String value,
@@ -56,8 +22,8 @@ public final class SeCookie implements SeComms {
       final boolean isSecure) {
     this.name     = name;
     this.value    = value;
-    this.path     = (path == null || "".equals(path)) ? "/" : path;
-    this.domain   = stripPort(domain);
+    this.path     = path;
+    this.domain   = domain;
     this.isSecure = isSecure;
     this.expiry   = expiry;
     validate();
@@ -144,7 +110,7 @@ public final class SeCookie implements SeComms {
   @Override
   public String toString() {
     final String formattedExpiry = (expiry == null) ? null : SelenateUtils.ISO_8601_FORMAT.format(expiry);
-    return String.format("Cookie(%s, %s, %s, %s, %s, %s)",
+    return String.format("SeCookie(%s, %s, %s, %s, %s, %s)",
         domain, formattedExpiry, name, path, value, isSecure);
   }
 

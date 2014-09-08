@@ -1,7 +1,6 @@
 package net.selenate.common;
 
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -12,12 +11,20 @@ public final class SelenateUtils {
   public static final SimpleDateFormat ISO_8601_FORMAT = new SimpleDateFormat("yyyy-MM-dd HHmmss");
 
   public static String byteArrToString(byte[] byteArr) {
-    return String.valueOf(byteArr.length);
+    if (byteArr == null) {
+      return null;
+    } else {
+      return String.format("ByteArray(%d bytes)", byteArr.length);
+    }
   }
 
   public static <T> String setToString(Set<T> set) {
-    final List<T> list = new ArrayList<T>(set);
-    return listToString(list);
+    if (set == null) {
+      return null;
+    } else {
+      final List<T> list = new ArrayList<T>(set);
+      return listToString(list, "Set(", ", ", ")");
+    }
   }
 
   public static <T> String listToString(List<T> list) {
