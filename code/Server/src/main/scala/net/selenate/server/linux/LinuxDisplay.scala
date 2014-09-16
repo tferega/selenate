@@ -4,6 +4,7 @@ package linux
 import com.ferega.procrun._
 import scala.annotation.tailrec
 import org.joda.time.DateTime
+import net.selenate.server.SetCache
 
 object LinuxDisplay extends Loggable {
   private val screenCache = new SetCache[Int]()

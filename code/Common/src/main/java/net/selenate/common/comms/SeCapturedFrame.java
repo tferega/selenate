@@ -6,27 +6,35 @@ import java.util.List;
 public final class SeCapturedFrame implements SeComms {
   private static final long serialVersionUID = 45749879L;
 
+  private final String         windowHandle;
+  private final List<Integer>  path;
   private final int            index;
   private final String         name;
   private final String         src;
   private final String         html;
-  private final String         windowHandle;
-  private final List<Integer>  path;
 
   public SeCapturedFrame(
+      final String        windowHandle,
+      final List<Integer> path,
       final int           index,
       final String        name,
       final String        src,
-      final String        html,
-      final String        windowHandle,
-      final List<Integer> path) {
+      final String        html) {
+    this.windowHandle = windowHandle;
+    this.path         = path;
     this.index        = index;
     this.name         = name;
     this.src          = src;
     this.html         = html;
-    this.windowHandle = windowHandle;
-    this.path         = path;
     validate();
+  }
+
+  public String getWindowHandle() {
+    return windowHandle;
+  }
+
+  public List<Integer> getPath() {
+    return path;
   }
 
   public int getIndex() {
@@ -45,39 +53,39 @@ public final class SeCapturedFrame implements SeComms {
     return html;
   }
 
-  public String getWindowHandle() {
-    return windowHandle;
-  }
-
-  public List<Integer> getPath() {
-    return path;
-  }
-
-  public SeCapturedFrame withIndex(int newIndex) {
-    return new SeCapturedFrame(newIndex, this.name, this.src, this.html, this.windowHandle, this.path);
-  }
-
-  public SeCapturedFrame withName(String newName) {
-    return new SeCapturedFrame(this.index, newName, this.src, this.html, this.windowHandle, this.path);
-  }
-
-  public SeCapturedFrame withSrc(String newSrc) {
-    return new SeCapturedFrame(this.index, this.name, newSrc, this.html, this.windowHandle, this.path);
-  }
-
-  public SeCapturedFrame withHtml(String newHtml) {
-    return new SeCapturedFrame(this.index, this.name, this.src, newHtml, this.windowHandle, this.path);
-  }
-
   public SeCapturedFrame withWindowHandle(String newWindowHandle) {
-    return new SeCapturedFrame(this.index, this.name, this.src, this.html, newWindowHandle, this.path);
+    return new SeCapturedFrame(newWindowHandle, this.path, this.index, this.name, this.src, this.html);
   }
 
   public SeCapturedFrame withPath(List<Integer> newPath) {
-    return new SeCapturedFrame(this.index, this.name, this.src, this.html, this.windowHandle, newPath);
+    return new SeCapturedFrame(this.windowHandle, newPath, this.index, this.name, this.src, this.html);
+  }
+
+  public SeCapturedFrame withIndex(int newIndex) {
+    return new SeCapturedFrame(this.windowHandle, this.path, newIndex, this.name, this.src, this.html);
+  }
+
+  public SeCapturedFrame withName(String newName) {
+    return new SeCapturedFrame(this.windowHandle, this.path, this.index, newName, this.src, this.html);
+  }
+
+  public SeCapturedFrame withSrc(String newSrc) {
+    return new SeCapturedFrame(this.windowHandle, this.path, this.index, this.name, newSrc, this.html);
+  }
+
+  public SeCapturedFrame withHtml(String newHtml) {
+    return new SeCapturedFrame(this.windowHandle, this.path, this.index, this.name, this.src, newHtml);
   }
 
   private void validate() {
+    if (windowHandle == null) {
+      throw new IllegalArgumentException("Window handle cannot be null!");
+    }
+
+    if (path == null) {
+      throw new IllegalArgumentException("Path cannot be null!");
+    }
+
     if (name == null) {
       throw new IllegalArgumentException("Name cannot be null!");
     }
@@ -89,20 +97,12 @@ public final class SeCapturedFrame implements SeComms {
     if (html == null) {
       throw new IllegalArgumentException("Html cannot be null!");
     }
-
-    if (windowHandle == null) {
-      throw new IllegalArgumentException("Window handle cannot be null!");
-    }
-
-    if (path == null) {
-      throw new IllegalArgumentException("Path cannot be null!");
-    }
   }
 
   @Override
   public String toString() {
-    return String.format("SeFrame(%d, %s, %s, %s, %s)",
-        index, name, src, windowHandle, SelenateUtils.listToString(path));
+    return String.format("SeFrame(%s, %s, %d, %s, %s)",
+        windowHandle, SelenateUtils.listToString(path), index, name, src);
   }
 
   @Override

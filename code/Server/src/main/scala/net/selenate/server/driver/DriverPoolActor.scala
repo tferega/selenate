@@ -7,7 +7,7 @@ import settings.PoolSettings
 
 import akka.actor.{ Actor, Props }
 import net.selenate.common.sessions.SessionRequest
-import net.selenate.common.util.NamedUUID
+import net.selenate.common.NamedUUID
 import scala.collection.mutable.Queue
 import scala.concurrent.{ Await, Future }
 import scala.concurrent.duration._

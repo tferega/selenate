@@ -2,7 +2,7 @@ package net.selenate.server
 package linux
 
 import com.ferega.procrun._
-import net.selenate.common.util.NamedUUID
+import net.selenate.common.NamedUUID
 
 object LinuxProc extends Loggable {
   private val uuidFactory = new NamedUUID("Process")

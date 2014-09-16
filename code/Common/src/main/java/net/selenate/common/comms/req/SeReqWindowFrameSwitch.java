@@ -6,7 +6,7 @@ import net.selenate.common.SelenateUtils;
 public final class SeReqWindowFrameSwitch implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
 
-  public final List<Integer> framePath;
+  private final List<Integer> framePath;
 
   public SeReqWindowFrameSwitch(final List<Integer> framePath) {
     this.framePath = framePath;
@@ -31,5 +31,30 @@ public final class SeReqWindowFrameSwitch implements SeCommsReq {
   public String toString() {
     return String.format("SeReqWindowSwitchFrame(%d, %s)",
         SelenateUtils.listToString(framePath));
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((framePath == null) ? 0 : framePath.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    SeReqWindowFrameSwitch other = (SeReqWindowFrameSwitch) obj;
+    if (framePath == null) {
+      if (other.framePath != null)
+        return false;
+    } else if (!framePath.equals(other.framePath))
+      return false;
+    return true;
   }
 }

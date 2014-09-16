@@ -10,17 +10,14 @@ public final class SeResBrowserCapture implements SeCommsRes {
 
   private final String                 name;
   private final long                   time;
-  private final Set<SeCookie>          cookieList;
   private final List<SeCapturedWindow> windowList;
 
   public SeResBrowserCapture(
       final String                 name,
       final long                   time,
-      final Set<SeCookie>          cookieList,
       final List<SeCapturedWindow> windowList) {
     this.name       = name;
     this.time       = time;
-    this.cookieList = cookieList;
     this.windowList = windowList;
     validate();
   }
@@ -33,37 +30,25 @@ public final class SeResBrowserCapture implements SeCommsRes {
     return time;
   }
 
-  public Set<SeCookie> getCookieList() {
-    return cookieList;
-  }
-
   public List<SeCapturedWindow> getWindowList() {
     return windowList;
   }
 
   public SeResBrowserCapture withName(final String newName) {
-    return new SeResBrowserCapture(newName, this.time, this.cookieList, this.windowList);
+    return new SeResBrowserCapture(newName, this.time, this.windowList);
   }
 
   public SeResBrowserCapture withTime(final long newTime) {
-    return new SeResBrowserCapture(this.name, newTime, this.cookieList, this.windowList);
-  }
-
-  public SeResBrowserCapture withCookieList(final Set<SeCookie> newCookieList) {
-    return new SeResBrowserCapture(this.name, this.time, newCookieList, this.windowList);
+    return new SeResBrowserCapture(this.name, newTime, this.windowList);
   }
 
   public SeResBrowserCapture withWindowList(final List<SeCapturedWindow> newWindowList) {
-    return new SeResBrowserCapture(this.name, this.time, this.cookieList, newWindowList);
+    return new SeResBrowserCapture(this.name, this.time, newWindowList);
   }
 
   private void validate() {
     if (name == null) {
       throw new IllegalArgumentException("Name cannot be null!");
-    }
-
-    if (cookieList == null) {
-      throw new IllegalArgumentException("Cookie list cannot be null!");
     }
 
     if (windowList == null) {
@@ -73,7 +58,7 @@ public final class SeResBrowserCapture implements SeCommsRes {
 
   @Override
   public String toString() {
-    return String.format("SeResCapture(%s, %d, %s, %s)",
-        name, time, SelenateUtils.setToString(cookieList), SelenateUtils.listToString(windowList));
+    return String.format("SeResCapture(%s, %d, %s)",
+        name, time, SelenateUtils.listToString(windowList));
   }
 }

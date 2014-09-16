@@ -2,14 +2,14 @@ package net.selenate.server
 package actions
 package workers
 
-import linux.LinuxWindow
 import extensions.SelenateFirefox
+import linux.LinuxWindow
+
 import net.selenate.common.comms.req.SeReqSystemClick
 import net.selenate.common.comms.res.SeResSystemClick
-import java.util.UUID
-import net.selenate.common.util.NamedUUID
+import net.selenate.common.NamedUUID
 
-class SystemClickAction(val sessionID: String, val d: SelenateFirefox)(implicit context: ActionContext)
+class SystemClickAction(val sessionID: String, val context: SessionContext, val d: SelenateFirefox)
     extends Action[SeReqSystemClick, SeResSystemClick]
     with ActionCommons {
   private val uuidFactory = new NamedUUID("Title")
@@ -17,7 +17,7 @@ class SystemClickAction(val sessionID: String, val d: SelenateFirefox)(implicit 
   def act = { arg =>
     val title = uuidFactory.random
     d.title = title
-    LinuxWindow.clickRelative(d.displayInfo.map(_.num), title, arg.x, arg.y)
+    LinuxWindow.clickRelative(d.displayInfo.map(_.num), title, arg.getX, arg.getY)
     new SeResSystemClick()
   }
 }

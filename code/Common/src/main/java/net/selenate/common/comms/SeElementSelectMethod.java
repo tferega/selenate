@@ -8,6 +8,5 @@ public enum SeElementSelectMethod {
   NAME,
   PARTIAL_LINK_TEXT,
   TAG_NAME,
-  UUID,
   XPATH
 }
