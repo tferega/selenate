@@ -2,6 +2,8 @@ package net.selenate.common.comms;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.selenate.common.exceptions.SeEmptyArgumentListException;
+import net.selenate.common.exceptions.SeNullArgumentException;
 import net.selenate.common.SelenateUtils;
 
 public final class SePage implements SeComms {
@@ -48,15 +50,15 @@ public final class SePage implements SeComms {
 
   private void validate() {
     if (name == null) {
-      throw new IllegalArgumentException("Name cannot be null!");
+      throw new SeNullArgumentException("Name");
     }
 
     if (selectorList == null) {
-      throw new IllegalArgumentException("Selector list cannot be null!");
+      throw new SeNullArgumentException("Selector list");
     }
 
     if (selectorList.isEmpty()) {
-      throw new IllegalArgumentException("Selector list cannot be empty!");
+      throw new SeEmptyArgumentListException("Selector list");
     }
   }
 

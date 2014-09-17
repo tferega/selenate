@@ -2,6 +2,7 @@ package net.selenate.common;
 
 import java.io.Serializable;
 import java.util.UUID;
+import net.selenate.common.exceptions.SeNullArgumentException;
 
 public class NamedUUID implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -10,7 +11,7 @@ public class NamedUUID implements Serializable {
 
   public NamedUUID(final String name) {
     if (name == null) {
-      throw new IllegalArgumentException("Name cannot be null!");
+      throw new SeNullArgumentException("Name");
     }
 
     this.name = name;

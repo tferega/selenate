@@ -14,7 +14,7 @@ class SystemClickAction(val sessionID: String, val context: SessionContext, val 
     with ActionCommons {
   private val uuidFactory = new NamedUUID("Title")
 
-  def act = { arg =>
+  def doAct = { arg =>
     val title = uuidFactory.random
     d.title = title
     LinuxWindow.clickRelative(d.displayInfo.map(_.num), title, arg.getX, arg.getY)

@@ -1,8 +1,10 @@
 package net.selenate.common.comms.req;
 
 import java.util.List;
-import net.selenate.common.SelenateUtils;
 import net.selenate.common.comms.SePage;
+import net.selenate.common.exceptions.SeEmptyArgumentListException;
+import net.selenate.common.exceptions.SeNullArgumentException;
+import net.selenate.common.SelenateUtils;
 
 public final class SeReqBrowserWaitFor implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
@@ -24,11 +26,11 @@ public final class SeReqBrowserWaitFor implements SeCommsReq {
 
   private void validate() {
     if (pageList == null) {
-      throw new IllegalArgumentException("Page list cannot be null!");
+      throw new SeNullArgumentException("Page list");
     }
 
     if (pageList.isEmpty()) {
-      throw new IllegalArgumentException("Page list cannot be empty!");
+      throw new SeEmptyArgumentListException("Page list");
     }
   }
 

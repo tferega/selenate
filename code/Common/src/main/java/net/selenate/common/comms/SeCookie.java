@@ -1,6 +1,9 @@
 package net.selenate.common.comms;
 
 import java.util.Date;
+import net.selenate.common.exceptions.SeEmptyArgumentListException;
+import net.selenate.common.exceptions.SeInvalidArgumentException;
+import net.selenate.common.exceptions.SeNullArgumentException;
 import net.selenate.common.SelenateUtils;
 
 public final class SeCookie implements SeComms {
@@ -79,30 +82,30 @@ public final class SeCookie implements SeComms {
 
   private void  validate() {
     if (name == null) {
-      throw new IllegalArgumentException("Name cannot be null!");
+      throw new SeNullArgumentException("Name");
     }
 
     if ("".equals(name)) {
-      throw new IllegalArgumentException("Name cannot be empty!");
+      throw new SeEmptyArgumentListException("Name");
     }
 
     if (value == null) {
-      throw new IllegalArgumentException("Value cannot be null!");
+      throw new SeNullArgumentException("Value");
     }
 
     if (path == null) {
-      throw new IllegalArgumentException("Path cannot be null!");
+      throw new SeNullArgumentException("Path");
     }
 
     final int nameIdx = name.indexOf(';');
     if (nameIdx != -1) {
-      throw new IllegalArgumentException(String.format("Name cannot contain a semicolon (semicolon found on index %d of string \"%s\")! ", nameIdx, name));
+      throw new SeInvalidArgumentException(String.format("Name cannot contain a semicolon (semicolon found on index %d of string \"%s\")! ", nameIdx, name));
     }
 
     if (domain != null) {
       final int domainIdx = domain.indexOf(';');
       if (domainIdx != -1) {
-        throw new IllegalArgumentException(String.format("Domain cannot contain a colon (colon found on index %d of string \"%s\")! ", domainIdx, domain));
+        throw new SeInvalidArgumentException(String.format("Domain cannot contain a colon (colon found on index %d of string \"%s\")! ", domainIdx, domain));
       }
     }
   }

@@ -1,5 +1,7 @@
 package net.selenate.common.comms.req;
 
+import net.selenate.common.exceptions.SeNullArgumentException;
+
 public final class SeReqSystemInput implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
 
@@ -20,7 +22,7 @@ public final class SeReqSystemInput implements SeCommsReq {
 
   private void validate() {
     if(input == null) {
-      throw new IllegalArgumentException("Input cannot be null!");
+      throw new SeNullArgumentException("Input");
     }
   }
 

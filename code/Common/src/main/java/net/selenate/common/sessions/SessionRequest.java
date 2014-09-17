@@ -1,6 +1,7 @@
 package net.selenate.common.sessions;
 
 import java.io.Serializable;
+import net.selenate.common.exceptions.SeNullArgumentException;
 
 public class SessionRequest implements Serializable {
   private static final long serialVersionUID = 45749879L;
@@ -34,7 +35,7 @@ public class SessionRequest implements Serializable {
 
   private void validate() {
     if (sessionID == null) {
-      throw new IllegalArgumentException("Session ID cannot be null!");
+      throw new SeNullArgumentException("Session ID");
     }
   }
 

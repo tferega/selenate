@@ -2,6 +2,7 @@ package net.selenate.common.comms.req;
 
 import net.selenate.common.comms.SeElementSelector;
 import net.selenate.common.comms.SeOptionSelector;
+import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeReqSelectChoose implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
@@ -35,10 +36,10 @@ public final class SeReqSelectChoose implements SeCommsReq {
 
   private void validate() {
     if (parentSelector == null) {
-      throw new IllegalArgumentException("Parent selector cannot be null!");
+      throw new SeNullArgumentException("Parent selector");
     }
     if (optionSelector == null) {
-      throw new IllegalArgumentException("Option selector cannot be null!");
+      throw new SeNullArgumentException("Option selector");
     }
   }
 

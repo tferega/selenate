@@ -6,6 +6,7 @@ import extensions.SelenateFirefox
 
 import net.selenate.common.comms.req.SeReqElementClick
 import net.selenate.common.comms.res.SeResElementClick
+import net.selenate.common.exceptions.SeActionException
 import scala.util.{ Failure, Success, Try }
 
 class ElementClickAction(val sessionID: String, val context: SessionContext, val d: SelenateFirefox)
@@ -20,9 +21,9 @@ class ElementClickAction(val sessionID: String, val context: SessionContext, val
       case Some(Success(())) =>
         new SeResElementClick()
       case Some(Failure(ex)) =>
-        throw new IllegalArgumentException(s"An error occurred while executing element click action ($arg)!", ex)
+        throw new SeActionException(name, arg, ex)
       case None =>
-        throw new IllegalArgumentException(s"An error occurred while executing element click action ($arg): element not found in any frame!!")
+        throw new SeActionException(name, arg, "element not found in any frame")
     }
   }
 }

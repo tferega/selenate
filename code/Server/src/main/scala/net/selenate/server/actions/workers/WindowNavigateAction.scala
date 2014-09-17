@@ -10,7 +10,7 @@ import net.selenate.common.comms.SeNavigateDirection
 class WindowNavigateAction(val sessionID: String, val context: SessionContext, val d: SelenateFirefox)
     extends Action[SeReqWindowNavigate, SeResWindowNavigate]
     with ActionCommons {
-  def act = { arg =>
+  def doAct = { arg =>
     import SeNavigateDirection._
     arg.getDirection match {
       case BACK    => d.navigate.back;

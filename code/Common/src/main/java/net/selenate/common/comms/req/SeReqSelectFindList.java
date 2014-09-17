@@ -1,6 +1,7 @@
 package net.selenate.common.comms.req;
 
 import net.selenate.common.comms.SeElementSelector;
+import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeReqSelectFindList implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
@@ -22,7 +23,7 @@ public final class SeReqSelectFindList implements SeCommsReq {
 
   private void validate() {
     if (selector == null) {
-      throw new IllegalArgumentException("Selector cannot be null!");
+      throw new SeNullArgumentException("Selector");
     }
   }
 

@@ -1,12 +1,14 @@
 package net.selenate.server
 package settings
 
+import net.selenate.common.exceptions.SeException
+
 object PoolSettings {
   private def parseSize(size: String): Int =
     size match {
       case IsInt(i) if i > 0 => i
-      case IsInt(i) => throw new IllegalArgumentException(s"""Error while parsing configuration. Offending entry: server.pool.size. Size must be greater than zero, received "$size".""")
-      case _ => throw new IllegalArgumentException(s"""Error while parsing configuration. Offending entry: server.pool.size. Expected a number, received "$size".""")
+      case IsInt(i) => throw new SeException(s"""Error while parsing configuration. Offending entry: server.pool.size. Size must be greater than zero, received "$size".""")
+      case _ => throw new SeException(s"""Error while parsing configuration. Offending entry: server.pool.size. Expected a number, received "$size".""")
     }
 
   def fromConfig(

@@ -2,6 +2,7 @@ package net.selenate.common.comms;
 
 import java.util.List;
 import net.selenate.common.SelenateUtils;
+import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeSelect implements SeComms {
   private static final long serialVersionUID = 45749879L;
@@ -67,15 +68,15 @@ public final class SeSelect implements SeComms {
 
   public void validate() {
     if (element == null) {
-      throw new IllegalArgumentException("element cannot be null!");
+      throw new SeNullArgumentException("element");
     }
 
     if (selectedOption == null) {
-      throw new IllegalArgumentException("selectedOption cannot be null!");
+      throw new SeNullArgumentException("Selected option");
     }
 
     if (options == null) {
-      throw new IllegalArgumentException("options cannot be null!");
+      throw new SeNullArgumentException("options");
     }
   }
 

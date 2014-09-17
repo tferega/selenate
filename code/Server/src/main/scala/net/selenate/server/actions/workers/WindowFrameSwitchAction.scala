@@ -11,7 +11,7 @@ import scala.collection.JavaConversions._
 class WindowFrameSwitchAction(val sessionID: String, val context: SessionContext, val d: SelenateFirefox)
     extends Action[SeReqWindowFrameSwitch, SeResWindowFrameSwitch]
     with ActionCommons {
-  def act = { arg =>
+  def doAct = { arg =>
     frameReset()
     arg.getFramePath foreach { f => frameSwitch(f) }
 

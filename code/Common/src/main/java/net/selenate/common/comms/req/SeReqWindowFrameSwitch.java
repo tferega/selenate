@@ -1,6 +1,7 @@
 package net.selenate.common.comms.req;
 
 import java.util.List;
+import net.selenate.common.exceptions.SeNullArgumentException;
 import net.selenate.common.SelenateUtils;
 
 public final class SeReqWindowFrameSwitch implements SeCommsReq {
@@ -23,7 +24,7 @@ public final class SeReqWindowFrameSwitch implements SeCommsReq {
 
   private void validate() {
     if (framePath == null) {
-      throw new IllegalArgumentException("Frame path cannot be null!");
+      throw new SeNullArgumentException("Frame path");
     }
   }
 

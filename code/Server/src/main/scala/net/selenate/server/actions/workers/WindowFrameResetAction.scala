@@ -10,7 +10,7 @@ import net.selenate.common.comms.res.SeResWindowFrameReset
 class WindowFrameResetAction(val sessionID: String, val context: SessionContext, val d: SelenateFirefox)
     extends Action[SeReqWindowFrameReset, SeResWindowFrameReset]
     with ActionCommons {
-  def act = { arg =>
+  def doAct = { arg =>
     d.switchTo.defaultContent
 
     new SeResWindowFrameReset()

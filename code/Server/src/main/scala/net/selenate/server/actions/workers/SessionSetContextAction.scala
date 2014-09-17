@@ -10,7 +10,7 @@ import net.selenate.common.comms.res.SeResSessionSetContext
 class SessionSetContextAction(val sessionID: String, val context: SessionContext, val d: SelenateFirefox)
     extends Action[SeReqSessionSetContext, SeResSessionSetContext]
     with ActionCommons {
-  def act = { arg =>
+  def doAct = { arg =>
     new SeResSessionSetContext()
   }
 }

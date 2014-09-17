@@ -19,7 +19,7 @@ class WindowCaptureAction(val sessionID: String, val context: SessionContext, va
     with ActionCommons {
   import WindowCaptureAction._
 
-  def act = { arg =>
+  def doAct = { arg =>
     val screenshot =
       tryWithAlternative("capturing a window", ErrorPicture) {
         windowSwitch(arg.getWindowHandle)

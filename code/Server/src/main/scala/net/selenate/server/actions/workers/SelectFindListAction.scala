@@ -10,7 +10,7 @@ import net.selenate.common.comms.res.SeResSelectFindList
 class SelectFindListAction(val sessionID: String, val context: SessionContext, val d: SelenateFirefox)
     extends Action[SeReqSelectFindList, SeResSelectFindList]
     with ActionCommons {
-  def act = { arg =>
+  def doAct = { arg =>
     val foundElementList = inAllWindows { address =>
       val webElementList = findElementList(arg.getSelector)
       webElementList map parseSelectElement(address)

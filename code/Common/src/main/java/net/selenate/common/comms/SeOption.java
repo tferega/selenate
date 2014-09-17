@@ -1,5 +1,7 @@
 package net.selenate.common.comms;
 
+import net.selenate.common.exceptions.SeNullArgumentException;
+
 public final class SeOption implements SeComms {
   private static final long serialVersionUID = 45749879L;
 
@@ -20,7 +22,7 @@ public final class SeOption implements SeComms {
 
   public void validate() {
     if (element == null) {
-      throw new IllegalArgumentException("Element cannot be null!");
+      throw new SeNullArgumentException("Element");
     }
   }
 

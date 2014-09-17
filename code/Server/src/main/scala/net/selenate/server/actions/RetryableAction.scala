@@ -1,15 +1,19 @@
 package net.selenate.server
 package actions
 
+import net.selenate.common.comms.req.SeCommsReq
+import net.selenate.common.comms.res.SeCommsRes
+import net.selenate.common.exceptions.SeActionException
+
 object RetryableAction {
   val maxAttempts = 3
 }
 
-trait RetryableAction[A, R] extends Action[A, R] {
+trait RetryableAction[A <: SeCommsReq, R <: SeCommsRes] extends Action[A, R] {
   import RetryableAction._
 
-  final def act: (A) => R = { arg =>
-    def doAct(attempt: Int, exceptionLog: IndexedSeq[Exception]): R = {
+  final def doAct: (A) => R = { arg =>
+    def innerDoAct(attempt: Int, exceptionLog: IndexedSeq[Exception]): R = {
       try {
         logTrace(s"Retryable action making attempt No $attempt with argument: $arg")
         val r = retryableAct(arg)
@@ -19,18 +23,18 @@ trait RetryableAction[A, R] extends Action[A, R] {
           val newExceptionLog = exceptionLog :+ e
           if (attempt >= maxAttempts) {
             val report = exceptionListReport(exceptionLog)
-            val msg = s"Maximum number of attempts ($maxAttempts) exceeded in retryable action! Error list:\n$report"
+            val msg = s"maximum number of attempts ($maxAttempts) exceeded in retryable action! Error list:\n$report"
             logError(msg)
-            throw new Exception(msg)
+            throw new SeActionException(name, arg, msg)
           } else {
             logWarn(s"Attempt No $attempt in retryable action failed!", e)
             Thread.sleep(1000)
-            doAct(attempt + 1, newExceptionLog)
+            innerDoAct(attempt + 1, newExceptionLog)
           }
       }
     }
 
-    doAct(1, IndexedSeq.empty[Exception])
+    innerDoAct(1, IndexedSeq.empty[Exception])
   }
 
   private def exceptionListReport(eList: IndexedSeq[Exception]) =

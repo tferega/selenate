@@ -2,10 +2,11 @@ package net.selenate.server
 
 import com.typesafe.config.{ Config, ConfigFactory, ConfigParseOptions, ConfigSyntax }
 import java.io.File
+import net.selenate.common.exceptions.SeException
 
 trait CBase {
   val branch = sys.props.get("Selenate.branch")
-  val userHome = sys.props.get("user.home").getOrElse(throw new RuntimeException("""Key "user.home" not defined in system properties!"""))
+  val userHome = sys.props.get("user.home").getOrElse(throw new SeException("""Key "user.home" not defined in system properties!"""))
   val configPath = {
     branch match {
       case Some(b) => new File(userHome + s"/.props/selenate_$branch/server.config");
@@ -40,7 +41,7 @@ trait CUtils extends CBase with Loggable {
       case e: Exception =>
         val msg = s"""An error occured while loading config resource "$name"!"""
         logError(msg, e)
-        throw new RuntimeException(msg, e)
+        throw new SeException(msg, e)
     }
   }
 
@@ -54,7 +55,7 @@ trait CUtils extends CBase with Loggable {
       case e: Exception =>
         val msg = s"""An error occured while loading config file "$path"!"""
         logError(msg, e)
-        throw new RuntimeException(msg, e)
+        throw new SeException(msg, e)
     }
   }
 }

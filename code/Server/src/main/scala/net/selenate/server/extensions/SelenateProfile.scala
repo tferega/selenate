@@ -4,6 +4,7 @@ package extensions
 import settings.ProfileSettings
 
 import java.io.File
+import net.selenate.common.exceptions.SeException
 import org.openqa.selenium.firefox.FirefoxProfile
 
 object SelenateProfile {
@@ -23,7 +24,7 @@ class SelenateProfile(prefMap: Map[String, AnyRef], profileDirOpt: Option[File])
       case x: java.lang.Boolean => this.setPreference(k, x)
       case x: java.lang.Integer => this.setPreference(k, x)
       case x: java.lang.String  => this.setPreference(k, x)
-      case x => throw new IllegalArgumentException("Unsupported type: %s" format x.getClass.getCanonicalName)
+      case x => throw new SeException("Unsupported type: %s" format x.getClass.getCanonicalName)
     }
   }
 

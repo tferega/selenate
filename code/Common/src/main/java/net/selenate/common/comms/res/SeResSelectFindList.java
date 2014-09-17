@@ -1,8 +1,8 @@
 package net.selenate.common.comms.res;
 
 import java.util.List;
-
 import net.selenate.common.comms.*;
+import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeResSelectFindList implements SeCommsRes {
   private static final long serialVersionUID = 45749879L;
@@ -24,7 +24,7 @@ public final class SeResSelectFindList implements SeCommsRes {
 
   private void validate() {
     if (selectList == null) {
-      throw new IllegalArgumentException("Select list cannot be null!");
+      throw new SeNullArgumentException("Select list");
     }
   }
 

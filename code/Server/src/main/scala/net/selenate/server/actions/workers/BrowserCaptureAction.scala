@@ -29,7 +29,7 @@ class BrowserCaptureAction(val sessionID: String, val context: SessionContext, v
 
   private case class FrameInfo(path: FramePath, index: FrameNum, name: String, src: String, html: String)
 
-  def act = { arg =>
+  def doAct = { arg =>
     val captureTime = System.currentTimeMillis
 
     new SeResBrowserCapture(

@@ -2,6 +2,7 @@ package net.selenate.server
 package settings
 
 import java.io.File
+import net.selenate.common.exceptions.SeException
 
 object ProfileSettings {
   private def parseDisplay(display: String): DisplaySettings =
@@ -9,14 +10,14 @@ object ProfileSettings {
       case "main"      => DisplaySettings.Main
       case "firstfree" => DisplaySettings.FirstFree
       case IsInt(num)  => DisplaySettings.Specific(num)
-      case _ => throw new IllegalArgumentException(s"""Error while parsing configuration. Offending entry: server.pool.display. Expected one of ["Main", "FirstFree", num], received "$display".""")
+      case _ => throw new SeException(s"""Error while parsing configuration. Offending entry: server.pool.display. Expected one of ["Main", "FirstFree", num], received "$display".""")
     }
 
   private def parseBinaryLocation(binaryLocation: String): File = {
     val file = new File(binaryLocation)
-    if (!file.exists)     throw new IllegalArgumentException(s"""Error while parsing configuration. Offending entry: server.pool.binary. Path "$binaryLocation" does not exist.""")
-    if (!file.isFile)     throw new IllegalArgumentException(s"""Error while parsing configuration. Offending entry: server.pool.binary. Path "$binaryLocation" is not a file.""")
-    if (!file.canExecute) throw new IllegalArgumentException(s"""Error while parsing configuration. Offending entry: server.pool.binary. File "$binaryLocation" is not executable.""")
+    if (!file.exists)     throw new SeException(s"""Error while parsing configuration. Offending entry: server.pool.binary. Path "$binaryLocation" does not exist.""")
+    if (!file.isFile)     throw new SeException(s"""Error while parsing configuration. Offending entry: server.pool.binary. Path "$binaryLocation" is not a file.""")
+    if (!file.canExecute) throw new SeException(s"""Error while parsing configuration. Offending entry: server.pool.binary. File "$binaryLocation" is not executable.""")
     file
   }
 
@@ -26,7 +27,7 @@ object ProfileSettings {
         case IsBoolean(bool) => bool
         case IsInteger(int)  => int
         case IsString(str)   => str
-        case _ => throw new IllegalArgumentException(s"""Error while parsing configuration. Offending entry: server.pool.prefs.$entry. Malformed entry.""")
+        case _ => throw new SeException(s"""Error while parsing configuration. Offending entry: server.pool.prefs.$entry. Malformed entry.""")
       }
     }
 

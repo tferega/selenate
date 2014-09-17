@@ -13,7 +13,7 @@ class BrowserWaitForAction(val sessionID: String, val context: SessionContext, v
     extends Action[SeReqBrowserWaitFor, SeResBrowserWaitFor]
     with ActionCommons
     with WaitFor {
-  def act = { arg =>
+  def doAct = { arg =>
     val res = waitForPageList(arg.getPageList.toIndexedSeq)
     new SeResBrowserWaitFor(res.isDefined, res.orNull)
   }

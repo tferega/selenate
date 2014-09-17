@@ -1,6 +1,7 @@
 package net.selenate.common.comms.res;
 
 import net.selenate.common.comms.SePage;
+import net.selenate.common.exceptions.SeInvalidArgumentException;
 
 public final class SeResBrowserWaitFor implements SeCommsRes {
   private static final long serialVersionUID = 45749879L;
@@ -34,11 +35,11 @@ public final class SeResBrowserWaitFor implements SeCommsRes {
 
   private void validate() {
     if (isSuccessful && foundPage == null) {
-      throw new IllegalArgumentException("When successful, found page cannot be null!");
+      throw new SeInvalidArgumentException("When successful, found page cannot be null!");
     }
 
     if (!isSuccessful && foundPage != null) {
-      throw new IllegalArgumentException("When unsuccessful, found page must be null!");
+      throw new SeInvalidArgumentException("When unsuccessful, found page must be null!");
     }
   }
 

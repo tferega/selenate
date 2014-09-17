@@ -1,6 +1,6 @@
 package net.selenate.common.comms;
 
-import net.selenate.common.comms.SeAddress;
+import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeElement implements SeComms {
   private static final long serialVersionUID = 45749879L;
@@ -133,16 +133,19 @@ public final class SeElement implements SeComms {
 
   private void  validate() {
     if (uuid == null) {
-      throw new IllegalArgumentException("UUID cannot be null!");
+      throw new SeNullArgumentException("UUID");
     }
+
     if (name == null) {
-      throw new IllegalArgumentException("Name cannot be null!");
+      throw new SeNullArgumentException("Name");
     }
+
     if (text == null) {
-      throw new IllegalArgumentException("Text cannot be null!");
+      throw new SeNullArgumentException("Text");
     }
+
     if (address == null) {
-      throw new IllegalArgumentException("Address cannot be null!");
+      throw new SeNullArgumentException("Address");
     }
   }
 

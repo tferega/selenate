@@ -1,6 +1,8 @@
 package net.selenate.common.comms;
 
 import java.util.List;
+import net.selenate.common.exceptions.SeEmptyArgumentListException;
+import net.selenate.common.exceptions.SeNullArgumentException;
 import net.selenate.common.SelenateUtils;
 
 public final class SeAddress implements SeComms {
@@ -35,15 +37,15 @@ public final class SeAddress implements SeComms {
 
   private void validate() {
     if (windowHandle == null) {
-      throw new IllegalArgumentException("Window handle cannot be null!");
+      throw new SeNullArgumentException("Window handle");
     }
 
     if ("".equals(windowHandle)) {
-      throw new IllegalArgumentException("Window handle cannot be empty!");
+      throw new SeEmptyArgumentListException("Window handle");
     }
 
     if (framePath == null) {
-      throw new IllegalArgumentException("Frame path handle cannot be null!");
+      throw new SeNullArgumentException("Frame path");
     }
   }
 

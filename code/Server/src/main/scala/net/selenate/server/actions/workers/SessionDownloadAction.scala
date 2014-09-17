@@ -9,12 +9,13 @@ import dispatch._
 import java.io.IOException
 import net.selenate.common.comms.req.SeReqSessionDownload
 import net.selenate.common.comms.res.SeResSessionDownload
+import net.selenate.common.exceptions.SeActionException
 import scala.collection.JavaConversions._
 
 class SessionDownloadAction(val sessionID: String, val context: SessionContext, val d: SelenateFirefox)
     extends Action[SeReqSessionDownload, SeResSessionDownload]
     with ActionCommons {
-  def act = { arg =>
+  def doAct = { arg =>
     val request = url(arg.getUrl)
     request.setHeader("Referer", d.getCurrentUrl)
     request.setHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/12.0")
@@ -23,7 +24,7 @@ class SessionDownloadAction(val sessionID: String, val context: SessionContext, 
     val body =
       Http(request OK as.Bytes).either.apply match {
         case Left(e) =>
-          throw new IOException("An error occured while downloading the specified URL (%s)." format arg.getUrl, e)
+          throw new SeActionException(name, arg, s"could not download specified URL ${ arg.getUrl }", e)
         case Right(body) =>
           body
       }

@@ -1,9 +1,9 @@
 package net.selenate.common.comms.res;
 
-import net.selenate.common.SelenateUtils;
 import java.util.List;
-import java.util.Set;
 import net.selenate.common.comms.*;
+import net.selenate.common.exceptions.SeNullArgumentException;
+import net.selenate.common.SelenateUtils;
 
 public final class SeResBrowserCapture implements SeCommsRes {
   private static final long serialVersionUID = 45749879L;
@@ -48,11 +48,11 @@ public final class SeResBrowserCapture implements SeCommsRes {
 
   private void validate() {
     if (name == null) {
-      throw new IllegalArgumentException("Name cannot be null!");
+      throw new SeNullArgumentException("Name");
     }
 
     if (windowList == null) {
-      throw new IllegalArgumentException("Window list cannot be null!");
+      throw new SeNullArgumentException("Window list");
     }
   }
 

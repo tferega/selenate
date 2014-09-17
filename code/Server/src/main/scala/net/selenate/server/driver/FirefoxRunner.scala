@@ -2,11 +2,12 @@ package net.selenate.server
 package driver
 
 import extensions.{ SelenateBinary, SelenateFirefox, SelenateProfile }
-import settings.{ DisplaySettings, ProfileSettings }
 import linux.{ LinuxDisplay, LinuxFile }
+import settings.{ DisplaySettings, ProfileSettings }
 
 import java.io.File
 import java.util.concurrent.TimeUnit
+import net.selenate.common.exceptions.SeException
 
 object FirefoxRunner extends Loggable {
   def run(profile: ProfileSettings) = {
@@ -20,7 +21,7 @@ object FirefoxRunner extends Loggable {
       case e: Exception =>
         val msg = "An error occured while starting up Firefox!"
         logError(msg, e)
-        throw new IllegalArgumentException(msg, e)
+        throw new SeException(msg, e)
     }
   }
 
@@ -31,7 +32,7 @@ object FirefoxRunner extends Loggable {
     if (!C.OS_NAME.contains("Linux")) {
       val msg = s"""Display support is available only in Linux (detected OS name: "${ C.OS_NAME }")!"""
       logError(msg)
-      throw new UnsupportedOperationException(msg)
+      throw new SeException(msg)
     }
 
     val binaryLocation = profile.binaryLocation getOrElse SelenateBinary.DefaultBinaryLocation
@@ -46,7 +47,7 @@ object FirefoxRunner extends Loggable {
   }
 
   private def runInSpecific(num: Int, profile: ProfileSettings) = {
-    throw new UnsupportedOperationException("Specific displays not yet supported!")
+    throw new SeException("Specific displays not yet supported!")
   }
 
   def createScript(displayNum: Int, binaryLocation: File) =

@@ -1,6 +1,8 @@
 package net.selenate.common.comms.req;
 
 import java.net.URL;
+import net.selenate.common.exceptions.SeInvalidArgumentException;
+import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeReqSessionDownload implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
@@ -22,13 +24,13 @@ public final class SeReqSessionDownload implements SeCommsReq {
 
   private void validate() {
     if (url == null) {
-      throw new IllegalArgumentException("Url cannot be null!");
+      throw new SeNullArgumentException("Url");
     }
 
     try {
       new URL(url);
     } catch (final Exception e) {
-      throw new IllegalArgumentException("An error occured while interpreting url as java.net.URL!", e);
+      throw new SeInvalidArgumentException("An error occured while interpreting url as java.net.URL!", e);
     }
   }
 

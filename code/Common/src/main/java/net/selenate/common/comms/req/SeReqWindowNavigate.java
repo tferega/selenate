@@ -1,6 +1,7 @@
 package net.selenate.common.comms.req;
 
 import net.selenate.common.comms.SeNavigateDirection;
+import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeReqWindowNavigate implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
@@ -22,7 +23,7 @@ public final class SeReqWindowNavigate implements SeCommsReq {
 
   private void validate() {
     if (direction == null) {
-      throw new IllegalArgumentException("Direction cannot be null!");
+      throw new SeNullArgumentException("Direction");
     }
   }
 

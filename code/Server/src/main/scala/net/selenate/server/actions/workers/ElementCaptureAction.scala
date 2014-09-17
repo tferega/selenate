@@ -8,13 +8,14 @@ import java.io.{ ByteArrayInputStream, ByteArrayOutputStream }
 import javax.imageio.ImageIO
 import net.selenate.common.comms.req.SeReqElementCapture
 import net.selenate.common.comms.res.SeResElementCapture
+import net.selenate.common.exceptions.SeActionException
 import org.openqa.selenium.OutputType
 import scala.util.{ Failure, Success, Try }
 
 class ElementCaptureAction(val sessionID: String, val context: SessionContext, val d: SelenateFirefox)
     extends Action[SeReqElementCapture, SeResElementCapture]
     with ActionCommons {
-  def act = { arg =>
+  def doAct = { arg =>
     val result: Option[Try[Array[Byte]]] =
       elementInAllWindows(arg.getSelector) { (address, e) =>
         val screen     = d.getScreenshotAs(OutputType.BYTES)
@@ -33,9 +34,9 @@ class ElementCaptureAction(val sessionID: String, val context: SessionContext, v
       case Some(Success((r))) =>
         new SeResElementCapture(r)
       case Some(Failure(ex)) =>
-        throw new IllegalArgumentException(s"An error occurred while executing element capture action ($arg)!", ex)
+        throw new SeActionException(name, arg, ex)
       case None =>
-        throw new IllegalArgumentException(s"An error occurred while executing element capture action ($arg): element not found in any frame!!")
+        throw new SeActionException(name, arg, "element not found in any frame")
     }
   }
 }

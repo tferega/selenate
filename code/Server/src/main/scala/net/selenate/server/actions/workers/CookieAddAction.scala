@@ -11,7 +11,7 @@ import org.openqa.selenium.Cookie
 class CookieAddAction(val sessionID: String, val context: SessionContext, val d: SelenateFirefox)
     extends Action[SeReqCookieAdd, SeResCookieAdd]
     with ActionCommons {
-  def act = { arg =>
+  def doAct = { arg =>
     val cookie = arg.getCookie
     inAllWindows { address =>
       val c = new Cookie(
@@ -20,8 +20,7 @@ class CookieAddAction(val sessionID: String, val context: SessionContext, val d:
           , cookie.getDomain
           , cookie.getPath
           , cookie.getExpiry
-          , cookie.isSecure
-          )
+          , cookie.isSecure)
       d.manage.addCookie(c)
     }.force
     new SeResCookieAdd()

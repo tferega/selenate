@@ -1,5 +1,8 @@
 package net.selenate.common.comms.req;
 
+import net.selenate.common.exceptions.SeEmptyArgumentListException;
+import net.selenate.common.exceptions.SeNullArgumentException;
+
 public final class SeReqWindowClose implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
 
@@ -20,11 +23,11 @@ public final class SeReqWindowClose implements SeCommsReq {
 
   private void validate() {
     if (windowHandle == null) {
-      throw new IllegalArgumentException("Window handle cannot be null!");
+      throw new SeNullArgumentException("Window handle");
     }
 
     if ("".equals(windowHandle)) {
-      throw new IllegalArgumentException("Window handle cannot be empty!");
+      throw new SeEmptyArgumentListException("Window handle");
     }
   }
 

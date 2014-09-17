@@ -2,6 +2,7 @@ package net.selenate.server
 package linux
 
 import com.ferega.procrun._
+import net.selenate.common.exceptions.SeException
 
 object WindowInfo {
   def fromString(raw: String) =
@@ -9,7 +10,7 @@ object WindowInfo {
       case windowID :: desktopID :: IsInt(left) :: IsInt(top) :: IsInt(width) :: IsInt(height) :: client :: rest =>
         WindowInfo(windowID, desktopID, left, top, width, height, client, rest.mkString(" "))
       case _ =>
-        throw new RuntimeException(s"""Error while parsing WindowInfo. Received malformed output from wmctrl: "$raw".""")
+        throw new SeException(s"""Error while parsing WindowInfo. Received malformed output from wmctrl: "$raw".""")
     }
 }
 case class WindowInfo(
@@ -41,7 +42,7 @@ object LinuxWindow extends Loggable {
     val raw = rawOpt.getOrElse {
       val msg = s"""Error while searching for a window. Window with title containing $titlePart not found."""
       logError(msg)
-      throw new IllegalArgumentException(msg)
+      throw new SeException(msg)
     }
     WindowInfo.fromString(raw)
   }

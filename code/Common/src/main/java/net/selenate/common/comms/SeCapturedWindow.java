@@ -1,9 +1,11 @@
 package net.selenate.common.comms;
 
-import java.util.Set;
 import java.util.Arrays;
-import net.selenate.common.SelenateUtils;
 import java.util.List;
+import java.util.Set;
+import net.selenate.common.SelenateUtils;
+import net.selenate.common.exceptions.SeEmptyArgumentListException;
+import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeCapturedWindow implements SeComms {
   private static final long serialVersionUID = 45749879L;
@@ -135,35 +137,35 @@ public final class SeCapturedWindow implements SeComms {
 
   public void validate() {
     if (title == null) {
-      throw new IllegalArgumentException("Title cannot be null!");
+      throw new SeNullArgumentException("Title");
     }
 
     if (url == null) {
-      throw new IllegalArgumentException("URL cannot be null!");
+      throw new SeNullArgumentException("URL");
     }
 
     if (handle == null) {
-      throw new IllegalArgumentException("Handle cannot be null!");
+      throw new SeNullArgumentException("Handle");
     }
 
     if ("".equals(handle)) {
-      throw new IllegalArgumentException("Handle cannot be empty!");
+      throw new SeEmptyArgumentListException("Handle");
     }
 
     if (cookieSet == null) {
-      throw new IllegalArgumentException("Cookie set cannot be null!");
+      throw new SeNullArgumentException("Cookie set");
     }
 
     if (html == null) {
-      throw new IllegalArgumentException("Html cannot be null!");
+      throw new SeNullArgumentException("Html");
     }
 
     if (screenshot == null) {
-      throw new IllegalArgumentException("Screenshot cannot be null!");
+      throw new SeNullArgumentException("Screenshot");
     }
 
     if (frameList == null) {
-      throw new IllegalArgumentException("Frame list cannot be null!");
+      throw new SeNullArgumentException("Frame list");
     }
   }
 

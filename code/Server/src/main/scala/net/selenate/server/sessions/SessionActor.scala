@@ -68,7 +68,7 @@ class SessionActor(sessionRequest: SessionRequest, d: SelenateFirefox)
     case arg: SeReqWindowFrameSwitch     => new WindowFrameSwitchAction     (sessionID, sessionContext, d).act(arg)
     case arg: SeReqWindowGet             => new WindowGetAction             (sessionID, sessionContext, d).act(arg)
     case arg: SeReqWindowNavigate        => new WindowNavigateAction        (sessionID, sessionContext, d).act(arg)
-}
+  }
 
   private def receiveBase: Receive = {
     case "ping" =>

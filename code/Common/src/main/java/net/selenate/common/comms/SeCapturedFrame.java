@@ -1,7 +1,8 @@
 package net.selenate.common.comms;
 
-import net.selenate.common.SelenateUtils;
 import java.util.List;
+import net.selenate.common.SelenateUtils;
+import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeCapturedFrame implements SeComms {
   private static final long serialVersionUID = 45749879L;
@@ -79,23 +80,23 @@ public final class SeCapturedFrame implements SeComms {
 
   private void validate() {
     if (windowHandle == null) {
-      throw new IllegalArgumentException("Window handle cannot be null!");
+      throw new SeNullArgumentException("Window handle");
     }
 
     if (path == null) {
-      throw new IllegalArgumentException("Path cannot be null!");
+      throw new SeNullArgumentException("Path");
     }
 
     if (name == null) {
-      throw new IllegalArgumentException("Name cannot be null!");
+      throw new SeNullArgumentException("Name");
     }
 
     if (src == null) {
-      throw new IllegalArgumentException("Src cannot be null!");
+      throw new SeNullArgumentException("Src");
     }
 
     if (html == null) {
-      throw new IllegalArgumentException("Html cannot be null!");
+      throw new SeNullArgumentException("Html");
     }
   }
 

@@ -1,7 +1,7 @@
 package net.selenate.common.comms.res;
 
 import java.util.Arrays;
-
+import net.selenate.common.exceptions.SeNullArgumentException;
 import net.selenate.common.SelenateUtils;
 
 public final class SeResWindowCapture implements SeCommsRes{
@@ -24,7 +24,7 @@ public final class SeResWindowCapture implements SeCommsRes{
 
   private void validate() {
     if (screenshot == null) {
-      throw new IllegalArgumentException("Screenshot cannot be null!");
+      throw new SeNullArgumentException("Screenshot");
     }
   }
 

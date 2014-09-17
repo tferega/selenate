@@ -2,9 +2,9 @@ package net.selenate.server
 package linux
 
 import com.ferega.procrun._
-import scala.annotation.tailrec
+import net.selenate.common.exceptions.SeException
 import org.joda.time.DateTime
-import net.selenate.server.SetCache
+import scala.annotation.tailrec
 
 object LinuxDisplay extends Loggable {
   private val screenCache = new SetCache[Int]()
@@ -60,7 +60,7 @@ object LinuxDisplay extends Loggable {
       case Left(message)   =>
         val msg = s"""An error occured while creating screen $num:\n$message"""
         logError(msg)
-        throw new Exception(msg)
+        throw new SeException(msg)
       case Right(port) =>
         logDebug(s"""Screen $num successfully created on port $port""")
         DisplayInfo(num, port)
