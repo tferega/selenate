@@ -12,8 +12,10 @@ class WindowFrameSwitchAction(val sessionID: String, val context: SessionContext
     extends Action[SeReqWindowFrameSwitch, SeResWindowFrameSwitch]
     with ActionCommons {
   def doAct = { arg =>
-    frameReset()
-    arg.getFramePath foreach { f => frameSwitch(f) }
+    if (context.useFrames) {
+      frameReset()
+      arg.getFramePath foreach { f => frameSwitch(f) }
+    }
 
     new SeResWindowFrameSwitch()
   }

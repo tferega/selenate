@@ -62,7 +62,9 @@ trait ActionCommons
     getFromCache(selector) flatMap { cachedElement =>
       val address = Address(cachedElement.windowHandle, cachedElement.framePath)
       try {
-        fullSwitch(cachedElement.windowHandle, cachedElement.framePath)
+        if (context.useFrames) {
+          fullSwitch(cachedElement.windowHandle, cachedElement.framePath)
+        }
         Some(Success(f(address, cachedElement.elem)))
       } catch {
         case e: StaleElementReferenceException =>

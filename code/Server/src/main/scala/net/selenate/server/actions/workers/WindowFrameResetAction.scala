@@ -11,7 +11,9 @@ class WindowFrameResetAction(val sessionID: String, val context: SessionContext,
     extends Action[SeReqWindowFrameReset, SeResWindowFrameReset]
     with ActionCommons {
   def doAct = { arg =>
-    d.switchTo.defaultContent
+    if (context.useFrames) {
+      d.switchTo.defaultContent
+    }
 
     new SeResWindowFrameReset()
   }

@@ -35,6 +35,28 @@ trait ActionCommonsFrames extends ActionCommonsBase { self: Loggable =>
   protected def findAllFrames() =
     d.findElementsByXPath("//*[local-name()='frame' or local-name()='iframe']")
 
+  protected def emptyAddress() = Address(d.getWindowHandle, Vector.empty)
+
+  protected def inAllFrames[T](f: Address => T)(window: WindowHandle): Iterator[T] = {
+    if (context.useFrames) {
+      frameReset()
+      inAllFramesDoit(f, window, Vector.empty)
+    } else {
+      val address = Address(window, Vector.empty)
+      Iterator.single(f(address))
+    }
+  }
+
+  protected def inAllWindows[T](f: Address => T): Iterator[T] = {
+    if (context.useFrames) {
+      val windowList: Iterator[WindowHandle] = d.getWindowHandles.toIterator
+      windowList flatMap inAllFrames(f)
+    } else {
+      val result = f(emptyAddress())
+      Iterator.single(result)
+    }
+  }
+
   private def doSwitch[T](f: Address => T, window: WindowHandle, framePath: FramePath, frameNum: FrameNum): Iterator[T] = {
     frameSwitch(frameNum)
     println("    DOING " + (framePath :+ frameNum).mkString("[", ", ", "]"))
@@ -52,15 +74,5 @@ trait ActionCommonsFrames extends ActionCommonsBase { self: Loggable =>
       result   <- doSwitch(f, window, framePath, frameNum)
     } yield (result)
     childrenResult ++ Iterator.single(result)
-  }
-
-  protected def inAllFrames[T](f: Address => T)(window: WindowHandle): Iterator[T] = {
-    frameReset()
-    inAllFramesDoit(f, window, Vector.empty)
-  }
-
-  protected def inAllWindows[T](f: Address => T): Iterator[T] = {
-    val windowList: Iterator[WindowHandle] = d.getWindowHandles.toIterator
-    windowList flatMap inAllFrames(f)
   }
 }

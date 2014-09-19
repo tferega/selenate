@@ -11,7 +11,9 @@ class WindowCloseAction(val sessionID: String, val context: SessionContext, val 
     extends Action[SeReqWindowClose, SeResWindowClose]
     with ActionCommons {
   def doAct = { arg =>
-    windowSwitch(arg.getWindowHandle)
+    if (context.useFrames) {
+      windowSwitch(arg.getWindowHandle)
+    }
     d.close
 
     new SeResWindowClose()
