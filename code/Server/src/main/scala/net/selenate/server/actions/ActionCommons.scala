@@ -2,18 +2,16 @@ package net.selenate.server
 package actions
 
 import net.selenate.common.comms.{ SeElementSelectMethod, SeElementSelector, SeOptionSelectMethod, SeOptionSelector }
-import org.openqa.selenium.By
+import org.openqa.selenium.{ By, StaleElementReferenceException }
 import org.openqa.selenium.remote.RemoteWebElement
 import org.openqa.selenium.support.ui.Select
 import scala.collection.JavaConversions._
-import scala.util.Try
+import scala.util.{ Failure, Success, Try }
 
 trait ActionCommons
     extends ActionCommonsBase
     with ActionCommonsFrames
     with ActionCommonsParsers { self: Loggable =>
-  val context: SessionContext
-
   protected def findElementList(selector: SeElementSelector): IndexedSeq[RemoteWebElement] = {
     import SeElementSelectMethod._
 
@@ -57,6 +55,22 @@ trait ActionCommons
       Some(resultIterator.next)
     } else {
       None
+    }
+  }
+
+  protected def elementInCache[T](selector: SeElementSelector)(f: (Address, RemoteWebElement) => T): Option[Try[T]] = {
+    getFromCache(selector) flatMap { cachedElement =>
+      val address = Address(cachedElement.windowHandle, cachedElement.framePath)
+      try {
+        fullSwitch(cachedElement.windowHandle, cachedElement.framePath)
+        Some(Success(f(address, cachedElement.elem)))
+      } catch {
+        case e: StaleElementReferenceException =>
+          val foundElem = findElementList(selector).headOption
+          foundElem.map(elem => Try(f(address, elem)))
+        case e: Exception =>
+          None
+      }
     }
   }
 }

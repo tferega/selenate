@@ -13,7 +13,7 @@ class SelectFindListAction(val sessionID: String, val context: SessionContext, v
   def doAct = { arg =>
     val foundElementList = inAllWindows { address =>
       val webElementList = findElementList(arg.getSelector)
-      webElementList map parseSelectElement(address)
+      webElementList map parseSelectElement(address, arg.getSelector)
     }.force
     val res = foundElementList.flatten
     new SeResSelectFindList(seqToRealJava(res))

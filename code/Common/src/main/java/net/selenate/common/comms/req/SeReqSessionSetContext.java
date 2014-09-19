@@ -51,7 +51,9 @@ public final class SeReqSessionSetContext implements SeCommsReq {
   @Override
   public String toString() {
     return String.format("SeReqSessionSetSettings(%s, %d, %s)",
-        useFrames, keepaliveDelayMillis, keepaliveReqList.map(SelenateUtils::listToString));
+        SelenateUtils.optionalToString(useFrames),
+        SelenateUtils.optionalToString(keepaliveDelayMillis),
+        SelenateUtils.optionalToString(keepaliveReqList.map(SelenateUtils::listToString)));
   }
 
   @Override

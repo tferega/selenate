@@ -1,7 +1,9 @@
 package net.selenate.server
 package actions
 
-import net.selenate.common.comms.{ SeAddress, SeCookie, SeElement, SeOption, SeSelect }
+import java.util.Optional
+import net.selenate.common.comms._
+import net.selenate.common.NamedUUID
 import org.openqa.selenium.Cookie
 import org.openqa.selenium.remote.RemoteWebElement
 import org.openqa.selenium.support.ui.Select
@@ -13,9 +15,13 @@ trait ActionCommonsParsers extends ActionCommonsBase { self: Loggable =>
         address.windowHandle,
         seqToRealJava(address.framePath map toInteger))
 
-  protected def parseWebElement(address: Address)(e: RemoteWebElement) =
+  private val elementUuidFactory = new NamedUUID("Element")
+  protected def parseWebElement(address: Address, selector: SeElementSelector)(e: RemoteWebElement) = {
+    val uuid = elementUuidFactory.random()
+    context.elementCache.add(uuid, CachedElement(address.windowHandle, address.framePath, e))
     new SeElement(
-        e.getId,
+        uuid,
+        selector.withUuid(Optional.of(uuid)),
         e.getLocation.getX,
         e.getLocation.getY,
         e.getSize.getWidth,
@@ -26,29 +32,30 @@ trait ActionCommonsParsers extends ActionCommonsBase { self: Loggable =>
         e.isEnabled,
         e.isSelected,
         parseAddress(address))
+  }
 
-  protected def parseSelectElement(address: Address)(e: RemoteWebElement): SeSelect = {
+  protected def parseSelectElement(address: Address, selector: SeElementSelector)(e: RemoteWebElement): SeSelect = {
     val select = new Select(e)
     val rawAllOptionList         = select.getOptions.map(_.asInstanceOf[RemoteWebElement]).toIndexedSeq
     val rawSelectedOptionList    = select.getAllSelectedOptions.map(_.asInstanceOf[RemoteWebElement]).toIndexedSeq
     val selectedIndexList        = rawAllOptionList.zipWithIndex.collect { case(o, i) if rawSelectedOptionList.contains(o) => i }
 
-    val parsedAllOptionList      = rawAllOptionList map parseOptionElement(address)
-    val parsedSelectedOptionList = rawSelectedOptionList map parseOptionElement(address)
+    val parsedAllOptionList      = rawAllOptionList map parseOptionElement(address, selector)
+    val parsedSelectedOptionList = rawSelectedOptionList map parseOptionElement(address, selector)
 
     val firstSelectedIndex       = selectedIndexList.headOption
     val firstSelectedOption      = parsedSelectedOptionList.headOption
 
     new SeSelect(
-        parseWebElement(address)(e),
+        parseWebElement(address, selector)(e),
         parsedAllOptionList.size,
         firstSelectedIndex map toInteger orNull,
         firstSelectedOption.orNull,
         seqToRealJava(parsedAllOptionList))
   }
 
-  protected def parseOptionElement(address: Address)(e: RemoteWebElement): SeOption =
-    new SeOption(parseWebElement(address)(e))
+  protected def parseOptionElement(address: Address, selector: SeElementSelector)(e: RemoteWebElement): SeOption =
+    new SeOption(parseWebElement(address, selector)(e))
 
   protected def parseCookie(cookie: Cookie): SeCookie =
     new SeCookie(

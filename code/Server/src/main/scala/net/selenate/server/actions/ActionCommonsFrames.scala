@@ -25,7 +25,7 @@ trait ActionCommonsFrames extends ActionCommonsBase { self: Loggable =>
     d.switchTo.parentFrame
   }
 
-  protected def fullSwitch(windowHandle: String, framePath: FramePath) {
+  protected def fullSwitch(windowHandle: WindowHandle, framePath: FramePath) {
     logTrace("Resetting window and frame")
     d.switchTo.defaultContent
     d.switchTo.window(windowHandle)
@@ -56,7 +56,7 @@ trait ActionCommonsFrames extends ActionCommonsBase { self: Loggable =>
 
   protected def inAllFrames[T](f: Address => T)(window: WindowHandle): Iterator[T] = {
     frameReset()
-    inAllFramesDoit(f, window, IndexedSeq.empty)
+    inAllFramesDoit(f, window, Vector.empty)
   }
 
   protected def inAllWindows[T](f: Address => T): Iterator[T] = {

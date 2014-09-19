@@ -1,5 +1,7 @@
 package net.selenate.common;
 
+import java.util.Optional;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,18 @@ public final class SelenateUtils {
   private SelenateUtils() { }
 
   public static final SimpleDateFormat ISO_8601_FORMAT = new SimpleDateFormat("yyyy-MM-dd HHmmss");
+
+  public static <T> String optionalToString(final Optional<T> o) {
+    if (o == null) {
+      return null;
+    } else {
+      if (o.isPresent()) {
+        return String.format("Optional(%s)", o.get());
+      } else {
+        return "Empty";
+      }
+    }
+  }
 
   public static String byteArrToString(byte[] byteArr) {
     if (byteArr == null) {

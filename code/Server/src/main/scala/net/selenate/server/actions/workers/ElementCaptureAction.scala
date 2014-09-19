@@ -10,6 +10,7 @@ import net.selenate.common.comms.req.SeReqElementCapture
 import net.selenate.common.comms.res.SeResElementCapture
 import net.selenate.common.exceptions.SeActionException
 import org.openqa.selenium.OutputType
+import org.openqa.selenium.remote.RemoteWebElement
 import scala.util.{ Failure, Success, Try }
 
 class ElementCaptureAction(val sessionID: String, val context: SessionContext, val d: SelenateFirefox)
@@ -17,18 +18,7 @@ class ElementCaptureAction(val sessionID: String, val context: SessionContext, v
     with ActionCommons {
   def doAct = { arg =>
     val result: Option[Try[Array[Byte]]] =
-      elementInAllWindows(arg.getSelector) { (address, e) =>
-        val screen     = d.getScreenshotAs(OutputType.BYTES)
-        val bais       = new ByteArrayInputStream(screen)
-        val baos       = new ByteArrayOutputStream()
-        val img        = ImageIO.read(bais)
-        val dest       = img.getSubimage(e.getLocation.getX, e.getLocation.getY, e.getSize.getWidth, e.getSize.getHeight)
-        ImageIO.write(dest, "png", baos)
-        val screenBody = baos.toByteArray()
-        baos.close()
-        bais.close()
-        screenBody
-      }
+      fromCache(arg) orElse fromFrames(arg)
 
     result match {
       case Some(Success((r))) =>
@@ -38,5 +28,28 @@ class ElementCaptureAction(val sessionID: String, val context: SessionContext, v
       case None =>
         throw new SeActionException(name, arg, "element not found in any frame")
     }
+  }
+
+  def fromCache(arg: SeReqElementCapture): Option[Try[Array[Byte]]] =
+    elementInCache(arg.getSelector) { (address, elem) =>
+      doCapture(elem)
+    }
+
+  def fromFrames(arg: SeReqElementCapture): Option[Try[Array[Byte]]] =
+    elementInAllWindows(arg.getSelector) { (address, elem) =>
+      doCapture(elem)
+    }
+
+  def doCapture(elem: RemoteWebElement): Array[Byte] = {
+    val screen     = d.getScreenshotAs(OutputType.BYTES)
+    val bais       = new ByteArrayInputStream(screen)
+    val baos       = new ByteArrayOutputStream()
+    val img        = ImageIO.read(bais)
+    val dest       = img.getSubimage(elem.getLocation.getX, elem.getLocation.getY, elem.getSize.getWidth, elem.getSize.getHeight)
+    ImageIO.write(dest, "png", baos)
+    val screenBody = baos.toByteArray()
+    baos.close()
+    bais.close()
+    screenBody
   }
 }

@@ -5,11 +5,11 @@ import ch.qos.logback.classic.util.ContextInitializer
 import ch.qos.logback.core.util.StatusPrinter
 import org.slf4j.LoggerFactory
 
-object Main extends App with CBase {
+object EntryPoint extends App with CBase {
   initLog
   Runner.start
 
-  private def initLog() {
+  def initLog() {
     val defaultConfig = loadResourceConfig("server.reference.config")
     val userConfig    = loadFileConfig(configPath)
     val config        = userConfig withFallback defaultConfig
