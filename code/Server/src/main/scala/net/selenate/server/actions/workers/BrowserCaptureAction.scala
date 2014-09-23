@@ -6,9 +6,9 @@ import extensions.SelenateFirefox
 
 import net.selenate.common.comms.req.SeReqBrowserCapture
 import net.selenate.common.comms.res.SeResBrowserCapture
-import net.selenate.common.comms.{ SeCapturedFrame, SeCapturedWindow, SeCookie }
+import net.selenate.common.comms.{ SeCapturedFrame, SeCapturedWindow, SeCookie => SelenateCookie }
 import org.apache.commons.io.IOUtils
-import org.openqa.selenium.{ Cookie, OutputType}
+import org.openqa.selenium.{ Cookie => SeleniumCookie, OutputType}
 import org.openqa.selenium.WebElement
 import scala.collection.JavaConversions._
 
@@ -98,12 +98,12 @@ class BrowserCaptureAction(val sessionID: String, val context: SessionContext, v
     }
 
   private def captureCookieSet() = {
-    val cookieSet = tryWithAlternative("capturing a set of cookies", Set.empty[Cookie]) {
+    val cookieSet = tryWithAlternative("capturing a set of cookies", Set.empty[SeleniumCookie]) {
       d.manage.getCookies.toSet
     }
 
     cookieSet flatMap { cookie =>
-      tryWithAlternative("parsing a cookie", Option.empty[SeCookie]) {
+      tryWithAlternative("parsing a cookie", Option.empty[SelenateCookie]) {
         Some(parseCookie(cookie))
       }
     }
@@ -130,7 +130,7 @@ class BrowserCaptureAction(val sessionID: String, val context: SessionContext, v
       f
     } catch {
       case e: Exception =>
-        logWarn(s"An error occured while $desc!", e)
+        logWarn(s"An error occured while $desc in $name, using provided alternative!", e)
         alternative
     }
 }

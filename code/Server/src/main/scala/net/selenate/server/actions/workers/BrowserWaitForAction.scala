@@ -13,6 +13,8 @@ class BrowserWaitForAction(val sessionID: String, val context: SessionContext, v
     extends Action[SeReqBrowserWaitFor, SeResBrowserWaitFor]
     with ActionCommons
     with WaitFor {
+  case class OwnedSelector(pageName: String, selector: SeElementSelector)
+
   def doAct = { arg =>
     val res = waitForPageList(arg.getPageList.toIndexedSeq)
     new SeResBrowserWaitFor(res.isDefined, res.orNull)
@@ -20,17 +22,30 @@ class BrowserWaitForAction(val sessionID: String, val context: SessionContext, v
 
   private def waitForPageList(pageList: IndexedSeq[SePage]): Option[SePage] =
     waitForPredicate {
-      val resultList = inAllWindows { address =>
-        pageList find pageExists
-      }
-      resultList.find(_.isDefined).flatten
+      val selectorList = getSelectorList(pageList)
+      val resultList   = filterSelectorList(selectorList)
+      pageList find isPageFound(resultList)
     }
 
-  private def pageExists(page: SePage): Boolean =
-    page.getSelectorList
-        .map(elementExists)
-        .forall(identity)
+  private def getSelectorList(pageList: IndexedSeq[SePage]): IndexedSeq[OwnedSelector] =
+      for {
+        page     <- pageList
+        selector <- page.getSelectorList
+      } yield {
+        OwnedSelector(page.getName, selector)
+      }
 
-  private def elementExists(selector: SeElementSelector): Boolean =
-    findElementList(selector).size > 0
+  private def filterSelectorList(selectorList: IndexedSeq[OwnedSelector]): IndexedSeq[OwnedSelector] =
+      inAllWindows { address =>
+        selectorList filter elementExists
+      }.force.flatten
+
+  private def elementExists(selector: OwnedSelector): Boolean =
+    findElementList(selector.selector).size > 0
+
+  private def isPageFound(resultList: IndexedSeq[OwnedSelector])(page: SePage): Boolean = {
+    val targetSize = page.getSelectorList.size
+    val resultSize = resultList.filter(_.pageName == page.getName).size
+    targetSize == resultSize
+  }
 }

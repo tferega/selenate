@@ -2,9 +2,9 @@ package net.selenate.server
 package actions
 
 import java.util.Optional
-import net.selenate.common.comms._
+import net.selenate.common.comms.{ SeCookie => SelenateCookie, _ }
 import net.selenate.common.NamedUUID
-import org.openqa.selenium.Cookie
+import org.openqa.selenium.{ Cookie => SeleniumCookie }
 import org.openqa.selenium.remote.RemoteWebElement
 import org.openqa.selenium.support.ui.Select
 import scala.collection.JavaConversions._
@@ -57,8 +57,8 @@ trait ActionCommonsParsers extends ActionCommonsBase { self: Loggable =>
   protected def parseOptionElement(address: Address, selector: SeElementSelector)(e: RemoteWebElement): SeOption =
     new SeOption(parseWebElement(address, selector)(e))
 
-  protected def parseCookie(cookie: Cookie): SeCookie =
-    new SeCookie(
+  protected def parseCookie(cookie: SeleniumCookie): SelenateCookie =
+    new SelenateCookie(
       cookie.getName,
       cookie.getValue,
       cookie.getDomain,

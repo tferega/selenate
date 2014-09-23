@@ -24,9 +24,12 @@ class ElementTextInputAction(val sessionID: String, val context: SessionContext,
       case Some(Success(())) =>
         new SeResElementTextInput()
       case Some(Failure(ex)) =>
+        logError(s"An error occurred while executing $name action ($arg)!", ex)
         throw new SeActionException(name, arg, ex)
       case None =>
-        throw new SeActionException(name, arg, "element not found in any frame")
+        val msg = "element not found in any frame"
+        logError(s"An error occurred while executing $name action ($arg): $msg!")
+        throw new SeActionException(name, arg, msg)
     }
   }
 }

@@ -4,7 +4,7 @@ package workers
 
 import extensions.SelenateFirefox
 
-import com.ning.http.client.cookie.Cookie
+import com.ning.http.client.cookie.{ Cookie => HttpClientCookie}
 import dispatch._
 import java.io.IOException
 import net.selenate.common.comms.req.SeReqSessionDownload
@@ -34,10 +34,10 @@ class SessionDownloadAction(val sessionID: String, val context: SessionContext, 
 
   private def getCookies =
     d.manage.getCookies.map { c =>
-      val rawValue = ???
+      val rawValue = c.getValue
       val maxAge = -1
-      val isHttpOnly = ???
-      Cookie.newValidCookie(c.getName, c.getValue, c.getDomain, rawValue, c.getPath, expiryToLong(c.getExpiry), maxAge, c.isSecure, isHttpOnly)
+      val isHttpOnly = false
+      HttpClientCookie.newValidCookie(c.getName, c.getValue, c.getDomain, rawValue, c.getPath, expiryToLong(c.getExpiry), maxAge, c.isSecure, isHttpOnly)
   }
 
   private def expiryToLong(expiry: java.util.Date) =

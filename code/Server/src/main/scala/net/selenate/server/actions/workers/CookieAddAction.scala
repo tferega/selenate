@@ -6,7 +6,7 @@ import extensions.SelenateFirefox
 
 import net.selenate.common.comms.req.SeReqCookieAdd
 import net.selenate.common.comms.res.SeResCookieAdd
-import org.openqa.selenium.Cookie
+import org.openqa.selenium.{ Cookie => SeleniumCookie }
 
 class CookieAddAction(val sessionID: String, val context: SessionContext, val d: SelenateFirefox)
     extends Action[SeReqCookieAdd, SeResCookieAdd]
@@ -14,7 +14,7 @@ class CookieAddAction(val sessionID: String, val context: SessionContext, val d:
   def doAct = { arg =>
     val cookie = arg.getCookie
     inAllWindows { address =>
-      val c = new Cookie(
+      val c = new SeleniumCookie(
             cookie.getName
           , cookie.getValue
           , cookie.getDomain
