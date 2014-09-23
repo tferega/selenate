@@ -2,15 +2,6 @@ import sbt._
 import Keys._
 
 object SelenateBuild extends Build with Settings with Dependencies {
-  lazy val client = Project(
-    "Client",
-    file("Client"),
-    settings = java ++ publishing ++ Seq(
-      name := "Selenate-Client",
-      libraryDependencies := akka ++ Seq(config)
-    )
-  ) dependsOn(common)
-
   lazy val common = Project(
     "Common",
     file("Common"),
