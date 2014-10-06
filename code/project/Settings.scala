@@ -142,4 +142,19 @@ object Helpers {
         for (depSeq <- deps; dep <- depSeq) yield dep(sV))
       )
     ) dependsOn(projectDeps: _*)
+
+  // Gets the platform name
+  val platform = {
+    val osNameProp = System.getProperty("os.name").toLowerCase
+    val osArchProp = System.getProperty("os.arch").toLowerCase
+
+    val osName = osNameProp.split(" ").head
+    val osArch =
+      osArchProp match {
+      case "i386" | "i486" | "i586" | "i686" => "x86"
+      case "amd64" | "x86-64" | "x64"        => "x86_64"
+    }
+
+    osName + "-" + osArch
+  }
 }
