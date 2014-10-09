@@ -24,6 +24,8 @@ class WaitForSikuliImageAction(val d: FirefoxDriver) extends IAction[SeReqWaitFo
     val desktop = new DesktopScreenRegion()
     val region  = desktop.wait(target, arg.timeoutMillis)
 
-    new SeResWaitForSikuliImage()
+    val isImageFound = region != null
+
+    new SeResWaitForSikuliImage(isImageFound)
   }
 }

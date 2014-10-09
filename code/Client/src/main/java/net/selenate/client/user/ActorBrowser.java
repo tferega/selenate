@@ -9,7 +9,6 @@ import net.selenate.common.comms.*;
 import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
 import net.selenate.common.user.*;
-
 import akka.actor.ActorRef;
 
 public class ActorBrowser extends ActorBase implements IBrowser {
@@ -245,4 +244,14 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   public void setAutoFrames(final Boolean useFrames) throws IOException {
     typedBlock(new SeReqSetUseFrames(useFrames), SeResSetUseFrames.class);
   }
+
+  public boolean waitForSikuliImage(final byte[] image) throws IOException {
+    final SeResWaitForSikuliImage res = typedBlock(new SeReqWaitForSikuliImage(image, 30000), SeResWaitForSikuliImage.class);
+    return res.isImageFound();
+  }
+
+  public void clickSikuliImage(final byte[] image) throws IOException {
+    typedBlock(new SeReqClickSikuliImage(image, 30000), SeResClickSikuliImage.class);
+  }
+
 }
