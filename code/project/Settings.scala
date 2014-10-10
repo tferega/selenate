@@ -57,7 +57,7 @@ object Default {
       //, "-Yinline"
       //, "-Yinline-warnings"
       , "-Xmax-classfile-name", "72"
-      , "-Yrepl-sync"
+      , "-Yrepl-sync" 
       , "-Xlint"
       , "-Xverify"
       , "-Ywarn-all"
@@ -74,7 +74,7 @@ object Default {
     Seq(
       name         := Name,
       organization := "net.selenate",
-      version      := "0.2.16",
+      version      := "0.2.18",
       scalaVersion := "2.10.2",
       unmanagedSourceDirectories in Test := Nil
   )

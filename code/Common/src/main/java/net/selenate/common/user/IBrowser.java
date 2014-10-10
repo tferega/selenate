@@ -52,4 +52,7 @@ public interface IBrowser {
   public void startKeepalive(long delayMillis, List<SeCommsReq> reqList) throws IOException;
 
   public void stopKeepalive() throws IOException;
+
+  public boolean waitForSikuliImage(final byte[] image) throws IOException;
+  public void clickSikuliImage(final byte[] image) throws IOException;
 }

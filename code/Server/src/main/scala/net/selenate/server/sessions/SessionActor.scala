@@ -50,7 +50,6 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
     case arg: SeReqResetFrame         => new ResetFrameAction(d).act(arg)
     case arg: SeReqSelectOption       => new SelectOptionAction(d).act(arg)
     case arg: SeReqSetUseFrames       => new SetUseFramesAction(d).act(arg)
-    case arg: SeReqSikuliImageExists  => new SikuliImageExistsAction(d).act(arg)
     case arg: SeReqStartKeepalive     => new StartKeepaliveAction(d).act(arg)
     case arg: SeReqStopKeepalive      => new StopKeepaliveAction(d).act(arg)
     case arg: SeReqSwitchFrame        => new SwitchFrameAction(d).act(arg)
