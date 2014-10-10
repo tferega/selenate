@@ -28,6 +28,7 @@ class SessionActor(sessionID: String, profile: ProfileInfo, useFrames: Boolean =
     case arg: SeReqCaptureWindow      => new CaptureWindowAction(d).act(arg)
     case arg: SeReqClearText          => new ClearTextAction(d).act(arg)
     case arg: SeReqClick              => new ClickAction(d).act(arg)
+    case arg: SeReqClickSikuliImage   => new ClickSikuliImageAction(d).act(arg)
     case arg: SeReqClose              => new CloseAction(d).act(arg)
     case arg: SeReqDeleteCookieNamed  => new DeleteCookieNamedAction(d).act(arg)
     case arg: SeReqDownload           => new DownloadAction(d).act(arg)
@@ -53,6 +54,7 @@ class SessionActor(sessionID: String, profile: ProfileInfo, useFrames: Boolean =
     case arg: SeReqSystemInput        => new SystemInputAction(d).act(arg)
     case arg: SeReqWaitFor            => new WaitForAction(d).act(arg)
     case arg: SeReqWaitForBrowserPage => new WaitForBrowserPageAction(d).act(arg)
+    case arg: SeReqWaitForSikuliImage => new WaitForSikuliImageAction(d).act(arg)
   }
 
   private def getDriverFromPool(profile: ProfileInfo): SelenateFirefox = {

@@ -11,11 +11,11 @@ package object server {
 
   implicit val ec = ExecutionContext.fromExecutor(java.util.concurrent.Executors.newCachedThreadPool())
 
-  implicit class RichException(e: Exception) {
+  implicit class RichThrowable(t: Throwable) {
     def stackTrace: String = {
       val sw = new StringWriter
       val pw = new PrintWriter(sw)
-      e.printStackTrace(pw)
+      t.printStackTrace(pw)
       val s = sw.toString
       pw.close
       sw.close

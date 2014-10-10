@@ -13,6 +13,12 @@ object Dependencies {
   val seleniumFirefox = "org.seleniumhq.selenium" % "selenium-firefox-driver" % seleniumVersion
   val seleniumServer  = "org.seleniumhq.selenium" % "selenium-server"         % seleniumVersion
 
+  val sikuliApi      = "org.sikuli"                   % "sikuli-api" % "1.2.0"
+  val javaCV         = "org.bytedeco"                 % "javacv"    % "0.9"
+  val openCV         = "org.bytedeco.javacpp-presets" % "opencv"    % ("2.4.9-" + "0.9") classifier ""
+  val openCVPlatform = "org.bytedeco.javacpp-presets" % "opencv"    % ("2.4.9-" + "0.9") classifier Helpers.platform
+
+
   val scalaLibrary    = "org.scala-lang" % "scala-library" % "2.10.1"
 
   // ---------------------------------------------------------------------------
@@ -27,4 +33,5 @@ object Dependencies {
   val akka     = Seq(akkaActor, akkaRemote)
   val jodaTime = Seq(jodaTimeConvert, jodaTimeTime)
   val selenium = Seq(seleniumFirefox, seleniumServer)
+  val sikuli   = Seq(sikuliApi, javaCV, openCV, openCVPlatform)
 }

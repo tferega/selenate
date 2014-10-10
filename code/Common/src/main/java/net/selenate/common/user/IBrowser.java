@@ -55,4 +55,7 @@ public interface IBrowser {
 
   public void systemClick(int x, int y) throws IOException;
   public void systemInput(String input) throws IOException;
+
+  public boolean waitForSikuliImage(final byte[] image) throws IOException;
+  public void clickSikuliImage(final byte[] image) throws IOException;
 }

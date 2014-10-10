@@ -33,8 +33,6 @@ object Default {
         "-deprecation"
       , "-encoding", "UTF-8"
       , "-Xlint:unchecked"
-      , "-source", "1.8"
-      , "-target", "1.8"
       ),
       autoScalaLibrary := false,
       crossPaths       := false,
@@ -57,7 +55,7 @@ object Default {
       //, "-Yinline"
       //, "-Yinline-warnings"
       , "-Xmax-classfile-name", "72"
-      , "-Yrepl-sync"
+      , "-Yrepl-sync" 
       , "-Xlint"
       , "-Xverify"
       , "-Ywarn-all"
@@ -74,7 +72,7 @@ object Default {
     Seq(
       name         := Name,
       organization := "net.selenate",
-      version      := "0.2.17-SCREENS",
+      version      := "0.2.19",
       scalaVersion := "2.10.4",
       unmanagedSourceDirectories in Test := Nil
   )
@@ -142,4 +140,19 @@ object Helpers {
         for (depSeq <- deps; dep <- depSeq) yield dep(sV))
       )
     ) dependsOn(projectDeps: _*)
+
+  // Gets the platform name
+  val platform = {
+    val osNameProp = System.getProperty("os.name").toLowerCase
+    val osArchProp = System.getProperty("os.arch").toLowerCase
+
+    val osName = osNameProp.split(" ").head
+    val osArch =
+      osArchProp match {
+      case "i386" | "i486" | "i586" | "i686" => "x86"
+      case "amd64" | "x86-64" | "x64"        => "x86_64"
+    }
+
+    osName + "-" + osArch
+  }
 }
