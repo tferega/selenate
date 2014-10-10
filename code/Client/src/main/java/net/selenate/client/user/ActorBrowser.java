@@ -260,13 +260,13 @@ public class ActorBrowser extends ActorBase implements IBrowser {
 
   @Override
   public boolean waitForSikuliImage(final byte[] image) throws IOException {
-    final SeResWaitForSikuliImage res = typedBlock(new SeReqWaitForSikuliImage(image, 30000), SeResWaitForSikuliImage.class);
+    final SeResWaitForSikuliImage res = typedBlock(new SeReqWaitForSikuliImage(image, 5000), SeResWaitForSikuliImage.class);
     return res.isImageFound();
   }
 
   @Override
   public void clickSikuliImage(final byte[] image) throws IOException {
-    typedBlock(new SeReqClickSikuliImage(image, 30000), SeResClickSikuliImage.class);
+    typedBlock(new SeReqClickSikuliImage(image, 5000), SeResClickSikuliImage.class);
   }
 
   @Override

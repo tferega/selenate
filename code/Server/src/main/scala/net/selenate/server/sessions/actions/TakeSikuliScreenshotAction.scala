@@ -21,7 +21,7 @@ class TakeSikuliScreenshotAction (val d: SelenateFirefox) extends IAction[SeReqT
     val target = new ImageTarget(buffer)
 
     val desktop = new DesktopScreenRegion()
-    val region  = desktop.wait(target, 30000)
+    val region  = desktop.wait(target, 5000)
 
     val location      = region.getUpperLeftCorner()
     val appletRegion  = new DesktopScreenRegion(location.getX(), location.getY(), arg.width, arg.height)
