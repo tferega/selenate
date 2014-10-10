@@ -1,11 +1,13 @@
 package net.selenate.client.user;
 
+import net.selenate.common.comms.req.SeReqTakeSikuliScreenshot;
 import net.selenate.common.comms.req.SeReqSystemClick;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import net.selenate.common.comms.*;
 import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
@@ -256,6 +258,7 @@ public class ActorBrowser extends ActorBase implements IBrowser {
     typedBlock(new SeReqSystemInput(input), SeResSystemInput.class);
   }
 
+  @Override
   public boolean waitForSikuliImage(final byte[] image) throws IOException {
     final SeResWaitForSikuliImage res = typedBlock(new SeReqWaitForSikuliImage(image, 30000), SeResWaitForSikuliImage.class);
     return res.isImageFound();
@@ -264,5 +267,11 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   @Override
   public void clickSikuliImage(final byte[] image) throws IOException {
     typedBlock(new SeReqClickSikuliImage(image, 30000), SeResClickSikuliImage.class);
+  }
+
+  @Override
+  public byte[] takeSikuliScreenshot(byte[] image, int width, int height) throws IOException {
+    final SeResTakeSikuliScreenshot res = typedBlock(new SeReqTakeSikuliScreenshot(image, width, height), SeResTakeSikuliScreenshot.class);
+    return res.getImage();
   }
 }
