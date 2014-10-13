@@ -31,10 +31,15 @@ object DriverPool {
 
   def get(profile: ProfileInfo): SelenateFirefox = {
     log.info("PoolMap by ProfileInfo")
-    poolMap.map{ pm => log.info(pm.toString())}
+    poolMap.map{ pm => log.info("PoolMap = " + pm.toString())}
+    log.info("trying to find profile: " + profile)
     findByProfile(profile) match {
-      case Some(name) => get(name)
-      case None       => FirefoxRunner.run(profile)
+      case Some(name) =>
+        log.info("Profile found: " + name)
+        get(name)
+      case None       =>
+        log.info("Profile NOT found. Starting new!!!!!")
+        FirefoxRunner.run(profile)
     }
   }
 }
