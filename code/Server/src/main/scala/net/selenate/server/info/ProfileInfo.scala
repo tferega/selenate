@@ -8,17 +8,27 @@ object ProfileInfo {
   private val DefaultDisplay        = DisplayInfo.Main
   private val DefaultBinaryLocation = None
 
-  private def parsePrefs(name: String)(prefs: String): Map[String, AnyRef] =
+  protected val log = Log(ProfileInfo.getClass)
+
+  private def parsePrefs(name: String)(prefs: String): Map[String, AnyRef] = {
+    log.info("Parsing prefs: " + prefs)
     prefs.split(";").map { entry =>
       entry.split("=").toList match {
         case ""  :: _  :: Nil => throw new IllegalArgumentException(s"""Error while parsing configuration. Offending entry: server.pool.$name.prefs($entry). Key not defined.""")
         case key :: "" :: Nil => throw new IllegalArgumentException(s"""Error while parsing configuration. Offending entry: server.pool.$name.prefs($entry). Value not defined.""")
-        case key :: IsBoolean(value) :: Nil => key -> value
-        case key :: IsInteger(value) :: Nil => key -> value
-        case key :: IsString(value)  :: Nil => key -> value
+        case key :: IsBoolean(value) :: Nil =>
+          log.info("Profile value of type boolean found: (%s -> %s)" format(key, value))
+          key -> value
+        case key :: IsInteger(value) :: Nil =>
+          log.info("Profile value of type int found: (%s -> %s)" format(key, value))
+          key -> value
+        case key :: IsString(value)  :: Nil =>
+          log.info("Profile value of type string found: (%s -> %s)" format(key, value))
+          key -> value
         case _ => throw new IllegalArgumentException(s"""Error while parsing configuration. Offending entry: server.pool.$name.prefs($entry). Malformed entry.""")
       }
-  }.toMap
+    }.toMap
+  }
 
   private def parseDisplay(name: String)(display: String): DisplayInfo =
     display.toLowerCase match {
@@ -57,7 +67,6 @@ final class ProfileInfo(
     val display: DisplayInfo         = ProfileInfo.DefaultDisplay,
     val binaryLocation: Option[File] = ProfileInfo.DefaultBinaryLocation) {
   def ===(that: ProfileInfo): Boolean =
-    this.prefMap == that.prefMap &&
     this.display == that.display &&
     this.binaryLocation == that.binaryLocation
 }
