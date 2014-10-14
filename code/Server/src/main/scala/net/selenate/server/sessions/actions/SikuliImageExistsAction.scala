@@ -5,15 +5,15 @@ import extensions.SelenateFirefox
 
 import java.io.ByteArrayInputStream
 import javax.imageio.ImageIO
-import net.selenate.common.comms.req.SeReqWaitForSikuliImage
-import net.selenate.common.comms.res.SeResWaitForSikuliImage
+import net.selenate.common.comms.req.SeReqSikuliImageExists
+import net.selenate.common.comms.res.SeResSikuliImageExists
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.sikuli.api.{ DesktopScreenRegion, ImageTarget }
 import org.sikuli.api.robot.desktop.DesktopMouse
 
-class WaitForSikuliImageAction(val d: SelenateFirefox) extends IAction[SeReqWaitForSikuliImage, SeResWaitForSikuliImage] {
+class SikuliImageExistsAction(val d: SelenateFirefox) extends IAction[SeReqSikuliImageExists, SeResSikuliImageExists] {
 
-  protected val log = Log(classOf[WaitForSikuliImageAction])
+  protected val log = Log(classOf[SikuliImageExistsAction])
 
   def act = { arg =>
     val bais   = new ByteArrayInputStream(arg.image)
@@ -25,6 +25,6 @@ class WaitForSikuliImageAction(val d: SelenateFirefox) extends IAction[SeReqWait
 
     val isImageFound = region != null
 
-    new SeResWaitForSikuliImage(isImageFound)
+    new SeResSikuliImageExists(isImageFound)
   }
 }

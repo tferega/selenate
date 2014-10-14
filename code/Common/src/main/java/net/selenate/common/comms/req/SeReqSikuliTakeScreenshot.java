@@ -1,13 +1,13 @@
 package net.selenate.common.comms.req;
 
-public class SeReqTakeSikuliScreenshot implements SeCommsReq {
+public class SeReqSikuliTakeScreenshot implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public final byte[] image;
   public final int    width;
   public final int    height;
 
-  public SeReqTakeSikuliScreenshot(
+  public SeReqSikuliTakeScreenshot(
       final byte[] image,
       final int    width,
       final int    height) {
@@ -30,7 +30,7 @@ public class SeReqTakeSikuliScreenshot implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqTakeSikuliScreenshot(%d bytes, %d, %d)", image.length, width, height);
+    return String.format("SeReqSikuliTakeScreenshot(%d bytes, %d, %d)", image.length, width, height);
   }
 
 }

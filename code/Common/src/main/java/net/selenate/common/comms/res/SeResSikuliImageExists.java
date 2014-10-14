@@ -1,11 +1,11 @@
 package net.selenate.common.comms.res;
 
-public class SeResWaitForSikuliImage implements SeCommsRes {
+public class SeResSikuliImageExists implements SeCommsRes {
   private static final long serialVersionUID = 1L;
 
   private boolean isImageFound;
 
-  public SeResWaitForSikuliImage(final boolean isImageFound) {
+  public SeResSikuliImageExists(final boolean isImageFound) {
     this.isImageFound = isImageFound;
   }
 
@@ -15,6 +15,6 @@ public class SeResWaitForSikuliImage implements SeCommsRes {
 
   @Override
   public String toString() {
-    return String.format("SeResWaitForSikuliImage(%s)", isImageFound);
+    return String.format("SeResSikuliImageExists(%s)", isImageFound);
   }
 }

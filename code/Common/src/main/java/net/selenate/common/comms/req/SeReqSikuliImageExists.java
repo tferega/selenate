@@ -1,14 +1,14 @@
 package net.selenate.common.comms.req;
 
-public class SeReqClickSikuliImage implements SeCommsReq {
+public class SeReqSikuliImageExists implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
-  public final byte[] image;
-  public final int    timeoutMillis;
+  public final byte[]  image;
+  public final Integer timeoutMillis;
 
-  public SeReqClickSikuliImage(
-      final byte[] image,
-      final int    timeoutMillis) {
+  public SeReqSikuliImageExists(
+      final byte[]  image,
+      final Integer timeoutMillis) {
     if (image == null) {
       throw new IllegalArgumentException("Image cannot be null!");
     }
@@ -23,6 +23,6 @@ public class SeReqClickSikuliImage implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqClickSikuliImage(%d bytes, %d)", image.length, timeoutMillis);
+    return String.format("SeReqSikuliImageExists(%d bytes, %d)", image.length, timeoutMillis);
   }
 }

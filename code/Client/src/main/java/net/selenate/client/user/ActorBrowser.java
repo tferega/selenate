@@ -1,6 +1,6 @@
 package net.selenate.client.user;
 
-import net.selenate.common.comms.req.SeReqTakeSikuliScreenshot;
+import net.selenate.common.comms.req.SeReqSikuliTakeScreenshot;
 import net.selenate.common.comms.req.SeReqSystemClick;
 
 import java.io.IOException;
@@ -260,18 +260,18 @@ public class ActorBrowser extends ActorBase implements IBrowser {
 
   @Override
   public boolean waitForSikuliImage(final byte[] image) throws IOException {
-    final SeResWaitForSikuliImage res = typedBlock(new SeReqWaitForSikuliImage(image, 5000), SeResWaitForSikuliImage.class);
+    final SeResSikuliImageExists res = typedBlock(new SeReqSikuliImageExists(image, 5000), SeResSikuliImageExists.class);
     return res.isImageFound();
   }
 
   @Override
   public void clickSikuliImage(final byte[] image) throws IOException {
-    typedBlock(new SeReqClickSikuliImage(image, 5000), SeResClickSikuliImage.class);
+    typedBlock(new SeReqSikuliClick(image, 5000), SeResSikuliClick.class);
   }
 
   @Override
   public byte[] takeSikuliScreenshot(byte[] image, int width, int height) throws IOException {
-    final SeResTakeSikuliScreenshot res = typedBlock(new SeReqTakeSikuliScreenshot(image, width, height), SeResTakeSikuliScreenshot.class);
+    final SeResSikuliTakeScreenshot res = typedBlock(new SeReqSikuliTakeScreenshot(image, width, height), SeResSikuliTakeScreenshot.class);
     return res.getImage();
   }
 }

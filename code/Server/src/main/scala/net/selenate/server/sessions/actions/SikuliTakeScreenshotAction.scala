@@ -4,16 +4,16 @@ package sessions.actions
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
-import net.selenate.common.comms.req.SeReqTakeSikuliScreenshot
-import net.selenate.common.comms.res.SeResTakeSikuliScreenshot
+import net.selenate.common.comms.req.SeReqSikuliTakeScreenshot
+import net.selenate.common.comms.res.SeResSikuliTakeScreenshot
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.sikuli.api.{ DesktopScreenRegion, ImageTarget, Region }
 import net.selenate.server.extensions.SelenateFirefox
 import net.selenate.server.Log
 
-class TakeSikuliScreenshotAction (val d: SelenateFirefox) extends IAction[SeReqTakeSikuliScreenshot, SeResTakeSikuliScreenshot] {
+class SikuliTakeScreenshotAction (val d: SelenateFirefox) extends IAction[SeReqSikuliTakeScreenshot, SeResSikuliTakeScreenshot] {
 
-  protected val log = Log(classOf[TakeSikuliScreenshotAction])
+  protected val log = Log(classOf[SikuliTakeScreenshotAction])
 
   def act = { arg =>
     val bais   = new ByteArrayInputStream(arg.image)
@@ -31,6 +31,6 @@ class TakeSikuliScreenshotAction (val d: SelenateFirefox) extends IAction[SeReqT
     val captureBuffer = ImageIO.write(capturedImage, "png", baos)
     val byteImage     = baos.toByteArray()
 
-    new SeResTakeSikuliScreenshot(byteImage)
+    new SeResSikuliTakeScreenshot(byteImage)
   }
 }

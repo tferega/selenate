@@ -1,11 +1,11 @@
 package net.selenate.common.comms.res;
 
-public class SeResTakeSikuliScreenshot implements SeCommsRes {
+public class SeResSikuliTakeScreenshot implements SeCommsRes {
   private static final long serialVersionUID = 1L;
 
   private byte[] image;
 
-  public SeResTakeSikuliScreenshot(final byte[] image) {
+  public SeResSikuliTakeScreenshot(final byte[] image) {
     if( image == null) {
       throw new IllegalArgumentException("Screenshot cannot be null!");
     }
@@ -18,7 +18,7 @@ public class SeResTakeSikuliScreenshot implements SeCommsRes {
 
   @Override
   public String toString() {
-    return String.format("SeResTakeSikuliScreenshot(%s bytes)", image.length);
+    return String.format("SeResSikuliTakeScreenshot(%s bytes)", image.length);
   }
 
 }
