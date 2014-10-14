@@ -25,6 +25,8 @@ class WaitForSikuliImageAction(val d: SelenateFirefox) extends IAction[SeReqWait
 
     val isImageFound = region != null
 
+    if(!isImageFound) throw new IllegalArgumentException("Picture [%s, %s] was not found on display!".format(arg.image.toString(), arg.image.length))
+
     new SeResWaitForSikuliImage(isImageFound)
   }
 }
