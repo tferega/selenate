@@ -52,6 +52,7 @@ class SessionActor(sessionID: String, profile: ProfileInfo, useFrames: Boolean =
     case arg: SeReqSetUseFrames         => new SetUseFramesAction(d).act(arg)
     case arg: SeReqSikuliClick          => new SikuliClickAction(d).act(arg)
     case arg: SeReqSikuliImageExists    => new SikuliImageExistsAction(d).act(arg)
+    case arg: SeReqSikuliInputText      => new SikuliInputTextAction(d).act(arg)
     case arg: SeReqSikuliTakeScreenshot => new SikuliTakeScreenshotAction(d).act(arg)
     case arg: SeReqStartKeepalive       => new StartKeepaliveAction(d).act(arg)
     case arg: SeReqStopKeepalive        => new StopKeepaliveAction(d).act(arg)

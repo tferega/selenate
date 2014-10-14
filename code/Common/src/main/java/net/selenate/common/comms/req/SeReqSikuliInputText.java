@@ -5,12 +5,10 @@ public class SeReqSikuliInputText implements SeCommsReq {
 
   public final byte[]  image;
   public final String  text;
-  public final Integer timeoutMillis;
 
   public SeReqSikuliInputText(
       final byte[]  image,
-      final String  text,
-      final Integer timeoutMillis) {
+      final String  text) {
     if (image == null) {
       throw new IllegalArgumentException("Image cannot be null!");
     }
@@ -19,17 +17,12 @@ public class SeReqSikuliInputText implements SeCommsReq {
       throw new IllegalArgumentException("Text cannot be null!");
     }
 
-    if (timeoutMillis < 0) {
-      throw new IllegalArgumentException("Timeout cannot be negative!");
-    }
-
-    this.image         = image;
-    this.text          = text;
-    this.timeoutMillis = timeoutMillis;
+    this.image = image;
+    this.text  = text;
   }
 
   @Override
   public String toString() {
-    return String.format("SeReqSikuliInputText(%d bytes, %s, %d)", image.length, text, timeoutMillis);
+    return String.format("SeReqSikuliInputText(%d bytes, %s)", image.length, text);
   }
 }

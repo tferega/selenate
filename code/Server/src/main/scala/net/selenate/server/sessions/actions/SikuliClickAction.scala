@@ -2,31 +2,17 @@ package net.selenate.server
 package sessions.actions
 
 import extensions.SelenateFirefox
+import images.Images
 
-import java.io.ByteArrayInputStream
-import javax.imageio.ImageIO
 import net.selenate.common.comms.req.SeReqSikuliClick
 import net.selenate.common.comms.res.SeResSikuliClick
-import org.openqa.selenium.firefox.FirefoxDriver
-import org.sikuli.api.{ DesktopScreenRegion, ImageTarget }
-import org.sikuli.api.robot.desktop.DesktopMouse
 
 class SikuliClickAction(val d: SelenateFirefox) extends IAction[SeReqSikuliClick, SeResSikuliClick] {
 
   protected val log = Log(classOf[SikuliClickAction])
 
   def act = { arg =>
-    val bais   = new ByteArrayInputStream(arg.image)
-    val buffer = ImageIO.read(bais)
-    val target = new ImageTarget(buffer)
-
-    val desktop = new DesktopScreenRegion()
-    val region  = desktop.wait(target, arg.timeoutMillis)
-    val loc     = region.getCenter
-
-    val mouse = new DesktopMouse()
-    mouse.click(loc)
-
+    Images.clickImage(d.parentNum, arg.image)
     new SeResSikuliClick()
   }
 }

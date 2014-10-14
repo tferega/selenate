@@ -4,7 +4,6 @@ public class SeReqSikuliClick implements SeCommsReq {
   private static final long serialVersionUID = 1L;
 
   public final byte[]  image;
-  public final Integer timeoutMillis;
 
   public SeReqSikuliClick(
       final byte[]  image,
@@ -13,16 +12,11 @@ public class SeReqSikuliClick implements SeCommsReq {
       throw new IllegalArgumentException("Image cannot be null!");
     }
 
-    if (timeoutMillis < 0) {
-      throw new IllegalArgumentException("Timeout cannot be negative!");
-    }
-
-    this.image         = image;
-    this.timeoutMillis = timeoutMillis;
+    this.image = image;
   }
 
   @Override
   public String toString() {
-    return String.format("SeReqSikuliClick(%d bytes, %d)", image.length, timeoutMillis);
+    return String.format("SeReqSikuliClick(%d bytes)", image.length);
   }
 }
