@@ -1,5 +1,6 @@
 package net.selenate.client.user;
 
+import net.selenate.common.comms.req.SeReqSikuliInputText;
 import net.selenate.common.comms.req.SeReqSikuliTakeScreenshot;
 import net.selenate.common.comms.req.SeReqSystemClick;
 
@@ -273,5 +274,10 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   public byte[] takeSikuliScreenshot(byte[] image, int width, int height) throws IOException {
     final SeResSikuliTakeScreenshot res = typedBlock(new SeReqSikuliTakeScreenshot(image, width, height), SeResSikuliTakeScreenshot.class);
     return res.getImage();
+  }
+
+  @Override
+  public void sikuliInputText(byte[] image, String text) throws IOException {
+    typedBlock(new SeReqSikuliInputText(image, text), SeResSikuliInputText.class);
   }
 }
