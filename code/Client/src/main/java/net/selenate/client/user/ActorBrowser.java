@@ -260,18 +260,18 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
-  public boolean waitForSikuliImage(final byte[] image) throws IOException {
+  public boolean sikuliImageExists(final byte[] image) throws IOException {
     final SeResSikuliImageExists res = typedBlock(new SeReqSikuliImageExists(image, 5000), SeResSikuliImageExists.class);
     return res.isImageFound();
   }
 
   @Override
-  public void clickSikuliImage(final byte[] image) throws IOException {
+  public void sikuliClick(final byte[] image) throws IOException {
     typedBlock(new SeReqSikuliClick(image, 5000), SeResSikuliClick.class);
   }
 
   @Override
-  public byte[] takeSikuliScreenshot(byte[] image, int width, int height) throws IOException {
+  public byte[] sikuliTakeScreenshot(byte[] image, int width, int height) throws IOException {
     final SeResSikuliTakeScreenshot res = typedBlock(new SeReqSikuliTakeScreenshot(image, width, height), SeResSikuliTakeScreenshot.class);
     return res.getImage();
   }
