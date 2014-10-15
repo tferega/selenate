@@ -12,7 +12,7 @@ class SikuliInputTextAction(val d: SelenateFirefox) extends IAction[SeReqSikuliI
   protected val log = Log(classOf[SikuliInputTextAction])
 
   def act = { arg =>
-    Images.clickImage(d.parentNum, arg.image)
+    Images.inputText(d.parentNum, arg.image, arg.text)
     new SeResSikuliInputText()
   }
 }

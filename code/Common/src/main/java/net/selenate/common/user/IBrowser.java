@@ -56,7 +56,8 @@ public interface IBrowser {
   public void systemClick(int x, int y) throws IOException;
   public void systemInput(String input) throws IOException;
 
-  public boolean waitForSikuliImage(final byte[] image) throws IOException;
-  public void clickSikuliImage(final byte[] image) throws IOException;
-  public byte[] takeSikuliScreenshot(final byte[] image, final int width, final int height) throws IOException;
+  public boolean sikuliImageExists(final byte[] image) throws IOException;
+  public void sikuliClick(final byte[] image) throws IOException;
+  public byte[] sikuliTakeScreenshot(final byte[] image, final int width, final int height) throws IOException;
+  public void sikuliInputText(final byte[] image, final String text) throws IOException;
 }
