@@ -21,7 +21,7 @@ class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
     val resScreenshotList: Stream[Option[SeResCaptureWindow]] = inAllWindows { address =>
       tryo {
         val webElement   = findElement(arg.method, arg.query)
-        val baScreenshot = getScreenshot()
+        val baScreenshot = getScreenshot(arg.cssElement)
         new SeResCaptureWindow(baScreenshot)
       }
     }
@@ -35,28 +35,36 @@ class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
     }
   }
 
-  private def getScreenshot(): Array[Byte] = {
+  private def getScreenshot(cssElement: String): Array[Byte] = {
 
     val html2Canvasplugin = IOUtils.toString(getClass().getResourceAsStream("html2canvas.min.js"))
 
+    val captureElement = cssElement.isEmpty() match {
+      case true => "document.body"
+      case _    => cssElement
+    }
+
     log.debug("Injecting html2canvas.min.js...")
-    d.executeScript(appendScript(html2Canvasplugin))
+    d.executeScript(appendPluginScript(html2Canvasplugin))
 
     log.debug("Injecting canvas to the body")
-    d.executeScript("""html2canvas(document.body, {
-        onrendered: function(canvas) {
-            document.body.appendChild(canvas);
-          }
-      });
-      """)
+    d.executeScript(appendElementToRender(captureElement))
 
-    val base64Img = d.executeScript("""return document.getElementsByTagName('canvas')[0].toDataURL();""")
+    val base64Img = d.executeScript("""return document.querySelectorAll('canvas#capturedScreenshot')[0].toDataURL();""")
 
     Base64.decodeBase64(base64Img.toString.replace("data:image/png;base64,", ""))
   }
 
-  private def appendScript(jsplugin: String) = """
+  private def appendPluginScript(jsplugin: String) = """
     var script = document.createElement(script);
     script.innerHTML = %s;
     document.body.appendChild(script);""" format jsplugin
+
+  private def appendElementToRender(cssElement: String) = """
+    html2canvas(%s, {
+        onrendered: function(canvas) {
+            canvas.id = "capturedScreenshot";
+            document.body.appendChild(canvas);
+          }
+      });""" format cssElement
 }
