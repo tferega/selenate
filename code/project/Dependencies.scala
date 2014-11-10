@@ -18,6 +18,7 @@ object Dependencies {
   val openCV         = "org.bytedeco.javacpp-presets" % "opencv"    % ("2.4.9-" + "0.9") classifier ""
   val openCVPlatform = "org.bytedeco.javacpp-presets" % "opencv"    % ("2.4.9-" + "0.9") classifier Helpers.platform
 
+  val tagSoup        = "org.ccil.cowan.tagsoup"       % "tagsoup"   % "1.2.1"
 
   val scalaLibrary    = "org.scala-lang" % "scala-library" % "2.10.1"
 
