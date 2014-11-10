@@ -54,7 +54,8 @@ object SelenateBuild extends Build {
       logback,
       selenium,
       slf4j,
-      sikuli),
+      sikuli,
+      tagSoup),
     Seq(common)
   ) settings (
     (Seq(classpathTypes += "maven-plugin") ++ Publishing.settings): _*
