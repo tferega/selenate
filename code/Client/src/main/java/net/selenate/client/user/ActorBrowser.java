@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import net.selenate.common.comms.*;
 import net.selenate.common.comms.req.*;
@@ -176,8 +177,8 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
-  public byte[] download(String url) throws IOException {
-    final SeResDownload res = typedBlock(new SeReqDownload(url), SeResDownload.class);
+  public byte[] download(String url, SeDownloadMethod method, Map<String, String> headers, byte[] body) throws IOException {
+    final SeResDownload res = typedBlock(new SeReqDownload(url, method, headers, body), SeResDownload.class);
     return res.body;
   }
 

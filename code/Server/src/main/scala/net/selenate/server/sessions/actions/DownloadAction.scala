@@ -11,21 +11,44 @@ import java.{ util => ju }
 import org.openqa.selenium.firefox.FirefoxDriver
 import scala.collection.JavaConversions._
 import java.io.IOException
+import net.selenate.common.comms.SeDownloadMethod
+import com.ning.http.client.ProxyServer
 
 class DownloadAction(val d: FirefoxDriver) extends IAction[SeReqDownload, SeResDownload] {
 
   protected val log = Log(classOf[DownloadAction])
 
   def act = { arg =>
-    val request = url(arg.url)
-    request.setHeader("Referer", d.getCurrentUrl)
-    request.setHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/12.0")
+    val r1 = url(arg.url)
+
+    import SeDownloadMethod._
+    val r2 =
+      arg.method match {
+        case GET  => r1.GET
+        case POST => r1.POST
+      }
+
+    val r3 =
+      Option(arg.body) match {
+        case Some(body) => r2.setBody(body)
+        case None       => r2
+      }
+
+//    r3.setProxyServer(new ProxyServer("localhost", 8888))
+    val request = r3
+
+    arg.headers.foreach{
+      case (k,v) =>
+        println("Key: " + k + " value: " + v)
+        request.setHeader(k, v)
+    }
+
     getCookies foreach request.addCookie
 
     val body =
-      Http(request OK as.Bytes).either.apply match {
+      Http(request.secure OK as.Bytes).either.apply match {
         case Left(e) =>
-          throw new IOException("An error occured while downloading the specified URL (%s)." format arg.url, e)
+          throw new IOException("An error occured while downloading the specified request (%s)." format arg, e)
         case Right(body) =>
           body
       }

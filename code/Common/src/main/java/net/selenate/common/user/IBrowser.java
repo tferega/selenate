@@ -2,7 +2,9 @@ package net.selenate.common.user;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+import net.selenate.common.comms.SeDownloadMethod;
 import net.selenate.common.comms.req.SeCommsReq;
 
 public interface IBrowser {
@@ -43,7 +45,7 @@ public interface IBrowser {
 
   public INavigation navigate() throws IOException;
 
-  public byte[] download(String url) throws IOException;
+  public byte[] download(String url, SeDownloadMethod method, Map<String, String> headers, byte[] body) throws IOException;
 
   public void startKeepaliveClick(long delayMillis, ElementSelectMethod method, String query) throws IOException;
   public void startKeepaliveClick(long delayMillis, ElementSelector selector) throws IOException;
