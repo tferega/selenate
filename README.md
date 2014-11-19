@@ -1,21 +1,21 @@
 Selenate
 ========
-Selenate is a cloud-based web-scaping framework build on top of *[Selenium WebDriver](http://www.seleniumhq.org/projects/webdriver/)*, which aims to simplify complex scraping jobs, and extend basic *Selenium* functionality.
+Selenate is a cloud-based web-scraping framework build on top of *[Selenium WebDriver](http://www.seleniumhq.org/projects/webdriver/)*, which aims to simplify complex scraping jobs, and extend basic *Selenium* functionality.
 
 Features
 --------
 List of *Selenate's* main features:
 
-##### Server-client arhitecture #####
-Selenate server can run anywhere (on the local machine, in the cloud), and uses *[Akka](http://akka.io/)* actors for cummunication with clients.
+##### Server-client architecture #####
+Selenate server can run anywhere (on the local machine, in the cloud), and uses *[Akka](http://akka.io/)* actors for communication with clients.
 
-##### Session managment #####
+##### Session management #####
 Each scraping process has a session associated with it. Sessions can be saved and resumed, and they can be shared between clients.
 
 ##### Retryable actions #####
-To account for the fact that sometines actions fail because of mysterious reasons, Selenate has support for automatic action retrying (until the action suceeds, for a maximum of a specified number of retries).
+To account for the fact that sometimes actions fail because of mysterious reasons, Selenate has support for automatic action retrying (until the action succeeds, for a maximum of a specified number of retries).
 
-##### Frame and window managment #####
+##### Frame and window management #####
 Client code doesn't need to worry about switching between frames and windows, Selenate can manage them automatically.
 
 ##### Keepalive #####
