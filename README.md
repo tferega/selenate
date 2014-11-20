@@ -2,12 +2,17 @@ Selenate
 ========
 Selenate is a cloud-based web-scraping framework build on top of *[Selenium WebDriver](http://www.seleniumhq.org/projects/webdriver/)*, which aims to simplify complex scraping jobs, and extend basic *Selenium* functionality.
 
+Arhitecture
+-----------
+Selenate is based on Client-Server arhitecture. Server hosts scraping sessions and runs the browsers while clients connect to the sessions and issue commands.
+
+![Arhitecture](arhitecture.png)
+
+In this example, we have three clients and two servers: `Client 1` has two active sessions: one on `Server 1`, and the other on `Server 2`, while `Client 2` and `Developer` are both connected to session `9f2749af`.
+
 Features
 --------
 List of *Selenate's* main features:
-
-##### Server-client architecture #####
-Selenate server can run anywhere (on the local machine, in the cloud), and uses *[Akka](http://akka.io/)* actors for communication with clients.
 
 ##### Session management #####
 Each scraping process has a session associated with it. Sessions can be saved and resumed, and they can be shared between clients.
