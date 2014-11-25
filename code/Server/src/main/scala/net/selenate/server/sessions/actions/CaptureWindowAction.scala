@@ -40,13 +40,15 @@ class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
 
     val (captureElement, cssElementID) = cssElement.isEmpty() match {
       case true =>
-        val cssElemID = "captureScreenshot"
+        val cssElemID   = "captureScreenshot"
         val captureElem = "document.body"
         d.executeScript(createImageForWholePage(html2Canvasplugin, captureElem, cssElemID))
         (captureElem, cssElemID)
       case _    =>
-        val html = TagSoupCleaner.fromString(d.executeScript(getElementHtml(cssElement)).toString()).replaceAll("\n", "").replaceAll("'", "\\\\'")
-        val cssElemID = "%s" format cssElement.replaceAll("\\W", "")
+        val withAllTags = TagSoupCleaner.fromString(d.executeScript(getElementHtml(cssElement)).toString()).replaceAll("\n", "").replaceAll("'", "\\\\'")
+        val noStartTags = withAllTags.substring(49, withAllTags.length())
+        val html        = noStartTags.substring(0, noStartTags.length() - 14)
+        val cssElemID   = "%s" format cssElement.replaceAll("\\W", "")
         d.executeScript(createImageForElement(cssElement, cssElemID, html))
         ("document.querySelector('%s')" format cssElement, cssElemID)
     }
@@ -70,7 +72,7 @@ class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
     return document.querySelector('%s').outerHTML;""" format cssElement
 
   private def createImageForElement(cssSelector: String, id: String, html: String) = """
-    function crateImage(cssSelector, id, html) {
+    function createImage(cssSelector, id, html) {
         var w = document.querySelector(cssSelector).offsetWidth.toString();
         var h = document.querySelector(cssSelector).offsetHeight.toString();
 
@@ -101,7 +103,7 @@ class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
         }
         img.src = url;
     }
-    crateImage("%s", "%s", '%s');""" format (cssSelector, id, html)
+    createImage("%s", "%s", '%s');""" format (cssSelector, id, html)
 
   private def createImageForWholePage(jsplugin: String, queryCssElement: String, cssElementID: String) = """
     %s
