@@ -78,8 +78,9 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
     def isDefinedAt(arg: Any) = base.isDefinedAt(arg)
     def apply(arg: Any) = {
       val clazz = arg.getClass.toString
+      val reqID = java.util.UUID.randomUUID()
       try {
-        log.info("Received request [%s] from %s.".format(sessionID, clazz, sender.path.toString))
+        log.info("####==> Received request: SessionID=[%s]; reqID=[%s]; for=[%s] from %s.".format(sessionID, reqID, clazz, sender.path.toString))
         log.debug(arg.toString)
         base.apply(arg)
       } catch {
@@ -92,6 +93,8 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
           }
 
           sender ! new Exception(e.stackTrace)
+      } finally {
+        log.info("####==> Sending response: SessionID=[%s]; reqID=[%s]; for=[%s] from %s.".format(sessionID, reqID, clazz, sender.path.toString))
       }
     }
   }
