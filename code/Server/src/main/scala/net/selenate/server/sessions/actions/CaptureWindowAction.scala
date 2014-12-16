@@ -21,18 +21,21 @@ class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
   protected val log = Log(classOf[CaptureWindowAction])
 
   def act = { arg =>
-    val resFindElement = inAllWindows { address => // set us in the right frame
+    val resFindElement = (inAllWindows { address => // set us in the right frame
       tryo {
-        findElement(arg.method, arg.query)
+        if(elementExists(arg.method, arg.query).isDefined)
+          Some(getScreenshot(arg.cssElement))
+        else None
       }
-    }
-
-    if(resFindElement.isEmpty) {
-      throw new IllegalArgumentException("Couldn't take screenshot." +
+    }).flatten
+    
+    resFindElement.head match {
+      case Some(scr) => 
+        new SeResCaptureWindow(scr)
+      case _ =>
+        throw new IllegalArgumentException("Couldn't take screenshot." +
           "Element [%s, %s] was not found in any frame!".format(arg.method.toString, arg.query))
     }
-
-    new SeResCaptureWindow(getScreenshot(arg.cssElement))
   }
 
   private def getScreenshot(cssElement: String): Array[Byte] = {
@@ -84,7 +87,8 @@ class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
         canvas = document.getElementById(id);
 
         var ctx  = canvas.getContext('2d');
-        var data = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '">' +
+				var data = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '">' +
+											'<rect width="100%%" height="100%%" fill="white"></rect>' + 
                       '<foreignObject width="100%%" height="100%%">' +
                         '<div xmlns="http://www.w3.org/1999/xhtml" >' + html + '</div>' +
                       '</foreignObject>' +
@@ -99,7 +103,7 @@ class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
 
         img.onload = function () {
             ctx.drawImage(img, 0, 0);
-            DOMURL.revokeObjectURL(url);
+            DOMURL.revokeObjectURL(canvas.toDataURL("image/png"));
         }
         img.src = url;
     }
