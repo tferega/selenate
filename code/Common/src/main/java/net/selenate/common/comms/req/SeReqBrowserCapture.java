@@ -1,6 +1,6 @@
 package net.selenate.common.comms.req;
 
-import net.selenate.common.exceptions.SeNullArgumentException;
+import net.selenate.common.SelenateUtils;
 
 public final class SeReqBrowserCapture implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
@@ -11,9 +11,8 @@ public final class SeReqBrowserCapture implements SeCommsReq {
   public SeReqBrowserCapture(
       final String  name,
       final boolean takeScreenshot) {
-    this.name           = name;
+    this.name           = SelenateUtils.guardNull(name, "Name");
     this.takeScreenshot = takeScreenshot;
-    validate();
   }
 
   public String getName() {
@@ -30,12 +29,6 @@ public final class SeReqBrowserCapture implements SeCommsReq {
 
   public SeReqBrowserCapture withTakeScreenshot(final boolean newTakeScreenshot) {
     return new SeReqBrowserCapture(this.name, newTakeScreenshot);
-  }
-
-  private void validate() {
-    if (name == null) {
-      throw new SeNullArgumentException("Name");
-    }
   }
 
   @Override

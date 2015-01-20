@@ -1,6 +1,6 @@
 package net.selenate.common.comms.req;
 
-import net.selenate.common.exceptions.SeNullArgumentException;
+import net.selenate.common.SelenateUtils;
 
 public final class SeReqSystemInput implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
@@ -8,8 +8,7 @@ public final class SeReqSystemInput implements SeCommsReq {
   private final String input;
 
   public SeReqSystemInput(final String input) {
-    this.input = input;
-    validate();
+    this.input = SelenateUtils.guardNull(input, "Input");
   }
 
   public String getInput() {
@@ -18,12 +17,6 @@ public final class SeReqSystemInput implements SeCommsReq {
 
   public SeReqSystemInput withInput(final String newInput) {
     return new SeReqSystemInput(newInput);
-  }
-
-  private void validate() {
-    if(input == null) {
-      throw new SeNullArgumentException("Input");
-    }
   }
 
   @Override

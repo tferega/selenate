@@ -1,8 +1,8 @@
 package net.selenate.common.comms.res;
 
 import java.util.List;
+
 import net.selenate.common.comms.SeElement;
-import net.selenate.common.exceptions.SeNullArgumentException;
 import net.selenate.common.SelenateUtils;
 
 public final class SeResElementFindList implements SeCommsRes {
@@ -11,8 +11,7 @@ public final class SeResElementFindList implements SeCommsRes {
   private final List<SeElement> elementList;
 
   public SeResElementFindList(final List<SeElement> elementList) {
-   this.elementList = elementList;
-   validate();
+    this.elementList = SelenateUtils.guardNull(elementList, "ElementList");
   }
 
   public List<SeElement> getElementList() {
@@ -23,16 +22,9 @@ public final class SeResElementFindList implements SeCommsRes {
     return new SeResElementFindList(newElementList);
   }
 
-  private void validate() {
-    if (elementList == null) {
-      throw new SeNullArgumentException("Element list");
-    }
-  }
-
   @Override
   public String toString() {
-    return String.format("SeResElementFindList(%s)",
-        SelenateUtils.listToString(elementList));
+    return String.format("SeResElementFindList(%s)", SelenateUtils.listToString(elementList));
   }
 
   @Override

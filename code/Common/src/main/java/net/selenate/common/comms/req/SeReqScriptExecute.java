@@ -1,6 +1,6 @@
 package net.selenate.common.comms.req;
 
-import net.selenate.common.exceptions.SeNullArgumentException;
+import net.selenate.common.SelenateUtils;
 
 public final class SeReqScriptExecute implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
@@ -8,8 +8,7 @@ public final class SeReqScriptExecute implements SeCommsReq {
   private final String javascript;
 
   public SeReqScriptExecute(final String javascript) {
-    this.javascript = javascript;
-    validate();
+    this.javascript = SelenateUtils.guardNullOrEmpty(javascript, "JavaScript");
   }
 
   public String getJavascript() {
@@ -18,12 +17,6 @@ public final class SeReqScriptExecute implements SeCommsReq {
 
   public SeReqScriptExecute withJavascript(final String newJavascript) {
     return new SeReqScriptExecute(newJavascript);
-  }
-
-  private void validate() {
-    if (javascript == null) {
-      throw new SeNullArgumentException("Javascript");
-    }
   }
 
   @Override

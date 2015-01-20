@@ -1,16 +1,38 @@
 package net.selenate.common;
 
 import java.util.Optional;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import net.selenate.common.exceptions.SeEmptyArgumentListException;
+import net.selenate.common.exceptions.SeNullArgumentException;
+
 public final class SelenateUtils {
   private SelenateUtils() { }
 
   public static final SimpleDateFormat ISO_8601_FORMAT = new SimpleDateFormat("yyyy-MM-dd HHmmss");
+
+  // ---------------------------------------------------------------------------
+  // G U A R D Z
+
+  public static <T> T guardNull(final T t, final String field) {
+    if (t == null) throw new SeNullArgumentException(field);
+    return t;
+  }
+
+  public static <T> List<T> guardEmptyList(final List<T> tList, final String field) {
+    if (guardNull(tList, field).isEmpty()) throw new SeEmptyArgumentListException(field);
+    return tList;
+  }
+
+  public static String guardNullOrEmpty(final String t, final String field) {
+    if ("".equals(guardNull(t, field))) throw new SeEmptyArgumentListException(field);
+    return t;
+  }
+
+  // ---------------------------------------------------------------------------
 
   public static <T> String optionalToString(final Optional<T> o) {
     if (o == null) {

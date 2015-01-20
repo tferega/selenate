@@ -1,9 +1,7 @@
 package net.selenate.common.comms;
 
 import java.util.Date;
-import net.selenate.common.exceptions.SeEmptyArgumentListException;
-import net.selenate.common.exceptions.SeInvalidArgumentException;
-import net.selenate.common.exceptions.SeNullArgumentException;
+import net.selenate.common.exceptions.*;
 import net.selenate.common.SelenateUtils;
 
 public final class SeCookie implements SeComms {
@@ -22,14 +20,26 @@ public final class SeCookie implements SeComms {
       final String domain,
       final String path,
       final Date expiry,
-      final boolean isSecure) {
-    this.name     = name;
-    this.value    = value;
-    this.path     = path;
+      final boolean isSecure)
+  {
+    final int nameIdx = name.indexOf(';');
+    if (nameIdx != -1) {
+      throw new SeInvalidArgumentException(String.format("Name cannot contain a semicolon (semicolon found on index %d of string \"%s\")! ", nameIdx, name));
+    }
+
+    if (domain != null) {
+      final int domainIdx = domain.indexOf(';');
+      if (domainIdx != -1) {
+        throw new SeInvalidArgumentException(String.format("Domain cannot contain a colon (colon found on index %d of string \"%s\")! ", domainIdx, domain));
+      }
+    }
+
+    this.name     = SelenateUtils.guardNullOrEmpty(name, "Name");
+    this.value    = SelenateUtils.guardNull(value, "Value");
+    this.path     = SelenateUtils.guardNull(path, "Path");
     this.domain   = domain;
     this.isSecure = isSecure;
     this.expiry   = expiry;
-    validate();
   }
 
   public String getName() {
@@ -78,36 +88,6 @@ public final class SeCookie implements SeComms {
 
   public SeCookie withSecure(final boolean newIsSecure) {
     return new SeCookie(this.name, this.value, this.domain, this.path, this.expiry, newIsSecure);
-  }
-
-  private void  validate() {
-    if (name == null) {
-      throw new SeNullArgumentException("Name");
-    }
-
-    if ("".equals(name)) {
-      throw new SeEmptyArgumentListException("Name");
-    }
-
-    if (value == null) {
-      throw new SeNullArgumentException("Value");
-    }
-
-    if (path == null) {
-      throw new SeNullArgumentException("Path");
-    }
-
-    final int nameIdx = name.indexOf(';');
-    if (nameIdx != -1) {
-      throw new SeInvalidArgumentException(String.format("Name cannot contain a semicolon (semicolon found on index %d of string \"%s\")! ", nameIdx, name));
-    }
-
-    if (domain != null) {
-      final int domainIdx = domain.indexOf(';');
-      if (domainIdx != -1) {
-        throw new SeInvalidArgumentException(String.format("Domain cannot contain a colon (colon found on index %d of string \"%s\")! ", domainIdx, domain));
-      }
-    }
   }
 
   @Override

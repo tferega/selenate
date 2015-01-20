@@ -2,8 +2,6 @@ package net.selenate.common.comms.req;
 
 import java.util.List;
 import net.selenate.common.comms.SePage;
-import net.selenate.common.exceptions.SeEmptyArgumentListException;
-import net.selenate.common.exceptions.SeNullArgumentException;
 import net.selenate.common.SelenateUtils;
 
 public final class SeReqBrowserWaitFor implements SeCommsReq {
@@ -12,8 +10,7 @@ public final class SeReqBrowserWaitFor implements SeCommsReq {
   private final List<SePage> pageList;
 
   public SeReqBrowserWaitFor(final List<SePage> pageList) {
-    this.pageList = pageList;
-    validate();
+    this.pageList = SelenateUtils.guardEmptyList(pageList, "PageList");
   }
 
   public List<SePage> getPageList() {
@@ -22,16 +19,6 @@ public final class SeReqBrowserWaitFor implements SeCommsReq {
 
   public SeReqBrowserWaitFor withPageList(final List<SePage> newPageList) {
     return new SeReqBrowserWaitFor(newPageList);
-  }
-
-  private void validate() {
-    if (pageList == null) {
-      throw new SeNullArgumentException("Page list");
-    }
-
-    if (pageList.isEmpty()) {
-      throw new SeEmptyArgumentListException("Page list");
-    }
   }
 
   @Override

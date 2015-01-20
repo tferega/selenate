@@ -1,6 +1,6 @@
 package net.selenate.common.comms.res;
 
-import net.selenate.common.exceptions.SeNullArgumentException;
+import net.selenate.common.SelenateUtils;
 
 public final class SeResScriptExecute implements SeCommsRes {
   private static final long serialVersionUID = 45749879L;
@@ -8,8 +8,7 @@ public final class SeResScriptExecute implements SeCommsRes {
   private final String result;
 
   public SeResScriptExecute(final String result) {
-    this.result = result;
-    validate();
+    this.result = SelenateUtils.guardNull(result, "Result");
   }
 
   public String getResult() {
@@ -18,12 +17,6 @@ public final class SeResScriptExecute implements SeCommsRes {
 
   public SeResScriptExecute withResult(final String newResult) {
     return new SeResScriptExecute(newResult);
-  }
-
-  private void validate() {
-    if (result == null) {
-      throw new SeNullArgumentException("Result");
-    }
   }
 
   @Override

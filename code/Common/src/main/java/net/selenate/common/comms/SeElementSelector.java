@@ -2,7 +2,6 @@ package net.selenate.common.comms;
 
 import java.util.Optional;
 import net.selenate.common.SelenateUtils;
-import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeElementSelector implements SeComms {
   private static final long serialVersionUID = 45749879L;
@@ -14,11 +13,11 @@ public final class SeElementSelector implements SeComms {
   public SeElementSelector(
       final Optional<String>      uuid,
       final SeElementSelectMethod method,
-      final String                query) {
-    this.uuid    = uuid;
-    this.method  = method;
-    this.query   = query;
-    validate();
+      final String                query)
+  {
+    this.uuid    = SelenateUtils.guardNull(uuid, "Uuid");
+    this.method  = SelenateUtils.guardNull(method, "Method");
+    this.query   = SelenateUtils.guardNullOrEmpty(query, "Query");
   }
 
   public Optional<String> getUUID() {
@@ -43,20 +42,6 @@ public final class SeElementSelector implements SeComms {
 
   public SeElementSelector withQuery(final String newQuery) {
     return new SeElementSelector(this.uuid, this.method, newQuery);
-  }
-
-  private void validate() {
-    if (uuid == null) {
-      throw new SeNullArgumentException("Uuid");
-    }
-
-    if (method == null) {
-      throw new SeNullArgumentException("Method");
-    }
-
-    if (query == null) {
-      throw new SeNullArgumentException("Query");
-    }
   }
 
   @Override

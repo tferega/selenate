@@ -1,7 +1,7 @@
 package net.selenate.common.comms.req;
 
+import net.selenate.common.SelenateUtils;
 import net.selenate.common.comms.SeElementSelector;
-import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeReqElementTextInput implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
@@ -14,10 +14,9 @@ public final class SeReqElementTextInput implements SeCommsReq {
       final SeElementSelector selector,
       final boolean           isAppend,
       final String            text) {
-    this.selector  = selector;
+    this.selector  = SelenateUtils.guardNull(selector, "Selector");
     this.isAppend  = isAppend;
-    this.text      = text;
-    validate();
+    this.text      = SelenateUtils.guardNull(text, "Text");
   }
 
   public SeElementSelector getSelector() {
@@ -42,16 +41,6 @@ public final class SeReqElementTextInput implements SeCommsReq {
 
   public SeReqElementTextInput withText(final String newText) {
     return new SeReqElementTextInput(this.selector, this.isAppend, newText);
-  }
-
-  private void validate() {
-    if (selector == null) {
-      throw new SeNullArgumentException("Selector");
-    }
-
-    if (text == null) {
-      throw new SeNullArgumentException("Text");
-    }
   }
 
   @Override

@@ -1,8 +1,8 @@
 package net.selenate.common.comms;
 
 import java.util.List;
+
 import net.selenate.common.SelenateUtils;
-import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeCapturedFrame implements SeComms {
   private static final long serialVersionUID = 45749879L;
@@ -20,14 +20,14 @@ public final class SeCapturedFrame implements SeComms {
       final int           index,
       final String        name,
       final String        src,
-      final String        html) {
-    this.windowHandle = windowHandle;
-    this.path         = path;
+      final String        html)
+  {
+    this.windowHandle = SelenateUtils.guardNull(windowHandle, "WindowHandle");
+    this.path         = SelenateUtils.guardNull(path, "Path");
     this.index        = index;
-    this.name         = name;
-    this.src          = src;
-    this.html         = html;
-    validate();
+    this.name         = SelenateUtils.guardNull(name, "Name");
+    this.src          = SelenateUtils.guardNull(src, "Src");
+    this.html         = SelenateUtils.guardNull(html, "Html");
   }
 
   public String getWindowHandle() {
@@ -76,28 +76,6 @@ public final class SeCapturedFrame implements SeComms {
 
   public SeCapturedFrame withHtml(String newHtml) {
     return new SeCapturedFrame(this.windowHandle, this.path, this.index, this.name, this.src, newHtml);
-  }
-
-  private void validate() {
-    if (windowHandle == null) {
-      throw new SeNullArgumentException("Window handle");
-    }
-
-    if (path == null) {
-      throw new SeNullArgumentException("Path");
-    }
-
-    if (name == null) {
-      throw new SeNullArgumentException("Name");
-    }
-
-    if (src == null) {
-      throw new SeNullArgumentException("Src");
-    }
-
-    if (html == null) {
-      throw new SeNullArgumentException("Html");
-    }
   }
 
   @Override

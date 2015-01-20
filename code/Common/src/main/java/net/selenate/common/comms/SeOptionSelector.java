@@ -1,6 +1,6 @@
 package net.selenate.common.comms;
 
-import net.selenate.common.exceptions.SeNullArgumentException;
+import net.selenate.common.SelenateUtils;
 
 public final class SeOptionSelector implements SeComms {
   private static final long serialVersionUID = 45749879L;
@@ -8,12 +8,9 @@ public final class SeOptionSelector implements SeComms {
   private final SeOptionSelectMethod method;
   private final String               query;
 
-  public SeOptionSelector(
-      final SeOptionSelectMethod method,
-      final String                query) {
-    this.method = method;
-    this.query  = query;
-    validate();
+  public SeOptionSelector(final SeOptionSelectMethod method, final String query) {
+    this.method = SelenateUtils.guardNull(method, "Method");
+    this.query  = SelenateUtils.guardNullOrEmpty(query, "Query");
   }
 
   public SeOptionSelectMethod getMethod() {
@@ -30,16 +27,6 @@ public final class SeOptionSelector implements SeComms {
 
   public SeOptionSelector withQuery(final String newQuery) {
     return new SeOptionSelector(this.method, newQuery);
-  }
-
-  private void validate() {
-    if (method == null) {
-      throw new SeNullArgumentException("Method");
-    }
-
-    if (query == null) {
-      throw new SeNullArgumentException("Query");
-    }
   }
 
   @Override

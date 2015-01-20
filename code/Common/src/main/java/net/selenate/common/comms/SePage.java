@@ -1,10 +1,8 @@
 package net.selenate.common.comms;
 
-import java.util.ArrayList;
-import java.util.List;
-import net.selenate.common.exceptions.SeEmptyArgumentListException;
-import net.selenate.common.exceptions.SeNullArgumentException;
-import net.selenate.common.SelenateUtils;
+import java.util.*;
+
+import net.selenate.common.*;
 
 public final class SePage implements SeComms {
   private static final long serialVersionUID = 45749879L;
@@ -12,24 +10,13 @@ public final class SePage implements SeComms {
   private final String                  name;
   private final List<SeElementSelector> selectorList;
 
-  private static List<SeElementSelector> selectorToList(final SeElementSelector selector) {
-    final List<SeElementSelector> selectorList = new ArrayList<SeElementSelector>();
-    selectorList.add(selector);
-    return selectorList;
+  public SePage(final String name, final SeElementSelector selector) {
+    this(name, Arrays.asList(selector));
   }
 
-  public SePage(
-      final String name,
-      final SeElementSelector selector) {
-    this(name, selectorToList(selector));
-  }
-
-  public SePage(
-      final String                  name,
-      final List<SeElementSelector> selectorList) {
+  public SePage(final String name, final List<SeElementSelector> selectorList) {
     this.name         = name;
-    this.selectorList = selectorList;
-    validate();
+    this.selectorList = SelenateUtils.guardEmptyList(selectorList, "SelectorList");
   }
 
   public String getName() {
@@ -46,20 +33,6 @@ public final class SePage implements SeComms {
 
   public SePage withElementSelector(final List<SeElementSelector> newSelectorList) {
     return new SePage(this.name, newSelectorList);
-  }
-
-  private void validate() {
-    if (name == null) {
-      throw new SeNullArgumentException("Name");
-    }
-
-    if (selectorList == null) {
-      throw new SeNullArgumentException("Selector list");
-    }
-
-    if (selectorList.isEmpty()) {
-      throw new SeEmptyArgumentListException("Selector list");
-    }
   }
 
   @Override

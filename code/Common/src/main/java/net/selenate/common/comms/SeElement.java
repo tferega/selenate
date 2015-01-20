@@ -1,6 +1,6 @@
 package net.selenate.common.comms;
 
-import net.selenate.common.exceptions.SeNullArgumentException;
+import net.selenate.common.SelenateUtils;
 
 public final class SeElement implements SeComms {
   private static final long serialVersionUID = 45749879L;
@@ -30,20 +30,20 @@ public final class SeElement implements SeComms {
       final boolean           isDisplayed,
       final boolean           isEnabled,
       final boolean           isSelected,
-      final SeAddress         address) {
-    this.uuid        = uuid;
-    this.selector    = selector;
+      final SeAddress         address)
+  {
+    this.uuid        = SelenateUtils.guardNull(uuid, "UUID");
+    this.selector    = SelenateUtils.guardNull(selector, "Selector");
     this.posX        = posX;
     this.posY        = posY;
     this.width       = width;
     this.height      = height;
-    this.name        = name;
-    this.text        = text;
+    this.name        = SelenateUtils.guardNull(name, "Name");
+    this.text        = SelenateUtils.guardNull(text, "Text");
     this.isDisplayed = isDisplayed;
     this.isEnabled   = isEnabled;
     this.isSelected  = isSelected;
-    this.address     = address;
-    validate();
+    this.address     = SelenateUtils.guardNull(address, "Address");
   }
 
   public String getUuid() {
@@ -140,28 +140,6 @@ public final class SeElement implements SeComms {
 
   public SeElement withAddress(final SeAddress newAddress) {
     return new SeElement(this.uuid, this.selector, this.posX, this.posY, this.width, this.height, this.name, this.text, this.isDisplayed, this.isEnabled, this.isSelected, newAddress);
-  }
-
-  private void  validate() {
-    if (uuid == null) {
-      throw new SeNullArgumentException("UUID");
-    }
-
-    if (selector == null) {
-      throw new SeNullArgumentException("Selector");
-    }
-
-    if (name == null) {
-      throw new SeNullArgumentException("Name");
-    }
-
-    if (text == null) {
-      throw new SeNullArgumentException("Text");
-    }
-
-    if (address == null) {
-      throw new SeNullArgumentException("Address");
-    }
   }
 
   @Override

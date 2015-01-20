@@ -1,7 +1,7 @@
 package net.selenate.common.comms.req;
 
-import net.selenate.common.exceptions.SeEmptyArgumentListException;
-import net.selenate.common.exceptions.SeNullArgumentException;
+import net.selenate.common.SelenateUtils;
+
 
 public final class SeReqWindowClose implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
@@ -9,8 +9,7 @@ public final class SeReqWindowClose implements SeCommsReq {
   private final String windowHandle;
 
   public SeReqWindowClose(final String windowHandle) {
-    this.windowHandle = windowHandle;
-    validate();
+    this.windowHandle = SelenateUtils.guardNullOrEmpty(windowHandle, "WindowHandle");
   }
 
   public String getWindowHandle() {
@@ -19,16 +18,6 @@ public final class SeReqWindowClose implements SeCommsReq {
 
   public SeReqWindowClose withWindowHandle(final String newWindowHandle) {
     return new SeReqWindowClose(newWindowHandle);
-  }
-
-  private void validate() {
-    if (windowHandle == null) {
-      throw new SeNullArgumentException("Window handle");
-    }
-
-    if ("".equals(windowHandle)) {
-      throw new SeEmptyArgumentListException("Window handle");
-    }
   }
 
   @Override

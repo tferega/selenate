@@ -1,17 +1,16 @@
 package net.selenate.common.comms.res;
 
 import java.util.Arrays;
-import net.selenate.common.exceptions.SeNullArgumentException;
+
 import net.selenate.common.SelenateUtils;
 
 public final class SeResElementCapture implements SeCommsRes {
   private static final long serialVersionUID = 45749879L;
 
-  public final byte[] body;
+  private final byte[] body;
 
   public SeResElementCapture(final byte[] body) {
-    this.body = body;
-    validate();
+    this.body = SelenateUtils.guardNull(body, "Body");
   }
 
   public byte[] getBody() {
@@ -22,16 +21,9 @@ public final class SeResElementCapture implements SeCommsRes {
     return new SeResElementCapture(newBody);
   }
 
-  private void validate() {
-    if (body == null) {
-      throw new SeNullArgumentException("Body");
-    }
-  }
-
   @Override
   public String toString() {
-    return String.format("SeResElementCapture(%s)",
-        SelenateUtils.byteArrToString(body));
+    return String.format("SeResElementCapture(%s)", SelenateUtils.byteArrToString(body));
   }
 
   @Override

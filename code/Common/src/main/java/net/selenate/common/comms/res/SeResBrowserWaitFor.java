@@ -12,9 +12,14 @@ public final class SeResBrowserWaitFor implements SeCommsRes {
   public SeResBrowserWaitFor(
       final boolean isSuccessful,
       final SePage  foundPage) {
+    if (isSuccessful) {
+      if (foundPage == null) throw new SeInvalidArgumentException("When successful, found page cannot be null!");
+    } else {
+      if (foundPage != null) throw new SeInvalidArgumentException("When unsuccessful, found page must be null!");
+    }
+
     this.isSuccessful = isSuccessful;
     this.foundPage    = foundPage;
-    validate();
   }
 
   public boolean IsSuccessful() {
@@ -31,16 +36,6 @@ public final class SeResBrowserWaitFor implements SeCommsRes {
 
   public SeResBrowserWaitFor withFoundPage(final SePage newFoundPage) {
     return new SeResBrowserWaitFor(this.isSuccessful, newFoundPage);
-  }
-
-  private void validate() {
-    if (isSuccessful && foundPage == null) {
-      throw new SeInvalidArgumentException("When successful, found page cannot be null!");
-    }
-
-    if (!isSuccessful && foundPage != null) {
-      throw new SeInvalidArgumentException("When unsuccessful, found page must be null!");
-    }
   }
 
   @Override

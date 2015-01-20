@@ -1,7 +1,7 @@
 package net.selenate.common.comms.res;
 
 import java.util.Arrays;
-import net.selenate.common.exceptions.SeNullArgumentException;
+
 import net.selenate.common.SelenateUtils;
 
 public final class SeResSessionDownload implements SeCommsRes {
@@ -10,8 +10,7 @@ public final class SeResSessionDownload implements SeCommsRes {
   private final byte[] body;
 
   public SeResSessionDownload(final byte[] body) {
-    this.body = body;
-    validate();
+    this.body = SelenateUtils.guardNull(body, "Body");
   }
 
   public byte[] getBody() {
@@ -22,16 +21,9 @@ public final class SeResSessionDownload implements SeCommsRes {
     return new SeResSessionDownload(newBody);
   }
 
-  private void validate() {
-    if (body == null) {
-      throw new SeNullArgumentException("Body");
-    }
-  }
-
   @Override
   public String toString() {
-    return String.format("SeResSessionDownload(%s)",
-        SelenateUtils.byteArrToString(body));
+    return String.format("SeResSessionDownload(%s)", SelenateUtils.byteArrToString(body));
   }
 
   @Override

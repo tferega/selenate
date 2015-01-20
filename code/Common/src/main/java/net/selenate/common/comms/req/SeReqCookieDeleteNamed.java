@@ -1,6 +1,6 @@
 package net.selenate.common.comms.req;
 
-import net.selenate.common.exceptions.SeNullArgumentException;
+import net.selenate.common.SelenateUtils;
 
 public final class SeReqCookieDeleteNamed implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
@@ -8,8 +8,7 @@ public final class SeReqCookieDeleteNamed implements SeCommsReq {
   private final String name;
 
   public SeReqCookieDeleteNamed(final String name) {
-    this.name = name;
-    validate();
+    this.name = SelenateUtils.guardNullOrEmpty(name, "Name");
   }
 
   public String getName() {
@@ -18,12 +17,6 @@ public final class SeReqCookieDeleteNamed implements SeCommsReq {
 
   public SeReqCookieDeleteNamed withName(final String newName) {
     return new SeReqCookieDeleteNamed(newName);
-  }
-
-  private void validate() {
-    if (name == null) {
-      throw new SeNullArgumentException("Name");
-    }
   }
 
   @Override

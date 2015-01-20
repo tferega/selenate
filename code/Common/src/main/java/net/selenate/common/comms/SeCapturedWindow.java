@@ -1,11 +1,8 @@
 package net.selenate.common.comms;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 import net.selenate.common.SelenateUtils;
-import net.selenate.common.exceptions.SeEmptyArgumentListException;
-import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeCapturedWindow implements SeComms {
   private static final long serialVersionUID = 45749879L;
@@ -33,18 +30,19 @@ public final class SeCapturedWindow implements SeComms {
       final Set<SeCookie> cookieSet,
       final String        html,
       final byte[]        screenshot,
-      final List<SeCapturedFrame> frameList) {
-    this.title      = title;
-    this.url        = url;
-    this.handle     = handle;
+      final List<SeCapturedFrame> frameList)
+  {
+    this.title      = SelenateUtils.guardNull(title, "Title");
+    this.url        = SelenateUtils.guardNull(url, "URL");
+    this.handle     = SelenateUtils.guardNullOrEmpty(handle, "Handle");
     this.posX       = posX;
     this.posY       = posY;
     this.width      = width;
     this.height     = height;
-    this.cookieSet  = cookieSet;
-    this.html       = html;
-    this.screenshot = screenshot;
-    this.frameList  = frameList;
+    this.cookieSet  = SelenateUtils.guardNull(cookieSet, "Cookie set");
+    this.html       = SelenateUtils.guardNull(html, "Html");
+    this.screenshot = SelenateUtils.guardNull(screenshot, "Screenshot");
+    this.frameList  = SelenateUtils.guardNull(frameList, "FrameList");
   }
 
   public String getTitle() {
@@ -133,40 +131,6 @@ public final class SeCapturedWindow implements SeComms {
 
   public SeCapturedWindow withFrameList(List<SeCapturedFrame> newFrameList) {
     return new SeCapturedWindow(this.title, this.url, this.handle, this.posX, this.posY, this.width, this.height, this.cookieSet, this.html, this.screenshot, newFrameList);
-  }
-
-  public void validate() {
-    if (title == null) {
-      throw new SeNullArgumentException("Title");
-    }
-
-    if (url == null) {
-      throw new SeNullArgumentException("URL");
-    }
-
-    if (handle == null) {
-      throw new SeNullArgumentException("Handle");
-    }
-
-    if ("".equals(handle)) {
-      throw new SeEmptyArgumentListException("Handle");
-    }
-
-    if (cookieSet == null) {
-      throw new SeNullArgumentException("Cookie set");
-    }
-
-    if (html == null) {
-      throw new SeNullArgumentException("Html");
-    }
-
-    if (screenshot == null) {
-      throw new SeNullArgumentException("Screenshot");
-    }
-
-    if (frameList == null) {
-      throw new SeNullArgumentException("Frame list");
-    }
   }
 
   @Override
