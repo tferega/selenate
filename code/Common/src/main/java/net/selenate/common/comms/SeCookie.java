@@ -22,6 +22,13 @@ public final class SeCookie implements SeComms {
       final Date expiry,
       final boolean isSecure)
   {
+    this.name     = SelenateUtils.guardNullOrEmpty(name, "Name");
+    this.value    = SelenateUtils.guardNull(value, "Value");
+    this.path     = SelenateUtils.guardNull(path, "Path");
+    this.domain   = domain;
+    this.isSecure = isSecure;
+    this.expiry   = expiry;
+
     final int nameIdx = name.indexOf(';');
     if (nameIdx != -1) {
       throw new SeInvalidArgumentException(String.format("Name cannot contain a semicolon (semicolon found on index %d of string \"%s\")! ", nameIdx, name));
@@ -33,13 +40,6 @@ public final class SeCookie implements SeComms {
         throw new SeInvalidArgumentException(String.format("Domain cannot contain a colon (colon found on index %d of string \"%s\")! ", domainIdx, domain));
       }
     }
-
-    this.name     = SelenateUtils.guardNullOrEmpty(name, "Name");
-    this.value    = SelenateUtils.guardNull(value, "Value");
-    this.path     = SelenateUtils.guardNull(path, "Path");
-    this.domain   = domain;
-    this.isSecure = isSecure;
-    this.expiry   = expiry;
   }
 
   public String getName() {
@@ -64,30 +64,6 @@ public final class SeCookie implements SeComms {
 
   public boolean isSecure() {
     return isSecure;
-  }
-
-  public SeCookie withName(final String newName) {
-    return new SeCookie(newName, this.value, this.domain, this.path, this.expiry, this.isSecure);
-  }
-
-  public SeCookie withValue(final String newValue) {
-    return new SeCookie(this.name, newValue, this.domain, this.path, this.expiry, this.isSecure);
-  }
-
-  public SeCookie withDomain(final String newDomain) {
-    return new SeCookie(this.name, this.value, newDomain, this.path, this.expiry, this.isSecure);
-  }
-
-  public SeCookie withPath(final String newPath) {
-    return new SeCookie(this.name, this.value, this.domain, newPath, this.expiry, this.isSecure);
-  }
-
-  public SeCookie withExpiry(final Date newExpiry) {
-    return new SeCookie(this.name, this.value, this.domain, this.path, newExpiry, this.isSecure);
-  }
-
-  public SeCookie withSecure(final boolean newIsSecure) {
-    return new SeCookie(this.name, this.value, this.domain, this.path, this.expiry, newIsSecure);
   }
 
   @Override

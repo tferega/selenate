@@ -24,7 +24,7 @@ public class SeReqElementRemoveAttribute implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqElementGetAttribute(%s, %s)", selector, attributeName);
+    return String.format("SeReqElementRemoveAttribute(%s, %s)", selector, attributeName);
   }
 
   @Override

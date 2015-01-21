@@ -46,26 +46,6 @@ public final class SeSelect implements SeComms {
     return options;
   }
 
-  public SeSelect withElement(final SeElement newElement) {
-    return new SeSelect(newElement, this.optionCount, this.selectedIndex, this.selectedOption, this.options);
-  }
-
-  public SeSelect withOptionCount(final int newOptionCount) {
-    return new SeSelect(this.element, newOptionCount, this.selectedIndex, this.selectedOption, this.options);
-  }
-
-  public SeSelect withSelectedIndex(final Integer newSelectedIndex) {
-    return new SeSelect(this.element, this.optionCount, newSelectedIndex, this.selectedOption, this.options);
-  }
-
-  public SeSelect withSelectedOption(final SeOption newSelectedOption) {
-    return new SeSelect(this.element, this.optionCount, this.selectedIndex, newSelectedOption, this.options);
-  }
-
-  public SeSelect withOptions(final List<SeOption> newOptions) {
-    return new SeSelect(this.element, this.optionCount, this.selectedIndex, this.selectedOption, newOptions);
-  }
-
   @Override
   public String toString() {
     return String.format("SeSelect(%s, %d, %d, %s, %s)",

@@ -21,14 +21,6 @@ public final class SeOptionSelector implements SeComms {
     return query;
   }
 
-  public SeOptionSelector withMethod(final SeOptionSelectMethod newMethod) {
-    return new SeOptionSelector(newMethod, this.query);
-  }
-
-  public SeOptionSelector withQuery(final String newQuery) {
-    return new SeOptionSelector(this.method, newQuery);
-  }
-
   @Override
   public String toString() {
     return String.format("SeOptionSelector(%s, %s)", method, query);

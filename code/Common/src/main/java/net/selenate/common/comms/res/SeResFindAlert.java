@@ -1,15 +1,17 @@
 package net.selenate.common.comms.res;
 
+import java.util.Optional;
+
 public class SeResFindAlert implements SeCommsRes {
   private static final long serialVersionUID = 45749879L;
 
-  private final String text; // can be null
+  private final Optional<String> text;
 
-  public SeResFindAlert(final String text) {
+  public SeResFindAlert(final Optional<String> text) {
     this.text = text;
   }
 
-  public String getText() {
+  public Optional<String> getText() {
     return text;
   }
 

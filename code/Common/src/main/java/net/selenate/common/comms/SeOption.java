@@ -15,10 +15,6 @@ public final class SeOption implements SeComms {
     return element;
   }
 
-  public SeOption withElement(final SeElement newElement) {
-    return new SeOption(newElement);
-  }
-
   @Override
   public String toString() {
     return String.format("SeOption(%s)", element);

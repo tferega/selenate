@@ -1,15 +1,17 @@
 package net.selenate.common.comms.res;
 
+import java.util.Optional;
+
 public class SeResElementGetAttribute implements SeCommsRes {
   private static final long serialVersionUID = 45749879L;
 
-  private final String value; // can be null
+  private final Optional<String> value;
 
-  public SeResElementGetAttribute(final String value) {
+  public SeResElementGetAttribute(final Optional<String> value) {
     this.value = value;
   }
 
-  public String getValue() {
+  public Optional<String> getValue() {
     return value;
   }
 

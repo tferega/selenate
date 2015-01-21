@@ -8,6 +8,6 @@ public final class SeResElementRemoveAttribute implements SeCommsRes {
 
   @Override
   public String toString() {
-    return String.format("SeResElementSetAttribute()");
+    return String.format("SeResElementRemoveAttribute()");
   }
 }

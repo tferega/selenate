@@ -27,14 +27,6 @@ public final class SePage implements SeComms {
     return selectorList;
   }
 
-  public SePage withName(final String newName) {
-    return new SePage(newName, this.selectorList);
-  }
-
-  public SePage withElementSelector(final List<SeElementSelector> newSelectorList) {
-    return new SePage(this.name, newSelectorList);
-  }
-
   @Override
   public String toString() {
     return String.format("SePage(%s, %s)",

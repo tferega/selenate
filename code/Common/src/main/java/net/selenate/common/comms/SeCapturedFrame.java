@@ -54,30 +54,6 @@ public final class SeCapturedFrame implements SeComms {
     return html;
   }
 
-  public SeCapturedFrame withWindowHandle(String newWindowHandle) {
-    return new SeCapturedFrame(newWindowHandle, this.path, this.index, this.name, this.src, this.html);
-  }
-
-  public SeCapturedFrame withPath(List<Integer> newPath) {
-    return new SeCapturedFrame(this.windowHandle, newPath, this.index, this.name, this.src, this.html);
-  }
-
-  public SeCapturedFrame withIndex(int newIndex) {
-    return new SeCapturedFrame(this.windowHandle, this.path, newIndex, this.name, this.src, this.html);
-  }
-
-  public SeCapturedFrame withName(String newName) {
-    return new SeCapturedFrame(this.windowHandle, this.path, this.index, newName, this.src, this.html);
-  }
-
-  public SeCapturedFrame withSrc(String newSrc) {
-    return new SeCapturedFrame(this.windowHandle, this.path, this.index, this.name, newSrc, this.html);
-  }
-
-  public SeCapturedFrame withHtml(String newHtml) {
-    return new SeCapturedFrame(this.windowHandle, this.path, this.index, this.name, this.src, newHtml);
-  }
-
   @Override
   public String toString() {
     return String.format("SeFrame(%s, %s, %d, %s, %s)",

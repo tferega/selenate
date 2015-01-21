@@ -3,12 +3,12 @@ package net.selenate.common.comms.res;
 import net.selenate.common.SelenateUtils;
 import net.selenate.common.comms.*;
 
-public final class SeResSelect implements SeCommsRes {
+public final class SeResSelectFind implements SeCommsRes {
   private static final long serialVersionUID = 45749879L;
 
   private final SeSelect select;
 
-  public SeResSelect(final SeSelect select) {
+  public SeResSelectFind(final SeSelect select) {
     this.select = SelenateUtils.guardNull(select, "Select");
   }
 
@@ -34,7 +34,7 @@ public final class SeResSelect implements SeCommsRes {
     if (this == obj) return true;
     if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
-    SeResSelect other = (SeResSelect) obj;
+    SeResSelectFind other = (SeResSelectFind) obj;
     if (select == null) {
       if (other.select != null) return false;
     } else if (!select.equals(other.select)) return false;

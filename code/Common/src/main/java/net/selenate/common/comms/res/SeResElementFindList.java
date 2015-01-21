@@ -18,10 +18,6 @@ public final class SeResElementFindList implements SeCommsRes {
     return elementList;
   }
 
-  public SeResElementFindList withElementList(final List<SeElement> newElementList) {
-    return new SeResElementFindList(newElementList);
-  }
-
   @Override
   public String toString() {
     return String.format("SeResElementFindList(%s)", SelenateUtils.listToString(elementList));

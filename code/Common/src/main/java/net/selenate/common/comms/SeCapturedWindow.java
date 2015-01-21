@@ -89,50 +89,6 @@ public final class SeCapturedWindow implements SeComms {
     return frameList;
   }
 
-  public SeCapturedWindow withTitle(String newTitle) {
-    return new SeCapturedWindow(newTitle, this.url, this.handle, this.posX, this.posY, this.width, this.height, this.cookieSet, this.html, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withUrl(String newUrl) {
-    return new SeCapturedWindow(this.title, newUrl, this.handle, this.posX, this.posY, this.width, this.height, this.cookieSet, this.html, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withHandle(String newHandle) {
-    return new SeCapturedWindow(this.title, this.url, newHandle, this.posX, this.posY, this.width, this.height, this.cookieSet, this.html, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withPosX(int newPosX) {
-    return new SeCapturedWindow(this.title, this.url, this.handle, newPosX, this.posY, this.width, this.height, this.cookieSet, this.html, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withPosY(int newPosY) {
-    return new SeCapturedWindow(this.title, this.url, this.handle, this.posX, newPosY, this.width, this.height, this.cookieSet, this.html, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withWidth(int newWidth) {
-    return new SeCapturedWindow(this.title, this.url, this.handle, this.posX, this.posY, newWidth, this.height, this.cookieSet, this.html, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withHeight(int newHeight) {
-    return new SeCapturedWindow(this.title, this.url, this.handle, this.posX, this.posY, this.width, newHeight, this.cookieSet, this.html, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withCookieSet(Set<SeCookie> newCookieSet) {
-    return new SeCapturedWindow(this.title, this.url, this.handle, this.posX, this.posY, this.width, this.height, newCookieSet, this.html, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withHtml(String newHtml) {
-    return new SeCapturedWindow(this.title, this.url, this.handle, this.posX, this.posY, this.width, this.height, this.cookieSet, newHtml, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withScreenshot(byte[] newScreenshot) {
-    return new SeCapturedWindow(this.title, this.url, this.handle, this.posX, this.posY, this.width, this.height, this.cookieSet, this.html, newScreenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withFrameList(List<SeCapturedFrame> newFrameList) {
-    return new SeCapturedWindow(this.title, this.url, this.handle, this.posX, this.posY, this.width, this.height, this.cookieSet, this.html, this.screenshot, newFrameList);
-  }
-
   @Override
   public String toString() {
     return String.format("SeWindow(%s, %s, %s, %d, %d, %d, %d, %s, %s, %s)",
