@@ -27,6 +27,8 @@
   <logger name="net.selenate" level="TRACE" additivity="false">
     <appender-ref ref="TRACE"/>
   </logger>
+  <logger name="org.apache.http" level="INFO" additivity="false"/>
+  <logger name="com.amazonaws" level="INFO" additivity="false"/>
   <root level="DEBUG">
     <appender-ref ref="STDOUT"/>
     <appender-ref ref="FILE-GLOBAL"/>

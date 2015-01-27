@@ -13,20 +13,21 @@ import org.openqa.selenium.firefox.FirefoxProfile
 import scala.concurrent.duration.Duration
 import net.selenate.common.comms.req.SeReqWaitForBrowserPage
 import net.selenate.common.comms.req.SeReqSetUseFrames
+import net.selenate.common.comms.SeS3Props
 
-class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean = true) extends Actor {
+class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean = true, s3Props: Option[SeS3Props] = None) extends Actor {
   private val log  = Log(classOf[SessionActor], sessionID)
 
   log.info("Creating session actor for session id: {%s}." format sessionID)
   private val d = DriverPool.get(profile)
   private var keepaliveScheduler: Option[Cancellable] = None
   private def isKeepalive = keepaliveScheduler.isDefined
-  implicit val actionContext = ActionContext(useFrames)
+  implicit val actionContext = ActionContext(useFrames, None)
 
   private def actionMan: PF[SeCommsReq, SeCommsRes] = {
     case arg: SeReqAddCookie          => new AddCookieAction(d).act(arg)
     case arg: SeReqAppendText         => new AppendTextAction(d).act(arg)
-    case arg: SeReqCapture            => new CaptureAction(d).act(arg)
+    case arg: SeReqCapture            => new CaptureAction(d, C.S3.client).act(arg)
     case arg: SeReqCaptureElement     => new CaptureElementAction(d).act(arg)
     case arg: SeReqCaptureWindow      => new CaptureWindowAction(d).act(arg)
     case arg: SeReqClearText          => new ClearTextAction(d).act(arg)
@@ -50,6 +51,7 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
     case arg: SeReqResetFrame         => new ResetFrameAction(d).act(arg)
     case arg: SeReqSelectOption       => new SelectOptionAction(d).act(arg)
     case arg: SeReqSetUseFrames       => new SetUseFramesAction(d).act(arg)
+    case arg: SeReqConfigureS3Client  => new SetConfigureS3ClientAction(d).act(arg)
     case arg: SeReqStartKeepalive     => new StartKeepaliveAction(d).act(arg)
     case arg: SeReqStopKeepalive      => new StopKeepaliveAction(d).act(arg)
     case arg: SeReqSwitchFrame        => new SwitchFrameAction(d).act(arg)
@@ -68,6 +70,9 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
       startKeepalive(KeepaliveData.fromReq(arg))
     case arg: SeReqSetUseFrames =>
       actionContext.useFrames = arg.useFrames
+      sender ! actionMan(arg)
+    case arg: SeReqConfigureS3Client =>
+      actionContext.s3Props = Some(new SeS3Props(sessionID, arg.realm))
       sender ! actionMan(arg)
     case arg: SeCommsReq =>
       stopKeepalive

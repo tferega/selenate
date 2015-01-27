@@ -2,15 +2,15 @@ package net.selenate.common.comms;
 
 import java.util.List;
 
-public class SeFrame implements SeComms {
+import net.selenate.common.comms.abs.AbstractSeFrame;
+
+public class SeFrame extends AbstractSeFrame<SeFrame> implements SeComms {
   private static final long serialVersionUID = 1L;
 
   public final int    index;
   public final String name;
   public final String src;
-  public final String html;
   public final String windowHandle;
-  public final List<SeFrame> frameList;
 
   public SeFrame(
       final int    index,
@@ -19,12 +19,11 @@ public class SeFrame implements SeComms {
       final String html,
       final String windowHandle,
       final List<SeFrame> frameList) {
+    super(html, frameList);
     this.index        = index;
     this.name         = name;
     this.src          = src;
-    this.html         = html;
     this.windowHandle = windowHandle;
-    this.frameList    = frameList;
   }
 
   @Override

@@ -28,11 +28,11 @@ public class SaveCapture {
         "NAME:         " + capture.name + "\n" +
         "TIME:         " + String.format("%s (%d)", new Date(capture.time).toString(), capture.time) + "\n" +
         "COOKIE COUNT: " + capture.cookieList.size() + "\n" +
-        "WINDOW COUNT: " + capture.windowList.size() + "\n";
+        "WINDOW COUNT: " + capture.windowList.getWindows().size() + "\n";
     saveFile(filename, body);
 
     saveCookieList(cookieFolder, capture.cookieList);
-    saveWindowList(windowFolder, capture.windowList);
+    saveWindowList(windowFolder, capture.windowList.getWindows());
   }
 
   public static void saveCookieList(final String folder, final Set<SeCookie> cookieList) {

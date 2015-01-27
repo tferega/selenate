@@ -13,6 +13,8 @@ import net.selenate.common.user.*;
 import akka.actor.ActorRef;
 
 public class ActorBrowser extends ActorBase implements IBrowser {
+  private boolean isS3ClientEnabled = false;
+
   public ActorBrowser(final ActorRef session) {
     super(session);
   }
@@ -257,4 +259,14 @@ public class ActorBrowser extends ActorBase implements IBrowser {
     typedBlock(new SeReqClickSikuliImage(image, 30000), SeResClickSikuliImage.class);
   }
 
+  @Override
+  public void setConfigureS3Client(final String realm) throws IOException {
+    this.isS3ClientEnabled = true;
+    typedBlock(new SeReqConfigureS3Client(realm), SeResConfigureS3Client.class);
+  }
+
+  @Override
+  public boolean getIsS3ClientEnabled() throws IOException{
+    return isS3ClientEnabled;
+  }
 }

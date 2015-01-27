@@ -131,14 +131,13 @@ public abstract class ActorBase {
         resToUserFrameList(resWindow.frameList));
   }
 
-  protected List<CaptureWindow> resToUserWindowList(final List<SeWindow> resWindowList) {
+  protected CaptureWindows resToUserWindowList(final SeWindows resWindowList) {
     final List<CaptureWindow> userWindowList = new ArrayList<CaptureWindow>();
-    for (final SeWindow resWindow : resWindowList) {
-      final CaptureWindow window = resToUserWindow(resWindow);
-      userWindowList.add(window);
+    for (final SeWindow resWindow : resWindowList.getWindows()) {
+      userWindowList.add(resToUserWindow(resWindow));
     }
 
-    return userWindowList;
+    return new CaptureWindows(userWindowList, resWindowList.getScreenshotURI(), resWindowList.getHtmlURI());
   }
 
   protected CaptureFrame resToUserFrame(final SeFrame resFrame) {

@@ -2,7 +2,9 @@ package net.selenate.common.comms;
 
 import java.util.List;
 
-public class SeWindow implements SeComms {
+import net.selenate.common.comms.abs.AbstractSeWindow;
+
+public class SeWindow extends AbstractSeWindow<SeFrame> implements SeComms {
   private static final long serialVersionUID = 1L;
 
   public final String title;
@@ -12,9 +14,6 @@ public class SeWindow implements SeComms {
   public final int    posY;
   public final int    width;
   public final int    height;
-  public final String html;
-  public final byte[] screenshot;
-  public final List<SeFrame> frameList;
 
   public SeWindow(
       final String title,
@@ -27,6 +26,8 @@ public class SeWindow implements SeComms {
       final String html,
       final byte[] screenshot,
       final List<SeFrame> frameList) {
+    super(html, screenshot, frameList);
+
     this.title      = title;
     this.url        = url;
     this.handle     = handle;
@@ -34,13 +35,11 @@ public class SeWindow implements SeComms {
     this.posY       = posY;
     this.width      = width;
     this.height     = height;
-    this.html       = html;
-    this.screenshot = screenshot;
-    this.frameList  = frameList;
   }
 
   @Override
   public String toString() {
     return String.format("SeWindow(%s, %s)", title, url);
   }
+
 }

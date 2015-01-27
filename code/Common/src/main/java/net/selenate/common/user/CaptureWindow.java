@@ -2,15 +2,15 @@ package net.selenate.common.user;
 
 import java.util.List;
 
-public class CaptureWindow {
+import net.selenate.common.comms.abs.AbstractSeWindow;
+
+public class CaptureWindow extends AbstractSeWindow<CaptureFrame>{
   public final String   title;
   public final String   url;
   public final String   handle;
   public final Position pos;
   public final Location loc;
-  public final String   html;
-  public final byte[]   screenshot;
-  public final List<CaptureFrame> frameList;
+  private static final long serialVersionUID = 1L;
 
   public CaptureWindow(
       final String   title,
@@ -21,13 +21,12 @@ public class CaptureWindow {
       final String   html,
       final byte[]   screenshot,
       final List<CaptureFrame> frameList) {
+    super(html, screenshot, frameList);
+
     this.title      = title;
     this.url        = url;
     this.handle     = handle;
     this.pos        = pos;
     this.loc        = loc;
-    this.html       = html;
-    this.screenshot = screenshot;
-    this.frameList  = frameList;
   }
 }

@@ -34,4 +34,6 @@ object Dependencies {
   val jodaTime = Seq(jodaTimeConvert, jodaTimeTime)
   val selenium = Seq(seleniumFirefox, seleniumServer)
   val sikuli   = Seq(sikuliApi, javaCV, openCV, openCVPlatform)
+  
+  val s3Client = "com.instantor.amazon" % "s3client_2.10" % "0.0.7"
 }

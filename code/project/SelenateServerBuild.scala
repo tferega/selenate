@@ -26,7 +26,8 @@ object SelenateBuild extends Build {
     ProjectFlavor.Java,
     Seq(
       akka,
-      scalaLibrary
+      scalaLibrary,
+      s3Client
     )
   ) settings (
     Publishing.settings: _*
