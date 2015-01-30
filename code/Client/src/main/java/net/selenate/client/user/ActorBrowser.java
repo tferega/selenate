@@ -260,9 +260,9 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
-  public void setConfigureS3Client(final String realm) throws IOException {
+  public void setConfigureS3Client(final String realm, final boolean returnScreenshots) throws IOException {
     this.isS3ClientEnabled = true;
-    typedBlock(new SeReqConfigureS3Client(realm), SeResConfigureS3Client.class);
+    typedBlock(new SeReqConfigureS3Client(realm, returnScreenshots), SeResConfigureS3Client.class);
   }
 
   @Override

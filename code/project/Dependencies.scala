@@ -35,5 +35,7 @@ object Dependencies {
   val selenium = Seq(seleniumFirefox, seleniumServer)
   val sikuli   = Seq(sikuliApi, javaCV, openCV, openCVPlatform)
   
-  val s3Client = "com.instantor.amazon" % "s3client_2.10" % "0.0.7"
+  val s3Version       = "0.0.8"
+  val s3ClientModel   = "com.instantor.amazon" % "s3client-model_2.10" % s3Version
+  val s3ClientService = "com.instantor.amazon" % "s3client-service_2.10" % s3Version
 }

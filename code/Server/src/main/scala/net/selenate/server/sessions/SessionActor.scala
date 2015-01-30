@@ -29,7 +29,7 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
     case arg: SeReqAppendText         => new AppendTextAction(d).act(arg)
     case arg: SeReqCapture            => new CaptureAction(d, C.S3.client).act(arg)
     case arg: SeReqCaptureElement     => new CaptureElementAction(d).act(arg)
-    case arg: SeReqCaptureWindow      => new CaptureWindowAction(d).act(arg)
+    case arg: SeReqCaptureWindow      => new CaptureWindowAction(d, C.S3.client).act(arg)
     case arg: SeReqClearText          => new ClearTextAction(d).act(arg)
     case arg: SeReqClick              => new ClickAction(d).act(arg)
     case arg: SeReqClickSikuliImage   => new ClickSikuliImageAction(d).act(arg)
@@ -72,7 +72,7 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
       actionContext.useFrames = arg.useFrames
       sender ! actionMan(arg)
     case arg: SeReqConfigureS3Client =>
-      actionContext.s3Props = Some(new SeS3Props(sessionID, arg.realm))
+      actionContext.s3Props = Some(new SeS3Props(sessionID, arg.realm, arg.returnScreenshots))
       sender ! actionMan(arg)
     case arg: SeCommsReq =>
       stopKeepalive
@@ -94,7 +94,7 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
           if (sender == ActorFactory.system.deadLetters) {
             e.printStackTrace
           } else {
-            println(e.toString)
+            log.error("Processing error", e)
           }
 
           sender ! new Exception(e.stackTrace)

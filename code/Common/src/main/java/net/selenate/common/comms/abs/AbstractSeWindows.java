@@ -15,10 +15,11 @@ import com.instantor.amazon.client.data.uri.S3FileURI;
 
 public abstract class AbstractSeWindows<W extends AbstractSeWindow<F>, F extends AbstractSeFrame<F>> implements Serializable {
   private static final long serialVersionUID = 1L;
-  private List<W>  windows;
+  protected List<W>  windows;
   // TODO: make them optional elements
   private S3FileURI screenshotURI;
   private S3FileURI htmlURI;
+  protected byte[] aggregatedScreenshots = null;
 
   public AbstractSeWindows(List<W> windows){
     this.windows       = windows;
@@ -50,23 +51,29 @@ public abstract class AbstractSeWindows<W extends AbstractSeWindow<F>, F extends
 
   // TODO: make it smarter! on put generate BufferedImage, and finally remove screenshots if disabled!
   public byte[] getAggregatedScreenshots() throws IOException {
-    int width = 0;
-    int height = 0;
-    List<BufferedImage> tiles = new ArrayList<BufferedImage>();
-    for (Iterator<W> iter = windows.iterator(); iter.hasNext(); ) {
-      byte[] bytes = iter.next().screenshot;
+    if (aggregatedScreenshots != null) return aggregatedScreenshots;
+    else {
+      int width = 0;
+      int height = 0;
+      List<BufferedImage> tiles = new ArrayList<BufferedImage>();
+      for (W window : windows) {
+        if (window.screenshot != null && window.screenshot.length > 0){
+          BufferedImage bi = ImageIO.read(new ByteArrayInputStream(window.screenshot));
+          width  += bi.getWidth();
+          height += bi.getHeight();
+          tiles.add(bi);
+        }
+      }
 
-//      FileOutputStream fos  = new FileOutputStream(new java.io.File("/tmp/"+ java.util.UUID.randomUUID()+ ".png"));
-//      fos.write(bytes);
-//      fos.close();
-
-      BufferedImage bi = ImageIO.read(new ByteArrayInputStream(bytes));
-      width  += bi.getWidth();
-      height += bi.getHeight();
-      tiles.add(bi);
+      this.aggregatedScreenshots = aggregateScreenshots(width, height, tiles);
+      return aggregatedScreenshots;
     }
+  }
 
-    BufferedImage combined = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+  protected byte[] aggregateScreenshots(int containerWidth, int containerHeight, List<BufferedImage> tiles) throws IOException {
+    if (tiles.isEmpty()) return new byte[0];
+
+    BufferedImage combined = new BufferedImage(containerWidth, containerHeight, BufferedImage.TYPE_INT_ARGB);
     for (int i = 0; i < tiles.size(); i++) {
       BufferedImage tile = tiles.get(i);
       int prevWidth = (i == 0) ? 0 : tiles.get(i - 1).getWidth();
@@ -74,8 +81,11 @@ public abstract class AbstractSeWindows<W extends AbstractSeWindow<F>, F extends
     }
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     ImageIO.write(combined, "png", baos);
-    return baos.toByteArray();
+    final byte[] imageInByte = baos.toByteArray();
+    baos.close();
+    return imageInByte;
   }
+
 
   private List<String> flattenWindows(final Iterator<W> windowList) {
     final List<String> allWindowHtmlList = new ArrayList<String>();

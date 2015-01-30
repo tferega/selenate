@@ -27,7 +27,7 @@ object SelenateBuild extends Build {
     Seq(
       akka,
       scalaLibrary,
-      s3Client
+      s3ClientModel
     )
   ) settings (
     Publishing.settings: _*
@@ -56,7 +56,8 @@ object SelenateBuild extends Build {
       selenium,
       slf4j,
       sikuli,
-      tagSoup),
+      tagSoup,
+      s3ClientService),
     Seq(common)
   ) settings (
     (Seq(classpathTypes += "maven-plugin") ++ Publishing.settings): _*

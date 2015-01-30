@@ -73,7 +73,7 @@ class CaptureAction(val d: FirefoxDriver, s3Client: IS3Client)(implicit context:
           import scala.concurrent.Future
           import scala.concurrent.duration._
           val htmlUriFuture = Future{s3Client.store(getS3URI(s3Props, S3FileType.HTML), windowList.getAggregatedHtml)}
-          val screenshotUriFuture = Future{s3Client.store(getS3URI(s3Props, S3FileType.SCREENSHOT), windowList.getAggregatedScreenshots)}
+          val screenshotUriFuture = Future{s3Client.store(getS3URI(s3Props, S3FileType.SCREENSHOT), windowList.getAggregatedScreenshots(s3Props.returnScreenshots))}
           val Seq(htmlUri, screenshotUri) = scala.concurrent.Await.result(Future.sequence(Seq(htmlUriFuture, screenshotUriFuture)), 30 seconds)
           new SeWindows(list, htmlUri, screenshotUri)
         case None =>

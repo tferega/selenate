@@ -12,8 +12,11 @@ import org.apache.commons.codec.binary.Base64
 import org.apache.commons.io._
 import org.openqa.selenium.remote.RemoteWebElement
 import net.selenate.server.util.TagSoupCleaner
+import com.instantor.amazon.client.data.uri.S3FileURI
+import com.instantor.amazon.client.IS3Client
+import com.instantor.amazon.client.data.S3FileType
 
-class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class CaptureWindowAction(val d: FirefoxDriver, s3Client: IS3Client)(implicit context: ActionContext)
     extends IAction[SeReqCaptureWindow, SeResCaptureWindow]
     with ActionCommons
     with WaitFor {
@@ -24,18 +27,34 @@ class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
     val resFindElement = (inAllWindows { address => // set us in the right frame
       tryo {
         if(elementExists(arg.method, arg.query).isDefined)
-          Some(getScreenshot(arg.cssElement))
+          Some(getScreenshot(arg.cssElement, context.s3Props))
         else None
       }
     }).flatten
-    
+
     resFindElement.head match {
-      case Some(scr) => 
-        new SeResCaptureWindow(scr)
+      case Some((scr, uri)) =>
+        new SeResCaptureWindow(scr, uri.getOrElse(null))
       case _ =>
         throw new IllegalArgumentException("Couldn't take screenshot." +
           "Element [%s, %s] was not found in any frame!".format(arg.method.toString, arg.query))
     }
+  }
+
+  private def getScreenshot(cssElement: String, s3PropsOpt: Option[SeS3Props]): (Array[Byte], Option[S3FileURI]) = {
+    def getS3URI(s3Props: SeS3Props, fileType: S3FileType) = new S3FileURI(s3Props.realm, s3Props.sessionID, fileType, java.util.UUID.randomUUID.toString)
+    s3PropsOpt match {
+      case Some(s3Props) =>
+        val screenshot    = getScreenshot(cssElement)
+        val screenshotUri = s3Client.store(getS3URI(s3Props, S3FileType.SCREENSHOT), screenshot)
+        if (s3Props.returnScreenshots) {
+          (screenshot, Some(screenshotUri))
+        } else {
+          (Array.empty, Some(screenshotUri))
+        }
+      case None => (getScreenshot(cssElement), None)
+    }
+
   }
 
   private def getScreenshot(cssElement: String): Array[Byte] = {
@@ -87,8 +106,8 @@ class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
         canvas = document.getElementById(id);
 
         var ctx  = canvas.getContext('2d');
-				var data = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '">' +
-											'<rect width="100%%" height="100%%" fill="white"></rect>' + 
+        var data = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '">' +
+                      '<rect width="100%%" height="100%%" fill="white"></rect>' +
                       '<foreignObject width="100%%" height="100%%">' +
                         '<div xmlns="http://www.w3.org/1999/xhtml" >' + html + '</div>' +
                       '</foreignObject>' +

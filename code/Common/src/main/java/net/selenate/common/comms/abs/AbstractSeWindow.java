@@ -6,7 +6,7 @@ import java.util.List;
 public abstract class AbstractSeWindow<T extends AbstractSeFrame<T>> implements Serializable{
   private static final long serialVersionUID = 1L;
   public final String html;
-  public final byte[] screenshot;
+  public byte[] screenshot; // removable property
   public final List<T> frameList;
 
   public AbstractSeWindow(
