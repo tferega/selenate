@@ -42,7 +42,7 @@ class CaptureWindowAction(val d: FirefoxDriver, s3Client: IS3Client)(implicit co
   }
 
   private def getScreenshot(cssElement: String, s3PropsOpt: Option[SeS3Props]): (Array[Byte], Option[S3FileURI]) = {
-    def getS3URI(s3Props: SeS3Props, fileType: S3FileType) = new S3FileURI(s3Props.realm, s3Props.sessionID, fileType, java.util.UUID.randomUUID.toString)
+    def getS3URI(s3Props: SeS3Props, fileType: S3FileType) = new S3FileURI(C.S3.bucketName, s3Props.realm, s3Props.sessionID, fileType, java.util.UUID.randomUUID.toString)
     s3PropsOpt match {
       case Some(s3Props) =>
         val screenshot    = getScreenshot(cssElement)

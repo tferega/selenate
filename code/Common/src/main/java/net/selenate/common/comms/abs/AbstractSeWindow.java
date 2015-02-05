@@ -18,4 +18,6 @@ public abstract class AbstractSeWindow<T extends AbstractSeFrame<T>> implements 
     this.frameList  = frameList;
   }
 
+
+
 }

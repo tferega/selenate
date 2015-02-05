@@ -42,4 +42,9 @@ public class SeWindow extends AbstractSeWindow<SeFrame> implements SeComms {
     return String.format("SeWindow(%s, %s)", title, url);
   }
 
+  public SeWindow setScreenshot(byte[] screenshot){
+    this.screenshot = screenshot;
+    return this;
+  }
+
 }

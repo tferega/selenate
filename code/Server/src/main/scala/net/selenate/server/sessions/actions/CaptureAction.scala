@@ -51,15 +51,15 @@ class CaptureAction(val d: FirefoxDriver, s3Client: IS3Client)(implicit context:
         arg.name,
         System.currentTimeMillis,
         setToRealJava(getCookieList),
-        getWindowList(arg.name, arg.takeScreenshot)
+        getWindowList(arg.name, arg.takeScreenshot, arg.screenshotWindowIndex)
     )
   }
 
   private def getCookieList =
     d.manage.getCookies.toSet map toSelenate
 
-  private def getWindowList(description: String, takeScreenshot: Boolean) = {
-    def getS3URI(s3Props: SeS3Props, fileType: S3FileType) = new S3FileURI(s3Props.realm, s3Props.sessionID, fileType, description)
+  private def getWindowList(description: String, takeScreenshot: Boolean, screenshotWindowIndex: Int) = {
+    def getS3URI(s3Props: SeS3Props, fileType: S3FileType) = new S3FileURI(C.S3.bucketName, s3Props.realm, s3Props.sessionID, fileType, description)
 
     val res: SeWindows = {
       val list = if (context.useFrames)
@@ -67,17 +67,20 @@ class CaptureAction(val d: FirefoxDriver, s3Client: IS3Client)(implicit context:
       else
         seqToRealJava(List(getWindow(d.getWindowHandle(), takeScreenshot)))
 
-     val windowList = new SeWindows(list)
      (context.s3Props) match {
         case Some(s3Props) =>
           import scala.concurrent.Future
           import scala.concurrent.duration._
-          val htmlUriFuture = Future{s3Client.store(getS3URI(s3Props, S3FileType.HTML), windowList.getAggregatedHtml)}
-          val screenshotUriFuture = Future{s3Client.store(getS3URI(s3Props, S3FileType.SCREENSHOT), windowList.getAggregatedScreenshots(s3Props.returnScreenshots))}
+          val htmlUriFuture = Future{s3Client.store(getS3URI(s3Props, S3FileType.HTML), new SeWindows(list).getAggregatedHtml)}
+          val screenshotUriFuture = Future{s3Client.store(getS3URI(s3Props, S3FileType.SCREENSHOT),
+              (list.zipWithIndex.collect{
+               case x if x._2 == screenshotWindowIndex => x._1.screenshot
+              }).headOption.getOrElse(Array.empty))}
           val Seq(htmlUri, screenshotUri) = scala.concurrent.Await.result(Future.sequence(Seq(htmlUriFuture, screenshotUriFuture)), 30 seconds)
-          new SeWindows(list, htmlUri, screenshotUri)
+          val returnList = if (s3Props.returnScreenshots) list else list.map{x => x.setScreenshot(Array.empty)}
+          new SeWindows(list, screenshotUri, htmlUri)
         case None =>
-          windowList
+          new SeWindows(list)
       }
     }
     res

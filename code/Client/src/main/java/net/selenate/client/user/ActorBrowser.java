@@ -37,6 +37,18 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
+  public Capture capture(final String name, int screenShotWindowIndex) throws IOException {
+    final SeResCapture res = typedBlock(new SeReqCapture(name, false, screenShotWindowIndex), SeResCapture.class);
+    return resToUserCapture(res);
+  }
+
+  @Override
+  public Capture capture(final String name, final boolean takeScreenshot, int screenShotWindowIndex) throws IOException {
+    final SeResCapture res = typedBlock(new SeReqCapture(name, takeScreenshot, screenShotWindowIndex), SeResCapture.class);
+    return resToUserCapture(res);
+  }
+
+  @Override
   public byte[] captureWindow(final ElementSelector selector, final String cssElement) throws IOException {
     final SeElementSelectMethod reqMethod = userToReqElementSelectMethod(selector.method);
     final SeResCaptureWindow res = typedBlock(

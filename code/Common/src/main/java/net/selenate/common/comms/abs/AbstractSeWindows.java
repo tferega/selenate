@@ -1,15 +1,9 @@
 package net.selenate.common.comms.abs;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import com.instantor.amazon.client.data.uri.S3FileURI;
 
@@ -48,44 +42,6 @@ public abstract class AbstractSeWindows<W extends AbstractSeWindow<F>, F extends
   public String getAggregatedHtml() {
     return concatHtmlList(flattenWindows(windows.iterator()));
   }
-
-  // TODO: make it smarter! on put generate BufferedImage, and finally remove screenshots if disabled!
-  public byte[] getAggregatedScreenshots() throws IOException {
-    if (aggregatedScreenshots != null) return aggregatedScreenshots;
-    else {
-      int width = 0;
-      int height = 0;
-      List<BufferedImage> tiles = new ArrayList<BufferedImage>();
-      for (W window : windows) {
-        if (window.screenshot != null && window.screenshot.length > 0){
-          BufferedImage bi = ImageIO.read(new ByteArrayInputStream(window.screenshot));
-          width  += bi.getWidth();
-          height += bi.getHeight();
-          tiles.add(bi);
-        }
-      }
-
-      this.aggregatedScreenshots = aggregateScreenshots(width, height, tiles);
-      return aggregatedScreenshots;
-    }
-  }
-
-  protected byte[] aggregateScreenshots(int containerWidth, int containerHeight, List<BufferedImage> tiles) throws IOException {
-    if (tiles.isEmpty()) return new byte[0];
-
-    BufferedImage combined = new BufferedImage(containerWidth, containerHeight, BufferedImage.TYPE_INT_ARGB);
-    for (int i = 0; i < tiles.size(); i++) {
-      BufferedImage tile = tiles.get(i);
-      int prevWidth = (i == 0) ? 0 : tiles.get(i - 1).getWidth();
-      combined.getGraphics().drawImage(tile, prevWidth, 0, null);
-    }
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    ImageIO.write(combined, "png", baos);
-    final byte[] imageInByte = baos.toByteArray();
-    baos.close();
-    return imageInByte;
-  }
-
 
   private List<String> flattenWindows(final Iterator<W> windowList) {
     final List<String> allWindowHtmlList = new ArrayList<String>();
