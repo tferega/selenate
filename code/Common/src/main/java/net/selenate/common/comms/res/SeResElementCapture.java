@@ -7,7 +7,7 @@ import net.selenate.common.SelenateUtils;
 public final class SeResElementCapture implements SeCommsRes {
   private static final long serialVersionUID = 45749879L;
 
-  public final byte[] body;
+  private final byte[] body;
 
   public SeResElementCapture(final byte[] body) {
     this.body = body;

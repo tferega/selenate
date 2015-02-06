@@ -2,6 +2,10 @@ import sbt._
 import Keys._
 
 object SelenateBuild extends Build with Settings with Dependencies {
+  lazy val client = project(javaSettings, "Client", isPublish = true)(
+    akka
+  ).dependsOn(common)
+  
   lazy val common = project(javaSettings, "Common", isPublish = true)(
     akka
   )
