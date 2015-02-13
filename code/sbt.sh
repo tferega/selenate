@@ -4,7 +4,6 @@ branch=`head -n 1 ../branch.config`
 
 ## START JVM PARAMS
 JVM_PARAMS="-Dbranch=$branch -Xss2m -Xms2g -Xmx2g -XX:+TieredCompilation -XX:ReservedCodeCacheSize=256m -XX:MaxPermSize=512m -XX:+CMSClassUnloadingEnabled -XX:+UseNUMA -XX:+UseParallelGC -Dscalac.patmat.analysisBudget=off" 
-
 TRY_JREBEL=true
 LOG_LEVEL=
 NO_PAUSE=false
@@ -46,7 +45,9 @@ if $TRY_JREBEL && [ -n "$JREBEL_HOME" ] && [ -f $JREBEL_HOME/jrebel.jar ]; then
 fi
 
 GRUJ_PATH="../config/gruj/gruj_vs_sbt-launch-0.13.x.jar"
-RUN_CMD="java $JVM_PARAMS -jar $GRUJ_PATH $LOG_LEVEL $SBT_PARAMS"
+
+## injecting glibc 2.15 into jar
+RUN_CMD="LD_LIBRARY_PATH=/var/www/libc6-215/lib java $JVM_PARAMS -jar $GRUJ_PATH $LOG_LEVEL $SBT_PARAMS"
 
 LOOPING=true
 while $LOOPING
