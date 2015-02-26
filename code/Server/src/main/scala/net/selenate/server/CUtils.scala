@@ -5,12 +5,14 @@ import java.io.File
 import net.selenate.common.exceptions.SeException
 
 trait CBase {
-  val branch = sys.props.get("Selenate.branch")
-  val userHome = sys.props.get("user.home").getOrElse(throw new SeException("""Key "user.home" not defined in system properties!"""))
+  val configOverride = sys.props.get("Selenate.config_override")
+  val branch         = sys.props.get("Selenate.branch")
+  val userHome       = sys.props.get("user.home").getOrElse(throw new SeException("""Key "user.home" not defined in system properties!"""))
   val configPath = {
-    branch match {
-      case Some(b) => new File(userHome + s"/.props/selenate_$branch/server.config");
-      case None    => new File(userHome + "/.props/selenate/server.config");
+    (configOverride, branch) match {
+      case (Some(c), _)    => new File(c)
+      case (None, Some(b)) => new File(userHome + s"/.props/selenate_$b/server.config")
+      case (None, None)    => new File(userHome + "/.props/selenate/server.config")
     }
   }
 
@@ -27,10 +29,11 @@ trait CBase {
 }
 
 trait CUtils extends CBase with Loggable {
+  logTrace(s"""Detected confing override: $configOverride""")
   logTrace(s"""Detected branch: $branch""")
   logTrace(s"""Detected user home: $userHome""")
   logTrace(s"""Detected confing path: $configPath""")
-
+sys.exit();
   override def loadResourceConfig(name: String): Config = {
     try {
       val config = super.loadResourceConfig(name)
