@@ -4,14 +4,15 @@ import Keys._
 import com.typesafe.sbteclipse.plugin.EclipsePlugin
 import EclipsePlugin.{ EclipseCreateSrc, EclipseKeys, EclipseProjectFlavor }
 import net.virtualvoid.sbt.graph.{ Plugin => GraphPlugin }
-
+import xerial.sbt.Pack
 trait Settings {
   implicit def depToDepSeq(dep: ModuleID) = Seq(dep)
-  
+
   def project(
       baseSettings: Seq[Def.Setting[_]],
       projectName: String,
-      isPublish: Boolean = false)
+      isPublish: Boolean = false,
+      isPackable: Boolean = false)
       (deps: Seq[ModuleID]*) =
     Project(
       projectName,
@@ -19,6 +20,7 @@ trait Settings {
       settings =
         baseSettings ++
         (if (isPublish) publishing else Seq.empty) ++
+        (if (isPackable) packable else Seq.empty) ++
         Seq(
           name := "Selenate-" + projectName,
           libraryDependencies ++= deps.flatten
@@ -77,4 +79,9 @@ trait Settings {
     crossScalaVersions := Seq("2.11.5", "2.10.4"),
     publishArtifact in (Compile, packageDoc) := false
   )
+
+  val packable =
+    Pack.packSettings ++ Seq(
+      Pack.packMain := Map("start" -> "net.selenate.server.EntryPoint")
+    )
 }

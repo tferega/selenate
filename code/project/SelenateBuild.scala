@@ -13,7 +13,7 @@ object SelenateBuild extends Build with Settings with Dependencies {
   lazy val compiler = project(scalaSettings, "Compiler", isPublish = false)(
   )
 
-  lazy val server = project(scalaSettings, "Server", isPublish = true)(
+  lazy val server = project(scalaSettings, "Server", isPublish = true, isPackable = true)(
     akka, selenium, config, dispatch, logback, procrun, slf4j
   ).dependsOn(common)
   

@@ -1,0 +1,1 @@
+call Server\target\pack\bin\start.bat
