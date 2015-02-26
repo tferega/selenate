@@ -11,7 +11,7 @@ trait ActionCommonsBase {
   case class Address(windowHandle: WindowHandle, framePath: FramePath)
 
   def getFromCache(selector: SeElementSelector): Option[CachedElement] = {
-    selector.getUUID.toOption flatMap context.elementCache.get
+    None /*selector.getUUID.toOption flatMap context.elementCache.get*/
   }
 
   val context: SessionContext

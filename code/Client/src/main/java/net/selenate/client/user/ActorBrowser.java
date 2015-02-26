@@ -60,22 +60,22 @@ public class ActorBrowser extends ActorBase {
   }
 
   public boolean elementExists(final SeElementSelectMethod method, final String query) throws IOException {
-    final SeElementSelector selector = new SeElementSelector(Optional.empty(), method, query);
+    final SeElementSelector selector = new SeElementSelector(/*Optional.empty(), */method, query);
     return elementExists(selector);
   }
 
   public boolean elementExists(final SeElementSelector selector) throws IOException {
-    final List<SeElement> elements = findElementList(selector);
+    final List<ActorElement> elements = findElementList(selector);
     return elements.size() > 0;
   }
 
-  public SeElement findElement(final SeElementSelectMethod method, final String query) throws IOException {
-    final SeElementSelector selector = new SeElementSelector(Optional.empty(), method, query);
+  public ActorElement findElement(final SeElementSelectMethod method, final String query) throws IOException {
+    final SeElementSelector selector = new SeElementSelector(/*Optional.empty(), */method, query);
     return findElement(selector);
   }
 
-  public SeElement findElement(final SeElementSelector selector) throws IOException {
-    final List<SeElement> elements = findElementList(selector);
+  public ActorElement findElement(final SeElementSelector selector) throws IOException {
+    final List<ActorElement> elements = findElementList(selector);
     if (elements.size() > 0) {
       return elements.get(0);
     } else {
@@ -83,16 +83,22 @@ public class ActorBrowser extends ActorBase {
     }
   }
 
-  public List<SeElement> findElementList(
+  public List<ActorElement> findElementList(
       final SeElementSelectMethod method,
       final String query) throws IOException {
-    final SeElementSelector selector = new SeElementSelector(Optional.empty(), method, query);
+    final SeElementSelector selector = new SeElementSelector(/*Optional.empty(), */method, query);
     return findElementList(selector);
   }
 
-  public List<SeElement> findElementList(final SeElementSelector selector) throws IOException {
+  public List<ActorElement> findElementList(final SeElementSelector selector) throws IOException {
     final SeResElementFindList res = typedBlock(new SeReqElementFindList(selector), SeResElementFindList.class);
-    return res.getElementList();
+    final List<SeElement> foundElements = res.getElementList();
+    final List<ActorElement> actorElements = new ArrayList<>();
+    for (int i = 0; i < foundElements.size(); i++) {
+      final ActorElement actorElement = new ActorElement(session, foundElements.get(i));
+      actorElements.add(actorElement);
+    }
+    return actorElements;
   }
 
   public void deleteCookieNamed(String name) throws IOException {
