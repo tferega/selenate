@@ -21,4 +21,13 @@ class SetCache[T]() {
   def contains(elem: T) = Lock.synchronized {
     cache.contains(elem)
   }
+
+  def checkAndReserve(elem: T) = Lock.synchronized {
+    if (cache.contains(elem)) {
+      true
+    } else {
+      cache += elem
+      false
+    }
+  }
 }

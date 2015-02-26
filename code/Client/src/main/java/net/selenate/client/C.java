@@ -52,7 +52,6 @@ public final class C {
   private static Config loadAkkaConfig(final String clientHost) {
     final ConfigValue hostnameVal = ConfigValueFactory.fromAnyRef(clientHost);
     final Config c = ConfigFactory.parseResources("akka.config").withValue("akka.remote.netty.tcp.hostname", hostnameVal);
-    System.out.println(c);
     return c;
   }
 
