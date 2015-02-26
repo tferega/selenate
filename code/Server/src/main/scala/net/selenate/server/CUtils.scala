@@ -33,7 +33,7 @@ trait CUtils extends CBase with Loggable {
   logTrace(s"""Detected branch: $branch""")
   logTrace(s"""Detected user home: $userHome""")
   logTrace(s"""Detected confing path: $configPath""")
-sys.exit();
+
   override def loadResourceConfig(name: String): Config = {
     try {
       val config = super.loadResourceConfig(name)

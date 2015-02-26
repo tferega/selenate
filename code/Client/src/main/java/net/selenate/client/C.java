@@ -31,14 +31,21 @@ public final class C {
   }
 
   private static File getConfigFile() {
-    final String userHome = System.getProperty("user.home");
-    final String branch   = System.getProperty("Selenate.branch");
+    final String userHome       = System.getProperty("user.home");
+    final String configOverride = System.getProperty("Selenate.config_override");
+    final String branch         = System.getProperty("Selenate.branch");
+
     final File configFile;
-    if (branch == null) {
-      configFile = new File(userHome + "/.props/selenate/client.config");
+    if (configOverride == null) {
+      if (branch == null) {
+        configFile = new File(userHome + "/.props/selenate/client.config");
+      } else {
+        configFile = new File(userHome + "/.props/selenate_" + branch + "/client.config");
+      }
     } else {
-      configFile = new File(userHome + "/.props/selenate_" + branch + "/client.config");
+      configFile = new File(configOverride);
     }
+
     return configFile;
   }
 
