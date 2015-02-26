@@ -12,7 +12,7 @@ trait Settings {
       baseSettings: Seq[Def.Setting[_]],
       projectName: String,
       isPublish: Boolean = false,
-      isPackable: Boolean = false)
+      mainClass: Option[String] = None)
       (deps: Seq[ModuleID]*) =
     Project(
       projectName,
@@ -20,7 +20,7 @@ trait Settings {
       settings =
         baseSettings ++
         (if (isPublish) publishing else Seq.empty) ++
-        (if (isPackable) packable else Seq.empty) ++
+        (mainClass match { case Some(mc) => getPackable(mc); case None => Seq.empty} ) ++
         Seq(
           name := "Selenate-" + projectName,
           libraryDependencies ++= deps.flatten
@@ -80,8 +80,8 @@ trait Settings {
     publishArtifact in (Compile, packageDoc) := false
   )
 
-  val packable =
+  def getPackable(mainClass: String) =
     Pack.packSettings ++ Seq(
-      Pack.packMain := Map("start" -> "net.selenate.server.EntryPoint")
+      Pack.packMain := Map("start" -> mainClass)
     )
 }
