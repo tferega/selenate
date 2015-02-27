@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <file>demo.log</file>
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss} | %level | %t | %c{36} | %m%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="TRACE">
+    <appender-ref ref="FILE"/>
+  </root>
+</configuration>
+

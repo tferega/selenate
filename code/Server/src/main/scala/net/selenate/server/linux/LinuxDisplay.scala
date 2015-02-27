@@ -11,8 +11,14 @@ object LinuxDisplay extends Loggable {
   private val BaseNum = 200
 
   def create(): DisplayInfo = {
-    val num = getFirstFree()
-    create(num)
+    try {
+      val num = getFirstFree()
+      create(num)
+    } catch {
+      case e: Exception =>
+        e.printStackTrace();
+        throw e;
+    }
   }
 
   def record(name: String, num: Int): String = {
@@ -41,7 +47,6 @@ object LinuxDisplay extends Loggable {
     runPkill(s"Xvfb.*")
   }
 
-  val PortR = """PORT=(\d+)"""r
   private def create(num: Int): DisplayInfo = {
     logDebug(s"""Creating screen number $num""")
     screenCache.add(num)
@@ -51,9 +56,7 @@ object LinuxDisplay extends Loggable {
       iceWM  <- runIceWM(num).right
       x11vnc <- runX11vnc(num).right
     } yield {
-      val out = x11vnc.stdOutSoFar.trim
-      val PortR(port) = out
-      port.toInt
+      waitFor(extractX11vncPort(x11vnc), 2000, 150).getOrElse(throw new SeException("x11vnc failed to start properly (could not parse output)"))
     }
 
     result match {
@@ -73,16 +76,11 @@ object LinuxDisplay extends Loggable {
   private def runXdpyInfo(num: Int)     = LinuxProc.runAndEnd("xdpyinfo", "-display" | s":$num")
   private def runPkill(pattern: String) = LinuxProc.runAndEnd("pkill", "-f" | pattern)
   private def runFFmpeg(filename: String, num: Int) = LinuxProc.runAndVerify("ffmpeg",
-        "-y"       |
-        "-f"       | "x11grab"   |
-        "-qscale"  | "2"         |
-        "-r"       | "15"        |
-        "-i"       | s":$num"    |
-        "-s"       | "1920x1080" |
-        "-vcodec"  | "libx264"   |
-        "-vpre"    | "medium"    |
-        "-crf"     | "22"        |
-        "-threads" | "0"         |
+        "-y"          |
+        "-video_size" | "1920x1080" |
+        "-framerate"  | "25"        |
+        "-f"          | "x11grab"   |
+        "-i"          | s":$num"    |
         filename)
 
   @tailrec
@@ -92,9 +90,17 @@ object LinuxDisplay extends Loggable {
   private def isFree(num: Int) = {
     (num > BaseNum) &&                                      // Sanity check
     runXdpyInfo(num).contains("unable to open display") &&  // System
-    !screenCache.contains(num)                              // Thread-safe cache
+    !screenCache.checkAndReserve(num)                       // Thread-safe cache
   }
 
   private def formattedCurrentDateTime(): String =
     DateTime.now().toString("YYYY-MM-dd'T'HHmmss")
+
+  val PortR = """PORT=(\d+)"""r
+  private def extractX11vncPort(x11vncProc: RunningProcess): Option[Int] =
+    tryo {
+      val out = x11vncProc.stdOutSoFar.trim
+      val PortR(port) = out
+      port.toInt
+    }
 }

@@ -21,7 +21,7 @@ trait ActionCommonsParsers extends ActionCommonsBase { self: Loggable =>
     context.elementCache.add(uuid, CachedElement(address.windowHandle, address.framePath, e))
     new SeElement(
         uuid,
-        selector.withUuid(Optional.of(uuid)),
+        selector/*.withUuid(Optional.of(uuid))*/,
         e.getLocation.getX,
         e.getLocation.getY,
         e.getSize.getWidth,

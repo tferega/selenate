@@ -1,7 +1,5 @@
 package net.selenate.common.comms.req;
 
-import java.util.*;
-
 import net.selenate.common.SelenateUtils;
 import net.selenate.common.comms.*;
 
@@ -11,7 +9,7 @@ public final class SeReqWindowFrameSwitch implements SeCommsReq {
   private final SeElementSelector frameSelector;
 
   public SeReqWindowFrameSwitch(final String frameName) {
-    this(new SeElementSelector(Optional.empty(), Optional.empty(), SeElementSelectMethod.NAME, frameName));
+    this(new SeElementSelector(SeElementSelectMethod.NAME, frameName));
   }
 
   public SeReqWindowFrameSwitch(final SeElementSelector selector) {

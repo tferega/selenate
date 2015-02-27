@@ -10,7 +10,7 @@ public class SessionRequest implements Serializable {
   private final String sessionID;
   private final boolean isRecorded;
 
-  public SessionRequest(final String sessionID, final Boolean isRecorded) {
+  public SessionRequest(final String sessionID, final boolean isRecorded) {
     this.sessionID = SelenateUtils.guardNullOrEmpty(sessionID, "SessionID");
     this.isRecorded = isRecorded;
   }
@@ -25,7 +25,6 @@ public class SessionRequest implements Serializable {
 
   @Override
   public String toString() {
-    return String.format("SessionRequest(%s, %s)",
-        sessionID, String.valueOf(isRecorded));
+    return String.format("SessionRequest(%s, %s)", sessionID, String.valueOf(isRecorded));
   }
 }

@@ -17,13 +17,18 @@ object Runner extends Loggable {
       logInfo("ServerHost: " + C.Server.HOST)
 
       logInfo("Starting main Actor system...")
+
       val pool = C.Server.Pool
       val poolInfo = PoolSettings.fromConfig(pool.SIZE, pool.DISPLAY, pool.BINARY, pool.PREFS)
       actors.system.actorOf(DriverPoolActor.props(poolInfo), "driver-pool")
       actors.system.actorOf(SessionFactoryActor.props, "session-factory")
 
       /* #########==========-----> MAIN RUNTIME <-----==========############# */
-      readLine
+      /*                           \          /                               */
+      /*                            \        /                                */
+                                     readLine
+      /*                            /        \                                */
+      /*                           /          \                               */
       /* #########==========-----> MAIN RUNTIME <-----==========############# */
 
       logInfo("Selenate Server now shutting down...")

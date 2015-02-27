@@ -4,20 +4,41 @@ import Keys._
 import com.typesafe.sbteclipse.plugin.EclipsePlugin
 import EclipsePlugin.{ EclipseCreateSrc, EclipseKeys, EclipseProjectFlavor }
 import net.virtualvoid.sbt.graph.{ Plugin => GraphPlugin }
-
+import xerial.sbt.Pack
 trait Settings {
+  implicit def depToDepSeq(dep: ModuleID) = Seq(dep)
+
+  def project(
+      baseSettings: Seq[Def.Setting[_]],
+      projectName: String,
+      isPublish: Boolean = false,
+      mainClass: Option[String] = None)
+      (deps: Seq[ModuleID]*) =
+    Project(
+      projectName,
+      file(projectName),
+      settings =
+        baseSettings ++
+        (if (isPublish) publishing else Seq.empty) ++
+        (mainClass match { case Some(mc) => getPackable(mc); case None => Seq.empty} ) ++
+        Seq(
+          name := "Selenate-" + projectName,
+          libraryDependencies ++= deps.flatten
+        )
+    )
+
   private val default =
     Defaults.defaultSettings ++
     EclipsePlugin.settings ++
     GraphPlugin.graphSettings ++ Seq(
       organization := "com.ferega",
       version      := "0.3.0-SNAPSHOT",
-      scalaVersion := "2.11.1",
+      scalaVersion := "2.11.5",
       EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource,
       EclipseKeys.eclipseOutput := Some("bin")
     )
 
-  val scala =
+  val scalaSettings =
     default ++ Seq(
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
       unmanagedSourceDirectories in Compile := (scalaSource in Compile).value :: Nil,
@@ -41,7 +62,7 @@ trait Settings {
       )
     )
 
-  val java =
+  val javaSettings =
     default ++ Seq(
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
       autoScalaLibrary          := false,
@@ -55,11 +76,12 @@ trait Settings {
     )
 
   val publishing = Seq(
-    credentials        += Credentials(Path.userHome / ".config" / "selenate" / "nexus.config"),
-    crossScalaVersions := Seq("2.11.2", "2.10.4"),
+    crossScalaVersions := Seq("2.11.5", "2.10.4"),
     publishArtifact in (Compile, packageDoc) := false
-    , publishTo := Some(
-      if (version.value endsWith "SNAPSHOT") "Element Snapshots" at "http://repo.element.hr/nexus/content/repositories/snapshots/" else "Element Releases" at "http://repo.element.hr/nexus/content/repositories/releases/"
-    )
   )
+
+  def getPackable(mainClass: String) =
+    Pack.packSettings ++ Seq(
+      Pack.packMain := Map("start" -> mainClass)
+    )
 }

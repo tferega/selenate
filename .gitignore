@@ -7,5 +7,5 @@ bin
 target
 branch.config
 
-logs/*.log
-recordings/*.mp4
+*.log
+*.mp4

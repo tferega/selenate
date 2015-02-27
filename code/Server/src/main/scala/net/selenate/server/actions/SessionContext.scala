@@ -8,7 +8,7 @@ import scala.concurrent.duration._
 case class CachedElement(windowHandle: String, framePath: Vector[Int], elem: RemoteWebElement)
 
 object SessionContext {
-  def default = SessionContext(true, 30L.seconds, IndexedSeq.empty, MapCache.empty)
+  def default = SessionContext(false, 30L.seconds, IndexedSeq.empty, MapCache.empty)
 }
 
 case class SessionContext(
