@@ -111,14 +111,14 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
 
   private def startKeepalive(data: KeepaliveData) {
     stopKeepalive
-    log.info("Starting keepalive.")
-    log.debug(keepaliveStatus)
+//    log.info("Starting keepalive.")
+//    log.debug(keepaliveStatus)
     keepaliveScheduler = Some(context.system.scheduler.schedule(Duration.Zero, data.delay, self, data))
   }
 
   private def stopKeepalive() {
-    log.info("Stopping keepalive.")
-    log.debug(keepaliveStatus)
+//    log.info("Stopping keepalive.")
+//    log.debug(keepaliveStatus)
     keepaliveScheduler.map(_.cancel)
     keepaliveScheduler = None
   }
