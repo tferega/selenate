@@ -13,6 +13,7 @@ import org.openqa.selenium.firefox.FirefoxProfile
 import scala.concurrent.duration.Duration
 import net.selenate.common.comms.req.SeReqWaitForBrowserPage
 import net.selenate.common.comms.req.SeReqSetUseFrames
+import akka.actor.PoisonPill
 
 class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean = true) extends Actor {
   private val log  = Log(classOf[SessionActor], sessionID)
@@ -74,27 +75,30 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
       sender ! actionMan(arg)
   }
 
+
+  override def postStop() {
+    log.info(s"Post stop for $sessionID, killing browser and actor.")
+    d.kill()
+  }
   private def wrap(base: Receive) = new Receive {
     def isDefinedAt(arg: Any) = base.isDefinedAt(arg)
     def apply(arg: Any) = {
       val clazz = arg.getClass.toString
       val reqID = java.util.UUID.randomUUID()
       try {
-        log.info("####==> Received request: SessionID=[%s]; reqID=[%s]; for=[%s] from %s.".format(sessionID, reqID, clazz, sender.path.toString))
-        log.debug(arg.toString)
+        log.info("####==> Received request: SessionID=[%s]; reqID=[%s]; for=[%s] from %s.".format(sessionID, reqID, arg.toString, sender.path.toString))
         base.apply(arg)
       } catch {
         case e: Exception =>
-          log.warn("An error occured while processing [%s]" format clazz)
           if (sender == ActorFactory.system.deadLetters) {
-            e.printStackTrace
+            log.error(s"Error[DeadLetters] occured while processing [$clazz]", e)
           } else {
-            println(e.toString)
+            log.error(s"Error occured while processing [$clazz]", e)
           }
 
-          sender ! new Exception(e.stackTrace)
+          sender ! new Exception(e)
       } finally {
-        log.info("####==> Sending response: SessionID=[%s]; reqID=[%s]; for=[%s] from %s.".format(sessionID, reqID, clazz, sender.path.toString))
+        log.info("####==> Sending response: SessionID=[%s]; reqID=[%s]; for=[%s] from %s.".format(sessionID, reqID, arg.toString, sender.path.toString))
       }
     }
   }

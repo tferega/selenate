@@ -1,22 +1,17 @@
 package net.selenate.client.user;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import net.selenate.common.comms.*;
 import net.selenate.common.comms.res.SeResCapture;
 import net.selenate.common.user.*;
-
 import akka.actor.ActorRef;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
-
-import scala.concurrent.Await;
-import scala.concurrent.Future;
+import scala.concurrent.*;
+import scala.concurrent.duration.Duration;
 
 public abstract class ActorBase {
   protected static final Timeout timeout = new Timeout(30, TimeUnit.SECONDS);
@@ -37,6 +32,16 @@ public abstract class ActorBase {
       return result;
     } catch (final Exception e) {
       throw new IOException(String.format("An error occured while sending the message to remote actor!\nMessage: %s", req.toString()), e);
+    }
+  }
+
+
+  public void gracefullStop() throws IOException {
+    try {
+      Future<Boolean> stopped = akka.pattern.Patterns.gracefulStop(session, Duration.create(5, TimeUnit.SECONDS), ActorFactory.system);
+      Await.result(stopped, Duration.create(6, TimeUnit.SECONDS));
+    } catch (Exception e) {
+      throw new IOException("Error while trying to gracefully stop the actor session.", e);
     }
   }
 

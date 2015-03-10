@@ -11,6 +11,7 @@ import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
 import net.selenate.common.user.*;
 import akka.actor.ActorRef;
+import akka.actor.PoisonPill;
 
 public class ActorBrowser extends ActorBase implements IBrowser {
   public ActorBrowser(final ActorRef session) {
@@ -104,7 +105,8 @@ public class ActorBrowser extends ActorBase implements IBrowser {
 
   @Override
   public void quit() throws IOException {
-    typedBlock(new SeReqQuit(), SeResQuit.class);
+    typedBlock(new SeReqQuit(), SeResQuit.class); // kill browser.
+    gracefullStop(); // Destroy actor session
   }
 
   @Override
