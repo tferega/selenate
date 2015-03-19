@@ -19,7 +19,11 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
   private val log  = Log(classOf[SessionActor], sessionID)
 
   log.info("Creating session actor for session id: {%s}." format sessionID)
-  private val d = DriverPool.get(profile)
+  private val d = {
+    val d = DriverPool.get(profile)
+    d.manage().window().maximize()
+    d
+  }
   private var keepaliveScheduler: Option[Cancellable] = None
   private def isKeepalive = keepaliveScheduler.isDefined
   implicit val actionContext = ActionContext(useFrames)
