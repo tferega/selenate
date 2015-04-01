@@ -273,6 +273,11 @@ public class ActorBrowser extends ActorBase implements IBrowser {
     typedBlock(new SeReqClickSikuliImage(image, 30000), SeResClickSikuliImage.class);
   }
 
+  /**
+   * ActorBrowser toggle mode for storing to remote Amazon storage
+   * realm - SE, PL, etc. it is top level directory for all sources that belong to a certain project
+   * returnScreenshots - return screenshots binaries
+   */
   @Override
   public void setConfigureS3Client(final String realm, final boolean returnScreenshots) throws IOException {
     this.isS3ClientEnabled = true;

@@ -59,7 +59,8 @@ class CaptureAction(val d: FirefoxDriver, s3Client: IS3Client)(implicit context:
     d.manage.getCookies.toSet map toSelenate
 
   private def getWindowList(description: String, takeScreenshot: Boolean, screenshotWindowIndex: Int) = {
-    def getS3URI(s3Props: SeS3Props, fileType: S3FileType) = new S3FileURI(C.S3.bucketName, s3Props.realm, s3Props.sessionID, fileType, description)
+    val s3Description = java.util.UUID.randomUUID().toString // adjustment made for DSL platform, which does not support file versioning
+    def getS3URI(s3Props: SeS3Props, fileType: S3FileType) = new S3FileURI(C.S3.bucketName, s3Props.realm, s3Props.sessionID, fileType, s3Description)
 
     val res: SeWindows = {
       val list = if (context.useFrames)
