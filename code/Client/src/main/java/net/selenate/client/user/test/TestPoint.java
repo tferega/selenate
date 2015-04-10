@@ -10,6 +10,8 @@ import net.selenate.common.user.Capture;
 public class TestPoint {
   public static void main(String[] args) throws Exception {
     try {
+      System.setProperty("branch", "server");
+
       final UUID sessionID = java.util.UUID.randomUUID();
       final ActorRef session = ActorFactory.getSession(sessionID.toString(), 30);
       ActorBrowser browser = new ActorBrowser(session);

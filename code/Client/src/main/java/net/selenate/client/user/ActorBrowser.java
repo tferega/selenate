@@ -11,6 +11,7 @@ import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
 import net.selenate.common.user.*;
 import akka.actor.ActorRef;
+import akka.actor.PoisonPill;
 
 public class ActorBrowser extends ActorBase implements IBrowser {
   private boolean isS3ClientEnabled = false;
@@ -118,7 +119,8 @@ public class ActorBrowser extends ActorBase implements IBrowser {
 
   @Override
   public void quit() throws IOException {
-    typedBlock(new SeReqQuit(), SeResQuit.class);
+    typedBlock(new SeReqQuit(), SeResQuit.class); // kill browser.
+    gracefullStop(); // Destroy actor session
   }
 
   @Override
@@ -271,6 +273,11 @@ public class ActorBrowser extends ActorBase implements IBrowser {
     typedBlock(new SeReqClickSikuliImage(image, 30000), SeResClickSikuliImage.class);
   }
 
+  /**
+   * ActorBrowser toggle mode for storing to remote Amazon storage
+   * realm - SE, PL, etc. it is top level directory for all sources that belong to a certain project
+   * returnScreenshots - return screenshots binaries
+   */
   @Override
   public void setConfigureS3Client(final String realm, final boolean returnScreenshots) throws IOException {
     this.isS3ClientEnabled = true;
