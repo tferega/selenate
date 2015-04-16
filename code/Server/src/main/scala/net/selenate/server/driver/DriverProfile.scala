@@ -47,7 +47,14 @@ object DriverProfile {
   }
 
   private def getFFP(prefMap: Map[String, AnyRef]) = {
-    val ffp = new FirefoxProfile
+    val ffp = new FirefoxProfile(new java.io.File("/home/ana/.mozilla/firefox/temp-user"))
+
+//    ffp.setPreference("browser.download.manager.alertOnEXEOpen"   , false)
+//    ffp.setPreference("browser.download.manager.showWhenStarting" , false)
+//    ffp.setPreference("browser.download.panel.shown", false)
+//    ffp.setPreference("browser.download.useDownloadDir", true)
+    ffp.setPreference("browser.download.folderList", 2)
+//    ffp.setPreference("browser.download.dir", "/tmp/ff-downloads/")
     prefMap foreach addPref(ffp)
     ffp
   }
@@ -79,8 +86,22 @@ object DriverProfile {
 class DriverProfile(val prefMap: Map[String, AnyRef]) {
   import DriverProfile._
 
+    // default values!!!
+    println("sETTING VALUEEEEES"+">>"*10)
+    prefMap foreach println
+//    prefMap.profile.add("browser.download.manager.alertOnEXEOpen", "false")
+//    profile.prefMap.put("browser.download.manager.showWhenStarting", "false")
+//    profile.prefMap.put("browser.download.panel.shown", "false")
+//    profile.prefMap.put("browser.download.useDownloadDir", "true")
+//    profile.prefMap.put("browser.download.dir", "/tmp/ff-downloads/" + sessionID)
+
   override def toString = "DriverProfile(%s)" format signature
 
   /*private[driver]*/ val get = getFFP(prefMap)
   /*private[driver]*/ val signature = serializeProfile(this)
+  def addPreferenceMap(additionalPrefMap: Map[String, AnyRef]) = {
+    additionalPrefMap foreach println
+    new DriverProfile(prefMap++additionalPrefMap)
+  }
+
 }

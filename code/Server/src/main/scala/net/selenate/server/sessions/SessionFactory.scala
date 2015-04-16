@@ -4,9 +4,9 @@ package sessions
 
 import common.sessions.ISessionFactory
 import actors.ActorFactory._
-import java.util.{ Map => JMap }
+//import java.util.{ Map => JMap }
 import scala.collection.JavaConverters._
-import scala.collection.JavaConversions._
+//import scala.collection.JavaConversions._
 import org.openqa.selenium.firefox.FirefoxProfile
 import net.selenate.server.driver.DriverProfile
 import net.selenate.common.user.Preferences
@@ -32,7 +32,18 @@ private class SessionFactory extends ISessionFactory {
 
   private def getSessionDo(sessionID: String, prefMapOpt: Option[Map[String, AnyRef]], useFrames: java.lang.Boolean): Future[ActorRef] = Future {
     val profileOpt = prefMapOpt map getProfile
-    val profile    = profileOpt getOrElse emptyProfile
+    // default values!!!
+    val defPreferences: Map[String, AnyRef] = scala.collection.immutable.Map(
+      "browser.download.panel.shown"                 -> "false" // disable view of download panel
+    , "browser.download.useDownloadDir"              -> "true"  // download automatically insted of asking where
+//    , "browser.download.folderList"                  -> "2"     // setting to enable custom download folder
+    , "browser.download.dir"                         -> "/tmp/ff-downloads/%s".format(sessionID) // custom download folder
+    , "browser.download.manager.showAlertOnComplete" -> "false"
+    , "browser.helperApps.neverAsk.saveToDisk"       -> "text/csv, application/octet-stream, application/pdf,application/x-download" // default action for mime types
+    )
+
+    val profile    = (profileOpt getOrElse emptyProfile).addPreferenceMap(defPreferences)
+
     val name       = sessionID
 
     untyped(name, () => new SessionActor(sessionID, profile, useFrames))
@@ -40,13 +51,13 @@ private class SessionFactory extends ISessionFactory {
 
 
   def getSession(sessionID: String, preferences: Preferences) =
-    getSessionDo(sessionID, Some(preferences.getAll.toMap), true)
+    getSessionDo(sessionID, Some(preferences.getAll.asScala.toMap), true)
 
   def getSession(sessionID: String) =
     getSessionDo(sessionID, None, true)
 
   def getSession(sessionID: String, preferences: Preferences, useFrames: java.lang.Boolean) =
-    getSessionDo(sessionID, Some(preferences.getAll.toMap), useFrames)
+    getSessionDo(sessionID, Some(preferences.getAll.asScala.toMap), useFrames)
 
   def getSession(sessionID: String, useFrames: java.lang.Boolean) =
     getSessionDo(sessionID, None, useFrames)

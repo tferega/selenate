@@ -7,6 +7,7 @@ import java.util.Map;
 import akka.util.Timeout;
 import net.selenate.common.comms.SeDownloadMethod;
 import net.selenate.common.comms.req.SeCommsReq;
+import net.selenate.common.comms.res.SeResDownloadFile;
 
 public interface IBrowser {
   public void open(String url) throws IOException;
@@ -47,6 +48,14 @@ public interface IBrowser {
   public INavigation navigate() throws IOException;
 
   public byte[] download(String url, SeDownloadMethod method, Map<String, String> headers, byte[] body) throws IOException;
+
+//  /**
+//   * Invokes remote file download and output to SeResDownloadFile
+//   * @param  selector          link with download attachment action
+//   * @return SeResDownloadFile contains binary data file and fileExtension
+//   * @throws IOException
+//   */
+//  public SeResDownloadFile download(ElementSelector selector) throws IOException;
 
   public void startKeepaliveClick(long delayMillis, ElementSelectMethod method, String query) throws IOException;
   public void startKeepaliveClick(long delayMillis, ElementSelector selector) throws IOException;
