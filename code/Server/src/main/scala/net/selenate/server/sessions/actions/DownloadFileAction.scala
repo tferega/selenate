@@ -19,7 +19,6 @@ import java.nio.file.WatchService
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 import java.nio.file.WatchEvent
-//import scala.concurrent.ExecutionContext.Implicits.global
 
 class DownloadFileAction(val d: FirefoxDriver, sessionID: String)(implicit context: ActionContext)
     extends IAction[SeReqDownloadFile, SeResDownloadFile]
@@ -58,69 +57,35 @@ class DownloadFileAction(val d: FirefoxDriver, sessionID: String)(implicit conte
 
   }
 
-  private def listenerOverFile(parentDir: Path, filePath: Path): (Array[Byte], String) = {
-    val f = dumpFile(parentDir.resolve(filePath).toFile())
+  private def listenerOverFile(parentDir: Path, parentDirFiles: Array[File], filePath: Path): (Array[Byte], String) = {
+    // Sleep between repeated pinging to download folder
+    Thread.sleep(2000)
     /*
-     * Firefox creates partial files while downloading. On download complete, partials are deleted and real file is filled
+     * Firefox creates partial files while downloading.
+     * On download complete, partials are deleted and real file is filled.
+     * There are no part files, file size isn't changed. Seems that download is complete
      */
-    if (!(f._1.length == 0 && parentDir.toFile.list().exists(_.endsWith("part")))) {
-      f
-    }
-    else {
-      Thread.sleep(500)
-      listenerOverFile(parentDir, filePath)
+    if (parentDirFiles.zip(parentDir.toFile.listFiles).forall( f => f._1.length == f._2.length)){
+      dumpFile(parentDir.resolve(filePath).toFile())
+    } else {
+      listenerOverFile(parentDir, parentDir.toFile.listFiles, filePath)
     }
   }
 
   private def tryPollResult(parentPath: Path, watchService: WatchService): (Array[Byte], String) = {
     try{
       watchService.take().pollEvents().asScala.find{ e=>
-//        case e if e.kind == ENTRY_MODIFY && counter == 1 => tryPollResult(parentPath, watchService, counter + 1)
         val cond = e.context().isInstanceOf[Path] && e.kind == ENTRY_CREATE && !e.context.asInstanceOf[Path].toString().endsWith("part")
         log.info("Event %s fired for %s".format(e.kind, e.context.asInstanceOf[Path].toString()))
         cond
-//          val path = e.context.asInstanceOf[Path]
-//          (e.kind, path)
       } match {
         case Some(event) =>
           log.info("Fired blocking await for resolve file %s".format(event.context().asInstanceOf[Path].toString))
-          val res = Await.result(Future{listenerOverFile(parentPath, event.context().asInstanceOf[Path])}, 30 seconds)
+          val res = Await.result(Future{listenerOverFile(parentPath, parentPath.toFile.listFiles, event.context().asInstanceOf[Path])}, 30 seconds)
           log.info("Resolved download for file %s".format(event.context().asInstanceOf[Path].toString))
           res
         case None => tryPollResult(parentPath, watchService)
       }
-
-//      val resultEvent: Option[(WatchEvent.Kind[_], Path)] =
-//        events.filter{
-//          case (kind, path) =>
-//            log.info(path.toString)
-//            log.info("+++++++" + !path.toString.endsWith("part"))
-//            kind == ENTRY_CREATE &&
-//            !path.toString.endsWith("part") &&
-//            {
-//             val (binary, ext) = dumpFile(parentPath.resolve(path).toFile)
-//             binary.length
-//            }> 0
-//        }.headOption
-//
-//      resultEvent match {
-//        case Some((kind, path)) =>
-//
-//          log.info("-- File was created: %s".format(path.getFileName()))
-//
-//          val file = parentPath.resolve(path).toFile
-//          dumpFile(file) match {
-//            case (ba, ext) if ba.length == 0 =>
-//              log.info("-- File was created but contains empty data: %s".format(path.getFileName()))
-//              tryPollResult(parentPath, watchService)
-//            case rest =>
-//              file.delete()
-//              rest
-//          }
-//        case None       =>
-//          Thread.sleep(200)
-//          tryPollResult(parentPath, watchService)
-//      }
     } catch {
       case ie: InterruptedException =>
         log.error("tryPollResult was interrupted", ie)
@@ -131,58 +96,6 @@ class DownloadFileAction(val d: FirefoxDriver, sessionID: String)(implicit conte
     }
 
   }
-
-//  private def tryPollResult(parentPath: Path, watchService: WatchService): (Array[Byte], String) = {
-//    try{
-//      val events = watchService.take().pollEvents().asScala.collect{
-////        case e if e.kind == ENTRY_MODIFY && counter == 1 => tryPollResult(parentPath, watchService, counter + 1)
-//        case e if e.context().isInstanceOf[Path] =>
-//          val path = e.context.asInstanceOf[Path]
-//          log.info("Event %s fired for %s".format(e.kind, path))
-//          (e.kind, path)
-//      }
-//
-//      val resultEvent: Option[(WatchEvent.Kind[_], Path)] =
-//        events.filter{
-//          case (kind, path) =>
-//            log.info(path.toString)
-//            log.info("+++++++" + !path.toString.endsWith("part"))
-//            kind == ENTRY_CREATE &&
-//            !path.toString.endsWith("part") &&
-//            {
-//             val (binary, ext) = dumpFile(parentPath.resolve(path).toFile)
-//             binary.length
-//            }> 0
-//        }.headOption
-//
-//      resultEvent match {
-//        case Some((kind, path)) =>
-//
-//          log.info("-- File was created: %s".format(path.getFileName()))
-//
-//          val file = parentPath.resolve(path).toFile
-//          dumpFile(file) match {
-//            case (ba, ext) if ba.length == 0 =>
-//              log.info("-- File was created but contains empty data: %s".format(path.getFileName()))
-//              tryPollResult(parentPath, watchService)
-//            case rest =>
-//              file.delete()
-//              rest
-//          }
-//        case None       =>
-//          Thread.sleep(200)
-//          tryPollResult(parentPath, watchService)
-//      }
-//    } catch {
-//      case ie: InterruptedException =>
-//        log.error("tryPollResult was interrupted", ie)
-//        throw ie
-//      case other: Throwable         =>
-//        log.error("Error on tryPoll", other)
-//        throw other
-//    }
-//
-//  }
 
   private def dumpFile(file: File): (Array[Byte], String) = {
     val ext  = FilenameUtils.getExtension(file.toString)

@@ -266,9 +266,4 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   public Timeout getTimeout(){
     return timeout;
   }
-
-//  public SeResDownloadFile download(ElementSelector selector) throws IOException {
-//    return typedBlock(new SeReqDownloadFile(userToReqElementSelectMethod(selector.method), selector.query), SeResDownloadFile.class);
-//  }
-
 }

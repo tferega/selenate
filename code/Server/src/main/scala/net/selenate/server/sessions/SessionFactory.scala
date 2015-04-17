@@ -32,17 +32,14 @@ private class SessionFactory extends ISessionFactory {
 
   private def getSessionDo(sessionID: String, prefMapOpt: Option[Map[String, AnyRef]], useFrames: java.lang.Boolean): Future[ActorRef] = Future {
     val profileOpt = prefMapOpt map getProfile
-    // default values!!!
-    val defPreferences: Map[String, AnyRef] = scala.collection.immutable.Map(
-      "browser.download.panel.shown"                 -> "false" // disable view of download panel
-    , "browser.download.useDownloadDir"              -> "true"  // download automatically insted of asking where
-//    , "browser.download.folderList"                  -> "2"     // setting to enable custom download folder
-    , "browser.download.dir"                         -> "/tmp/ff-downloads/%s".format(sessionID) // custom download folder
-    , "browser.download.manager.showAlertOnComplete" -> "false"
-    , "browser.helperApps.neverAsk.saveToDisk"       -> "text/csv, application/octet-stream, application/pdf,application/x-download" // default action for mime types
+    // session specific preferences
+    val sessionPreferences: Map[String, AnyRef] = scala.collection.immutable.Map(
+      "browser.download.dir"                         -> "/tmp/ff-downloads/%s".format(sessionID) // custom download folder
     )
 
-    val profile    = (profileOpt getOrElse emptyProfile).addPreferenceMap(defPreferences)
+    val profile    =
+      (profileOpt getOrElse emptyProfile)
+        .addPreferenceMap(sessionPreferences)//.get.setPreference("browser.download.dir",  "/tmp/ff-downloads/%s".format(sessionID))
 
     val name       = sessionID
 

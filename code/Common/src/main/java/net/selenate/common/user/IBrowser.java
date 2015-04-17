@@ -49,14 +49,6 @@ public interface IBrowser {
 
   public byte[] download(String url, SeDownloadMethod method, Map<String, String> headers, byte[] body) throws IOException;
 
-//  /**
-//   * Invokes remote file download and output to SeResDownloadFile
-//   * @param  selector          link with download attachment action
-//   * @return SeResDownloadFile contains binary data file and fileExtension
-//   * @throws IOException
-//   */
-//  public SeResDownloadFile download(ElementSelector selector) throws IOException;
-
   public void startKeepaliveClick(long delayMillis, ElementSelectMethod method, String query) throws IOException;
   public void startKeepaliveClick(long delayMillis, ElementSelector selector) throws IOException;
 
