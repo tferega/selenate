@@ -82,8 +82,15 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
 
   override def postStop() {
     log.info(s"Post stop for $sessionID, killing browser and actor.")
+    deleteProfileFolder
     d.kill()
   }
+
+  private def deleteProfileFolder(){
+    log.info(s"Deleting profile directory for $sessionID")
+    org.apache.commons.io.FileUtils.deleteDirectory(new java.io.File("/tmp/ff-downloads/%s".format(sessionID)))
+  }
+
   private def wrap(base: Receive) = new Receive {
     def isDefinedAt(arg: Any) = base.isDefinedAt(arg)
     def apply(arg: Any) = {
