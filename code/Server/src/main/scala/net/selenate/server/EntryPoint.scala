@@ -24,6 +24,9 @@ object EntryPoint extends App {
     DriverPool
 
     readLine
+    while(!ActorFactory.system.isTerminated) {
+      Thread.sleep(10000)
+    }
     log.info("Selenate Server now shutting down.")
     ActorFactory.shutdown()
     Runtime.getRuntime.halt(0)
