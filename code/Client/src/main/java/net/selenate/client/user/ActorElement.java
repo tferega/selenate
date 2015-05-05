@@ -172,6 +172,11 @@ public class ActorElement extends ActorBase implements IElement {
   }
 
   @Override
+  public SeResDownloadFile downloadFile() throws IOException {
+    return typedBlock(new SeReqDownloadFile(windowHandle, framePath, SeElementSelectMethod.UUID, uuid), SeResDownloadFile.class);
+  }
+
+  @Override
   public byte[] capture() throws IOException {
     final SeResCaptureElement res = typedBlock(new SeReqCaptureElement(windowHandle, framePath, SeElementSelectMethod.UUID, uuid), SeResCaptureElement.class);
     return res.body;

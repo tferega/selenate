@@ -11,8 +11,7 @@ import akka.actor.{ Actor, Cancellable }
 import net.selenate.common.comms.req.SeReqDownload
 import org.openqa.selenium.firefox.FirefoxProfile
 import scala.concurrent.duration.Duration
-import net.selenate.common.comms.req.SeReqWaitForBrowserPage
-import net.selenate.common.comms.req.SeReqSetUseFrames
+import net.selenate.common.comms.req._
 import akka.actor.PoisonPill
 
 class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean = true) extends Actor {
@@ -40,6 +39,7 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
     case arg: SeReqClose              => new CloseAction(d).act(arg)
     case arg: SeReqDeleteCookieNamed  => new DeleteCookieNamedAction(d).act(arg)
     case arg: SeReqDownload           => new DownloadAction(d).act(arg)
+    case arg: SeReqDownloadFile       => new DownloadFileAction(d, sessionID).act(arg)
     case arg: SeReqElementExists      => new ElementExistsAction(d).act(arg)
     case arg: SeReqExecuteScript      => new ExecuteScriptAction(d).act(arg)
     case arg: SeReqFindAlert          => new FindAlertAction(d).act(arg)
@@ -82,8 +82,15 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
 
   override def postStop() {
     log.info(s"Post stop for $sessionID, killing browser and actor.")
+    deleteProfileFolder
     d.kill()
   }
+
+  private def deleteProfileFolder(){
+    log.info(s"Deleting profile directory for $sessionID")
+    org.apache.commons.io.FileUtils.deleteDirectory(new java.io.File("/tmp/ff-downloads/%s".format(sessionID)))
+  }
+
   private def wrap(base: Receive) = new Receive {
     def isDefinedAt(arg: Any) = base.isDefinedAt(arg)
     def apply(arg: Any) = {

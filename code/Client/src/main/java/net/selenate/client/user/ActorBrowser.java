@@ -11,7 +11,6 @@ import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
 import net.selenate.common.user.*;
 import akka.actor.ActorRef;
-import akka.actor.PoisonPill;
 import akka.util.Timeout;
 
 public class ActorBrowser extends ActorBase implements IBrowser {

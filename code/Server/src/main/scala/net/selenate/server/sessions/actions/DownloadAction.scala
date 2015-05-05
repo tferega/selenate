@@ -39,7 +39,7 @@ class DownloadAction(val d: FirefoxDriver) extends IAction[SeReqDownload, SeResD
 
     arg.headers.foreach{
       case (k,v) =>
-        println("Key: " + k + " value: " + v)
+        log.debug("Key: " + k + " value: " + v)
         request.setHeader(k, v)
     }
 

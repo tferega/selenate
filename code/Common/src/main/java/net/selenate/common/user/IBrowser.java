@@ -7,6 +7,7 @@ import java.util.Map;
 import akka.util.Timeout;
 import net.selenate.common.comms.SeDownloadMethod;
 import net.selenate.common.comms.req.SeCommsReq;
+import net.selenate.common.comms.res.SeResDownloadFile;
 
 public interface IBrowser {
   public void open(String url) throws IOException;
