@@ -28,11 +28,14 @@ class HouseKeeper extends Actor{
       val oldestAllowedFileDate = DateUtils.addDays(new Date(), -7)
       log.info("Cleaning up firefox logs in /tmp/ff-downloads/logs. All files older than {} will be deleted!", oldestAllowedFileDate.toString())
       val file = new File("/tmp/ff-downloads/logs")
-      val filesToDelete = FileUtils.iterateFiles(file, new AgeFileFilter(oldestAllowedFileDate), TrueFileFilter.TRUE)
-      while (filesToDelete.hasNext()){
-        val f = filesToDelete.next()
-        log.debug("Deleting {} file", f.getName)
-        f.delete()
+      if (file.isDirectory) {
+        val filesToDelete = FileUtils.iterateFiles(file, new AgeFileFilter(oldestAllowedFileDate), TrueFileFilter.TRUE)
+        while (filesToDelete.hasNext()){
+          val f = filesToDelete.next()
+          log.debug("Deleting {} file", f.getName)
+          f.delete()
+        }
       }
+
   }
 }
