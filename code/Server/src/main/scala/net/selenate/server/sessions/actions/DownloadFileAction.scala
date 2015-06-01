@@ -30,7 +30,9 @@ class DownloadFileAction(val d: FirefoxDriver, sessionID: String)(implicit conte
     log.info("Invoked DownloadFileAction for %s".format(arg.toString()))
 
     val watchService = FileSystems.getDefault().newWatchService()
-    val dir     = new File("/tmp/ff-downloads/%s".format(sessionID))
+    val ffDownloads = new File("/tmp/ff-downloads")
+    if(!ffDownloads.isDirectory) ffDownloads.mkdir
+    val dir         = new File("/tmp/ff-downloads/%s".format(sessionID))
     if (!dir.isDirectory()) dir.mkdir()
     val path     = dir.toPath()
 
