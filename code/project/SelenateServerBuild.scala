@@ -15,10 +15,13 @@ object SelenateBuild extends Build {
   lazy val client = project(
     "Client",
     ProjectFlavor.Java,
-    Seq(akka),
+    Seq(akka, scalaTest),
     Seq(common)
   ) settings (
-    Publishing.settings: _*
+    (
+      Seq(unmanagedSourceDirectories in Test := (scalaSource in Test).value :: Nil)
+      ++ Publishing.settings
+    ): _*
   )
 
   lazy val common = project(

@@ -14,7 +14,7 @@ import scala.concurrent.*;
 import scala.concurrent.duration.Duration;
 
 public abstract class ActorBase {
-  protected static final Timeout timeout = new Timeout(30, TimeUnit.SECONDS);
+  protected Timeout timeout = new Timeout(30, TimeUnit.SECONDS);
   protected final ActorRef session;
 
   public ActorBase(final ActorRef session) {

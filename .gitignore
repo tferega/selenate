@@ -5,3 +5,4 @@
 .metadata
 target
 branch.config
+*.log

@@ -15,8 +15,6 @@ import scala.concurrent.duration._
 object DriverPool {
   val size           = C.Server.poolSize
   val defaultProfile = C.Server.defaultProfileOpt map DriverProfile.fromString getOrElse DriverProfile.empty
-  println(defaultProfile)
-
   val defaultPool = ActorFactory.typed[IDriverPoolActor]("driver-pool", new DriverPoolActor(defaultProfile, size))
 
   def get(profile: DriverProfile) = {

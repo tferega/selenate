@@ -27,7 +27,7 @@ object Dependencies {
   val configrity = "org.streum"              %% "configrity-core" % "1.0.0"
   val dispatch   = "net.databinder.dispatch" %% "dispatch-core"   % "0.10.0"
   val logback    = "ch.qos.logback"          %  "logback-classic" % "1.0.13"
-  val scalaTest  = "org.scalatest"           %% "scalatest"       % "1.9.1"
+  val scalaTest  = "org.scalatest"           %% "scalatest"       % "2.2.4"
   val slf4j      = "org.slf4j"               %  "slf4j-api"       % "1.7.5"
 
   val akka     = Seq(akkaActor, akkaRemote)
