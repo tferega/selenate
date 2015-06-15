@@ -57,8 +57,10 @@ public interface IBrowser {
 
   public void stopKeepalive() throws IOException;
 
-  public boolean waitForSikuliImage(final byte[] image) throws IOException;
-  public void clickSikuliImage(final byte[] image) throws IOException;
+  public boolean sikuliImageExists(final byte[] image) throws IOException;
+  public void sikuliClick(final byte[] image) throws IOException;
+  public byte[] sikuliTakeScreenshot(final byte[] image, final int width, final int height) throws IOException;
+  public void sikuliInputText(final byte[] image, final String text) throws IOException;
 
   public void setTimeout(Timeout timeout);
   public Timeout getTimeout();
