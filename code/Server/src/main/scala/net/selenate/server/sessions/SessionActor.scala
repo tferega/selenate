@@ -107,7 +107,7 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
             log.error(s"Error occured while processing [$clazz]", e)
           }
 
-          sender ! new Exception(e)
+          sender ! new Exception(e.stackTrace)
       } finally {
         log.info("####==> Sending response: SessionID=[%s]; reqID=[%s]; for=[%s] from %s.".format(sessionID, reqID, arg.toString, sender.path.toString))
       }
