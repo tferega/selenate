@@ -21,11 +21,11 @@
     </encoder>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <fileNamePattern>../logs/selenate-server-trace%d{yyyy-MM-dd}.log</fileNamePattern>
-      <maxHistory>7</maxHistory>
+      <maxHistory>10</maxHistory>
     </rollingPolicy>
   </appender>
-  <logger name="net.selenate" level="TRACE" additivity="false">
-    <appender-ref ref="TRACE"/>
+  <logger name="net.selenate" level="DEBUG" additivity="false">
+    <appender-ref ref="DEBUG"/>
   </logger>
   <root level="DEBUG">
     <appender-ref ref="STDOUT"/>

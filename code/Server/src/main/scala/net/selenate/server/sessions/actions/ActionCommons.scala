@@ -58,9 +58,9 @@ return report;
   }
 
   protected def switchToWindow(window: Window) {
-    log.debug("SWITCHING TO DEFAULT CONTENT")
+//    log.debug("SWITCHING TO DEFAULT CONTENT")
     d.switchTo.defaultContent
-    log.debug("SWITCHING TO WINDOW "+ window)
+//    log.debug("SWITCHING TO WINDOW "+ window)
     d.switchTo.window(window)
   }
 
@@ -68,7 +68,7 @@ return report;
     if(context.useFrames) {
       switchToWindow(window)
       framePath foreach { e =>
-        log.debug("SWITCHING TO FRAME "+ e)
+//        log.debug("SWITCHING TO FRAME "+ e)
         d.switchTo.frame(e)
       }
     }
@@ -226,7 +226,7 @@ return report;
       val fullPath = framePath ++ frame.toIndexedSeq
       switchToFrame(window, fullPath)
       val result = address(Address(window, fullPath))
-      log.debug("###############==========-----> [%s]: %s".format(fullPath.mkString(", "), result))
+//      log.debug("###############==========-----> [%s]: %s".format(fullPath.mkString(", "), result))
       val childrenResultList = findAllFrames.toStream flatMap { f =>
         inAllFramesDoit(window, fullPath, Some(f))
       }
