@@ -24,9 +24,6 @@
       <maxHistory>10</maxHistory>
     </rollingPolicy>
   </appender>
-  <logger name="net.selenate" level="DEBUG" additivity="false">
-    <appender-ref ref="DEBUG"/>
-  </logger>
   <root level="DEBUG">
     <appender-ref ref="STDOUT"/>
     <appender-ref ref="FILE-GLOBAL"/>
