@@ -99,6 +99,17 @@
     <NC:fileExtensions>brf</NC:fileExtensions>
     <NC:handlerProp RDF:resource="urn:mimetype:handler:text/plain"/>
   </RDF:Description>
+  <RDF:Description RDF:about="urn:mimetype:text/rtf"
+                   NC:value="text/rtf"
+                   NC:editable="true"
+                   NC:description="plain text document">
+    <NC:fileExtensions>asc</NC:fileExtensions>
+    <NC:fileExtensions>txt</NC:fileExtensions>
+    <NC:fileExtensions>text</NC:fileExtensions>
+    <NC:fileExtensions>pot</NC:fileExtensions>
+    <NC:fileExtensions>brf</NC:fileExtensions>
+    <NC:handlerProp RDF:resource="urn:mimetype:handler:text/plain"/>
+  </RDF:Description>
   <RDF:Description RDF:about="urn:scheme:handler:apt"
                    NC:useSystemDefault="true"
                    NC:alwaysAsk="true" />
@@ -284,6 +295,7 @@
     <RDF:li RDF:resource="urn:mimetype:application/msword"/>
     <RDF:li RDF:resource="urn:mimetype:application/x-compressed"/>
     <RDF:li RDF:resource="urn:mimetype:text/plain"/>
+    <RDF:li RDF:resource="urn:mimetype:text/rtf"/>
     <RDF:li RDF:resource="urn:mimetype:image/jpeg"/>
     <RDF:li RDF:resource="urn:mimetype:application/x-download"/>
     <RDF:li RDF:resource="urn:mimetype:text/csv"/>
@@ -304,6 +316,16 @@
                    NC:alwaysAsk="false"
                    NC:saveToDisk="true">
     <NC:externalApplication RDF:resource="urn:mimetype:externalApplication:text/html"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="urn:mimetype:handler:text/plain"
+                   NC:alwaysAsk="false"
+                   NC:saveToDisk="true">
+    <NC:externalApplication RDF:resource="urn:mimetype:externalApplication:text/plain"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="urn:mimetype:handler:text/rtf"
+                   NC:alwaysAsk="false"
+                   NC:saveToDisk="true">
+    <NC:externalApplication RDF:resource="urn:mimetype:externalApplication:text/rtf"/>
   </RDF:Description>
   <RDF:Description RDF:about="urn:mimetype:handler:application/msword"
                    NC:alwaysAsk="true"
