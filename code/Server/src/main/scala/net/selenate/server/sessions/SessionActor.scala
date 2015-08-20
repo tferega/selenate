@@ -35,7 +35,6 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
     case arg: SeReqCaptureWindow      => new CaptureWindowAction(d).act(arg)
     case arg: SeReqClearText          => new ClearTextAction(d).act(arg)
     case arg: SeReqClick              => new ClickAction(d).act(arg)
-    case arg: SeReqClickSikuliImage   => new ClickSikuliImageAction(d).act(arg)
     case arg: SeReqClose              => new CloseAction(d).act(arg)
     case arg: SeReqDeleteCookieNamed  => new DeleteCookieNamedAction(d).act(arg)
     case arg: SeReqDownload           => new DownloadAction(d).act(arg)
@@ -55,12 +54,15 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
     case arg: SeReqResetFrame         => new ResetFrameAction(d).act(arg)
     case arg: SeReqSelectOption       => new SelectOptionAction(d).act(arg)
     case arg: SeReqSetUseFrames       => new SetUseFramesAction(d).act(arg)
+    case arg: SeReqSikuliClick        => new SikuliClickAction(d).act(arg)
+    case arg: SeReqSikuliImageExists  => new SikuliImageExistsAction(d).act(arg)
+    case arg: SeReqSikuliInputText    => new SikuliInputTextAction(d).act(arg)
+    case arg: SeReqSikuliTakeScreenshot => new SikuliTakeScreenshotAction(d).act(arg)
     case arg: SeReqStartKeepalive     => new StartKeepaliveAction(d).act(arg)
     case arg: SeReqStopKeepalive      => new StopKeepaliveAction(d).act(arg)
     case arg: SeReqSwitchFrame        => new SwitchFrameAction(d).act(arg)
     case arg: SeReqWaitFor            => new WaitForAction(d).act(arg)
     case arg: SeReqWaitForBrowserPage => new WaitForBrowserPageAction(d).act(arg)
-    case arg: SeReqWaitForSikuliImage => new WaitForSikuliImageAction(d).act(arg)
   }
 
   private def receiveBase: Receive = {

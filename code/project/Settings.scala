@@ -74,7 +74,7 @@ object Default {
     Seq(
       name         := Name,
       organization := "net.selenate",
-      version      := "0.2.29",
+      version      := "0.2.31",
       scalaVersion := "2.10.2",
       unmanagedSourceDirectories in Test := Nil
   )
@@ -152,7 +152,7 @@ object Helpers {
     val osArch =
       osArchProp match {
       case "i386" | "i486" | "i586" | "i686" => "x86"
-      case "amd64" | "x86-64" | "x64"        => "x86_64"
+      case "amd64" | "x86-64" | "x64" | "x86_64" => "x86_64"
     }
 
     osName + "-" + osArch
