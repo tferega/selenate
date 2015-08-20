@@ -33,7 +33,7 @@ package object server {
       Some(f)
     } catch {
       case e: Exception =>
-        log.trace("Error in tryo: ", e)
+//        log.trace("Error in tryo: ", e)
         None
     }
 

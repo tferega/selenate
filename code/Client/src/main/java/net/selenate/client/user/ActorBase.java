@@ -28,7 +28,7 @@ public abstract class ActorBase {
   protected Object block(final Object req) throws IOException {
     try {
       final Future<Object> future = Patterns.ask(session, req, timeout);
-      final Object result = Await.result(future, timeout.duration());
+      final Object result = Await.result(future, new Timeout(32, TimeUnit.SECONDS).duration());
       return result;
     } catch (final Exception e) {
       throw new IOException(String.format("An error occured while sending the message to remote actor!\nMessage: %s", req.toString()), e);

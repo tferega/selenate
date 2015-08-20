@@ -35,6 +35,7 @@ private class SessionFactory extends ISessionFactory {
     // session specific preferences
     val sessionPreferences: Map[String, AnyRef] = scala.collection.immutable.Map(
       "browser.download.dir"                         -> "/tmp/ff-downloads/%s".format(sessionID) // custom download folder
+    , "webdriver.log.file"                           -> "/tmp/ff-downloads/logs/%s".format(sessionID)
     )
 
     val profile    =

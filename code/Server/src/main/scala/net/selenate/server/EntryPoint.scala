@@ -4,8 +4,8 @@ package server
 import actors.ActorFactory
 import common.sessions.ISessionFactory
 import driver.DriverPool
-import sessions.SessionFactory
-
+import sessions._
+import scala.concurrent.duration._
 import scala.annotation.tailrec
 
 object EntryPoint extends App {
@@ -22,8 +22,12 @@ object EntryPoint extends App {
 
     SessionFactory
     DriverPool
+    HouseKeeping.schedule(1 hour)
 
     readLine
+    while(!ActorFactory.system.isTerminated) {
+      Thread.sleep(10000)
+    }
     log.info("Selenate Server now shutting down.")
     ActorFactory.shutdown()
     Runtime.getRuntime.halt(0)

@@ -3,7 +3,7 @@ package net.selenate.server.sessions.actions
 import scala.annotation.tailrec
 
 trait WaitFor {
-  private val timeout    = 20000
+  private val timeout    = 25000
   private val resolution = 250
 
   def waitForPredicate[T](predicate: => Option[T]): Option[T] = {
