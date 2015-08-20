@@ -15,7 +15,7 @@ object SelenateBuild extends Build {
   lazy val client = project(
     "Client",
     ProjectFlavor.Java,
-    Seq(akka, scalaTest),
+    Seq(akka, scalaTest % "test"),
     Seq(common)
   ) settings (
     (
