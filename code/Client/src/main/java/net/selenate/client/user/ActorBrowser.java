@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import net.selenate.common.comms.*;
 import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
 import net.selenate.common.user.*;
 import akka.actor.ActorRef;
+import akka.util.Timeout;
 
 public class ActorBrowser extends ActorBase implements IBrowser {
   public ActorBrowser(final ActorRef session) {
@@ -103,7 +105,8 @@ public class ActorBrowser extends ActorBase implements IBrowser {
 
   @Override
   public void quit() throws IOException {
-    typedBlock(new SeReqQuit(), SeResQuit.class);
+    typedBlock(new SeReqQuit(), SeResQuit.class); // kill browser.
+    gracefullStop(); // Destroy actor session
   }
 
   @Override
@@ -176,8 +179,8 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
-  public byte[] download(String url) throws IOException {
-    final SeResDownload res = typedBlock(new SeReqDownload(url), SeResDownload.class);
+  public byte[] download(String url, SeDownloadMethod method, Map<String, String> headers, byte[] body) throws IOException {
+    final SeResDownload res = typedBlock(new SeReqDownload(url, method, headers, body), SeResDownload.class);
     return res.body;
   }
 
@@ -246,14 +249,29 @@ public class ActorBrowser extends ActorBase implements IBrowser {
   }
 
   @Override
-  public boolean waitForSikuliImage(final byte[] image) throws IOException {
-    final SeResWaitForSikuliImage res = typedBlock(new SeReqWaitForSikuliImage(image, 30000), SeResWaitForSikuliImage.class);
+  public boolean sikuliImageExists(final byte[] image) throws IOException {
+    final SeResSikuliImageExists res = typedBlock(new SeReqSikuliImageExists(image, 5000), SeResSikuliImageExists.class);
     return res.isImageFound();
   }
-
   @Override
-  public void clickSikuliImage(final byte[] image) throws IOException {
-    typedBlock(new SeReqClickSikuliImage(image, 30000), SeResClickSikuliImage.class);
+  public void sikuliClick(final byte[] image) throws IOException {
+    typedBlock(new SeReqSikuliClick(image, 5000), SeResSikuliClick.class);
+  }
+  @Override
+  public byte[] sikuliTakeScreenshot(byte[] image, int width, int height) throws IOException {
+    final SeResSikuliTakeScreenshot res = typedBlock(new SeReqSikuliTakeScreenshot(image, width, height), SeResSikuliTakeScreenshot.class);
+    return res.getImage();
+  }
+  @Override
+  public void sikuliInputText(byte[] image, String text) throws IOException {
+    typedBlock(new SeReqSikuliInputText(image, text), SeResSikuliInputText.class);
   }
 
+  public void setTimeout(Timeout timeout){
+    this.timeout = timeout;
+  }
+
+  public Timeout getTimeout(){
+    return timeout;
+  }
 }

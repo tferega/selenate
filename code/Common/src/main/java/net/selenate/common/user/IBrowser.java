@@ -2,8 +2,12 @@ package net.selenate.common.user;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+import akka.util.Timeout;
+import net.selenate.common.comms.SeDownloadMethod;
 import net.selenate.common.comms.req.SeCommsReq;
+import net.selenate.common.comms.res.SeResDownloadFile;
 
 public interface IBrowser {
   public void open(String url) throws IOException;
@@ -43,7 +47,7 @@ public interface IBrowser {
 
   public INavigation navigate() throws IOException;
 
-  public byte[] download(String url) throws IOException;
+  public byte[] download(String url, SeDownloadMethod method, Map<String, String> headers, byte[] body) throws IOException;
 
   public void startKeepaliveClick(long delayMillis, ElementSelectMethod method, String query) throws IOException;
   public void startKeepaliveClick(long delayMillis, ElementSelector selector) throws IOException;
@@ -53,6 +57,11 @@ public interface IBrowser {
 
   public void stopKeepalive() throws IOException;
 
-  public boolean waitForSikuliImage(final byte[] image) throws IOException;
-  public void clickSikuliImage(final byte[] image) throws IOException;
+  public boolean sikuliImageExists(final byte[] image) throws IOException;
+  public void sikuliClick(final byte[] image) throws IOException;
+  public byte[] sikuliTakeScreenshot(final byte[] image, final int width, final int height) throws IOException;
+  public void sikuliInputText(final byte[] image, final String text) throws IOException;
+
+  public void setTimeout(Timeout timeout);
+  public Timeout getTimeout();
 }

@@ -21,18 +21,21 @@ class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
   protected val log = Log(classOf[CaptureWindowAction])
 
   def act = { arg =>
-    val resFindElement = inAllWindows { address => // set us in the right frame
+    val resFindElement = (inAllWindows { address => // set us in the right frame
       tryo {
-        findElement(arg.method, arg.query)
+        if(elementExists(arg.method, arg.query).isDefined)
+          Some(getScreenshot(arg.cssElement))
+        else None
       }
-    }
-
-    if(resFindElement.isEmpty) {
-      throw new IllegalArgumentException("Couldn't take screenshot." +
+    }).flatten
+    
+    resFindElement.head match {
+      case Some(scr) => 
+        new SeResCaptureWindow(scr)
+      case _ =>
+        throw new IllegalArgumentException("Couldn't take screenshot." +
           "Element [%s, %s] was not found in any frame!".format(arg.method.toString, arg.query))
     }
-
-    new SeResCaptureWindow(getScreenshot(arg.cssElement))
   }
 
   private def getScreenshot(cssElement: String): Array[Byte] = {
@@ -40,13 +43,15 @@ class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
 
     val (captureElement, cssElementID) = cssElement.isEmpty() match {
       case true =>
-        val cssElemID = "captureScreenshot"
+        val cssElemID   = "captureScreenshot"
         val captureElem = "document.body"
         d.executeScript(createImageForWholePage(html2Canvasplugin, captureElem, cssElemID))
         (captureElem, cssElemID)
       case _    =>
-        val html = TagSoupCleaner.fromString(d.executeScript(getElementHtml(cssElement)).toString()).replaceAll("\n", "").replaceAll("'", "\\\\'")
-        val cssElemID = "%s" format cssElement.replaceAll("\\W", "")
+        val withAllTags = TagSoupCleaner.fromString(d.executeScript(getElementHtml(cssElement)).toString()).replaceAll("\n", "").replaceAll("'", "\\\\'")
+        val noStartTags = withAllTags.substring(49, withAllTags.length())
+        val html        = noStartTags.substring(0, noStartTags.length() - 14)
+        val cssElemID   = "%s" format cssElement.replaceAll("\\W", "")
         d.executeScript(createImageForElement(cssElement, cssElemID, html))
         ("document.querySelector('%s')" format cssElement, cssElemID)
     }
@@ -70,7 +75,7 @@ class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
     return document.querySelector('%s').outerHTML;""" format cssElement
 
   private def createImageForElement(cssSelector: String, id: String, html: String) = """
-    function crateImage(cssSelector, id, html) {
+    function createImage(cssSelector, id, html) {
         var w = document.querySelector(cssSelector).offsetWidth.toString();
         var h = document.querySelector(cssSelector).offsetHeight.toString();
 
@@ -82,7 +87,8 @@ class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
         canvas = document.getElementById(id);
 
         var ctx  = canvas.getContext('2d');
-        var data = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '">' +
+				var data = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '">' +
+											'<rect width="100%%" height="100%%" fill="white"></rect>' + 
                       '<foreignObject width="100%%" height="100%%">' +
                         '<div xmlns="http://www.w3.org/1999/xhtml" >' + html + '</div>' +
                       '</foreignObject>' +
@@ -97,11 +103,11 @@ class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
 
         img.onload = function () {
             ctx.drawImage(img, 0, 0);
-            DOMURL.revokeObjectURL(url);
+            DOMURL.revokeObjectURL(canvas.toDataURL("image/png"));
         }
         img.src = url;
     }
-    crateImage("%s", "%s", '%s');""" format (cssSelector, id, html)
+    createImage("%s", "%s", '%s');""" format (cssSelector, id, html)
 
   private def createImageForWholePage(jsplugin: String, queryCssElement: String, cssElementID: String) = """
     %s

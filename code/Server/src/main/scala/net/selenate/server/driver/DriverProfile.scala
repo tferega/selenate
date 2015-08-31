@@ -3,7 +3,6 @@ package server
 package driver
 
 import org.openqa.selenium.firefox.FirefoxProfile
-
 import scala.collection.immutable.TreeMap
 
 object DriverProfile {
@@ -47,7 +46,16 @@ object DriverProfile {
   }
 
   private def getFFP(prefMap: Map[String, AnyRef]) = {
-    val ffp = new FirefoxProfile
+    val ffp = new FirefoxProfile(new java.io.File(sys.props("user.dir") + "/Server/profiles/clean_slate"))
+    // disable view of download panel
+    ffp.setPreference("browser.download.panel.shown"                 , false)
+    // download automatically insted of asking where
+    ffp.setPreference("browser.download.useDownloadDir"              , true)
+    // setting to enable custom download folder
+    ffp.setPreference("browser.download.folderList"                  , 2)
+    ffp.setPreference("browser.download.manager.showAlertOnComplete" , false)
+    // default action save for mime types. NOTE: for Content-Disposition: attachment, sometimes you'll need to edit mimeTypes.rdf in ff profile!
+    ffp.setPreference("browser.helperApps.neverAsk.saveToDisk"       , "text/csv, application/octet-stream, application/pdf,application/x-download")
     prefMap foreach addPref(ffp)
     ffp
   }
@@ -83,4 +91,8 @@ class DriverProfile(val prefMap: Map[String, AnyRef]) {
 
   /*private[driver]*/ val get = getFFP(prefMap)
   /*private[driver]*/ val signature = serializeProfile(this)
+  def addPreferenceMap(additionalPrefMap: Map[String, AnyRef]) = {
+    new DriverProfile(prefMap++additionalPrefMap)
+  }
+
 }
