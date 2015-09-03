@@ -6,13 +6,13 @@ package actions
 import common.comms.res._
 import common.comms.req._
 
-import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.remote.RemoteWebElement
 
 import scala.collection.JavaConversions._
 
 
-class FindElementListAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class FindElementListAction(val d: RemoteWebDriver)(implicit context: ActionContext)
     extends IAction[SeReqFindElementList, SeResFindElementList]
     with ActionCommons {
 

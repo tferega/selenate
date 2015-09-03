@@ -6,10 +6,10 @@ package actions
 import common.comms.res._
 import common.comms.req._
 
-import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.{ By, WebElement }
 
-class SwitchFrameAction(val d: FirefoxDriver)
+class SwitchFrameAction(val d: RemoteWebDriver)
     extends IAction[SeReqSwitchFrame, SeResSwitchFrame]
     with ActionCommons {
 

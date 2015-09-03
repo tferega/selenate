@@ -8,7 +8,7 @@ import res._
 import req._
 import org.openqa.selenium.{ Cookie, OutputType, WebElement }
 import org.openqa.selenium.remote.RemoteWebElement
-import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.remote.RemoteWebDriver
 import scala.collection.JavaConversions._
 import org.apache.commons.codec.binary.Base64
 
@@ -32,7 +32,7 @@ return report;
   }
 }
 
-class CaptureAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class CaptureAction(val d: RemoteWebDriver)(implicit context: ActionContext)
     extends IAction[SeReqCapture, SeResCapture]
     with ActionCommons {
   import CaptureAction._

@@ -5,13 +5,13 @@ package actions
 
 import common.comms.res._
 import common.comms.req._
-import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.{ By, WebElement }
 import scala.collection.JavaConversions._
 import org.openqa.selenium.support.ui.Select
 
 
-class SelectOptionAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class SelectOptionAction(val d: RemoteWebDriver)(implicit context: ActionContext)
     extends IAction[SeReqSelectOption, SeResSelectOption]
     with ActionCommons {
 

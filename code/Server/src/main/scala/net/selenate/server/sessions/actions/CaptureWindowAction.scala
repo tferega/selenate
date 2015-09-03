@@ -6,14 +6,14 @@ package actions
 import common.comms._
 import res._
 import req._
-import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.{ By, WebElement }
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.io._
 import org.openqa.selenium.remote.RemoteWebElement
 import net.selenate.server.util.TagSoupCleaner
 
-class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class CaptureWindowAction(val d: RemoteWebDriver)(implicit context: ActionContext)
     extends IAction[SeReqCaptureWindow, SeResCaptureWindow]
     with ActionCommons
     with WaitFor {

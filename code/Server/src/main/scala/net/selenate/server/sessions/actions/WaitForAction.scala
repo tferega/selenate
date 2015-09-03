@@ -7,12 +7,12 @@ import common.comms._
 import res._
 import req._
 
-import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.{ By, WebElement }
 
 import scala.collection.JavaConversions._
 
-class WaitForAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class WaitForAction(val d: RemoteWebDriver)(implicit context: ActionContext)
     extends IAction[SeReqWaitFor, SeResWaitFor]
     with ActionCommons
     with WaitFor {

@@ -6,7 +6,7 @@ package actions
 import common.comms.res._
 import common.comms.req._
 import java.util.ArrayList
-import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.remote.RemoteWebElement
 import scala.collection.JavaConverters._
 import java.nio.file.FileSystems
@@ -20,7 +20,7 @@ import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 import java.nio.file.WatchEvent
 
-class DownloadFileAction(val d: FirefoxDriver, sessionID: String)(implicit context: ActionContext)
+class DownloadFileAction(val d: RemoteWebDriver, sessionID: String)(implicit context: ActionContext)
     extends IAction[SeReqDownloadFile, SeResDownloadFile]
     with ActionCommons {
 

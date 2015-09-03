@@ -6,14 +6,15 @@ import actors.ActorFactory
 
 import java.util.UUID
 
-import org.openqa.selenium.firefox.FirefoxDriver
+
+import org.openqa.selenium.remote.{DesiredCapabilities, RemoteWebDriver}
 
 import scala.collection.mutable.Queue
 import scala.concurrent.{ Await, Future }
 import scala.concurrent.duration._
 
 private[driver] class DriverPoolActor(val profile: DriverProfile, val size: Int) extends IDriverPoolActor {
-  private case class DriverEntry(uuid: UUID, future: Future[FirefoxDriver])
+  private case class DriverEntry(uuid: UUID, future: Future[RemoteWebDriver])
 
   private val log = Log(classOf[DriverPoolActor])
   private val pool = new Queue[DriverEntry]
@@ -32,7 +33,7 @@ private[driver] class DriverPoolActor(val profile: DriverProfile, val size: Int)
 
     val driverFuture = Future {
       log.info("Driver pool actor starting a new entry: {%s}." format uuid)
-      val driver = new FirefoxDriver(profile.get)
+      val driver = new RemoteWebDriver(new java.net.URL("http://10.5.35.5:4444/wd/hub"), DesiredCapabilities.firefox())//(profile.get)
       log.info("Driver pool actor entry {%s} started." format uuid)
       driver
     }
@@ -40,7 +41,7 @@ private[driver] class DriverPoolActor(val profile: DriverProfile, val size: Int)
     pool.enqueue(driverEntry)
   }
 
-  def get: FirefoxDriver = {
+  def get: RemoteWebDriver = {
     enqueueNew
     val driverEntry = pool.dequeue
     log.info("Driver pool actor waiting for entry {%s}" format driverEntry.uuid)

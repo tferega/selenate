@@ -6,9 +6,9 @@ package actions
 import common.comms.res._
 import common.comms.req._
 
-import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.remote.RemoteWebDriver
 
-class ExecuteScriptAction(val d: FirefoxDriver) extends IAction[SeReqExecuteScript, SeResExecuteScript] {
+class ExecuteScriptAction(val d: RemoteWebDriver) extends IAction[SeReqExecuteScript, SeResExecuteScript] {
 
   protected val log = Log(classOf[ExecuteScriptAction])
 

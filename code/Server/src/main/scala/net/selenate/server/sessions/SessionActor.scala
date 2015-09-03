@@ -85,7 +85,7 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
   override def postStop() {
     log.info(s"Post stop for $sessionID, killing browser and actor.")
     deleteProfileFolder
-    d.kill()
+    d.quit()
   }
 
   private def deleteProfileFolder(){

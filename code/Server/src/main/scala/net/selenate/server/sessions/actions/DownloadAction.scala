@@ -8,13 +8,13 @@ import common.comms.req._
 import dispatch._
 import com.ning.http.client.Cookie
 import java.{ util => ju }
-import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.remote.RemoteWebDriver
 import scala.collection.JavaConversions._
 import java.io.IOException
 import net.selenate.common.comms.SeDownloadMethod
 import com.ning.http.client.ProxyServer
 
-class DownloadAction(val d: FirefoxDriver) extends IAction[SeReqDownload, SeResDownload] {
+class DownloadAction(val d: RemoteWebDriver) extends IAction[SeReqDownload, SeResDownload] {
 
   protected val log = Log(classOf[DownloadAction])
 

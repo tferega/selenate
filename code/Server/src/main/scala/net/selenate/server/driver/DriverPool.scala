@@ -6,7 +6,8 @@ import actors.ActorFactory
 
 import java.util.UUID
 
-import org.openqa.selenium.firefox.FirefoxDriver
+
+import org.openqa.selenium.remote.{DesiredCapabilities, RemoteWebDriver}
 
 import scala.collection.mutable.Queue
 import scala.concurrent.{ Await, Future }
@@ -21,7 +22,7 @@ object DriverPool {
     if (profile.signature == defaultProfile.signature) {
       defaultPool.get
     } else {
-      new FirefoxDriver(profile.get)
+      new RemoteWebDriver(new java.net.URL("http://10.5.35.5:4444/wd/hub"), DesiredCapabilities.firefox()) //(profile.get)
     }
   }
 }

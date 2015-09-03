@@ -2,8 +2,8 @@ package net.selenate
 package server
 package driver
 
-import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.remote.RemoteWebDriver
 
 private[driver] trait IDriverPoolActor {
-  def get: FirefoxDriver
+  def get: RemoteWebDriver
 }

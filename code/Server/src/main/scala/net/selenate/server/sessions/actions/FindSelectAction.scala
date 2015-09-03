@@ -7,12 +7,12 @@ import common.comms._
 import res._
 import req._
 import java.util.ArrayList
-import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.remote.RemoteWebElement
 import scala.collection.JavaConversions._
 
 
-class FindSelectAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class FindSelectAction(val d: RemoteWebDriver)(implicit context: ActionContext)
     extends IAction[SeReqFindSelect, SeResFindSelect]
     with ActionCommons {
 

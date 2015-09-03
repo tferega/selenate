@@ -6,12 +6,12 @@ package actions
 import common.comms.res._
 import common.comms.req._
 
-import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.{ By, WebElement }
 
 import scala.collection.JavaConversions._
 
-class ClickAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class ClickAction(val d: RemoteWebDriver)(implicit context: ActionContext)
     extends IAction[SeReqClick, SeResClick]
     with ActionCommons {
 

@@ -6,7 +6,7 @@ package actions
 import common.comms.res._
 import common.comms.req._
 import java.util.ArrayList
-import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.remote.RemoteWebElement
 import scala.collection.JavaConversions._
 import org.openqa.selenium.TakesScreenshot
@@ -17,7 +17,7 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 
-class CaptureElementAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class CaptureElementAction(val d: RemoteWebDriver)(implicit context: ActionContext)
     extends IAction[SeReqCaptureElement, SeResCaptureElement]
     with ActionCommons {
 

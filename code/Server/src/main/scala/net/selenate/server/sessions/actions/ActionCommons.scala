@@ -7,7 +7,6 @@ import common.comms._
 import req._
 import res._
 import java.util.ArrayList
-import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.remote.{ RemoteWebDriver, RemoteWebElement, UselessFileDetector }
 import org.openqa.selenium.SearchContext
 import org.openqa.selenium.{ By, WebElement }
@@ -25,7 +24,7 @@ trait ActionCommons {
   case class Address(window: Window, framePath: FramePath)
 
 
-  val d: FirefoxDriver
+  val d: RemoteWebDriver
   protected val log: net.selenate.server.Log[_]
 
   object JS {

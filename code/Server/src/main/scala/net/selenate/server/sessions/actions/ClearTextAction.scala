@@ -6,12 +6,12 @@ package actions
 import common.comms.res._
 import common.comms.req._
 
-import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.{ By, WebElement }
 
 import scala.collection.JavaConversions._
 
-class ClearTextAction(val d: FirefoxDriver)(implicit context: ActionContext)
+class ClearTextAction(val d: RemoteWebDriver)(implicit context: ActionContext)
     extends IAction[SeReqClearText, SeResClearText]
     with ActionCommons {
 
