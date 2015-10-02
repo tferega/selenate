@@ -19,7 +19,9 @@ class InputTextAction(val d: FirefoxDriver)(implicit context: ActionContext)
   def act = { arg =>
     switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)
     val e = findElement(arg.method, arg.query)
+
     e.sendKeys(Keys.chord(arg.text))
+    e.sendKeys(Keys.ESCAPE) // only the special keys will trigger the keyUp event
 
     new SeResInputText()
   }
