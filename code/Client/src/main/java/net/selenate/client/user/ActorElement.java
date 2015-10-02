@@ -10,12 +10,14 @@ import net.selenate.common.comms.req.SeReqClearText;
 import net.selenate.common.comms.req.SeReqClick;
 import net.selenate.common.comms.req.SeReqDownloadFile;
 import net.selenate.common.comms.req.SeReqFindSelect;
+import net.selenate.common.comms.req.SeReqInputText;
 import net.selenate.common.comms.res.SeResAppendText;
 import net.selenate.common.comms.res.SeResCaptureElement;
 import net.selenate.common.comms.res.SeResClearText;
 import net.selenate.common.comms.res.SeResClick;
 import net.selenate.common.comms.res.SeResDownloadFile;
 import net.selenate.common.comms.res.SeResFindSelect;
+import net.selenate.common.comms.res.SeResInputText;
 import net.selenate.common.user.Location;
 import net.selenate.common.user.Position;
 
@@ -179,6 +181,11 @@ public class ActorElement extends ActorBase implements IElement {
   }
 
   @Override
+  public void inputText(String text) throws IOException {
+    typedBlock(new SeReqInputText(windowHandle, framePath, SeElementSelectMethod.UUID, uuid, text), SeResInputText.class);
+  }
+
+  @Override
   public void click() throws IOException {
     typedBlock(new SeReqClick(windowHandle, framePath, SeElementSelectMethod.UUID, uuid), SeResClick.class);
   }
@@ -193,4 +200,5 @@ public class ActorElement extends ActorBase implements IElement {
     final SeResCaptureElement res = typedBlock(new SeReqCaptureElement(windowHandle, framePath, SeElementSelectMethod.UUID, uuid), SeResCaptureElement.class);
     return res.body;
   }
+
 }

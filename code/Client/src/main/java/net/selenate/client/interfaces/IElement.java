@@ -27,6 +27,7 @@ public interface IElement {
   public void clearText() throws IOException;
   public void appendText(String text) throws IOException;
   public void setText(String text) throws IOException;
+  public void inputText(String text) throws IOException;
   public void click() throws IOException;
 
   /**
