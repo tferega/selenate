@@ -10,6 +10,9 @@ object LinuxDisplay extends Loggable {
   private val screenCache = new SetCache[Int]()
   private val BaseNum = 200
 
+  private val width  = C.Server.Pool.DISPLAY_WIDTH
+  private val height = C.Server.Pool.DISPLAY_HEIGHT
+
   def create(): DisplayInfo = {
     try {
       val num = getFirstFree()
@@ -70,17 +73,17 @@ object LinuxDisplay extends Loggable {
     }
   }
 
-  private def runXvfb(num: Int)         = LinuxProc.runAndVerify("Xvfb", s":$num" | "-screen" | "0" | "1024x768x16" | "-ac")
+  private def runXvfb(num: Int)         = LinuxProc.runAndVerify("Xvfb", s":$num" | "-screen" | "0" | s"${width}x${height}x16" | "-ac")
   private def runIceWM(num: Int)        = LinuxProc.runAndVerify("icewm", Seq(s"--display=:$num"))
   private def runX11vnc(num: Int)       = LinuxProc.runAndVerify("x11vnc", "-display" | s":$num" | "-listen" | "localhost" | "-nopw" | "-xkb" | "-shared" | "-forever")
   private def runXdpyInfo(num: Int)     = LinuxProc.runAndEnd("xdpyinfo", "-display" | s":$num")
   private def runPkill(pattern: String) = LinuxProc.runAndEnd("pkill", "-f" | pattern)
   private def runFFmpeg(filename: String, num: Int) = LinuxProc.runAndVerify("ffmpeg",
         "-y"          |
-        "-video_size" | "1920x1080" |
-        "-framerate"  | "25"        |
-        "-f"          | "x11grab"   |
-        "-i"          | s":$num"    |
+        "-video_size" | s"${width}x${height}" |
+        "-framerate"  | "25"                  |
+        "-f"          | "x11grab"             |
+        "-i"          | s":$num"              |
         filename)
 
   @tailrec

@@ -50,8 +50,11 @@ object FirefoxRunner extends Loggable {
     throw new SeException("Specific displays not yet supported!")
   }
 
-  def createScript(displayNum: Int, binaryLocation: File) =
+  def createScript(displayNum: Int, binaryLocation: File) = {
+    val width = C.Server.Pool.DISPLAY_WIDTH
+    val height = C.Server.Pool.DISPLAY_HEIGHT
     s"""|#!/bin/bash
         |
-        |DISPLAY=:$displayNum $binaryLocation "$$@"""".stripMargin
+        |DISPLAY=:$displayNum $binaryLocation -width $width -height $height "$$@"""".stripMargin
+  }
 }
