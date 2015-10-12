@@ -1,20 +1,20 @@
 package net.selenate.common.sessions;
 
 import java.io.Serializable;
-import net.selenate.common.exceptions.SeNullArgumentException;
+
+import net.selenate.common.SelenateUtils;
 
 public class SessionRequest implements Serializable {
   private static final long serialVersionUID = 45749879L;
 
-  private final String sessionID;
+  private final String  sessionID;
+  private final String  poolName; // can be null
   private final boolean isRecorded;
 
-  public SessionRequest(
-      final String sessionID,
-      final Boolean isRecorded) {
-    this.sessionID = sessionID;
+  public SessionRequest(final String sessionID, final String poolName, final boolean isRecorded) {
+    this.sessionID = SelenateUtils.guardNullOrEmpty(sessionID, "SessionID");
+    this.poolName  = poolName;
     this.isRecorded = isRecorded;
-    validate();
   }
 
   public String getSessionID() {
@@ -25,23 +25,12 @@ public class SessionRequest implements Serializable {
     return isRecorded;
   }
 
-  public SessionRequest withSessionID(final String newSessionID) {
-    return new SessionRequest(newSessionID, this.isRecorded);
-  }
-
-  public SessionRequest withIsRecorded(final boolean newIsRecorded) {
-    return new SessionRequest(this.sessionID, newIsRecorded);
-  }
-
-  private void validate() {
-    if (sessionID == null) {
-      throw new SeNullArgumentException("Session ID");
-    }
+  public String getPoolName() {
+    return poolName;
   }
 
   @Override
   public String toString() {
-    return String.format("SessionRequest(%s, %s)",
-        sessionID, String.valueOf(isRecorded));
+    return String.format("SessionRequest(%s, %s, %s)", sessionID, poolName, String.valueOf(isRecorded));
   }
 }

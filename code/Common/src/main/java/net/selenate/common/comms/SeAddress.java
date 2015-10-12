@@ -1,9 +1,9 @@
 package net.selenate.common.comms;
 
 import java.util.List;
-import net.selenate.common.exceptions.SeEmptyArgumentListException;
-import net.selenate.common.exceptions.SeNullArgumentException;
+
 import net.selenate.common.SelenateUtils;
+
 
 public final class SeAddress implements SeComms {
   private static final long serialVersionUID = 45749879L;
@@ -11,12 +11,9 @@ public final class SeAddress implements SeComms {
   private final String        windowHandle;
   private final List<Integer> framePath;
 
-  public SeAddress(
-      final String        windowHandle,
-      final List<Integer> framePath) {
-    this.windowHandle = windowHandle;
-    this.framePath    = framePath;
-    validate();
+  public SeAddress(final String windowHandle, final List<Integer> framePath) {
+    this.windowHandle = SelenateUtils.guardNullOrEmpty(windowHandle, "WindowHandle");
+    this.framePath    = SelenateUtils.guardNull(framePath, "FramePath");
   }
 
   public String getWindowHandle() {
@@ -33,20 +30,6 @@ public final class SeAddress implements SeComms {
 
   public SeAddress withFramePath(final List<Integer> newFramePath) {
     return new SeAddress(this.windowHandle, newFramePath);
-  }
-
-  private void validate() {
-    if (windowHandle == null) {
-      throw new SeNullArgumentException("Window handle");
-    }
-
-    if ("".equals(windowHandle)) {
-      throw new SeEmptyArgumentListException("Window handle");
-    }
-
-    if (framePath == null) {
-      throw new SeNullArgumentException("Frame path");
-    }
   }
 
   @Override

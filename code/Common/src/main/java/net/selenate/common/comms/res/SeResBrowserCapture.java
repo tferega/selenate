@@ -1,8 +1,8 @@
 package net.selenate.common.comms.res;
 
 import java.util.List;
+
 import net.selenate.common.comms.*;
-import net.selenate.common.exceptions.SeNullArgumentException;
 import net.selenate.common.SelenateUtils;
 
 public final class SeResBrowserCapture implements SeCommsRes {
@@ -15,11 +15,11 @@ public final class SeResBrowserCapture implements SeCommsRes {
   public SeResBrowserCapture(
       final String                 name,
       final long                   time,
-      final List<SeCapturedWindow> windowList) {
-    this.name       = name;
+      final List<SeCapturedWindow> windowList)
+  {
+    this.name       = SelenateUtils.guardNull(name, "Name");
     this.time       = time;
-    this.windowList = windowList;
-    validate();
+    this.windowList = SelenateUtils.guardNull(windowList, "WindowList");
   }
 
   public String getName() {
@@ -44,16 +44,6 @@ public final class SeResBrowserCapture implements SeCommsRes {
 
   public SeResBrowserCapture withWindowList(final List<SeCapturedWindow> newWindowList) {
     return new SeResBrowserCapture(this.name, this.time, newWindowList);
-  }
-
-  private void validate() {
-    if (name == null) {
-      throw new SeNullArgumentException("Name");
-    }
-
-    if (windowList == null) {
-      throw new SeNullArgumentException("Window list");
-    }
   }
 
   @Override

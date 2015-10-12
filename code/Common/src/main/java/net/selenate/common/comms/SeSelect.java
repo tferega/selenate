@@ -2,7 +2,6 @@ package net.selenate.common.comms;
 
 import java.util.List;
 import net.selenate.common.SelenateUtils;
-import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeSelect implements SeComms {
   private static final long serialVersionUID = 45749879L;
@@ -18,12 +17,13 @@ public final class SeSelect implements SeComms {
       final int            optionCount,
       final int            selectedIndex,
       final SeOption       selectedOption,
-      final List<SeOption> options) {
-    this.element        = element;
+      final List<SeOption> options)
+  {
+    this.element        = SelenateUtils.guardNull(element, "Element");
     this.optionCount    = optionCount;
     this.selectedIndex  = selectedIndex;
-    this.selectedOption = selectedOption;
-    this.options        = options;
+    this.selectedOption = SelenateUtils.guardNull(selectedOption, "SelectedOption");
+    this.options        = SelenateUtils.guardNull(options, "Options");
   }
 
   public SeElement getElement() {
@@ -44,40 +44,6 @@ public final class SeSelect implements SeComms {
 
   public List<SeOption> getOptions() {
     return options;
-  }
-
-  public SeSelect withElement(final SeElement newElement) {
-    return new SeSelect(newElement, this.optionCount, this.selectedIndex, this.selectedOption, this.options);
-  }
-
-  public SeSelect withOptionCount(final int newOptionCount) {
-    return new SeSelect(this.element, newOptionCount, this.selectedIndex, this.selectedOption, this.options);
-  }
-
-  public SeSelect withSelectedIndex(final Integer newSelectedIndex) {
-    return new SeSelect(this.element, this.optionCount, newSelectedIndex, this.selectedOption, this.options);
-  }
-
-  public SeSelect withSelectedOption(final SeOption newSelectedOption) {
-    return new SeSelect(this.element, this.optionCount, this.selectedIndex, newSelectedOption, this.options);
-  }
-
-  public SeSelect withOptions(final List<SeOption> newOptions) {
-    return new SeSelect(this.element, this.optionCount, this.selectedIndex, this.selectedOption, newOptions);
-  }
-
-  public void validate() {
-    if (element == null) {
-      throw new SeNullArgumentException("element");
-    }
-
-    if (selectedOption == null) {
-      throw new SeNullArgumentException("Selected option");
-    }
-
-    if (options == null) {
-      throw new SeNullArgumentException("options");
-    }
   }
 
   @Override

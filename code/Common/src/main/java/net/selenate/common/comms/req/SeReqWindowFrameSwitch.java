@@ -1,61 +1,48 @@
 package net.selenate.common.comms.req;
 
-import java.util.List;
-import net.selenate.common.exceptions.SeNullArgumentException;
 import net.selenate.common.SelenateUtils;
+import net.selenate.common.comms.*;
 
 public final class SeReqWindowFrameSwitch implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
 
-  private final List<Integer> framePath;
+  private final SeElementSelector frameSelector;
 
-  public SeReqWindowFrameSwitch(final List<Integer> framePath) {
-    this.framePath = framePath;
-    validate();
+  public SeReqWindowFrameSwitch(final String frameName) {
+    this(new SeElementSelector(SeElementSelectMethod.NAME, frameName));
   }
 
-  public List<Integer> getFramePath() {
-    return framePath;
+  public SeReqWindowFrameSwitch(final SeElementSelector selector) {
+    this.frameSelector = SelenateUtils.guardNull(selector, "Selector");
   }
 
-  public SeReqWindowFrameSwitch withFramePath(final List<Integer> newFramePath) {
-    return new SeReqWindowFrameSwitch(newFramePath);
-  }
-
-  private void validate() {
-    if (framePath == null) {
-      throw new SeNullArgumentException("Frame path");
-    }
+  public SeElementSelector getFrameSelector() {
+    return frameSelector;
   }
 
   @Override
   public String toString() {
-    return String.format("SeReqWindowSwitchFrame(%d, %s)",
-        SelenateUtils.listToString(framePath));
+    return String.format("SeReqWindowFrameSwitch(%s)", frameSelector);
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((framePath == null) ? 0 : framePath.hashCode());
+    result = prime * result
+      + ((frameSelector == null) ? 0 : frameSelector.hashCode());
     return result;
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (getClass() != obj.getClass()) return false;
     SeReqWindowFrameSwitch other = (SeReqWindowFrameSwitch) obj;
-    if (framePath == null) {
-      if (other.framePath != null)
-        return false;
-    } else if (!framePath.equals(other.framePath))
-      return false;
+    if (frameSelector == null) {
+      if (other.frameSelector != null) return false;
+    } else if (!frameSelector.equals(other.frameSelector)) return false;
     return true;
   }
 }

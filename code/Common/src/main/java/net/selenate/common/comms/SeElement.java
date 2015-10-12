@@ -1,6 +1,6 @@
 package net.selenate.common.comms;
 
-import net.selenate.common.exceptions.SeNullArgumentException;
+import net.selenate.common.SelenateUtils;
 
 public final class SeElement implements SeComms {
   private static final long serialVersionUID = 45749879L;
@@ -30,20 +30,20 @@ public final class SeElement implements SeComms {
       final boolean           isDisplayed,
       final boolean           isEnabled,
       final boolean           isSelected,
-      final SeAddress         address) {
-    this.uuid        = uuid;
-    this.selector    = selector;
+      final SeAddress         address)
+  {
+    this.uuid        = SelenateUtils.guardNull(uuid, "UUID");
+    this.selector    = SelenateUtils.guardNull(selector, "Selector");
     this.posX        = posX;
     this.posY        = posY;
     this.width       = width;
     this.height      = height;
-    this.name        = name;
-    this.text        = text;
+    this.name        = SelenateUtils.guardNull(name, "Name");
+    this.text        = SelenateUtils.guardNull(text, "Text");
     this.isDisplayed = isDisplayed;
     this.isEnabled   = isEnabled;
     this.isSelected  = isSelected;
-    this.address     = address;
-    validate();
+    this.address     = SelenateUtils.guardNull(address, "Address");
   }
 
   public String getUuid() {
@@ -92,76 +92,6 @@ public final class SeElement implements SeComms {
 
   public SeAddress getAddress() {
     return address;
-  }
-
-  public SeElement withUuid(final String newUUID) {
-    return new SeElement(newUUID, this.selector, this.posX, this.posY, this.width, this.height, this.name, this.text, this.isDisplayed, this.isEnabled, this.isSelected, this.address);
-  }
-
-  public SeElement withSelector(final SeElementSelector newSelector) {
-    return new SeElement(this.uuid, newSelector, this.posX, this.posY, this.width, this.height, this.name, this.text, this.isDisplayed, this.isEnabled, this.isSelected, this.address);
-  }
-
-  public SeElement withPosX(final int newPosX) {
-    return new SeElement(this.uuid, this.selector, newPosX, this.posY, this.width, this.height, this.name, this.text, this.isDisplayed, this.isEnabled, this.isSelected, this.address);
-  }
-
-  public SeElement withPosY(final int newPosY) {
-    return new SeElement(this.uuid, this.selector, this.posX, newPosY, this.width, this.height, this.name, this.text, this.isDisplayed, this.isEnabled, this.isSelected, this.address);
-  }
-
-  public SeElement withWidth(final int newWidth) {
-    return new SeElement(this.uuid, this.selector, this.posX, this.posY, newWidth, this.height, this.name, this.text, this.isDisplayed, this.isEnabled, this.isSelected, this.address);
-  }
-
-  public SeElement withHeight(final int newHeight) {
-    return new SeElement(this.uuid, this.selector, this.posX, this.posY, this.width, newHeight, this.name, this.text, this.isDisplayed, this.isEnabled, this.isSelected, this.address);
-  }
-
-  public SeElement withName(final String newName) {
-    return new SeElement(this.uuid, this.selector, this.posX, this.posY, this.width, this.height, newName, this.text, this.isDisplayed, this.isEnabled, this.isSelected, this.address);
-  }
-
-  public SeElement withText(final String newText) {
-    return new SeElement(this.uuid, this.selector, this.posX, this.posY, this.width, this.height, this.name, newText, this.isDisplayed, this.isEnabled, this.isSelected, this.address);
-  }
-
-  public SeElement withDisplayed(final boolean newDisplayed) {
-    return new SeElement(this.uuid, this.selector, this.posX, this.posY, this.width, this.height, this.name, this.text, newDisplayed, this.isEnabled, this.isSelected, this.address);
-  }
-
-  public SeElement withEnabled(final boolean newEnabled) {
-    return new SeElement(this.uuid, this.selector, this.posX, this.posY, this.width, this.height, this.name, this.text, this.isDisplayed, newEnabled, this.isSelected, this.address);
-  }
-
-  public SeElement withSelected(final boolean newSelected) {
-    return new SeElement(this.uuid, this.selector, this.posX, this.posY, this.width, this.height, this.name, this.text, this.isDisplayed, this.isEnabled, newSelected, this.address);
-  }
-
-  public SeElement withAddress(final SeAddress newAddress) {
-    return new SeElement(this.uuid, this.selector, this.posX, this.posY, this.width, this.height, this.name, this.text, this.isDisplayed, this.isEnabled, this.isSelected, newAddress);
-  }
-
-  private void  validate() {
-    if (uuid == null) {
-      throw new SeNullArgumentException("UUID");
-    }
-
-    if (selector == null) {
-      throw new SeNullArgumentException("Selector");
-    }
-
-    if (name == null) {
-      throw new SeNullArgumentException("Name");
-    }
-
-    if (text == null) {
-      throw new SeNullArgumentException("Text");
-    }
-
-    if (address == null) {
-      throw new SeNullArgumentException("Address");
-    }
   }
 
   @Override

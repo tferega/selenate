@@ -1,7 +1,7 @@
 package net.selenate.common.comms.req;
 
+import net.selenate.common.SelenateUtils;
 import net.selenate.common.comms.SeElementSelector;
-import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeReqElementCapture implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
@@ -9,8 +9,7 @@ public final class SeReqElementCapture implements SeCommsReq {
   private final SeElementSelector selector;
 
   public SeReqElementCapture(final SeElementSelector selector) {
-    this.selector = selector;
-    validate();
+    this.selector = SelenateUtils.guardNull(selector, "Selector");
   }
 
   public SeElementSelector getSelector() {
@@ -19,12 +18,6 @@ public final class SeReqElementCapture implements SeCommsReq {
 
   public SeReqElementCapture withSelector(final SeElementSelector newSelector) {
     return new SeReqElementCapture(newSelector);
-  }
-
-  private void validate() {
-    if (selector == null) {
-      throw new SeNullArgumentException("Selector");
-    }
   }
 
   @Override

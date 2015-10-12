@@ -18,7 +18,6 @@ public final class SeReqSessionSetContext implements SeCommsReq {
     this.useFrames            = useFrames;
     this.keepaliveDelayMillis = keepaliveDelayMillis;
     this.keepaliveReqList     = keepaliveReqList;
-    validate();
   }
 
   public Optional<Boolean> isUseFrames() {
@@ -43,9 +42,6 @@ public final class SeReqSessionSetContext implements SeCommsReq {
 
   public SeReqSessionSetContext withkeepaliveReqList(final Optional<List<SeCommsReq>> newKeepaliveReqList) {
     return new SeReqSessionSetContext(this.useFrames, this.keepaliveDelayMillis, newKeepaliveReqList);
-  }
-
-  private void validate() {
   }
 
   @Override

@@ -9,7 +9,6 @@ public final class SeReqSystemClick implements SeCommsReq {
   public SeReqSystemClick(final int x, final int y) {
     this.x = x;
     this.y = y;
-    validate();
   }
 
   public int getX() {
@@ -26,9 +25,6 @@ public final class SeReqSystemClick implements SeCommsReq {
 
   public SeReqSystemClick withY(final int newY) {
     return new SeReqSystemClick(this.x, newY);
-  }
-
-  private void validate() {
   }
 
   @Override

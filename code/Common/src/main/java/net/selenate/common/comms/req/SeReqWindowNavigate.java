@@ -1,7 +1,7 @@
 package net.selenate.common.comms.req;
 
+import net.selenate.common.SelenateUtils;
 import net.selenate.common.comms.SeNavigateDirection;
-import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeReqWindowNavigate implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
@@ -9,8 +9,7 @@ public final class SeReqWindowNavigate implements SeCommsReq {
   private SeNavigateDirection direction;
 
   public SeReqWindowNavigate(final SeNavigateDirection direction) {
-    this.direction = direction;
-    validate();
+    this.direction = SelenateUtils.guardNull(direction, "Direction");
   }
 
   public SeNavigateDirection getDirection() {
@@ -19,12 +18,6 @@ public final class SeReqWindowNavigate implements SeCommsReq {
 
   public SeReqWindowNavigate withDirection(final SeNavigateDirection newDirection) {
     return new SeReqWindowNavigate(newDirection);
-  }
-
-  private void validate() {
-    if (direction == null) {
-      throw new SeNullArgumentException("Direction");
-    }
   }
 
   @Override

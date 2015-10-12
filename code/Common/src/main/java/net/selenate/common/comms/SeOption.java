@@ -1,6 +1,6 @@
 package net.selenate.common.comms;
 
-import net.selenate.common.exceptions.SeNullArgumentException;
+import net.selenate.common.SelenateUtils;
 
 public final class SeOption implements SeComms {
   private static final long serialVersionUID = 45749879L;
@@ -8,22 +8,11 @@ public final class SeOption implements SeComms {
   private final SeElement element;
 
   public SeOption(final SeElement element) {
-    this.element = element;
-    validate();
+    this.element = SelenateUtils.guardNull(element, "Element");
   }
 
   public SeElement getElement() {
     return element;
-  }
-
-  public SeOption withElement(final SeElement newElement) {
-    return new SeOption(newElement);
-  }
-
-  public void validate() {
-    if (element == null) {
-      throw new SeNullArgumentException("Element");
-    }
   }
 
   @Override

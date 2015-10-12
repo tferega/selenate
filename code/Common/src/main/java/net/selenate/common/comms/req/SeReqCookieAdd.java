@@ -1,7 +1,7 @@
 package net.selenate.common.comms.req;
 
+import net.selenate.common.SelenateUtils;
 import net.selenate.common.comms.SeCookie;
-import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeReqCookieAdd implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
@@ -9,8 +9,7 @@ public final class SeReqCookieAdd implements SeCommsReq {
   private final SeCookie cookie;
 
   public SeReqCookieAdd(final SeCookie cookie) {
-    this.cookie = cookie;
-    validate();
+    this.cookie = SelenateUtils.guardNull(cookie, "Cookie");
   }
 
   public SeCookie getCookie() {
@@ -20,13 +19,6 @@ public final class SeReqCookieAdd implements SeCommsReq {
   public SeReqCookieAdd withCookie(final SeCookie newCookie) {
     return new SeReqCookieAdd(newCookie);
   }
-
-  private void validate() {
-    if (cookie == null) {
-      throw new SeNullArgumentException("Cookie");
-    }
-  }
-
 
   @Override
   public String toString() {

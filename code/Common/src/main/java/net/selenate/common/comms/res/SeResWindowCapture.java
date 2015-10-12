@@ -1,7 +1,7 @@
 package net.selenate.common.comms.res;
 
 import java.util.Arrays;
-import net.selenate.common.exceptions.SeNullArgumentException;
+
 import net.selenate.common.SelenateUtils;
 
 public final class SeResWindowCapture implements SeCommsRes{
@@ -10,8 +10,7 @@ public final class SeResWindowCapture implements SeCommsRes{
   private final byte[] screenshot;
 
   public SeResWindowCapture(final byte[] screenshot){
-    this.screenshot = screenshot;
-    validate();
+    this.screenshot = SelenateUtils.guardNull(screenshot, "Screenshot");
   }
 
   public byte[] getScreenshot() {
@@ -20,12 +19,6 @@ public final class SeResWindowCapture implements SeCommsRes{
 
   public SeResWindowCapture withScreenshot(final byte[] newScreenshot) {
     return new SeResWindowCapture(newScreenshot);
-  }
-
-  private void validate() {
-    if (screenshot == null) {
-      throw new SeNullArgumentException("Screenshot");
-    }
   }
 
   @Override

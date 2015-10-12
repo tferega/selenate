@@ -1,11 +1,8 @@
 package net.selenate.common.comms;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 import net.selenate.common.SelenateUtils;
-import net.selenate.common.exceptions.SeEmptyArgumentListException;
-import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeCapturedWindow implements SeComms {
   private static final long serialVersionUID = 45749879L;
@@ -33,18 +30,19 @@ public final class SeCapturedWindow implements SeComms {
       final Set<SeCookie> cookieSet,
       final String        html,
       final byte[]        screenshot,
-      final List<SeCapturedFrame> frameList) {
-    this.title      = title;
-    this.url        = url;
-    this.handle     = handle;
+      final List<SeCapturedFrame> frameList)
+  {
+    this.title      = SelenateUtils.guardNull(title, "Title");
+    this.url        = SelenateUtils.guardNull(url, "URL");
+    this.handle     = SelenateUtils.guardNullOrEmpty(handle, "Handle");
     this.posX       = posX;
     this.posY       = posY;
     this.width      = width;
     this.height     = height;
-    this.cookieSet  = cookieSet;
-    this.html       = html;
-    this.screenshot = screenshot;
-    this.frameList  = frameList;
+    this.cookieSet  = SelenateUtils.guardNull(cookieSet, "Cookie set");
+    this.html       = SelenateUtils.guardNull(html, "Html");
+    this.screenshot = SelenateUtils.guardNull(screenshot, "Screenshot");
+    this.frameList  = SelenateUtils.guardNull(frameList, "FrameList");
   }
 
   public String getTitle() {
@@ -89,84 +87,6 @@ public final class SeCapturedWindow implements SeComms {
 
   public List<SeCapturedFrame> getFrameList() {
     return frameList;
-  }
-
-  public SeCapturedWindow withTitle(String newTitle) {
-    return new SeCapturedWindow(newTitle, this.url, this.handle, this.posX, this.posY, this.width, this.height, this.cookieSet, this.html, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withUrl(String newUrl) {
-    return new SeCapturedWindow(this.title, newUrl, this.handle, this.posX, this.posY, this.width, this.height, this.cookieSet, this.html, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withHandle(String newHandle) {
-    return new SeCapturedWindow(this.title, this.url, newHandle, this.posX, this.posY, this.width, this.height, this.cookieSet, this.html, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withPosX(int newPosX) {
-    return new SeCapturedWindow(this.title, this.url, this.handle, newPosX, this.posY, this.width, this.height, this.cookieSet, this.html, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withPosY(int newPosY) {
-    return new SeCapturedWindow(this.title, this.url, this.handle, this.posX, newPosY, this.width, this.height, this.cookieSet, this.html, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withWidth(int newWidth) {
-    return new SeCapturedWindow(this.title, this.url, this.handle, this.posX, this.posY, newWidth, this.height, this.cookieSet, this.html, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withHeight(int newHeight) {
-    return new SeCapturedWindow(this.title, this.url, this.handle, this.posX, this.posY, this.width, newHeight, this.cookieSet, this.html, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withCookieSet(Set<SeCookie> newCookieSet) {
-    return new SeCapturedWindow(this.title, this.url, this.handle, this.posX, this.posY, this.width, this.height, newCookieSet, this.html, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withHtml(String newHtml) {
-    return new SeCapturedWindow(this.title, this.url, this.handle, this.posX, this.posY, this.width, this.height, this.cookieSet, newHtml, this.screenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withScreenshot(byte[] newScreenshot) {
-    return new SeCapturedWindow(this.title, this.url, this.handle, this.posX, this.posY, this.width, this.height, this.cookieSet, this.html, newScreenshot, this.frameList);
-  }
-
-  public SeCapturedWindow withFrameList(List<SeCapturedFrame> newFrameList) {
-    return new SeCapturedWindow(this.title, this.url, this.handle, this.posX, this.posY, this.width, this.height, this.cookieSet, this.html, this.screenshot, newFrameList);
-  }
-
-  public void validate() {
-    if (title == null) {
-      throw new SeNullArgumentException("Title");
-    }
-
-    if (url == null) {
-      throw new SeNullArgumentException("URL");
-    }
-
-    if (handle == null) {
-      throw new SeNullArgumentException("Handle");
-    }
-
-    if ("".equals(handle)) {
-      throw new SeEmptyArgumentListException("Handle");
-    }
-
-    if (cookieSet == null) {
-      throw new SeNullArgumentException("Cookie set");
-    }
-
-    if (html == null) {
-      throw new SeNullArgumentException("Html");
-    }
-
-    if (screenshot == null) {
-      throw new SeNullArgumentException("Screenshot");
-    }
-
-    if (frameList == null) {
-      throw new SeNullArgumentException("Frame list");
-    }
   }
 
   @Override

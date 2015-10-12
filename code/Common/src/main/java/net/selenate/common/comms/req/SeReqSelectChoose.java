@@ -1,8 +1,7 @@
 package net.selenate.common.comms.req;
 
-import net.selenate.common.comms.SeElementSelector;
-import net.selenate.common.comms.SeOptionSelector;
-import net.selenate.common.exceptions.SeNullArgumentException;
+import net.selenate.common.SelenateUtils;
+import net.selenate.common.comms.*;
 
 public final class SeReqSelectChoose implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
@@ -13,9 +12,8 @@ public final class SeReqSelectChoose implements SeCommsReq {
   public SeReqSelectChoose(
       final SeElementSelector parentSelector,
       final SeOptionSelector  optionSelector) {
-    this.parentSelector = parentSelector;
-    this.optionSelector = optionSelector;
-    validate();
+    this.parentSelector = SelenateUtils.guardNull(parentSelector, "ParentSelector");
+    this.optionSelector = SelenateUtils.guardNull(optionSelector, "OptionSelector");
   }
 
   public SeElementSelector getParentSelector() {
@@ -32,15 +30,6 @@ public final class SeReqSelectChoose implements SeCommsReq {
 
   public SeReqSelectChoose withOptionSelector(final SeOptionSelector newOptionSelector) {
     return new SeReqSelectChoose(this.parentSelector, newOptionSelector);
-  }
-
-  private void validate() {
-    if (parentSelector == null) {
-      throw new SeNullArgumentException("Parent selector");
-    }
-    if (optionSelector == null) {
-      throw new SeNullArgumentException("Option selector");
-    }
   }
 
   @Override
