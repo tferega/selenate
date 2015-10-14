@@ -35,23 +35,7 @@ trait ActionCommonsParsers extends ActionCommonsBase { self: Loggable =>
   }
 
   protected def parseSelectElement(address: Address, selector: SeElementSelector)(e: RemoteWebElement): SeSelect = {
-    val select = new Select(e)
-    val rawAllOptionList         = select.getOptions.map(_.asInstanceOf[RemoteWebElement]).toIndexedSeq
-    val rawSelectedOptionList    = select.getAllSelectedOptions.map(_.asInstanceOf[RemoteWebElement]).toIndexedSeq
-    val selectedIndexList        = rawAllOptionList.zipWithIndex.collect { case(o, i) if rawSelectedOptionList.contains(o) => i }
-
-    val parsedAllOptionList      = rawAllOptionList map parseOptionElement(address, selector)
-    val parsedSelectedOptionList = rawSelectedOptionList map parseOptionElement(address, selector)
-
-    val firstSelectedIndex       = selectedIndexList.headOption
-    val firstSelectedOption      = parsedSelectedOptionList.headOption
-
-    new SeSelect(
-        parseWebElement(address, selector)(e),
-        parsedAllOptionList.size,
-        firstSelectedIndex map toInteger orNull,
-        firstSelectedOption.orNull,
-        seqToRealJava(parsedAllOptionList))
+    new SeSelect(parseWebElement(address, selector)(e))
   }
 
   protected def parseOptionElement(address: Address, selector: SeElementSelector)(e: RemoteWebElement): SeOption =
