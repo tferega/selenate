@@ -1,7 +1,5 @@
 package net.selenate.common.comms;
 
-import java.util.Optional;
-import net.selenate.common.SelenateUtils;
 import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SeElementSelector implements SeComms {

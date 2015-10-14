@@ -60,6 +60,6 @@ public final class ActorFactory {
   }
 
   public static void shutdown() {
-    system.shutdown();
+    system.terminate();
   }
 }

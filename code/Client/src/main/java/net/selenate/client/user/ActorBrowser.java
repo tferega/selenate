@@ -1,6 +1,5 @@
 package net.selenate.client.user;
 
-import java.util.Optional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;

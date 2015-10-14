@@ -5,7 +5,9 @@ bin
 .settings
 .metadata
 target
+.target
 branch.config
+.cache-main
 
 *.log
 *.mp4
