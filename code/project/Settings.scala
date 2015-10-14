@@ -6,6 +6,7 @@ import EclipsePlugin.{ EclipseCreateSrc, EclipseKeys, EclipseProjectFlavor }
 import net.virtualvoid.sbt.graph.{ Plugin => GraphPlugin }
 import xerial.sbt.Pack
 trait Settings {
+  import scala.language.implicitConversions
   implicit def depToDepSeq(dep: ModuleID) = Seq(dep)
 
   def project(
@@ -28,12 +29,12 @@ trait Settings {
     )
 
   private val default =
-    Defaults.defaultSettings ++
+    Defaults.coreDefaultSettings ++
     EclipsePlugin.settings ++
     GraphPlugin.graphSettings ++ Seq(
       organization := "com.ferega",
       version      := "0.3.0-SNAPSHOT",
-      scalaVersion := "2.11.5",
+      scalaVersion := "2.11.7",
       EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource,
       EclipseKeys.eclipseOutput := Some("bin")
     )
@@ -66,18 +67,34 @@ trait Settings {
     default ++ Seq(
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
       autoScalaLibrary          := false,
+      crossPaths                := false,
       unmanagedSourceDirectories in Compile := (javaSource in Compile).value :: Nil,
       unmanagedSourceDirectories in Test    := Nil,
       javacOptions := Seq(
-        "-deprecation",
         "-encoding", "UTF-8",
         "-Xlint:all"
       )
     )
 
   val publishing = Seq(
-    crossScalaVersions := Seq("2.11.5", "2.10.4"),
-    publishArtifact in (Compile, packageDoc) := false
+    crossScalaVersions := Seq("2.11.7", "2.10.4"),
+    publishArtifact in (Compile, packageDoc) := false,
+    publishArtifact in Test := false,
+    publishTo := Some(
+      if (version.value endsWith "SNAPSHOT") {
+        Opts.resolver.sonatypeSnapshots
+      } else {
+        Opts.resolver.sonatypeStaging
+      }
+    ),
+    publishMavenStyle       := true,
+    pomIncludeRepository    := { _ => false },
+    licenses                += ("MIT", url("http://opensource.org/licenses/MIT")),
+    homepage                := Some(url("https://github.com/tferega/selenate")),
+    credentials             += Credentials(Path.userHome / ".config" / "tferega.credentials"),
+    startYear               := Some(2012),
+    scmInfo                 := Some(ScmInfo(url("https://github.com/tferega/selenate"), "scm:git:https://github.com/tferega/selenate.git")),
+    pomExtra                ~= (_ ++ {Developers.toXml})
   )
 
   def getPackable(mainClass: String) =
