@@ -1,14 +1,18 @@
 package net.selenate.client.user;
 
 import akka.actor.ActorRef;
-import java.io.IOException;
 
-import net.selenate.common.comms.SeElementSelector;
+import java.io.IOException;
+import java.util.List;
+
+import net.selenate.common.comms.SeOption;
 import net.selenate.common.comms.SeOptionSelectMethod;
 import net.selenate.common.comms.SeOptionSelector;
 import net.selenate.common.comms.SeSelect;
 import net.selenate.common.comms.req.SeReqSelectChoose;
+import net.selenate.common.comms.req.SeReqSelectFindOptionList;
 import net.selenate.common.comms.res.SeResSelectChoose;
+import net.selenate.common.comms.res.SeResSelectFindOptionList;
 
 public class ActorSelect extends ActorElement {
   private final SeSelect select;
@@ -24,10 +28,15 @@ public class ActorSelect extends ActorElement {
 
   public void selectByIndex(int index) throws IOException {
     final SeOptionSelector optionSelector = new SeOptionSelector(SeOptionSelectMethod.INDEX, String.valueOf(index));
-    choose(select.getElement().getSelector(), optionSelector);
+    choose(optionSelector);
   }
 
-  public void choose(final SeElementSelector parentSelector, final SeOptionSelector optionSelector) throws IOException {
-    typedBlock(new SeReqSelectChoose(parentSelector, optionSelector), SeResSelectChoose.class);
+  public void choose(final SeOptionSelector optionSelector) throws IOException {
+    typedBlock(new SeReqSelectChoose(select.getElement().getSelector(), optionSelector), SeResSelectChoose.class);
+  }
+
+  public List<SeOption> getAllOptions() throws IOException {
+    final SeResSelectFindOptionList res =  typedBlock(new SeReqSelectFindOptionList(select.getElement().getSelector()), SeResSelectFindOptionList.class);
+    return res.getOptionList();
   }
 }
