@@ -13,21 +13,24 @@ trait ActionCommons
     with ActionCommonsFrames
     with ActionCommonsParsers { self: Loggable =>
   protected def findElementList(selector: SeElementSelector): IndexedSeq[RemoteWebElement] = {
-    import SeElementSelectMethod._
-
-    val elementFactory = selector.getMethod match {
-      case CLASS_NAME        => By.className _
-      case CSS_SELECTOR      => By.cssSelector _
-      case ID                => By.id _
-      case LINK_TEXT         => By.linkText _
-      case NAME              => By.name _
-      case PARTIAL_LINK_TEXT => By.partialLinkText _
-      case TAG_NAME          => By.tagName _
-      case XPATH             => By.xpath _
-    }
-
-    d.findElements(elementFactory(selector.getQuery)).map(_.asInstanceOf[RemoteWebElement]).toIndexedSeq
+    val by = byFactory(selector)
+    d.findElements(by).map(_.asInstanceOf[RemoteWebElement]).toIndexedSeq
   }
+
+  protected def byFactory(selector: SeElementSelector): By = {
+    import SeElementSelectMethod._
+    selector.getMethod match {
+      case CLASS_NAME        => By.className(selector.getQuery)
+      case CSS_SELECTOR      => By.cssSelector(selector.getQuery)
+      case ID                => By.id(selector.getQuery)
+      case LINK_TEXT         => By.linkText(selector.getQuery)
+      case NAME              => By.name(selector.getQuery)
+      case PARTIAL_LINK_TEXT => By.partialLinkText(selector.getQuery)
+      case TAG_NAME          => By.tagName(selector.getQuery)
+      case XPATH             => By.xpath(selector.getQuery)
+    }
+  }
+
 
   protected def selectOption(s: Select, selector: SeOptionSelector) = {
     import SeOptionSelectMethod._

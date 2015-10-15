@@ -6,37 +6,57 @@ import net.selenate.common.exceptions.SeNullArgumentException;
 public final class SeReqElementFindList implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
 
-  private final SeElementSelector selector;
+  private final SeElementSelector parentSelector;
+  private final SeElementSelector targetSelector;
 
-  public SeReqElementFindList(final SeElementSelector selector) {
-    this.selector = selector;
+  public SeReqElementFindList(final SeElementSelector targetSelector) {
+    this(null, targetSelector);
+  }
+
+  public SeReqElementFindList(
+      final SeElementSelector parentSelector,
+      final SeElementSelector targetSelector) {
+    this.parentSelector = parentSelector;
+    this.targetSelector = targetSelector;
     validate();
   }
 
-  public SeElementSelector getSelector() {
-    return selector;
+  public SeElementSelector getParentSelector() {
+    return parentSelector;
   }
 
-  public SeReqElementFindList withSelector(final SeElementSelector newSelector) {
-    return new SeReqElementFindList(newSelector);
+  public SeElementSelector getTargetSelector() {
+    return targetSelector;
+  }
+
+  public SeReqElementFindList withParentSelector(final SeElementSelector newParentSelector) {
+    return new SeReqElementFindList(newParentSelector, this.targetSelector);
+  }
+
+  public SeReqElementFindList withTargetSelector(final SeElementSelector newTargetSelector) {
+    return new SeReqElementFindList(this.parentSelector, newTargetSelector);
   }
 
   private void validate() {
-    if (selector == null) {
-      throw new SeNullArgumentException("Selector");
+    if (targetSelector == null) {
+      throw new SeNullArgumentException("Target selector");
     }
   }
 
   @Override
   public String toString() {
-    return String.format("SeReqElementFindList(%s)", selector);
+    return String.format("SeReqElementFindList(%s, %s)",
+        parentSelector, targetSelector);
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((selector == null) ? 0 : selector.hashCode());
+    result = prime * result
+        + ((targetSelector == null) ? 0 : targetSelector.hashCode());
+    result = prime * result
+        + ((parentSelector == null) ? 0 : parentSelector.hashCode());
     return result;
   }
 
@@ -49,10 +69,15 @@ public final class SeReqElementFindList implements SeCommsReq {
     if (getClass() != obj.getClass())
       return false;
     SeReqElementFindList other = (SeReqElementFindList) obj;
-    if (selector == null) {
-      if (other.selector != null)
+    if (targetSelector == null) {
+      if (other.targetSelector != null)
         return false;
-    } else if (!selector.equals(other.selector))
+    } else if (!targetSelector.equals(other.targetSelector))
+      return false;
+    if (parentSelector == null) {
+      if (other.parentSelector != null)
+        return false;
+    } else if (!parentSelector.equals(other.parentSelector))
       return false;
     return true;
   }
