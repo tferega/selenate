@@ -32,7 +32,7 @@ trait Settings {
     Defaults.coreDefaultSettings ++
     EclipsePlugin.settings ++
     GraphPlugin.graphSettings ++ Seq(
-      organization := "com.ferega",
+      organization := "net.selenate",
       version      := "0.3.0-SNAPSHOT",
       scalaVersion := "2.11.7",
       EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource,
