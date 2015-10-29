@@ -28,12 +28,15 @@ public class ActorBrowser extends ActorBase {
     return res.getResult();
   }
 
-  public boolean waitFor(final List<SeElementSelector> selectorList) throws IOException {
-    return waitFor(new SePage("default", selectorList));
+  public boolean waitFor(
+      final List<SeElementSelector> presentSelectorList,
+      final List<SeElementSelector> absentSelectorList
+      ) throws IOException {
+    return waitFor(new SePage("default", presentSelectorList));
   }
 
-  public boolean waitFor(final SeElementSelector... selectorList) throws IOException {
-    return waitFor(new SePage("default", new ArrayList<SeElementSelector>(Arrays.asList(selectorList))));
+  public boolean waitFor(final SeElementSelector... presentSelectorList) throws IOException {
+    return waitFor(new SePage("default", new ArrayList<SeElementSelector>(Arrays.asList(presentSelectorList))));
   }
 
   public boolean waitFor(final SePage page) throws IOException {
@@ -43,7 +46,7 @@ public class ActorBrowser extends ActorBase {
     return (res != null);
   }
 
-  public String waitForAny(SePage ... pageList) throws IOException {
+  public String waitForAny(SePage... pageList) throws IOException {
     return waitForAny(Arrays.asList(pageList));
   }
 
@@ -140,5 +143,33 @@ public class ActorBrowser extends ActorBase {
 
   public void systemInput(final String input) throws IOException {
     typedBlock(new SeReqSystemInput(input), SeResSystemInput.class);
+  }
+
+  public void contextSetUseFrames(final boolean useFrames) throws IOException {
+    final SeReqSessionSetContext context = SeReqSessionSetContext.empty
+        .withUseFrames(useFrames);
+    setSessionContext(context);
+  }
+
+  public void contextSetPersistentSelectors(
+      final List<SeElementSelector> presentSelectorList,
+      final List<SeElementSelector> absentSelectorList) throws IOException {
+    final SeReqSessionSetContext context = SeReqSessionSetContext.empty
+        .withPersistentPresentSelectorList(presentSelectorList)
+        .withPersistentAbsentSelectorList(absentSelectorList);
+    setSessionContext(context);
+  }
+
+  public void contextSetKeepalive(
+      final long delayMillis,
+      final List<SeCommsReq> reqList) throws IOException {
+    final SeReqSessionSetContext context = SeReqSessionSetContext.empty
+        .withKeepaliveDelayMillis(delayMillis)
+        .withKeepaliveReqList(reqList);
+    setSessionContext(context);
+  }
+
+  private void setSessionContext(final SeReqSessionSetContext context) throws IOException {
+    typedBlock(context, SeResSessionSetContext.class);
   }
 }

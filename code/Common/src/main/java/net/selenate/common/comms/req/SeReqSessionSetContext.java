@@ -1,48 +1,72 @@
 package net.selenate.common.comms.req;
 
+import net.selenate.common.comms.SeElementSelector;
 import java.util.List;
-import java.util.Optional;
 import net.selenate.common.SelenateUtils;
 
 public final class SeReqSessionSetContext implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
 
-  public final Optional<Boolean>          useFrames;
-  public final Optional<Long>             keepaliveDelayMillis;
-  public final Optional<List<SeCommsReq>> keepaliveReqList;
+  public final Boolean                 useFrames;
+  public final List<SeElementSelector> persistentPresentSelectorList;
+  public final List<SeElementSelector> persistentAbsentSelectorList;
+  public final Long                    keepaliveDelayMillis;
+  public final List<SeCommsReq>        keepaliveReqList;
 
   public SeReqSessionSetContext(
-      final Optional<Boolean>          useFrames,
-      final Optional<Long>             keepaliveDelayMillis,
-      final Optional<List<SeCommsReq>> keepaliveReqList) {
-    this.useFrames            = useFrames;
-    this.keepaliveDelayMillis = keepaliveDelayMillis;
-    this.keepaliveReqList     = keepaliveReqList;
+      final Boolean                 useFrames,
+      final List<SeElementSelector> persistentPresentSelectorList,
+      final List<SeElementSelector> persistentAbsentSelectorList,
+      final Long                    keepaliveDelayMillis,
+      final List<SeCommsReq>        keepaliveReqList) {
+    this.useFrames                     = useFrames;
+    this.persistentPresentSelectorList = persistentPresentSelectorList;
+    this.persistentAbsentSelectorList  = persistentAbsentSelectorList;
+    this.keepaliveDelayMillis          = keepaliveDelayMillis;
+    this.keepaliveReqList              = keepaliveReqList;
     validate();
   }
 
-  public Optional<Boolean> isUseFrames() {
+  public static final SeReqSessionSetContext empty = new SeReqSessionSetContext(null, null, null, null, null);
+
+  public Boolean isUseFrames() {
     return useFrames;
   }
 
-  public Optional<Long> getKeepaliveDelayMillis() {
+  public List<SeElementSelector> getPersistentPresentSelectorList() {
+    return persistentPresentSelectorList;
+  }
+
+  public List<SeElementSelector> getPersistentAbsentSelectorList() {
+    return persistentAbsentSelectorList;
+  }
+
+  public Long getKeepaliveDelayMillis() {
     return keepaliveDelayMillis;
   }
 
-  public Optional<List<SeCommsReq>> getKeepaliveReqList() {
+  public List<SeCommsReq> getKeepaliveReqList() {
     return keepaliveReqList;
   }
 
-  public SeReqSessionSetContext withUseFrames(final Optional<Boolean> newUseFrames) {
-    return new SeReqSessionSetContext(newUseFrames, this.keepaliveDelayMillis, this.keepaliveReqList);
+  public SeReqSessionSetContext withUseFrames(final Boolean newUseFrames) {
+    return new SeReqSessionSetContext(newUseFrames, this.persistentPresentSelectorList, this.persistentAbsentSelectorList, this.keepaliveDelayMillis, this.keepaliveReqList);
   }
 
-  public SeReqSessionSetContext withKeepaliveDelayMillis(final Optional<Long> newKeepaliveDelayMillis) {
-    return new SeReqSessionSetContext(this.useFrames, newKeepaliveDelayMillis, this.keepaliveReqList);
+  public SeReqSessionSetContext withPersistentPresentSelectorList(final List<SeElementSelector> newPersistentPresentSelectorList) {
+    return new SeReqSessionSetContext(this.useFrames, newPersistentPresentSelectorList, this.persistentAbsentSelectorList, this.keepaliveDelayMillis, this.keepaliveReqList);
   }
 
-  public SeReqSessionSetContext withkeepaliveReqList(final Optional<List<SeCommsReq>> newKeepaliveReqList) {
-    return new SeReqSessionSetContext(this.useFrames, this.keepaliveDelayMillis, newKeepaliveReqList);
+  public SeReqSessionSetContext withPersistentAbsentSelectorList(final List<SeElementSelector> newPersistentAbsentSelectorList) {
+    return new SeReqSessionSetContext(this.useFrames, this.persistentPresentSelectorList, newPersistentAbsentSelectorList, this.keepaliveDelayMillis, this.keepaliveReqList);
+  }
+
+  public SeReqSessionSetContext withKeepaliveDelayMillis(final Long newKeepaliveDelayMillis) {
+    return new SeReqSessionSetContext(this.useFrames, this.persistentPresentSelectorList, this.persistentAbsentSelectorList, newKeepaliveDelayMillis, this.keepaliveReqList);
+  }
+
+  public SeReqSessionSetContext withKeepaliveReqList(final List<SeCommsReq> newKeepaliveReqList) {
+    return new SeReqSessionSetContext(this.useFrames, this.persistentPresentSelectorList, this.persistentAbsentSelectorList, this.keepaliveDelayMillis, newKeepaliveReqList);
   }
 
   private void validate() {
@@ -50,10 +74,12 @@ public final class SeReqSessionSetContext implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqSessionSetSettings(%s, %d, %s)",
-        SelenateUtils.optionalToString(useFrames),
-        SelenateUtils.optionalToString(keepaliveDelayMillis),
-        SelenateUtils.optionalToString(keepaliveReqList.map(SelenateUtils::listToString)));
+    return String.format("SeReqSessionSetSettings(%s, %s, %s, %d, %s)",
+        useFrames,
+        SelenateUtils.listToString(persistentPresentSelectorList),
+        SelenateUtils.listToString(persistentAbsentSelectorList),
+        keepaliveDelayMillis,
+        SelenateUtils.listToString(keepaliveReqList));
   }
 
   @Override
@@ -65,6 +91,14 @@ public final class SeReqSessionSetContext implements SeCommsReq {
         + ((keepaliveDelayMillis == null) ? 0 : keepaliveDelayMillis.hashCode());
     result = prime * result
         + ((keepaliveReqList == null) ? 0 : keepaliveReqList.hashCode());
+    result = prime
+        * result
+        + ((persistentAbsentSelectorList == null) ? 0
+            : persistentAbsentSelectorList.hashCode());
+    result = prime
+        * result
+        + ((persistentPresentSelectorList == null) ? 0
+            : persistentPresentSelectorList.hashCode());
     result = prime * result + ((useFrames == null) ? 0 : useFrames.hashCode());
     return result;
   }
@@ -87,6 +121,18 @@ public final class SeReqSessionSetContext implements SeCommsReq {
       if (other.keepaliveReqList != null)
         return false;
     } else if (!keepaliveReqList.equals(other.keepaliveReqList))
+      return false;
+    if (persistentAbsentSelectorList == null) {
+      if (other.persistentAbsentSelectorList != null)
+        return false;
+    } else if (!persistentAbsentSelectorList
+        .equals(other.persistentAbsentSelectorList))
+      return false;
+    if (persistentPresentSelectorList == null) {
+      if (other.persistentPresentSelectorList != null)
+        return false;
+    } else if (!persistentPresentSelectorList
+        .equals(other.persistentPresentSelectorList))
       return false;
     if (useFrames == null) {
       if (other.useFrames != null)

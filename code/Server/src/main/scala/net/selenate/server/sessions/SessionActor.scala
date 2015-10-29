@@ -133,13 +133,21 @@ class SessionActor(sessionRequest: SessionRequest, d: SelenateFirefox)
   }
 
   private def setContext(newContext: SeReqSessionSetContext) {
-    newContext.isUseFrames.toOption.foreach(e =>
+    logInfo("Setting context to: " + newContext);
+
+    Option(newContext.isUseFrames).foreach(e =>
       sessionContext.useFrames = e)
 
-    newContext.keepaliveDelayMillis.toOption.foreach(e =>
+    Option(newContext.persistentPresentSelectorList).foreach(e =>
+      sessionContext.persistentPresentSelectorList = e.toIndexedSeq)
+
+      Option(newContext.persistentAbsentSelectorList).foreach(e =>
+      sessionContext.persistentAbsentSelectorList = e.toIndexedSeq)
+
+    Option(newContext.keepaliveDelayMillis).foreach(e =>
       sessionContext.keepaliveDelay = (e: Long).milliseconds)
 
-    newContext.keepaliveReqList.toOption.foreach(e =>
+    Option(newContext.keepaliveReqList).foreach(e =>
       sessionContext.keepaliveReqList  = e.toIndexedSeq)
   }
 }

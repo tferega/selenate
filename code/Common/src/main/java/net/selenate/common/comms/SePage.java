@@ -2,15 +2,16 @@ package net.selenate.common.comms;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.selenate.common.SelenateUtils;
 import net.selenate.common.exceptions.SeEmptyArgumentListException;
 import net.selenate.common.exceptions.SeNullArgumentException;
-import net.selenate.common.SelenateUtils;
 
 public final class SePage implements SeComms {
   private static final long serialVersionUID = 45749879L;
 
   private final String                  name;
-  private final List<SeElementSelector> selectorList;
+  private final List<SeElementSelector> presentSelectorList;
+  private final List<SeElementSelector> absentSelectorList;
 
   private static List<SeElementSelector> selectorToList(final SeElementSelector selector) {
     final List<SeElementSelector> selectorList = new ArrayList<SeElementSelector>();
@@ -20,15 +21,30 @@ public final class SePage implements SeComms {
 
   public SePage(
       final String name,
-      final SeElementSelector selector) {
-    this(name, selectorToList(selector));
+      final SeElementSelector presentSelector) {
+    this(name, selectorToList(presentSelector), new ArrayList<>());
+  }
+
+  public SePage(
+      final String name,
+      final SeElementSelector presentSelector,
+      final SeElementSelector absentSelector) {
+    this(name, selectorToList(presentSelector), selectorToList(absentSelector));
   }
 
   public SePage(
       final String                  name,
-      final List<SeElementSelector> selectorList) {
-    this.name         = name;
-    this.selectorList = selectorList;
+      final List<SeElementSelector> presentSelectorList) {
+    this(name, presentSelectorList, new ArrayList<>());
+  }
+
+  public SePage(
+      final String                  name,
+      final List<SeElementSelector> presentSelectorList,
+      final List<SeElementSelector> absentSelectorList) {
+    this.name                = name;
+    this.presentSelectorList = presentSelectorList;
+    this.absentSelectorList  = absentSelectorList;
     validate();
   }
 
@@ -36,16 +52,24 @@ public final class SePage implements SeComms {
     return name;
   }
 
-  public List<SeElementSelector> getSelectorList() {
-    return selectorList;
+  public List<SeElementSelector> getPresentSelectorList() {
+    return presentSelectorList;
+  }
+
+  public List<SeElementSelector> getAbsentSelectorList() {
+    return absentSelectorList;
   }
 
   public SePage withName(final String newName) {
-    return new SePage(newName, this.selectorList);
+    return new SePage(newName, this.presentSelectorList, this.absentSelectorList);
   }
 
-  public SePage withElementSelector(final List<SeElementSelector> newSelectorList) {
-    return new SePage(this.name, newSelectorList);
+  public SePage withPresentSelectorList(final List<SeElementSelector> newPresentSelectorList) {
+    return new SePage(this.name, newPresentSelectorList, this.absentSelectorList);
+  }
+
+  public SePage withAbsentSelectorList(final List<SeElementSelector> newAbsentSelectorList) {
+    return new SePage(this.name, this.presentSelectorList, newAbsentSelectorList);
   }
 
   private void validate() {
@@ -53,28 +77,32 @@ public final class SePage implements SeComms {
       throw new SeNullArgumentException("Name");
     }
 
-    if (selectorList == null) {
-      throw new SeNullArgumentException("Selector list");
+    if (presentSelectorList == null) {
+      throw new SeNullArgumentException("Present selector list");
     }
 
-    if (selectorList.isEmpty()) {
-      throw new SeEmptyArgumentListException("Selector list");
+    if (absentSelectorList.isEmpty()) {
+      throw new SeEmptyArgumentListException("Absent selector list");
     }
   }
 
   @Override
   public String toString() {
-    return String.format("SePage(%s, %s)",
-        name, SelenateUtils.listToString(selectorList));
+    return String.format("SePage(%s, %s, %s)",
+        name,
+        SelenateUtils.listToString(presentSelectorList),
+        SelenateUtils.listToString(absentSelectorList));
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result
+        + ((absentSelectorList == null) ? 0 : absentSelectorList.hashCode());
     result = prime * result + ((name == null) ? 0 : name.hashCode());
     result = prime * result
-        + ((selectorList == null) ? 0 : selectorList.hashCode());
+        + ((presentSelectorList == null) ? 0 : presentSelectorList.hashCode());
     return result;
   }
 
@@ -87,15 +115,20 @@ public final class SePage implements SeComms {
     if (getClass() != obj.getClass())
       return false;
     SePage other = (SePage) obj;
+    if (absentSelectorList == null) {
+      if (other.absentSelectorList != null)
+        return false;
+    } else if (!absentSelectorList.equals(other.absentSelectorList))
+      return false;
     if (name == null) {
       if (other.name != null)
         return false;
     } else if (!name.equals(other.name))
       return false;
-    if (selectorList == null) {
-      if (other.selectorList != null)
+    if (presentSelectorList == null) {
+      if (other.presentSelectorList != null)
         return false;
-    } else if (!selectorList.equals(other.selectorList))
+    } else if (!presentSelectorList.equals(other.presentSelectorList))
       return false;
     return true;
   }
