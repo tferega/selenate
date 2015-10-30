@@ -81,8 +81,12 @@ public final class SePage implements SeComms {
       throw new SeNullArgumentException("Present selector list");
     }
 
-    if (absentSelectorList.isEmpty()) {
-      throw new SeEmptyArgumentListException("Absent selector list");
+    if (presentSelectorList.isEmpty()) {
+      throw new SeEmptyArgumentListException("Present selector list");
+    }
+
+    if (absentSelectorList == null) {
+      throw new SeNullArgumentException("Absent selector list");
     }
   }
 
