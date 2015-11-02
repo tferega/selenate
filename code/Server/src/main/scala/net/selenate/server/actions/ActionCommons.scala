@@ -7,14 +7,19 @@ import org.openqa.selenium.remote.RemoteWebElement
 import org.openqa.selenium.support.ui.Select
 import scala.collection.JavaConversions._
 import scala.util.{ Failure, Success, Try }
+import net.selenate.common.comms.SeElementVisibility
 
 trait ActionCommons
     extends ActionCommonsBase
     with ActionCommonsFrames
     with ActionCommonsParsers { self: Loggable =>
   protected def findElementList(selector: SeElementSelector): IndexedSeq[RemoteWebElement] = {
+    println("SELECTING: " + selector)
     val by = byFactory(selector)
-    d.findElements(by).map(_.asInstanceOf[RemoteWebElement]).toIndexedSeq
+    d.findElements(by)
+      .map(_.asInstanceOf[RemoteWebElement])
+      .filter(visibilityFilter(selector.getVisibility))
+      .toIndexedSeq
   }
 
   protected def byFactory(selector: SeElementSelector): By = {
@@ -28,6 +33,23 @@ trait ActionCommons
       case PARTIAL_LINK_TEXT => By.partialLinkText(selector.getQuery)
       case TAG_NAME          => By.tagName(selector.getQuery)
       case XPATH             => By.xpath(selector.getQuery)
+    }
+  }
+
+  protected def visibilityFilter(visibility: SeElementVisibility)(e: RemoteWebElement) = {
+    import SeElementVisibility._
+    if (visibility != ANY) {
+      try {
+        (visibility, e.isDisplayed) match {
+          case (VISIBLE, false) => false
+          case (HIDDEN, true)   => false
+          case _                => true
+        }
+      } catch {
+        case _: StaleElementReferenceException => false
+      }
+    } else {
+      true
     }
   }
 

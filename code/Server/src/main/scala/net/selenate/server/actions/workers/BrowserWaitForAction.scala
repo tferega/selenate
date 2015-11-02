@@ -27,8 +27,8 @@ class BrowserWaitForAction(val sessionID: String, val context: SessionContext, v
     new SeResBrowserWaitFor(res.isDefined, res.orNull)
   }
 
-  private def waitForPageList(pageList: IndexedSeq[SePage]): Option[SePage] = {
-    //waitForPredicate {
+  private def waitForPageList(pageList: IndexedSeq[SePage]): Option[SePage] =
+    waitForPredicate {
       val selectorList = getSelectorList(pageList)
       val resultList   = filterSelectorList(selectorList)
       val foundPageList = pageList filter isPageFound(resultList)

@@ -46,7 +46,7 @@ public class ActorBrowser extends ActorBase {
     return (res != null);
   }
 
-  public String waitForAny(SePage... pageList) throws IOException {
+  public String waitForAny(final SePage... pageList) throws IOException {
     return waitForAny(Arrays.asList(pageList));
   }
 
@@ -61,8 +61,18 @@ public class ActorBrowser extends ActorBase {
     typedBlock(new SeReqSessionDestroy(), SeResSessionDestroy.class);
   }
 
-  public boolean elementExists(final SeElementSelectMethod method, final String query) throws IOException {
-    final SeElementSelector selector = new SeElementSelector(/*Optional.empty(), */method, query);
+  public boolean elementExists(
+      final SeElementSelectMethod method,
+      final String query) throws IOException {
+    final SeElementSelector selector = new SeElementSelector(/*Optional.empty(), */method, SeElementVisibility.ANY, query);
+    return elementExists(selector);
+  }
+
+  public boolean elementExists(
+      final SeElementSelectMethod method,
+      final SeElementVisibility visibility,
+      final String query) throws IOException {
+    final SeElementSelector selector = new SeElementSelector(/*Optional.empty(), */method, visibility, query);
     return elementExists(selector);
   }
 
@@ -71,8 +81,17 @@ public class ActorBrowser extends ActorBase {
     return elements.size() > 0;
   }
 
-  public ActorElement findElement(final SeElementSelectMethod method, final String query) throws IOException {
-    final SeElementSelector selector = new SeElementSelector(/*Optional.empty(), */method, query);
+  public ActorElement findElement(final SeElementSelectMethod method,
+      final String query) throws IOException {
+    final SeElementSelector selector = new SeElementSelector(/*Optional.empty(), */method, SeElementVisibility.ANY, query);
+    return findElement(selector);
+  }
+
+  public ActorElement findElement(
+      final SeElementSelectMethod method,
+      final SeElementVisibility visibility,
+      final String query) throws IOException {
+    final SeElementSelector selector = new SeElementSelector(/*Optional.empty(), */method, visibility, query);
     return findElement(selector);
   }
 
@@ -88,7 +107,15 @@ public class ActorBrowser extends ActorBase {
   public List<ActorElement> findElementList(
       final SeElementSelectMethod method,
       final String query) throws IOException {
-    final SeElementSelector selector = new SeElementSelector(/*Optional.empty(), */method, query);
+    final SeElementSelector selector = new SeElementSelector(/*Optional.empty(), */method, SeElementVisibility.ANY, query);
+    return findElementList(selector);
+  }
+
+  public List<ActorElement> findElementList(
+      final SeElementSelectMethod method,
+      final SeElementVisibility visibility,
+      final String query) throws IOException {
+    final SeElementSelector selector = new SeElementSelector(/*Optional.empty(), */method, visibility, query);
     return findElementList(selector);
   }
 
@@ -103,19 +130,19 @@ public class ActorBrowser extends ActorBase {
     return actorElements;
   }
 
-  public void deleteCookieNamed(String name) throws IOException {
+  public void deleteCookieNamed(final String name) throws IOException {
     typedBlock(new SeReqCookieDeleteNamed(name), SeResCookieDeleteNamed.class);
   }
 
-  public void addCookie(SeCookie cookie) throws IOException {
+  public void addCookie(final SeCookie cookie) throws IOException {
     typedBlock(new SeReqCookieAdd(cookie), SeResCookieAdd.class);
   }
 
-  public void navigate(SeNavigateDirection direction) throws IOException {
+  public void navigate(final SeNavigateDirection direction) throws IOException {
     typedBlock(new SeReqWindowNavigate(direction), SeResWindowNavigate.class);
   }
 
-  public byte[] download(String url) throws IOException {
+  public byte[] download(final String url) throws IOException {
     final SeResSessionDownload res = typedBlock(new SeReqSessionDownload(url), SeResSessionDownload.class);
     return res.getBody();
   }
@@ -128,11 +155,11 @@ public class ActorBrowser extends ActorBase {
     typedBlock(new SeReqSessionStopKeepalive(), SeResSessionStopKeepalive.class);
   }
 
-  public SePage waitForAnyPage(SePage... pageList) throws IOException {
+  public SePage waitForAnyPage(final SePage... pageList) throws IOException {
     return waitForAnyPage(Arrays.asList(pageList));
   }
 
-  private SePage waitForAnyPage(List<SePage> pageList) throws IOException {
+  private SePage waitForAnyPage(final List<SePage> pageList) throws IOException {
     final SeResBrowserWaitFor res = typedBlock(new SeReqBrowserWaitFor(pageList), SeResBrowserWaitFor.class);
     return res.IsSuccessful() ? res.getFoundPage() : null;
   }

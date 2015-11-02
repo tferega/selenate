@@ -16,10 +16,11 @@ trait ActionCommonsParsers extends ActionCommonsBase { self: Loggable =>
         seqToRealJava(address.framePath map toInteger))
 
   private val elementUuidFactory = new NamedUUID("Element")
-  protected def parseWebElement(address: Address, selector: SeElementSelector)(e: RemoteWebElement) = {
+  protected def parseWebElement(address: Address, selector: SeElementSelector)(e: RemoteWebElement): Option[SeElement] = {
     val uuid = elementUuidFactory.random()
     context.elementCache.add(uuid, CachedElement(address.windowHandle, address.framePath, e))
-    new SeElement(
+    tryo {
+      new SeElement(
         uuid,
         selector/*.withUuid(Optional.of(uuid))*/,
         e.getLocation.getX,
@@ -32,14 +33,15 @@ trait ActionCommonsParsers extends ActionCommonsBase { self: Loggable =>
         e.isEnabled,
         e.isSelected,
         parseAddress(address))
+    }
   }
 
-  protected def parseSelectElement(address: Address, selector: SeElementSelector)(e: RemoteWebElement): SeSelect = {
-    new SeSelect(parseWebElement(address, selector)(e))
+  protected def parseSelectElement(address: Address, selector: SeElementSelector)(e: RemoteWebElement): Option[SeSelect] = {
+    parseWebElement(address, selector)(e).map(new SeSelect(_))
   }
 
-  protected def parseOptionElement(address: Address, selector: SeElementSelector)(e: RemoteWebElement): SeOption =
-    new SeOption(parseWebElement(address, selector)(e))
+  protected def parseOptionElement(address: Address, selector: SeElementSelector)(e: RemoteWebElement): Option[SeOption] =
+    parseWebElement(address, selector)(e).map(new SeOption(_))
 
   protected def parseCookie(cookie: SeleniumCookie): SelenateCookie =
     new SelenateCookie(

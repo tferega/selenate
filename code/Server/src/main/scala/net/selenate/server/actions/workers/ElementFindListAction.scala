@@ -31,7 +31,7 @@ class ElementFindListAction(val sessionID: String, val context: SessionContext, 
       val parentWebElement = d.findElement(parentBy).asInstanceOf[RemoteWebElement]
       parentWebElement.findElements(targetBy)
           .map(_.asInstanceOf[RemoteWebElement])
-          .map(parseWebElement(address, arg.getParentSelector))
+          .flatMap(parseWebElement(address, arg.getParentSelector))
           .toIndexedSeq
     }.take(1).flatten.force
   }
@@ -39,7 +39,7 @@ class ElementFindListAction(val sessionID: String, val context: SessionContext, 
   private def findWithoutParent(arg: SeReqElementFindList): IndexedSeq[SeElement] = {
     inAllWindows { address =>
       val webElementList = findElementList(arg.getTargetSelector)
-      webElementList map parseWebElement(address, arg.getTargetSelector)
+      webElementList flatMap parseWebElement(address, arg.getTargetSelector)
     }.flatten.force
   }
 }

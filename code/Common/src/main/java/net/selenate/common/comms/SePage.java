@@ -3,7 +3,6 @@ package net.selenate.common.comms;
 import java.util.ArrayList;
 import java.util.List;
 import net.selenate.common.SelenateUtils;
-import net.selenate.common.exceptions.SeEmptyArgumentListException;
 import net.selenate.common.exceptions.SeNullArgumentException;
 
 public final class SePage implements SeComms {
@@ -79,10 +78,6 @@ public final class SePage implements SeComms {
 
     if (presentSelectorList == null) {
       throw new SeNullArgumentException("Present selector list");
-    }
-
-    if (presentSelectorList.isEmpty()) {
-      throw new SeEmptyArgumentListException("Present selector list");
     }
 
     if (absentSelectorList == null) {
