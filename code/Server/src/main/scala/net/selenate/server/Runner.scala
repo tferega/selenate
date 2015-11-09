@@ -10,7 +10,7 @@ object Runner extends Loggable {
   def start() {
     try {
       logInfo("Selenate Server now starting...")
-      logInfo("Press ENTER to shut down.")
+      if (C.Server.IS_KILLABLE) logInfo("Press ENTER to shut down.")
 
       logInfo("Loading configuration...")
       logInfo("Branch: " + C.BRANCH)
@@ -23,20 +23,22 @@ object Runner extends Loggable {
       actors.system.actorOf(DriverPoolActor.props(poolInfo), "driver-pool")
       actors.system.actorOf(SessionFactoryActor.props, "session-factory")
 
-      /* #########==========-----> MAIN RUNTIME <-----==========############# */
-      /*                           \          /                               */
-      /*                            \        /                                */
-                                     readLine
-      /*                            /        \                                */
-      /*                           /          \                               */
-      /* #########==========-----> MAIN RUNTIME <-----==========############# */
+      if (C.Server.IS_KILLABLE) {
+        /* #########==========-----> MAIN RUNTIME <-----==========############# */
+        /*                           \          /                               */
+        /*                            \        /                                */
+                                       readLine
+        /*                            /        \                                */
+        /*                           /          \                               */
+        /* #########==========-----> MAIN RUNTIME <-----==========############# */
 
-      logInfo("Selenate Server now shutting down...")
-      logInfo("Shutting down main actor system...")
-      actors.shutdown
+        logInfo("Selenate Server now shutting down...")
+        logInfo("Shutting down main actor system...")
+        actors.shutdown
 
-      logInfo("HALTING")
-      Runtime.getRuntime.halt(0)
+        logInfo("HALTING")
+        Runtime.getRuntime.halt(0)
+      }
     } catch {
       case e: Exception =>
         logError("An unexpected error occured!", e)

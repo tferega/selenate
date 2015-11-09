@@ -20,8 +20,9 @@ object C extends CUtils {
   val OS_NAME = sys.props("os.name")
 
   object Server extends ConfigSection("server") {
-    val HOST = config.getString("host")
-    val PORT = config.getString("port")
+    val HOST        = config.getString("host")
+    val PORT        = config.getString("port")
+    val IS_KILLABLE = config.getBoolean("is_killable")
 
     object Locations extends ConfigSection("server.locations") {
       val RECORDINGS = config.getString("recordings")

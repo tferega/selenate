@@ -14,7 +14,6 @@ trait ActionCommons
     with ActionCommonsFrames
     with ActionCommonsParsers { self: Loggable =>
   protected def findElementList(selector: SeElementSelector): IndexedSeq[RemoteWebElement] = {
-    println("SELECTING: " + selector)
     val by = byFactory(selector)
     d.findElements(by)
       .map(_.asInstanceOf[RemoteWebElement])
