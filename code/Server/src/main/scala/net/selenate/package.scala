@@ -56,7 +56,11 @@ package object server
   def toInteger(i: Int) = java.lang.Integer.valueOf(i)
 
   import scala.annotation.tailrec
-  def waitFor[T](event: => Option[T], timeout: Long, resolution: Long): Option[T] = {
+  def waitFor[T](
+      event: => Option[T],
+      timeout: Long,
+      resolution: Long,
+      delay: Long): Option[T] = {
     @tailrec
     def waitForDoit(end: Long): Option[T] = {
       val current = System.currentTimeMillis
@@ -66,10 +70,24 @@ package object server
         logTrace("WaitFor failed to meet the predicate")
         None  // Timeout
       } else {
-        val p = event
-        if (p.isDefined) {
-          logTrace("WaitFor successfully met the predicate")
-          p  // Predicate evaluated to true
+        val pPrelim = event
+        if (pPrelim.isDefined) {
+          logTrace("WaitFor preliminary met the predicate")
+          if (delay > 0) {
+            logTrace("WaitFor waiting for delay")
+            Thread.sleep(delay)
+            val pFinal = event
+            if (pFinal.isDefined) {
+              logTrace("WaitFor successfully returning the predicate")
+              pFinal
+            } else {
+              logTrace("WaitFor predicate disappeared after delay; continuing waiting...")
+              waitForDoit(end);
+            }
+          } else {
+            logTrace("WaitFor successfully returning the predicate")
+            pPrelim  // Predicate evaluated to true
+          }
         } else {
           // Do not oversleep.
           val sleep = scala.math.min(resolution, remaining)
@@ -80,7 +98,7 @@ package object server
       }
     }
 
-    logTrace(s"Starting WaitFor with timeout $timeout ms and resolution $resolution ms")
+    logTrace(s"Starting WaitFor with timeout $timeout of ms, resolution of $resolution ms, and a delay of $delay ms")
     val end = System.currentTimeMillis + timeout
     waitForDoit(end)
   }
