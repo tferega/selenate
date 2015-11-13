@@ -1,7 +1,8 @@
 package net.selenate.demo;
 
-import java.util.Arrays;
+import net.selenate.common.comms.SeElementVisibility;
 
+import java.util.Arrays;
 import net.selenate.common.comms.SeElementSelectMethod;
 import net.selenate.common.comms.SeElementSelector;
 import net.selenate.common.comms.SePage;
@@ -12,7 +13,7 @@ public class Pages {
   }
 
   private static SeElementSelector createSelector(final String query) {
-    return new SeElementSelector(SeElementSelectMethod.CSS_SELECTOR, query);
+    return new SeElementSelector(SeElementSelectMethod.CSS_SELECTOR, SeElementVisibility.ANY, query);
   }
 
   public static class Homepage {
