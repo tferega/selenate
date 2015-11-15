@@ -8,8 +8,8 @@ import net.selenate.common.comms.*;
 import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
 
-public class ActorBrowser extends ActorBase {
-  public ActorBrowser(final ActorRef session) {
+public class Browser extends ActorBase {
+  public Browser(final ActorRef session) {
     super(session);
   }
 
@@ -33,12 +33,12 @@ public class ActorBrowser extends ActorBase {
   }
 
   public boolean elementExists(final SeElementSelector selector) throws IOException {
-    final List<ActorElement> elements = findElementList(selector);
+    final List<Element> elements = findElementList(selector);
     return elements.size() > 0;
   }
 
-  public ActorElement findElement(final SeElementSelector selector) throws IOException {
-    final List<ActorElement> elements = findElementList(selector);
+  public Element findElement(final SeElementSelector selector) throws IOException {
+    final List<Element> elements = findElementList(selector);
     if (elements.size() > 0) {
       return elements.get(0);
     } else {
@@ -46,12 +46,12 @@ public class ActorBrowser extends ActorBase {
     }
   }
 
-  public List<ActorElement> findElementList(final SeElementSelector selector) throws IOException {
+  public List<Element> findElementList(final SeElementSelector selector) throws IOException {
     final SeResElementFindList res = typedBlock(new SeReqElementFindList(selector), SeResElementFindList.class);
     final List<SeElement> foundElements = res.getElementList();
-    final List<ActorElement> actorElements = new ArrayList<>();
+    final List<Element> actorElements = new ArrayList<>();
     for (int i = 0; i < foundElements.size(); i++) {
-      final ActorElement actorElement = new ActorElement(session, foundElements.get(i));
+      final Element actorElement = new Element(session, foundElements.get(i));
       actorElements.add(actorElement);
     }
     return actorElements;

@@ -11,10 +11,10 @@ import net.selenate.common.comms.req.SeReqSelectFindOptionList;
 import net.selenate.common.comms.res.SeResSelectChoose;
 import net.selenate.common.comms.res.SeResSelectFindOptionList;
 
-public class ActorSelect extends ActorElement {
+public class Select extends Element {
   private final SeSelect select;
 
-  public ActorSelect(final ActorRef session, final SeSelect select) {
+  public Select(final ActorRef session, final SeSelect select) {
     super(session, select.getElement());
     this.select = select;
   }

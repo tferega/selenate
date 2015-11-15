@@ -24,7 +24,7 @@ public class Demo {
     System.out.println("Starting session...");
     final String sessionId = UUID.randomUUID().toString();
     final ActorRef session = ActorFactory.createSession(sessionId, RECORD_SESSION);
-    final ActorBrowser browser = new ActorBrowser(session);
+    final Browser browser = new Browser(session);
     System.out.println("Session ID: " + sessionId);
 
     try {
@@ -41,7 +41,7 @@ public class Demo {
   }
 
   private static boolean ebayLogin(
-      final ActorBrowser browser,
+      final Browser browser,
       final String userID,
       final String pass) throws IOException {
     System.out.println("Opening Ebay...");
@@ -75,7 +75,7 @@ public class Demo {
   }
 
   private static String ebayGetFirstPrice(
-      final ActorBrowser browser,
+      final Browser browser,
       final String query) throws IOException {
     System.out.println("Entering query and searching...");
     browser.findElement(LandingPage.searchBox).textInput(false, query);
@@ -101,7 +101,7 @@ public class Demo {
     return price;
   }
 
-  private static void killSession(final ActorBrowser browser) throws IOException {
+  private static void killSession(final Browser browser) throws IOException {
     System.out.print("Enter newline to kill session: ");
     System.in.read();
 
