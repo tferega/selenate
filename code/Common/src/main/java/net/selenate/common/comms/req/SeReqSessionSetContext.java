@@ -12,22 +12,31 @@ public final class SeReqSessionSetContext implements SeCommsReq {
   public final List<SeElementSelector> persistentAbsentSelectorList;
   public final Long                    keepaliveDelayMillis;
   public final List<SeCommsReq>        keepaliveReqList;
+  public final Long                    waitTimeout;
+  public final Long                    waitResolution;
+  public final Long                    waitDelay;
 
   public SeReqSessionSetContext(
       final Boolean                 useFrames,
       final List<SeElementSelector> persistentPresentSelectorList,
       final List<SeElementSelector> persistentAbsentSelectorList,
       final Long                    keepaliveDelayMillis,
-      final List<SeCommsReq>        keepaliveReqList) {
+      final List<SeCommsReq>        keepaliveReqList,
+      final Long                    waitTimeout,
+      final Long                    waitResolution,
+      final Long                    waitDelay) {
     this.useFrames                     = useFrames;
     this.persistentPresentSelectorList = persistentPresentSelectorList;
     this.persistentAbsentSelectorList  = persistentAbsentSelectorList;
     this.keepaliveDelayMillis          = keepaliveDelayMillis;
+    this.waitTimeout                   = waitTimeout;
+    this.waitResolution                = waitResolution;
+    this.waitDelay                     = waitDelay;
     this.keepaliveReqList              = keepaliveReqList;
     validate();
   }
 
-  public static final SeReqSessionSetContext empty = new SeReqSessionSetContext(null, null, null, null, null);
+  public static final SeReqSessionSetContext empty = new SeReqSessionSetContext(null, null, null, null, null, null, null, null);
 
   public Boolean isUseFrames() {
     return useFrames;
@@ -49,24 +58,48 @@ public final class SeReqSessionSetContext implements SeCommsReq {
     return keepaliveReqList;
   }
 
+  public Long getWaitTimeout() {
+    return waitTimeout;
+  }
+
+  public Long getWaitResolution() {
+    return waitResolution;
+  }
+
+  public Long getWaitDelay() {
+    return waitDelay;
+  }
+
   public SeReqSessionSetContext withUseFrames(final Boolean newUseFrames) {
-    return new SeReqSessionSetContext(newUseFrames, this.persistentPresentSelectorList, this.persistentAbsentSelectorList, this.keepaliveDelayMillis, this.keepaliveReqList);
+    return new SeReqSessionSetContext(newUseFrames, this.persistentPresentSelectorList, this.persistentAbsentSelectorList, this.keepaliveDelayMillis, this.keepaliveReqList, this.waitTimeout, this.waitResolution, this.waitDelay);
   }
 
   public SeReqSessionSetContext withPersistentPresentSelectorList(final List<SeElementSelector> newPersistentPresentSelectorList) {
-    return new SeReqSessionSetContext(this.useFrames, newPersistentPresentSelectorList, this.persistentAbsentSelectorList, this.keepaliveDelayMillis, this.keepaliveReqList);
+    return new SeReqSessionSetContext(this.useFrames, newPersistentPresentSelectorList, this.persistentAbsentSelectorList, this.keepaliveDelayMillis, this.keepaliveReqList, this.waitTimeout, this.waitResolution, this.waitDelay);
   }
 
   public SeReqSessionSetContext withPersistentAbsentSelectorList(final List<SeElementSelector> newPersistentAbsentSelectorList) {
-    return new SeReqSessionSetContext(this.useFrames, this.persistentPresentSelectorList, newPersistentAbsentSelectorList, this.keepaliveDelayMillis, this.keepaliveReqList);
+    return new SeReqSessionSetContext(this.useFrames, this.persistentPresentSelectorList, newPersistentAbsentSelectorList, this.keepaliveDelayMillis, this.keepaliveReqList, this.waitTimeout, this.waitResolution, this.waitDelay);
   }
 
   public SeReqSessionSetContext withKeepaliveDelayMillis(final Long newKeepaliveDelayMillis) {
-    return new SeReqSessionSetContext(this.useFrames, this.persistentPresentSelectorList, this.persistentAbsentSelectorList, newKeepaliveDelayMillis, this.keepaliveReqList);
+    return new SeReqSessionSetContext(this.useFrames, this.persistentPresentSelectorList, this.persistentAbsentSelectorList, newKeepaliveDelayMillis, this.keepaliveReqList, this.waitTimeout, this.waitResolution, this.waitDelay);
   }
 
   public SeReqSessionSetContext withKeepaliveReqList(final List<SeCommsReq> newKeepaliveReqList) {
-    return new SeReqSessionSetContext(this.useFrames, this.persistentPresentSelectorList, this.persistentAbsentSelectorList, this.keepaliveDelayMillis, newKeepaliveReqList);
+    return new SeReqSessionSetContext(this.useFrames, this.persistentPresentSelectorList, this.persistentAbsentSelectorList, this.keepaliveDelayMillis, newKeepaliveReqList, this.waitTimeout, this.waitResolution, this.waitDelay);
+  }
+
+  public SeReqSessionSetContext withWaitTimeout(final Long newWaitTimeout) {
+    return new SeReqSessionSetContext(this.useFrames, this.persistentPresentSelectorList, this.persistentAbsentSelectorList, this.keepaliveDelayMillis, this.keepaliveReqList, newWaitTimeout, this.waitResolution, this.waitDelay);
+  }
+
+  public SeReqSessionSetContext withWaitResolution(final Long newWaitResolution) {
+    return new SeReqSessionSetContext(this.useFrames, this.persistentPresentSelectorList, this.persistentAbsentSelectorList, this.keepaliveDelayMillis, this.keepaliveReqList, this.waitTimeout, newWaitResolution, this.waitDelay);
+  }
+
+  public SeReqSessionSetContext withWaitDelay(final Long newWaitDelay) {
+    return new SeReqSessionSetContext(this.useFrames, this.persistentPresentSelectorList, this.persistentAbsentSelectorList, this.keepaliveDelayMillis, this.keepaliveReqList, this.waitTimeout, this.waitResolution, newWaitDelay);
   }
 
   private void validate() {
@@ -74,12 +107,13 @@ public final class SeReqSessionSetContext implements SeCommsReq {
 
   @Override
   public String toString() {
-    return String.format("SeReqSessionSetSettings(%s, %s, %s, %d, %s)",
+    return String.format("SeReqSessionSetSettings(%s, %s, %s, %d, %s, %d, %d, %d)",
         useFrames,
         SelenateUtils.listToString(persistentPresentSelectorList),
         SelenateUtils.listToString(persistentAbsentSelectorList),
         keepaliveDelayMillis,
-        SelenateUtils.listToString(keepaliveReqList));
+        SelenateUtils.listToString(keepaliveReqList),
+        waitTimeout, waitResolution, waitDelay);
   }
 
   @Override
@@ -100,6 +134,11 @@ public final class SeReqSessionSetContext implements SeCommsReq {
         + ((persistentPresentSelectorList == null) ? 0
             : persistentPresentSelectorList.hashCode());
     result = prime * result + ((useFrames == null) ? 0 : useFrames.hashCode());
+    result = prime * result + ((waitDelay == null) ? 0 : waitDelay.hashCode());
+    result = prime * result
+        + ((waitResolution == null) ? 0 : waitResolution.hashCode());
+    result = prime * result
+        + ((waitTimeout == null) ? 0 : waitTimeout.hashCode());
     return result;
   }
 
@@ -138,6 +177,21 @@ public final class SeReqSessionSetContext implements SeCommsReq {
       if (other.useFrames != null)
         return false;
     } else if (!useFrames.equals(other.useFrames))
+      return false;
+    if (waitDelay == null) {
+      if (other.waitDelay != null)
+        return false;
+    } else if (!waitDelay.equals(other.waitDelay))
+      return false;
+    if (waitResolution == null) {
+      if (other.waitResolution != null)
+        return false;
+    } else if (!waitResolution.equals(other.waitResolution))
+      return false;
+    if (waitTimeout == null) {
+      if (other.waitTimeout != null)
+        return false;
+    } else if (!waitTimeout.equals(other.waitTimeout))
       return false;
     return true;
   }

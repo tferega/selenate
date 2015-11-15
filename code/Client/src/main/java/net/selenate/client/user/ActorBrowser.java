@@ -196,6 +196,12 @@ public class ActorBrowser extends ActorBase {
     setSessionContext(context);
   }
 
+  public void contextSetWaitDelay(final long waitDelay) throws IOException {
+    final SeReqSessionSetContext context = SeReqSessionSetContext.empty
+        .withWaitDelay(waitDelay);
+    setSessionContext(context);
+  }
+
   private void setSessionContext(final SeReqSessionSetContext context) throws IOException {
     typedBlock(context, SeResSessionSetContext.class);
   }

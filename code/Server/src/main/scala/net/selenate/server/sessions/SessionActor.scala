@@ -149,5 +149,14 @@ class SessionActor(sessionRequest: SessionRequest, d: SelenateFirefox)
 
     Option(newContext.keepaliveReqList).foreach(e =>
       sessionContext.keepaliveReqList  = e.toIndexedSeq)
+
+    Option(newContext.waitTimeout).foreach(e =>
+      sessionContext.waitTimeout  = e)
+
+    Option(newContext.waitResolution).foreach(e =>
+      sessionContext.waitResolution  = e)
+
+    Option(newContext.waitDelay).foreach(e =>
+      sessionContext.waitDelay  = e)
   }
 }

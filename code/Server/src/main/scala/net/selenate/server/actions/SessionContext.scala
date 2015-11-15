@@ -11,10 +11,9 @@ case class CachedElement(windowHandle: String, framePath: Vector[Int], elem: Rem
 object SessionContext {
   def default = SessionContext(
       false,
-      IndexedSeq.empty,
-      IndexedSeq.empty,
-      30L.seconds,
-      IndexedSeq.empty,
+      IndexedSeq.empty, IndexedSeq.empty,
+      30L.seconds, IndexedSeq.empty,
+      20000, 250, 0,
       MapCache.empty)
 }
 
@@ -24,5 +23,8 @@ case class SessionContext(
     var persistentAbsentSelectorList: IndexedSeq[SeElementSelector],
     var keepaliveDelay: FiniteDuration,
     var keepaliveReqList: IndexedSeq[SeCommsReq],
+    var waitTimeout: Long,
+    var waitResolution: Long,
+    var waitDelay: Long,
     val elementCache: MapCache[String, CachedElement]
 )

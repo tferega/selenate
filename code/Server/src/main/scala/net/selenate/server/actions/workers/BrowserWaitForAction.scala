@@ -20,6 +20,10 @@ class BrowserWaitForAction(val sessionID: String, val context: SessionContext, v
   import BrowserWaitForAction._
   case class OwnedSelector(pageName: String, selector: SeElementSelector, isPresent: Boolean)
 
+  protected val timeout = context.waitTimeout
+  protected val resolution = context.waitResolution
+  protected val delay = context.waitDelay
+
   def doAct = { arg =>
     val persistentPage = new SePage(PersistentPageName, context.persistentPresentSelectorList, context.persistentAbsentSelectorList);
     val pages = arg.getPageList.toIndexedSeq :+ persistentPage
