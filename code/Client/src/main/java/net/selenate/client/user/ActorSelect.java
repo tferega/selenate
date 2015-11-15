@@ -1,12 +1,9 @@
 package net.selenate.client.user;
 
 import akka.actor.ActorRef;
-
 import java.io.IOException;
 import java.util.List;
-
 import net.selenate.common.comms.SeOption;
-import net.selenate.common.comms.SeOptionSelectMethod;
 import net.selenate.common.comms.SeOptionSelector;
 import net.selenate.common.comms.SeSelect;
 import net.selenate.common.comms.req.SeReqSelectChoose;
@@ -24,11 +21,6 @@ public class ActorSelect extends ActorElement {
 
   public SeSelect getSelect() {
     return select;
-  }
-
-  public void selectByIndex(int index) throws IOException {
-    final SeOptionSelector optionSelector = new SeOptionSelector(SeOptionSelectMethod.INDEX, String.valueOf(index));
-    choose(optionSelector);
   }
 
   public void choose(final SeOptionSelector optionSelector) throws IOException {

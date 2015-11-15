@@ -1,5 +1,9 @@
 package net.selenate.demo;
 
+import net.selenate.common.comms.SePage;
+
+import java.util.List;
+import java.util.ArrayList;
 import akka.actor.ActorRef;
 import java.io.IOException;
 import java.nio.file.*;
@@ -17,31 +21,29 @@ public class Demo {
   private static final boolean TAKE_SCREENSHOT = true;
 
   public static void main(String[] args) throws IOException {
-    final String sessionID = ebayLogin(USER_ID, PASS);
-    System.out.println("Session ID: " + sessionID);
-
-    //final String sessionID = "";
-    //final String sessionID = "";
-    final String price = ebayGetFirstPrice(sessionID, QUERY);
-    System.out.println("Price for " + QUERY + ": " + price);
-
-    killSession(sessionID);
-  }
-
-  private static ActorBrowser connect(final String sessionName) throws IOException {
-    final ActorRef session = ActorFactory.waitForSession(sessionName, RECORD_SESSION);
+    System.out.println("Starting session...");
+    final String sessionId = UUID.randomUUID().toString();
+    final ActorRef session = ActorFactory.createSession(sessionId, RECORD_SESSION);
     final ActorBrowser browser = new ActorBrowser(session);
-    return browser;
+    System.out.println("Session ID: " + sessionId);
+
+    try {
+      final boolean isLoginOk = ebayLogin(browser, USER_ID, PASS);
+      if (isLoginOk) {
+        final String price = ebayGetFirstPrice(browser, QUERY);
+        System.out.println("Price for " + QUERY + ": " + price);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      killSession(browser);
+    }
   }
 
-  private static String ebayLogin(
+  private static boolean ebayLogin(
+      final ActorBrowser browser,
       final String userID,
       final String pass) throws IOException {
-    final String sessionID = UUID.randomUUID().toString();
-
-    System.out.println("Starting session " + sessionID);
-    final ActorBrowser browser = connect(sessionID);
-
     System.out.println("Opening Ebay...");
     browser.open("http://www.ebay.com/");
     browser.waitFor(Homepage.page);
@@ -51,37 +53,32 @@ public class Demo {
     browser.waitFor(LoginPage.page);
 
     System.out.println("Entering credentials and logging in...");
-    browser.findElement(LoginPage.userID).setText(userID);
-    browser.findElement(LoginPage.pass).setText(pass);
+    browser.findElement(LoginPage.userID).textInput(false, userID);
+    browser.findElement(LoginPage.pass).textInput(false, pass);
     browser.findElement(LoginPage.loginBtn).click();
-    final String openedPage = browser.waitForAny(InvalidLoginPage.page, LandingPage.page);
-    switch(openedPage) {
+    final List<SePage> pages = new ArrayList<>();
+    pages.addAll(InvalidLoginPage.page);
+    pages.addAll(LandingPage.page);
+    final SePage openedPage = browser.waitFor(pages);
+    switch(openedPage.getName()) {
       case "InvalidLoginPage":
-        System.out.println("Invalid login!");
         final String errorMessage = browser.findElement(InvalidLoginPage.errorMessage).getElement().getText();
-        browser.quit();
-        ActorFactory.shutdown();
-        return "Invalid login: " + errorMessage;
+        System.out.println("Invalid login: " + errorMessage);
+        return false;
       case "LandingPage":
         System.out.println("Login successful!");
-        // Continue...
-        break;
+        return true;
       default:
-        System.out.println("Unexpected error!");
-        browser.quit();
-        ActorFactory.shutdown();
-        return "Unexpected page: " + openedPage;
+        System.out.println("Unexpected page!");
+        return false;
     }
-
-    return sessionID;
   }
 
-  private static String ebayGetFirstPrice(final String sessionID, final String query) throws IOException {
-    final ActorRef session = ActorFactory.waitForActor("session-factory/" + sessionID);
-    final ActorBrowser browser = new ActorBrowser(session);
-
+  private static String ebayGetFirstPrice(
+      final ActorBrowser browser,
+      final String query) throws IOException {
     System.out.println("Entering query and searching...");
-    browser.findElement(LandingPage.searchBox).setText(query);
+    browser.findElement(LandingPage.searchBox).textInput(false, query);
     browser.findElement(LandingPage.searchBtn).click();
     browser.waitFor(ResultsPage.page);
 
@@ -104,10 +101,7 @@ public class Demo {
     return price;
   }
 
-  private static void killSession(final String sessionID) throws IOException {
-    final ActorRef session = ActorFactory.waitForActor("session-factory/" + sessionID);
-    final ActorBrowser browser = new ActorBrowser(session);
-
+  private static void killSession(final ActorBrowser browser) throws IOException {
     System.out.print("Enter newline to kill session: ");
     System.in.read();
 

@@ -3,7 +3,7 @@ package sessions
 
 import driver.DriverPoolActor
 
-import akka.actor.{ Actor, Props }
+import akka.actor.{ Actor, ActorRef, Props }
 import net.selenate.common.sessions.SessionRequest
 
 object SessionFactoryActor {
@@ -18,16 +18,16 @@ class SessionFactoryActor
   def receive = {
     case req: SessionRequest =>
       logDebug(s"""Received SessionRequest(${ req.getSessionID })""")
-      context.actorSelection("akka://server-system/user/driver-pool") ! DriverPoolActor.Dequeue(req)
+      context.actorSelection("akka://server-system/user/driver-pool") ! DriverPoolActor.Dequeue(sender, req)
 
-    case (sessionRequest: SessionRequest, DriverPoolActor.DriverEntry(uuid, driverFuture)) =>
+    case (requester: ActorRef, sessionRequest: SessionRequest, DriverPoolActor.DriverEntry(uuid, driverFuture)) =>
       val sessionID = sessionRequest.getSessionID
 
       logDebug(s"""Received DriverEntry($uuid) for session "$sessionID"""")
       driverFuture.onSuccess {
         case driver =>
           logDebug(s"""Driver future for session "$sessionID" completed""")
-          context.actorOf(SessionActor.props(sessionRequest, driver), sessionID)
+          requester ! context.actorOf(SessionActor.props(sessionRequest, driver), sessionID)
       }
   }
 

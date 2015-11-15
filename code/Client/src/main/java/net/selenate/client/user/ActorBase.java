@@ -3,15 +3,14 @@ package net.selenate.client.user;
 import akka.actor.ActorRef;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
-
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
+import net.selenate.client.C;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
+import scala.concurrent.duration.Duration;
 
-public class ActorBase {
-  protected static final Timeout timeout = new Timeout(30, TimeUnit.SECONDS);
+class ActorBase {
+  public static final Timeout timeout = new Timeout(Duration.create(C.WaitingTimeout, "seconds"));
   protected final ActorRef session;
 
   public ActorBase(final ActorRef session) {
