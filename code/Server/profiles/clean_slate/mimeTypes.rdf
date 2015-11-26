@@ -71,7 +71,7 @@
     <NC:fileExtensions>xls</NC:fileExtensions>
     <NC:fileExtensions>xlb</NC:fileExtensions>
     <NC:fileExtensions>xlt</NC:fileExtensions>
-    <NC:handlerProp RDF:resource="urn:mimetype:handler:application/vnd.ms-excel"/>
+    <NC:handlerProp RDF:resource="urn:mimetype:handler:application/xml"/>
   </RDF:Description>
   <RDF:Description RDF:about="urn:root"
                    NC:en-US_defaultHandlersVersion="4"
