@@ -43,7 +43,7 @@ class DownloadFileAction(val d: FirefoxDriver, sessionID: String)(implicit conte
 //    val metadata = new FindElementAction(d).act(findelementreq).element
 
     log.info("Before click...")
-    new ClickAction(d).act(new SeReqClick(arg.windowHandle, arg.framePath, arg.method, arg.query))
+    new ClickAction(d).retryableAct(new SeReqClick(arg.windowHandle, arg.framePath, arg.method, arg.query))
     log.info("After click...")
 
     try{
