@@ -18,12 +18,12 @@ import java.io.IOException
 
 
 class CaptureElementAction(val d: FirefoxDriver)(implicit context: ActionContext)
-    extends IAction[SeReqCaptureElement, SeResCaptureElement]
+    extends RetryableAction[SeReqCaptureElement, SeResCaptureElement]
     with ActionCommons {
 
   protected val log = Log(classOf[CaptureElementAction])
 
-  def act = { arg =>
+  def retryableAct = { arg =>
     try {
       switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)
       val elem       = findElement(arg.method, arg.query)

@@ -12,12 +12,12 @@ import org.openqa.selenium.support.ui.Select
 
 
 class SelectOptionAction(val d: FirefoxDriver)(implicit context: ActionContext)
-    extends IAction[SeReqSelectOption, SeResSelectOption]
+    extends RetryableAction[SeReqSelectOption, SeResSelectOption]
     with ActionCommons {
 
   protected val log = Log(classOf[SelectOptionAction])
 
-  def act = { arg =>
+  def retryableAct = { arg =>
     switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)
     val e = findElement(arg.parentMethod, arg.parentQuery)
     val s = new Select(e)

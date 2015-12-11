@@ -17,6 +17,7 @@ class Log[T] private (clazz: Class[T], prefix: Option[String]) {
   def error(s: => String)                  = logger.error(p(s))
   def error(s: => String, t: => Throwable) = logger.error(p(s), t)
   def warn(s:  => String)                  = logger.warn(p(s))
+  def warn(s:  => String, t: => Throwable) = logger.warn(p(s), t)
   def info(s:  => String)                  = logger.info(p(s))
   def debug(s: => String)                  = logger.debug(p(s))
   def trace(s: => String)                  = logger.trace(p(s))

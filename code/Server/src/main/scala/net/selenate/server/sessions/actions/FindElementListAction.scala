@@ -6,19 +6,16 @@ package actions
 import common.comms.res._
 import common.comms.req._
 
-import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.remote.RemoteWebElement
-
-import scala.collection.JavaConversions._
+import org.openqa.selenium.remote.RemoteWebDriver
 
 
-class FindElementListAction(val d: FirefoxDriver)(implicit context: ActionContext)
-    extends IAction[SeReqFindElementList, SeResFindElementList]
+class FindElementListAction(val d: RemoteWebDriver)(implicit context: ActionContext)
+    extends RetryableAction[SeReqFindElementList, SeResFindElementList]
     with ActionCommons {
 
   protected val log = Log(classOf[FindElementListAction])
 
-  def act = { arg =>
+  def retryableAct = { arg =>
     val resElementList = inAllWindows { address =>
       val webElementList = findElementList(arg.method, arg.query)
       webElementList map parseWebElement(address)

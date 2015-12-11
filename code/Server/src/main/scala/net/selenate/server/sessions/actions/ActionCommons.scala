@@ -3,14 +3,12 @@ package server
 package sessions
 package actions
 
+import java.util
+
 import common.comms._
-import req._
-import res._
-import java.util.ArrayList
-import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.remote.{ RemoteWebDriver, RemoteWebElement, UselessFileDetector }
 import org.openqa.selenium.SearchContext
-import org.openqa.selenium.{ By, WebElement }
+import org.openqa.selenium.By
 import org.openqa.selenium.support.ui.Select
 import scala.collection.JavaConversions._
 import net.selenate.common.user.BrowserPage
@@ -25,7 +23,7 @@ trait ActionCommons {
   case class Address(window: Window, framePath: FramePath)
 
 
-  val d: FirefoxDriver
+  val d: RemoteWebDriver
   protected val log: net.selenate.server.Log[_]
 
   object JS {
@@ -44,8 +42,8 @@ return report;
   protected object SelenateWebElement {
     def apply(parent: RemoteWebDriver, uuid: String) = {
       val e = new SelenateWebElement
-      e.setParent(parent);
-      e.setId(uuid);
+      e.setParent(parent)
+      e.setId(uuid)
       e.setFoundBy(parent, "UUID", uuid)
       e.setFileDetector(new UselessFileDetector())
       e
@@ -53,7 +51,7 @@ return report;
   }
   protected class SelenateWebElement private () extends RemoteWebElement {
     override def setFoundBy(parent: SearchContext, locator: String, term: String) {
-      super.setFoundBy(parent, locator, term);
+      super.setFoundBy(parent, locator, term)
     }
   }
 
@@ -87,15 +85,15 @@ return report;
     }
 
     val elementFactory = method match {
-      case CLASS_NAME        => findByBy(By.className _)
-      case CSS_SELECTOR      => findByBy(By.cssSelector _)
-      case ID                => findByBy(By.id _)
-      case LINK_TEXT         => findByBy(By.linkText _)
-      case NAME              => findByBy(By.name _)
-      case PARTIAL_LINK_TEXT => findByBy(By.partialLinkText _)
-      case TAG_NAME          => findByBy(By.tagName _)
+      case CLASS_NAME        => findByBy(By.className)
+      case CSS_SELECTOR      => findByBy(By.cssSelector)
+      case ID                => findByBy(By.id)
+      case LINK_TEXT         => findByBy(By.linkText)
+      case NAME              => findByBy(By.name)
+      case PARTIAL_LINK_TEXT => findByBy(By.partialLinkText)
+      case TAG_NAME          => findByBy(By.tagName)
       case UUID              => findByUUID()
-      case XPATH             => findByBy(By.xpath _)
+      case XPATH             => findByBy(By.xpath)
     }
 
     elementFactory(query)
@@ -114,15 +112,15 @@ return report;
     }
 
     val elementFactory = method match {
-      case CLASS_NAME        => findByBy(By.className _)
-      case CSS_SELECTOR      => findByBy(By.cssSelector _)
-      case ID                => findByBy(By.id _)
-      case LINK_TEXT         => findByBy(By.linkText _)
-      case NAME              => findByBy(By.name _)
-      case PARTIAL_LINK_TEXT => findByBy(By.partialLinkText _)
-      case TAG_NAME          => findByBy(By.tagName _)
+      case CLASS_NAME        => findByBy(By.className)
+      case CSS_SELECTOR      => findByBy(By.cssSelector)
+      case ID                => findByBy(By.id)
+      case LINK_TEXT         => findByBy(By.linkText)
+      case NAME              => findByBy(By.name)
+      case PARTIAL_LINK_TEXT => findByBy(By.partialLinkText)
+      case TAG_NAME          => findByBy(By.tagName)
       case UUID              => findByUUID()
-      case XPATH             => findByBy(By.xpath _)
+      case XPATH             => findByBy(By.xpath)
     }
 
     elementFactory(query)
@@ -183,7 +181,7 @@ return report;
 
   protected def parseAttributeReport(reportRaw: Object): Map[String, String] =
     reportRaw match {
-      case report: ArrayList[_] =>
+      case report: util.ArrayList[_] =>
         val attributeList: List[(String, String)] =
           report.toList flatMap {
             case entry: String =>
@@ -205,10 +203,10 @@ return report;
 
   protected def inAllWindows[T](address: Address => T)(implicit context: ActionContext): Stream[T] = {
     if(context.useFrames) {
-      val windowList: Stream[Window] = d.getWindowHandles().toStream
+      val windowList: Stream[Window] = d.getWindowHandles.toStream
       windowList flatMap inAllFrames(address)
     } else {
-      val windowList: Stream[Window] = Stream(d.getWindowHandle())
+      val windowList: Stream[Window] = Stream(d.getWindowHandle)
       windowList flatMap inAllFrames(address)
     }
   }

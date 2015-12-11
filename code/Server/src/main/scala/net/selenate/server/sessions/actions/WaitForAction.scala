@@ -13,12 +13,12 @@ import org.openqa.selenium.{ By, WebElement }
 import scala.collection.JavaConversions._
 
 class WaitForAction(val d: FirefoxDriver)(implicit context: ActionContext)
-    extends IAction[SeReqWaitFor, SeResWaitFor]
+    extends RetryableAction[SeReqWaitFor, SeResWaitFor]
     with ActionCommons
     with WaitFor {
   protected val log = Log(classOf[WaitForAction])
 
-  def act = { arg =>
+  def retryableAct = { arg =>
     val res = waitForPageList(arg.pageList.toIndexedSeq)
 
     new SeResWaitFor(res.isDefined, res.orNull)

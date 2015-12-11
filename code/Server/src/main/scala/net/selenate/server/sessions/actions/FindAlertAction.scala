@@ -20,7 +20,7 @@ class FindAlertAction(val d: FirefoxDriver)
     try {
       val alert = d.switchTo.alert
       val text = alert.getText
-      alert.dismiss
+      alert.dismiss()
       new SeResFindAlert(text)
     } catch {
       case e: NoAlertPresentException =>

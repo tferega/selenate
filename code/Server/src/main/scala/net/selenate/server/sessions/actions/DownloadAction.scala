@@ -12,7 +12,6 @@ import org.openqa.selenium.firefox.FirefoxDriver
 import scala.collection.JavaConversions._
 import java.io.IOException
 import net.selenate.common.comms.SeDownloadMethod
-import com.ning.http.client.ProxyServer
 
 class DownloadAction(val d: FirefoxDriver) extends IAction[SeReqDownload, SeResDownload] {
 

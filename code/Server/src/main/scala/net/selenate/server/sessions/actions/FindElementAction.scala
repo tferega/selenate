@@ -5,19 +5,16 @@ package actions
 
 import common.comms.res._
 import common.comms.req._
-import java.util.ArrayList
-import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.remote.RemoteWebElement
-import scala.collection.JavaConversions._
+import org.openqa.selenium.remote.RemoteWebDriver
 
 
-class FindElementAction(val d: FirefoxDriver)(implicit context: ActionContext)
-    extends IAction[SeReqFindElement, SeResFindElement]
+class FindElementAction(val d: RemoteWebDriver)(implicit context: ActionContext)
+    extends RetryableAction[SeReqFindElement, SeResFindElement]
     with ActionCommons {
 
   protected val log = Log(classOf[FindElementAction])
 
-  def act = { arg =>
+  def retryableAct = { arg =>
     val resElementList: Stream[Option[SeResFindElement]] = inAllWindows { address =>
       tryo {
         val webElement = findElement(arg.method, arg.query)
@@ -30,7 +27,7 @@ class FindElementAction(val d: FirefoxDriver)(implicit context: ActionContext)
     if (e.isEmpty) {
       throw new IllegalArgumentException("Element [%s, %s] was not found in any frame!".format(arg.method.toString, arg.query))
     } else {
-      e(0)
+      e.head
     }
   }
 }

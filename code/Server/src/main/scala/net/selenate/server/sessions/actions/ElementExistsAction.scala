@@ -12,12 +12,12 @@ import scala.collection.JavaConversions._
 
 
 class ElementExistsAction(val d: FirefoxDriver)(implicit context: ActionContext)
-    extends IAction[SeReqElementExists, SeResElementExists]
+    extends RetryableAction[SeReqElementExists, SeResElementExists]
     with ActionCommons {
 
   protected val log = Log(classOf[ElementExistsAction])
 
-  def act = { arg =>
+  def retryableAct = { arg =>
     val resElementList: Stream[Boolean] = inAllWindows { address =>
       tryb {
         findElement(arg.method, arg.query)

@@ -12,13 +12,13 @@ import scala.collection.JavaConversions._
 
 
 class FindAndClickAction(val d: FirefoxDriver)(implicit context: ActionContext)
-    extends IAction[SeReqFindAndClick, SeResFindAndClick]
+    extends RetryableAction[SeReqFindAndClick, SeResFindAndClick]
     with ActionCommons {
   type PathElement = (FramePath, RemoteWebElement)
 
   protected val log = Log(classOf[FindAndClickAction])
 
-  def act = { arg =>
+  def retryableAct = { arg =>
     val elementList: Stream[Boolean] =
       inAllWindows { address =>
         tryb {

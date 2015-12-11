@@ -13,12 +13,12 @@ import scala.collection.JavaConversions._
 
 
 class FindSelectAction(val d: FirefoxDriver)(implicit context: ActionContext)
-    extends IAction[SeReqFindSelect, SeResFindSelect]
+    extends RetryableAction[SeReqFindSelect, SeResFindSelect]
     with ActionCommons {
 
   protected val log = Log(classOf[FindSelectAction])
 
-  def act = { arg =>
+  def retryableAct = { arg =>
     val resElementList: Stream[Option[SeSelect]] = inAllWindows { address =>
       tryo {
         val webElement = findElement(arg.method, arg.query)

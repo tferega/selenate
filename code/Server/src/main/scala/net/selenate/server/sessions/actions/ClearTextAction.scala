@@ -12,12 +12,12 @@ import org.openqa.selenium.{ By, WebElement }
 import scala.collection.JavaConversions._
 
 class ClearTextAction(val d: FirefoxDriver)(implicit context: ActionContext)
-    extends IAction[SeReqClearText, SeResClearText]
+    extends RetryableAction[SeReqClearText, SeResClearText]
     with ActionCommons {
 
   protected val log = Log(classOf[ClearTextAction])
 
-  def act = { arg =>
+  def retryableAct = { arg =>
     switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)
     val e = findElement(arg.method, arg.query)
     e.clear

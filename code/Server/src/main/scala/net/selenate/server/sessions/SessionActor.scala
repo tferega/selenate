@@ -4,15 +4,12 @@ package sessions
 
 import actions._
 import actors.ActorFactory
-import common.comms.req._
 import common.comms.res._
 import driver.{ DriverPool, DriverProfile }
 import akka.actor.{ Actor, Cancellable }
 import net.selenate.common.comms.req.SeReqDownload
-import org.openqa.selenium.firefox.FirefoxProfile
 import scala.concurrent.duration.Duration
 import net.selenate.common.comms.req._
-import akka.actor.PoisonPill
 
 class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean = true) extends Actor {
   private val log  = Log(classOf[SessionActor], sessionID)
@@ -24,7 +21,7 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
     d
   }
   private var keepaliveScheduler: Option[Cancellable] = None
-  private def isKeepalive = keepaliveScheduler.isDefined
+//  private def isKeepalive = keepaliveScheduler.isDefined
   implicit val actionContext = ActionContext(useFrames)
 
   private def actionMan: PF[SeCommsReq, SeCommsRes] = {
@@ -78,14 +75,14 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
       actionContext.useFrames = arg.useFrames
       sender ! actionMan(arg)
     case arg: SeCommsReq =>
-      stopKeepalive
+      stopKeepalive()
       sender ! actionMan(arg)
   }
 
 
   override def postStop() {
     log.info(s"Post stop for $sessionID, killing browser and actor.")
-    deleteProfileFolder
+    deleteProfileFolder()
     d.kill()
   }
 
@@ -119,24 +116,20 @@ class SessionActor(sessionID: String, profile: DriverProfile, useFrames: Boolean
 
   def receive = wrap(receiveBase)
 
-  private def schedulify(data: KeepaliveData) {
-    context.system.scheduler.scheduleOnce(data.delay, self, data)
-  }
+//  private def schedulify(data: KeepaliveData) {
+//    context.system.scheduler.scheduleOnce(data.delay, self, data)
+//  }
 
   private def startKeepalive(data: KeepaliveData) {
-    stopKeepalive
-//    log.info("Starting keepalive.")
-//    log.debug(keepaliveStatus)
+    stopKeepalive()
     keepaliveScheduler = Some(context.system.scheduler.schedule(Duration.Zero, data.delay, self, data))
   }
 
   private def stopKeepalive() {
-//    log.info("Stopping keepalive.")
-//    log.debug(keepaliveStatus)
-    keepaliveScheduler.map(_.cancel)
+    keepaliveScheduler.foreach(_.cancel)
     keepaliveScheduler = None
   }
 
-  private def keepaliveStatus =
-    "Previous status: %s.".format(if (isKeepalive) "running" else "stopped")
+//  private def keepaliveStatus =
+//    "Previous status: %s.".format(if (isKeepalive) "running" else "stopped")
 }

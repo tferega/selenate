@@ -14,20 +14,20 @@ import org.openqa.selenium.remote.RemoteWebElement
 import net.selenate.server.util.TagSoupCleaner
 
 class CaptureWindowAction(val d: FirefoxDriver)(implicit context: ActionContext)
-    extends IAction[SeReqCaptureWindow, SeResCaptureWindow]
+    extends RetryableAction[SeReqCaptureWindow, SeResCaptureWindow]
     with ActionCommons
     with WaitFor {
 
   protected val log = Log(classOf[CaptureWindowAction])
 
-  def act = { arg =>
-    val resFindElement = (inAllWindows { address => // set us in the right frame
+  def retryableAct = { arg =>
+    val resFindElement = inAllWindows { address => // set us in the right frame
       tryo {
         if(elementExists(arg.method, arg.query).isDefined)
           Some(getScreenshot(arg.cssElement))
         else None
       }
-    }).flatten
+    }.flatten
     
     resFindElement.head match {
       case Some(scr) => 

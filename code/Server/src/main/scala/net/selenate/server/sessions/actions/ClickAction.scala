@@ -12,12 +12,12 @@ import org.openqa.selenium.{ By, WebElement }
 import scala.collection.JavaConversions._
 
 class ClickAction(val d: FirefoxDriver)(implicit context: ActionContext)
-    extends IAction[SeReqClick, SeResClick]
+    extends RetryableAction[SeReqClick, SeResClick]
     with ActionCommons {
 
   protected val log = Log(classOf[ClickAction])
 
-  def act = { arg =>
+  def retryableAct = { arg =>
     switchToFrame(arg.windowHandle, arg.framePath.map(_.toInt).toIndexedSeq)
     val e = findElement(arg.method, arg.query)
     e.click
