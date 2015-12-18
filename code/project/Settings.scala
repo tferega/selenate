@@ -2,6 +2,11 @@ import sbt._
 import Keys._
 
 
+import com.typesafe.sbteclipse.plugin.EclipsePlugin._
+import com.typesafe.sbteclipse.plugin.EclipsePlugin.EclipseKeys._
+// import EclipsePlugin.{ settings => eclipseSettings, EclipseProjectFlavor }
+// import EclipsePlugin.EclipseKeys.projectFlavor
+
 // ==============  PUBLISHING SETTINGS  ==============
 object Publishing {
   import Repositories._
@@ -16,14 +21,8 @@ object Publishing {
   )
 }
 
-
-
 // ==============  DEFINES DEFAULT SETTINGS USED BY ALL PROJECTS  ==============
 object Default {
-  import com.typesafe.sbteclipse.plugin.EclipsePlugin
-  import EclipsePlugin.{ settings => eclipseSettings, EclipseProjectFlavor }
-  import EclipsePlugin.EclipseKeys.projectFlavor
-
   val Name = "Selenate"
 
   lazy val javaProject =
@@ -69,7 +68,7 @@ object Default {
       unmanagedSourceDirectories in Compile := (scalaSource in Compile).value :: Nil
   )
 
-  lazy val settings =
+  lazy val baseSettings =
     Defaults.defaultSettings ++
     Seq(
       name         := Name,
@@ -109,7 +108,7 @@ object Helpers {
     Project(
       Default.Name,
       file("."),
-      settings = Default.settings
+      settings = Default.baseSettings
     ) aggregate(projectAggs: _*)
 
 
@@ -121,7 +120,7 @@ object Helpers {
     Project(
       title,
       file(title.replace('-', '/')),
-      settings = Default.settings ++ Seq(
+      settings = Default.baseSettings ++ Seq(
         name := Default.Name +"-"+ title
       )
     ) aggregate(projectAggs: _*)
@@ -136,7 +135,7 @@ object Helpers {
     Project(
       title,
       file(title.replace('-', '/')),
-      settings = Default.settings ++ flavorSettings(flavor) ++ Seq(
+      settings = Default.baseSettings ++ flavorSettings(flavor) ++ Seq(
         name := Default.Name +"-"+ title
       ) :+ (libraryDependencies <++= scalaVersion( sV =>
         for (depSeq <- deps; dep <- depSeq) yield dep(sV))
