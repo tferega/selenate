@@ -11,8 +11,8 @@ trait CBase {
   val configPath = {
     (configOverride, branch) match {
       case (Some(c), _)    => new File(c)
-      case (None, Some(b)) => new File(userHome + s"/.props/selenate_$b/server.config")
-      case (None, None)    => new File(userHome + "/.props/selenate/server.config")
+      case (None, Some(b)) => new File(userHome + s"/.config/selenate_$b/server.config")
+      case (None, None)    => new File(userHome + s"/.config/selenate/server.config")
     }
   }
 
