@@ -12,6 +12,7 @@ object LinuxDisplay extends Loggable {
 
   private val width  = C.Server.Pool.DISPLAY_WIDTH
   private val height = C.Server.Pool.DISPLAY_HEIGHT
+  private val host   = C.Server.Pool.VNC_HOST
 
   def create(): DisplayInfo = {
     try {
@@ -75,7 +76,7 @@ object LinuxDisplay extends Loggable {
 
   private def runXvfb(num: Int)         = LinuxProc.runAndVerify("Xvfb", s":$num" | "-screen" | "0" | s"${width}x${height}x16" | "-ac")
   private def runIceWM(num: Int)        = LinuxProc.runAndVerify("icewm", Seq(s"--display=:$num"))
-  private def runX11vnc(num: Int)       = LinuxProc.runAndVerify("x11vnc", "-display" | s":$num" | "-listen" | "localhost" | "-nopw" | "-xkb" | "-shared" | "-forever")
+  private def runX11vnc(num: Int)       = LinuxProc.runAndVerify("x11vnc", "-display" | s":$num" | "-listen" | host | "-nopw" | "-xkb" | "-shared" | "-forever")
   private def runXdpyInfo(num: Int)     = LinuxProc.runAndEnd("xdpyinfo", "-display" | s":$num")
   private def runPkill(pattern: String) = LinuxProc.runAndEnd("pkill", "-f" | pattern)
   private def runFFmpeg(filename: String, num: Int) = LinuxProc.runAndVerify("ffmpeg",

@@ -39,6 +39,7 @@ object C extends CUtils {
       val DISPLAY        = config.getString("display")
       val DISPLAY_WIDTH  = config.getString("display-width")
       val DISPLAY_HEIGHT = config.getString("display-height")
+      val VNC_HOST       = config.getString("vnc-host")
       val BINARY         = if (config.hasPath("binary")) Some(config.getString("binary")) else None
       val PREFS          = config.getObject("prefs").unwrapped.toMap.mapValues(_.toString)
     }
