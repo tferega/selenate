@@ -6,7 +6,7 @@ import java.io.File
 
 trait Extractors {
   object IsString {
-    private val R = """'(.*)'"""r
+    private val R = "(.*)"r
     def unapply(raw: String): Option[java.lang.String] =
       tryo {
         val R(extracted) = raw
