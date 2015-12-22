@@ -33,7 +33,7 @@ trait Settings {
     EclipsePlugin.settings ++
     GraphPlugin.graphSettings ++ Seq(
       organization := "net.selenate",
-      version      := "0.3.0-SNAPSHOT",
+      version      := "0.3.5-SNAPSHOT",
       scalaVersion := "2.11.7",
       EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource,
       EclipseKeys.eclipseOutput := Some("bin")
