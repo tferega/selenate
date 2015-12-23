@@ -5,7 +5,7 @@ import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
 package object actors extends Loggable {
-  val system = ActorSystem("server-system", C.Akka.CONFIG)
+  val system = ActorSystem("server-system", C.CONFIG)
 
   def shutdown() {
     system.terminate

@@ -1,72 +1,23 @@
 package net.selenate.client;
 
-import com.typesafe.config.*;
-import java.io.File;
+import akka.util.Timeout;
+import com.typesafe.config.Config;
 
 public final class C {
   private C() {}
-
-  public static final int     WaitingTimeout;
-  public static final String  ClientHost;
-  public static final String  ServerHost;
-  public static final String  ServerPort;
-  public static final Boolean RecordSessions;
-  public static final Config  AkkaConfig;
-
-  static {
-    try {
-      final Config defaultConfig = loadResourceConfig("client.reference.config");
-      final Config userConfig    = loadFileConfig(getConfigFile());
-      final Config config        = userConfig.withFallback(defaultConfig);
-
-      WaitingTimeout = config.getInt("waiting.timeout");
-      ClientHost     = config.getString("client.host");
-      ServerHost     = config.getString("server.host");
-      ServerPort     = config.getString("server.port");
-      RecordSessions = config.getBoolean("record.sessions");
-      AkkaConfig     = loadAkkaConfig(ClientHost);
-    } catch (Exception e) {
-      throw new RuntimeException("An error occured while loading configuration!", e);
-    }
+  public static final Config config = BaseConfig.config; static {
+    System.out.println(config);
+    System.exit(0);
   }
 
-  private static File getConfigFile() {
-    final String userHome       = System.getProperty("user.home");
-    final String configOverride = System.getProperty("Selenate.config_override");
-    final String branch         = System.getProperty("Selenate.branch");
-
-    final File configFile;
-    if (configOverride == null) {
-      if (branch == null) {
-        configFile = new File(userHome + "/.props/selenate/client.config");
-      } else {
-        configFile = new File(userHome + "/.props/selenate_" + branch + "/client.config");
-      }
-    } else {
-      configFile = new File(configOverride);
-    }
-
-    return configFile;
+  public static final class Global {
+    public static final Timeout Timeouts = BaseConfig.parseTimeout(config.getString("global.timeouts"));
+    public static final boolean RecordSessions = config.getBoolean("global.record-sessions");
   }
 
-  private static ConfigParseOptions getParseOpts(final boolean allowMissing) {
-    return ConfigParseOptions
-      .defaults()
-      .setAllowMissing(allowMissing)
-      .setSyntax(ConfigSyntax.PROPERTIES);
-  }
-
-  private static Config loadAkkaConfig(final String clientHost) {
-    final ConfigValue hostnameVal = ConfigValueFactory.fromAnyRef(clientHost);
-    final Config c = ConfigFactory.parseResources("akka.reference.config").withValue("akka.remote.netty.tcp.hostname", hostnameVal);
-    return c;
-  }
-
-  private static Config loadResourceConfig(String name) {
-    return ConfigFactory.parseResources(name, getParseOpts(false));
-  }
-
-  private static Config loadFileConfig(File path) {
-    return ConfigFactory.parseFile(path, getParseOpts(true));
+  public static final class ServerSystem {
+    public static final String Name = config.getString("server-system.name");
+    public static final String Host = config.getString("server-system.host");
+    public static final int Port = config.getInt("server-system.port");
   }
 }

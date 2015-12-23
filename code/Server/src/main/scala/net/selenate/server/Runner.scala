@@ -14,8 +14,6 @@ object Runner extends Loggable {
 
       logInfo("Loading configuration...")
       logInfo("Branch: " + C.BRANCH)
-      logInfo("ServerHost: " + C.Server.HOST)
-
       logInfo("Starting main Actor system...")
 
       val pool = C.Server.Pool

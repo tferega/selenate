@@ -2,15 +2,12 @@ package net.selenate.client.user;
 
 import akka.actor.ActorRef;
 import akka.pattern.Patterns;
-import akka.util.Timeout;
 import java.io.IOException;
 import net.selenate.client.C;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
-import scala.concurrent.duration.Duration;
 
 class ActorBase {
-  public static final Timeout timeout = new Timeout(Duration.create(C.WaitingTimeout, "seconds"));
   protected final ActorRef session;
 
   public ActorBase(final ActorRef session) {
@@ -23,8 +20,8 @@ class ActorBase {
 
   protected Object block(final Object req) throws IOException {
     try {
-      final Future<Object> future = Patterns.ask(session, req, timeout);
-      final Object result = Await.result(future, timeout.duration());
+      final Future<Object> future = Patterns.ask(session, req, C.Global.Timeouts);
+      final Object result = Await.result(future, C.Global.Timeouts.duration());
       return result;
     } catch (final Exception e) {
       throw new IOException(String.format("An error occured while sending the message to remote actor!\nMessage: %s", req.toString()), e);
