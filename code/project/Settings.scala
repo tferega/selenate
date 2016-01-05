@@ -1,8 +1,6 @@
 import sbt._
 import Keys._
 
-import com.typesafe.sbteclipse.plugin.EclipsePlugin
-import EclipsePlugin.{ EclipseCreateSrc, EclipseKeys, EclipseProjectFlavor }
 import net.virtualvoid.sbt.graph.{ Plugin => GraphPlugin }
 import xerial.sbt.Pack
 trait Settings {
@@ -30,18 +28,14 @@ trait Settings {
 
   private val default =
     Defaults.coreDefaultSettings ++
-    EclipsePlugin.settings ++
     GraphPlugin.graphSettings ++ Seq(
       organization := "net.selenate",
       version      := "0.3.6-SNAPSHOT",
-      scalaVersion := "2.11.7",
-      EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource,
-      EclipseKeys.eclipseOutput := Some("bin")
+      scalaVersion := "2.11.7"
     )
 
   val scalaSettings =
     default ++ Seq(
-      EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
       unmanagedSourceDirectories in Compile := (scalaSource in Compile).value :: Nil,
       unmanagedSourceDirectories in Test    := Nil,
       scalacOptions := Seq(
@@ -65,9 +59,8 @@ trait Settings {
 
   val javaSettings =
     default ++ Seq(
-      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
-      autoScalaLibrary          := false,
-      crossPaths                := false,
+      autoScalaLibrary := false,
+      crossPaths       := false,
       unmanagedSourceDirectories in Compile := (javaSource in Compile).value :: Nil,
       unmanagedSourceDirectories in Test    := Nil,
       javacOptions := Seq(
