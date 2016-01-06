@@ -16,12 +16,8 @@
     </rollingPolicy>
   </appender>
 
-  <logger name="net.selenate" level="INFO">
-    <appender-ref ref="STDOUT"/>
-  </logger>
-
   <root level="ALL">
-    <appender-ref ref="FILE"/>
+    <appender-ref ref="STDOUT"/>
   </root>
 </configuration>
 
