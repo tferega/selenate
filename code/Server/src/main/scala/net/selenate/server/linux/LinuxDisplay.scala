@@ -60,7 +60,7 @@ object LinuxDisplay extends Loggable {
       iceWM  <- runIceWM(num).right
       x11vnc <- runX11vnc(num).right
     } yield {
-      waitFor(extractX11vncPort(x11vnc), 2000, 150, 0).getOrElse(throw new SeException("x11vnc failed to start properly (could not parse output)"))
+      waitFor(extractX11vncPort(x11vnc), 5000, 150, 0).getOrElse(throw new SeException("x11vnc failed to start properly (could not parse output)"))
     }
 
     result match {
