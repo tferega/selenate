@@ -42,7 +42,8 @@ object FirefoxRunner extends Loggable {
     val ffBinary = new SelenateBinary(binaryFile)
     val ffProfile = SelenateProfile.fromProfileSettings(profile)
     val d = new SelenateFirefox(profile, Some(displayInfo), ffBinary, ffProfile)
-    d.manage.timeouts.pageLoadTimeout(C.Server.Timeouts.PAGE_LOAD , TimeUnit.SECONDS)
+    val duration = C.Server.Timeouts.PAGE_LOAD.duration;
+    d.manage.timeouts.pageLoadTimeout(duration.length, duration.unit)
     d
   }
 

@@ -24,8 +24,8 @@ object C extends CUtils {
     }
 
     object Timeouts extends {
-      val PAGE_LOAD = CONFIG.getInt("server.timeouts.page-load")
-      val SHUTDOWN  = CONFIG.getInt("server.timeouts.shutdown")
+      val PAGE_LOAD = parseTimeout(CONFIG.getString("server.timeouts.page-load"))
+      val SHUTDOWN  = parseTimeout(CONFIG.getString("server.timeouts.shutdown"))
     }
 
     object Pool extends {

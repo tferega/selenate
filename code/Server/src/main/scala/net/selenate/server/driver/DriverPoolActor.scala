@@ -68,7 +68,7 @@ class DriverPoolActor(val settings: PoolSettings)
   override def postStop() {
     val futureList: List[Future[SelenateFirefox]] = pool.toList.map(_.future)
     val listFuture: Future[List[SelenateFirefox]] = Future.sequence(futureList)
-    val driverList = Await.result(listFuture, C.Server.Timeouts.SHUTDOWN seconds)
+    val driverList = Await.result(listFuture, C.Server.Timeouts.SHUTDOWN.duration)
     driverList foreach { driver =>
       driver.quit
       driver.displayInfo foreach LinuxDisplay.destroy

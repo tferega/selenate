@@ -1,8 +1,10 @@
 package net.selenate.server
 
+import akka.util.Timeout
 import com.typesafe.config.{ Config, ConfigFactory, ConfigParseOptions, ConfigSyntax }
 import java.io.File
 import net.selenate.common.exceptions.SeException
+import scala.concurrent.duration.{ Duration, FiniteDuration }
 
 trait CBase {
   val configOverride = sys.props.get("Selenate.config_override")
@@ -26,6 +28,14 @@ trait CBase {
 
   def loadFileConfig(path: File): Config =
     ConfigFactory.parseFile(path, parseOpts(true))
+
+  protected def parseTimeout(raw: String): Timeout = {
+    val duration = Duration(raw);
+    duration match {
+      case fd: FiniteDuration => new Timeout(fd)
+      case _ => throw new IllegalArgumentException(s"Given duration $raw cannot be interpreted as a finite duration!")
+    }
+  }
 }
 
 trait CUtils extends CBase with Loggable {
