@@ -18,14 +18,16 @@ object C extends CUtils {
 
   object Server extends {
     val IS_KILLABLE = CONFIG.getBoolean("server.is-killable")
+    val TRYO_TRACE  = CONFIG.getBoolean("server.tryo-trace")
 
     object Locations extends {
       val RECORDINGS = CONFIG.getString("server.locations.recordings")
     }
 
     object Timeouts extends {
-      val PAGE_LOAD = parseTimeout(CONFIG.getString("server.timeouts.page-load"))
-      val SHUTDOWN  = parseTimeout(CONFIG.getString("server.timeouts.shutdown"))
+      val PAGE_LOAD   = parseTimeout(CONFIG.getString("server.timeouts.page-load"))
+      val SHUTDOWN    = parseTimeout(CONFIG.getString("server.timeouts.shutdown"))
+      val VNC_STARTUP = parseTimeout(CONFIG.getString("server.timeouts.vnc-startup"))
     }
 
     object Pool extends {

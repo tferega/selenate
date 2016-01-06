@@ -17,7 +17,7 @@ package object server
       Some(f)
     } catch {
       case e: Exception =>
-        logTrace("Error in tryo", e)
+        if (C.Server.TRYO_TRACE) logTrace("Error in tryo", e)
         None
     }
 
@@ -27,7 +27,7 @@ package object server
       true
     } catch {
       case e: Exception =>
-        logTrace("Error in tryb", e)
+        if (C.Server.TRYO_TRACE) logTrace("Error in tryb", e)
         false
     }
 
