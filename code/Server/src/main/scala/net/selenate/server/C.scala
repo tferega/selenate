@@ -9,7 +9,6 @@ object C extends CUtils {
   val CONFIG = ConfigFactory.empty()
       .withFallback(loadAppUser)
       .withFallback(loadAppReference)
-      .withFallback(loadAkkaUser)
       .withFallback(loadAkkaReference)
   logTrace(s"""Effective config: $CONFIG""")
 

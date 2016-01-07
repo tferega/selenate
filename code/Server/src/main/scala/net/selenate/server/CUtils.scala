@@ -73,8 +73,7 @@ trait CUtils extends CBase with Loggable {
     }
   }
 
-  def loadAppUser       = loadFileConfig("user application", "server.config")
-  def loadAppReference  = loadResourceConfig("reference application", "server.reference.config")
-  def loadAkkaUser      = loadFileConfig("user akka", "server-akka.config")
   def loadAkkaReference = loadResourceConfig("reference akka", "selenate-akka.reference.config")
+  def loadAppReference  = loadResourceConfig("reference application", "server.reference.config")
+  def loadAppUser       = loadFileConfig("user application", "server.config")
 }
