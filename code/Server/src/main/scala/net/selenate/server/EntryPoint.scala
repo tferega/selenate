@@ -10,11 +10,7 @@ object EntryPoint extends App with CBase {
   Runner.start
 
   def initLog() {
-    val defaultConfig = loadResourceConfig("server.reference.config")
-    val userConfig    = loadFileConfig(configPath)
-    val config        = userConfig withFallback defaultConfig
-
-    val logLocation = config.getString("server.locations.log")
+    val logLocation = C.Server.Locations.LOG
     System.setProperty("LOG_LOCATION", logLocation)
 
     val lc = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
