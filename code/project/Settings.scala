@@ -18,7 +18,7 @@ trait Settings {
       file(projectName),
       settings =
         baseSettings ++
-        (if (isPublish) publishing else Seq.empty) ++
+        (if (isPublish) publishing else nonPublishing) ++
         (mainClass match { case Some(mc) => getPackable(mc); case None => Seq.empty} ) ++
         Seq(
           name := "Selenate-" + projectName,
@@ -30,7 +30,7 @@ trait Settings {
     Defaults.coreDefaultSettings ++
     GraphPlugin.graphSettings ++ Seq(
       organization := "net.selenate",
-      version      := "0.3.6-SNAPSHOT",
+      version      := "0.3.7",
       scalaVersion := "2.11.7"
     )
 
@@ -63,15 +63,16 @@ trait Settings {
       crossPaths       := false,
       unmanagedSourceDirectories in Compile := (javaSource in Compile).value :: Nil,
       unmanagedSourceDirectories in Test    := Nil,
-      javacOptions := Seq(
+      javacOptions in (Compile, compile) := Seq(
         "-encoding", "UTF-8",
         "-Xlint:all"
-      )
+      ),
+      javacOptions in (Compile, doc) := Nil
     )
 
   val publishing = Seq(
     crossScalaVersions := Seq("2.11.7", "2.10.4"),
-    publishArtifact in (Compile, packageDoc) := false,
+    publishArtifact in (Compile, packageDoc) := true,
     publishArtifact in Test := false,
     publishTo := Some(
       if (version.value endsWith "SNAPSHOT") {
@@ -88,6 +89,10 @@ trait Settings {
     startYear               := Some(2012),
     scmInfo                 := Some(ScmInfo(url("https://github.com/tferega/selenate"), "scm:git:https://github.com/tferega/selenate.git")),
     pomExtra                ~= (_ ++ {Developers.toXml})
+  )
+
+  val nonPublishing = Seq(
+    packagedArtifacts := Map.empty
   )
 
   def getPackable(mainClass: String) =
