@@ -5,10 +5,7 @@ import com.typesafe.config.Config;
 
 public final class C {
   private C() {}
-  public static final Config config = BaseConfig.config; static {
-    System.out.println(config);
-    System.exit(0);
-  }
+  public static final Config config = BaseConfig.config;
 
   public static final class Global {
     public static final Timeout Timeouts = BaseConfig.parseTimeout(config.getString("global.timeouts"));
