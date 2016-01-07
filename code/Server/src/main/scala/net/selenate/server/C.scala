@@ -22,7 +22,6 @@ object C extends CUtils {
 
     object Locations extends {
       val RECORDINGS = CONFIG.getString("server.locations.recordings")
-      val LOG        = CONFIG.getString("server.locations.log")
     }
 
     object Timeouts extends {
