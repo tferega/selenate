@@ -11,3 +11,5 @@ branch.config
 
 *.log
 *.mp4
+
+docker/payload/root/pack
