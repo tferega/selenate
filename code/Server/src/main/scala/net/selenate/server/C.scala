@@ -9,7 +9,6 @@ object C extends CUtils {
   val CONFIG = ConfigFactory.empty()
       .withFallback(loadAppUser)
       .withFallback(loadAppReference)
-      .withFallback(loadAkkaUser)
       .withFallback(loadAkkaReference)
   logTrace(s"""Effective config: $CONFIG""")
 
@@ -17,12 +16,10 @@ object C extends CUtils {
   val OS_NAME = sys.props("os.name")
 
   object Server extends {
-    val IS_KILLABLE = CONFIG.getBoolean("server.is-killable")
     val TRYO_TRACE  = CONFIG.getBoolean("server.tryo-trace")
 
     object Locations extends {
       val RECORDINGS = CONFIG.getString("server.locations.recordings")
-      val LOG        = CONFIG.getString("server.locations.log")
     }
 
     object Timeouts extends {
