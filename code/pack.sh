@@ -1,2 +1,2 @@
 #!/bin/bash
-sbt pack
+sbt clean pack

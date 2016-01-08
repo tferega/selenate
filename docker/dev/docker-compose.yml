@@ -1,0 +1,10 @@
+selenate:
+  image: mentatlabs/selenate-dev
+  ports: 
+    - "9072:9072"
+  hostname: selenate
+  volumes:
+    - ~/.config/selenate:/root/.config
+    - ../../code/Server/target/pack:/opt/selenate
+  restart: always
+  command: /opt/selenate/bin/start
