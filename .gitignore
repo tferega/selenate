@@ -9,6 +9,8 @@ target
 branch.config
 .cache-main
 
+.idea/
+
 *.log
 *.mp4
 
