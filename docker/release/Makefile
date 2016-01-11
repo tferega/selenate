@@ -1,5 +1,5 @@
 IMAGE_NAME="mentatlabs/selenate"
-TAG="0.3.7"
+TAG="0.3.8"
 
 ## Build image from Dockerfile
 build:

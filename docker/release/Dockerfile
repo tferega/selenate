@@ -25,4 +25,4 @@ COPY config/ /root
 
 COPY pack/ /opt/selenate
 
-EXPOSE 9072
+CMD /opt/selenate/bin/start
