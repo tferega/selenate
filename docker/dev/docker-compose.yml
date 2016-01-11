@@ -5,6 +5,6 @@ selenate:
     - "9072:9072"
   hostname: selenate
   volumes:
-    - ~/.config/selenate:/root/.config
+    - ~/.config/selenate:/root/.config/selenate
     - ../../code/Server/target/pack:/opt/selenate
   command: /opt/selenate/bin/start

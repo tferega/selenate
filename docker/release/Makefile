@@ -11,8 +11,9 @@ push:
 
 ## Push tagged image to hub
 push-tag:
-	docker push $(IMAGE_NAME):$(TAG)
+	docker tag -f $(IMAGE_NAME) $(IMAGE_NAME):$(TAG) \
+	&& docker push $(IMAGE_NAME):$(TAG)
 
 ## Run container with default command
-run:
-	docker-compose up
+run: 
+	docker-compose up -d
