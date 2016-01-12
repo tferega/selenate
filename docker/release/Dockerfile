@@ -24,5 +24,6 @@ RUN wget -O /opt/firefox-31.8.0.tar.bz2 https://ftp.mozilla.org/pub/firefox/rele
 COPY config/ /root
 
 COPY pack/ /opt/selenate
+COPY entry-point.sh /opt/selenate/
 
-CMD /opt/selenate/bin/start
+CMD /opt/selenate/entry-point.sh

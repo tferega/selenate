@@ -3,7 +3,14 @@ TAG="0.3.8"
 
 ## Build image from Dockerfile
 build:
-	pack.sh && docker build --rm -t $(IMAGE_NAME) .
+	docker build --rm -t $(IMAGE_NAME) .
+
+## Package service
+pack:
+	pack.sh
+
+## Build release
+release: | pack build
 
 ## Push image to hub
 push:
