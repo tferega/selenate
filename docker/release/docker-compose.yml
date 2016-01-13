@@ -1,0 +1,6 @@
+selenate:
+  image: mentatlabs/selenate
+  container_name: selenate
+  ports: 
+    - "9072:9072"
+  hostname: selenate
