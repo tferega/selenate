@@ -53,7 +53,10 @@ trait ActionCommonsFrames extends ActionCommonsBase { self: Loggable =>
     if (context.useFrames) {
       logTrace("inAllWindows searching through all windows")
       val windowList: Iterator[WindowHandle] = d.getWindowHandles.toIterator
-      windowList flatMap inAllFrames(f)
+      windowList flatMap { handler =>
+        windowSwitch(handler)
+        inAllFrames(f)(handler)
+      }
     } else {
       logTrace("inAllWindows searching only in current window")
       val result = f(emptyAddress())
