@@ -2,29 +2,42 @@ package net.selenate.client.user;
 
 import akka.actor.ActorRef;
 import akka.pattern.Patterns;
+import akka.util.Timeout;
 import java.io.IOException;
-import net.selenate.client.C;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
 
 class ActorBase {
+  protected final Timeout timeout;
   protected final ActorRef session;
 
-  public ActorBase(final ActorRef session) {
-    if (session == null) {
+  public ActorBase(
+      final Timeout timeout,
+      final ActorRef session) {
+    this.timeout = timeout;
+    this.session = session;
+    validate();
+  }
+
+  private void validate() {
+    if(session == null && timeout == null) {
+      throw new IllegalArgumentException("Session and timeout cannot be null!");
+    }
+    if(session == null) {
       throw new IllegalArgumentException("Session cannot be null!");
     }
-
-    this.session = session;
+    if(timeout == null) {
+      throw new IllegalArgumentException("Timeout cannot be null!");
+    }
   }
 
   protected Object block(final Object req) throws IOException {
     try {
-      final Future<Object> future = Patterns.ask(session, req, C.Global.Timeouts);
-      final Object result = Await.result(future, C.Global.Timeouts.duration());
+      final Future<Object> future = Patterns.ask(session, req, timeout);
+      final Object result = Await.result(future, timeout.duration());
       return result;
     } catch (final Exception e) {
-      throw new IOException(String.format("An error occured while sending the message to remote actor!\nMessage: %s", req.toString()), e);
+      throw new IOException(String.format("An error occurred while sending the message to remote actor!\nMessage: %s", req.toString()), e);
     }
   }
 
