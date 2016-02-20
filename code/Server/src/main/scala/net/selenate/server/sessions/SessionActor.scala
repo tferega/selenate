@@ -28,19 +28,9 @@ class SessionActor(sessionRequest: SessionRequest, d: SelenateFirefox)
   private var keepaliveScheduler: Option[Cancellable] = None
   private def isKeepalive = keepaliveScheduler.isDefined
   private val sessionID  = sessionRequest.getSessionID
-  private val isRecorded: Boolean = sessionRequest.getIsRecorded
   private val sessionContext = SessionContext.default
 
   logInfo(s"""Session actor started""")
-
-
-  (isRecorded, d.displayInfo) match {
-    case (true, Some(DisplayInfo(displayNum, _))) =>
-      val filename = LinuxDisplay.record(sessionID, displayNum)
-      logDebug(s"Recording session to: $filename")
-    case _ =>
-      logDebug("Session not recorded")
-  }
 
   private def actionMan: PF[SeCommsReq, SeCommsRes] = {
     case arg: SeReqBrowserCapture        => new BrowserCaptureAction        (sessionID, sessionContext, d).act(arg)

@@ -57,7 +57,7 @@ public class SessionFactory {
 
   private ActorRef createSessionActor(final String sessionId) throws IOException {
     try {
-      final Object sessionReq = new SessionRequest(sessionId, false);
+      final Object sessionReq = new SessionRequest(sessionId);
       final Future<Object> sessionFuture = Patterns.ask(sessionFactory, sessionReq, timeout);
       final ActorRef session = (ActorRef)Await.result(sessionFuture, timeout.duration());
       return session;

@@ -3,11 +3,12 @@ package driver
 
 import extensions.SelenateFirefox
 import linux.LinuxDisplay
-import settings.PoolSettings
+import net.selenate.server.settings.{ProfileSettings, PoolSettings}
 
 import akka.actor.{ Actor, ActorRef, Props }
 import net.selenate.common.sessions.SessionRequest
 import net.selenate.common.NamedUUID
+import scala.collection.JavaConverters._
 import scala.collection.mutable.Queue
 import scala.concurrent.{ Await, Future }
 import scala.concurrent.duration._
@@ -34,6 +35,17 @@ class DriverPoolActor(val settings: PoolSettings)
     enqueue()
   }
 
+  private def createEntry(entryProfile: ProfileSettings): DriverEntry = {
+    val uuid = uuidFactory.random
+    val driverFuture = Future {
+      logDebug(s"""Driver pool starting a new entry: $uuid""")
+      val driver = FirefoxRunner.run(entryProfile)
+      logDebug(s"""Driver pool entry $uuid started""")
+      driver
+    }
+    DriverEntry(uuid, driverFuture)
+  }
+
   private def dequeue(): DriverEntry = {
     val driverEntry = pool.dequeue
     logDebug(s"""Driver pool returning an entry: ${ driverEntry.uuid }""")
@@ -41,23 +53,20 @@ class DriverPoolActor(val settings: PoolSettings)
   }
 
   private def enqueue() {
-    val uuid = uuidFactory.random
-
-    val driverFuture = Future {
-      logDebug(s"""Driver pool starting a new entry: $uuid""")
-      val driver = FirefoxRunner.run(profile)
-      logDebug(s"""Driver pool entry $uuid started""")
-      driver
-    }
-    val driverEntry = DriverEntry(uuid, driverFuture)
+    val driverEntry = createEntry(profile)
     pool.enqueue(driverEntry)
   }
 
   def receive = {
     case Dequeue(requester, sessionRequest) =>
-      logDebug(s"""Received Dequeue($sessionRequest)""")
-      enqueue()
-      sender ! ((requester, sessionRequest, dequeue()))
+      logDebug( s"""Received Dequeue($sessionRequest)""")
+      if (!sessionRequest.getPrefs.isEmpty) {
+        val customProfile = settings.profile.copy(prefMap = sessionRequest.getPrefs.asScala.toMap)
+        sender ! ((requester, sessionRequest, createEntry(customProfile)))
+      } else {
+        enqueue()
+        sender ! ((requester, sessionRequest, dequeue()))
+      }
   }
 
   override def postStop() {
