@@ -1,43 +1,80 @@
 package net.selenate.client.user;
 
 import akka.actor.ActorRef;
+import akka.util.Timeout;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import net.selenate.common.comms.*;
 import net.selenate.common.comms.req.*;
 import net.selenate.common.comms.res.*;
 
 public class Browser extends ActorBase {
-  public Browser(final ActorRef session) {
-    super(session);
+  public Browser(
+      final Timeout timeout,
+      final ActorRef session) {
+    super(timeout, session);
+  }
+
+  public void contextSetPersistentSelectors(
+      final List<SeElementSelector> presentSelectorList,
+      final List<SeElementSelector> absentSelectorList) throws IOException {
+    final SeReqSessionSetContext sessionContext = SeReqSessionSetContext.empty
+        .withPersistentPresentSelectorList(presentSelectorList)
+        .withPersistentAbsentSelectorList(absentSelectorList);
+    setSessionContext(sessionContext);
+  }
+
+  public void contextSetWaitDelay(final long waitDelay) throws IOException {
+    final SeReqSessionSetContext sessionContext = SeReqSessionSetContext.empty
+        .withWaitDelay(waitDelay);
+    setSessionContext(sessionContext);
   }
 
   public void open(final String url) throws IOException {
     typedBlock(new SeReqWindowGet(url), SeResWindowGet.class);
   }
 
-  public SeResBrowserCapture capture(final String name) throws IOException {
-    final SeResBrowserCapture res = typedBlock(new SeReqBrowserCapture(name, true), SeResBrowserCapture.class);
+  public void back() throws IOException {
+    typedBlock(new SeReqWindowNavigate(SeNavigateDirection.BACK), SeResWindowNavigate.class);
+  }
+
+  public SeResBrowserCapture capture() throws IOException {
+    final SeResBrowserCapture res = typedBlock(new SeReqBrowserCapture("capture", true), SeResBrowserCapture.class);
     return res;
   }
 
-  public String executeScript(final String javascript) throws IOException {
-    final SeResScriptExecute res = typedBlock(new SeReqScriptExecute(javascript), SeResScriptExecute.class);
-    return res.getResult();
+  public Set<SeCookie> getCookieSet() throws IOException {
+    final SeResBrowserCapture capture = capture();
+    return capture.getWindowList().get(0).getCookieSet();
   }
 
-  public void quit() throws IOException {
-    typedBlock(new SeReqBrowserQuit(), SeResBrowserQuit.class);
-    typedBlock(new SeReqSessionDestroy(), SeResSessionDestroy.class);
+  public SeCookie getCookie(final String name) throws IOException {
+    return getCookieSet()
+        .stream()
+        .filter(e -> name.equals(e.getName()))
+        .findFirst()
+        .orElseThrow(() -> new IOException(String.format("Required cookie with name %s was not found!", name)));
   }
 
-  public boolean elementExists(final SeElementSelector selector) throws IOException {
-    final List<Element> elements = findElementList(selector);
-    return elements.size() > 0;
+  public String breakCaptcha(final SeElementSelector element) throws IOException {
+    final SeResCaptchaBreak res = typedBlock(new SeReqCaptchaBreak(element), SeResCaptchaBreak.class);
+    return res.getText();
   }
 
-  public Element findElement(final SeElementSelector selector) throws IOException {
+  public String getHtml() throws IOException {
+    return capture().getWindowList().get(0).getHtml();
+  }
+
+  public byte[] download(final String url) throws IOException {
+    final SeResSessionDownload res = typedBlock(new SeReqSessionDownload(url), SeResSessionDownload.class);
+    return res.getBody();
+  }
+
+  public Element tryElement(final SeElementSelector selector) throws IOException {
     final List<Element> elements = findElementList(selector);
     if (elements.size() > 0) {
       return elements.get(0);
@@ -46,86 +83,85 @@ public class Browser extends ActorBase {
     }
   }
 
-  public List<Element> findElementList(final SeElementSelector selector) throws IOException {
+  public Element getElement(final SeElementSelector selector) throws IOException {
+    final List<Element> elements = findElementList(selector);
+    if (elements.size() > 0) {
+      return elements.get(0);
+    } else {
+      throw new IOException(String.format("Required element with selector %s was not found!", selector));
+    }
+  }
+
+  public int elementCount(final SeElementSelector selector) throws IOException {
+    return findElementList(selector).size();
+  }
+
+  public boolean elementExists(final SeElementSelector selector) throws IOException {
+    return findElementList(selector).size() > 0;
+  }
+
+  public String executeScript(final String javascript) throws IOException {
+    final SeResScriptExecute res = typedBlock(new SeReqScriptExecute(javascript), SeResScriptExecute.class);
+    return res.getResult();
+  }
+
+  public List<String> executeElemFunScript(
+      final String cssSelector,
+      final String elementFunction) throws IOException {
+    final List<List<String>> result = executeElemFunScript(cssSelector, Arrays.asList(elementFunction));
+    return result.stream()
+        .flatMap(c -> c.stream())
+        .collect(Collectors.toList());
+  }
+
+  public List<List<String>> executeElemFunScript(
+        final String cssSelector,
+        final List<String> elementFunctionList) throws IOException {
+    final String dellimiter = "#DELLIMITER#";
+    final String sublimiter = "#SUBLIMITER#";
+    final String jsTemplate = ""
+      + "var query = document.querySelectorAll('%s');\n"
+      + "function f(e, i) {\n"
+      + "  return %s;\n"
+      + "}\n"
+      + "return Array.prototype.slice.call(query).map(f).join('%s');";
+
+    final String elementFunction = String.join("+'" + sublimiter + "'+\n  ", elementFunctionList);
+    final String js = String.format(jsTemplate, cssSelector, elementFunction, dellimiter);
+    final String result = executeScript(js);
+    if (result.isEmpty()) {
+      return new ArrayList<List<String>>();
+    } else {
+      return Arrays.asList(result.split(dellimiter))
+          .stream()
+          .map(row -> Arrays.asList(row.split(sublimiter)))
+          .collect(Collectors.toList());
+    }
+  }
+
+  public String waitFor(List<SePage> pageList) throws IOException {
+    final SeResBrowserWaitFor res = typedBlock(new SeReqBrowserWaitFor(pageList), SeResBrowserWaitFor.class);
+    return res.IsSuccessful() ? res.getFoundPage().getName() : null;
+  }
+
+  public void quit() throws IOException {
+    typedBlock(new SeReqBrowserQuit(), SeResBrowserQuit.class);
+    typedBlock(new SeReqSessionDestroy(), SeResSessionDestroy.class);
+  }
+
+
+  private List<Element> findElementList(final SeElementSelector selector) throws IOException {
     final SeResElementFindList res = typedBlock(new SeReqElementFindList(selector), SeResElementFindList.class);
     final List<SeElement> foundElements = res.getElementList();
     final List<Element> actorElements = new ArrayList<>();
     for (int i = 0; i < foundElements.size(); i++) {
-      final Element actorElement = new Element(session, foundElements.get(i));
+      final Element actorElement = new Element(timeout, session, foundElements.get(i));
       actorElements.add(actorElement);
     }
     return actorElements;
   }
 
-  public void deleteCookieNamed(final String name) throws IOException {
-    typedBlock(new SeReqCookieDeleteNamed(name), SeResCookieDeleteNamed.class);
-  }
-
-  public void addCookie(final SeCookie cookie) throws IOException {
-    typedBlock(new SeReqCookieAdd(cookie), SeResCookieAdd.class);
-  }
-
-  public void navigate(final SeNavigateDirection direction) throws IOException {
-    typedBlock(new SeReqWindowNavigate(direction), SeResWindowNavigate.class);
-  }
-
-  public byte[] download(final String url) throws IOException {
-    final SeResSessionDownload res = typedBlock(new SeReqSessionDownload(url), SeResSessionDownload.class);
-    return res.getBody();
-  }
-
-  public void startKeepalive() throws IOException {
-    typedBlock(new SeReqSessionStartKeepalive(), SeResSessionStartKeepalive.class);
-  }
-
-  public void stopKeepalive() throws IOException {
-    typedBlock(new SeReqSessionStopKeepalive(), SeResSessionStopKeepalive.class);
-  }
-
-  public SePage waitFor(final List<SePage> pageList) throws IOException {
-    final SeResBrowserWaitFor res = typedBlock(new SeReqBrowserWaitFor(pageList), SeResBrowserWaitFor.class);
-    return res.IsSuccessful() ? res.getFoundPage() : null;
-  }
-
-  public void systemClick(final int x, final int y) throws IOException {
-    typedBlock(new SeReqSystemClick(x, y), SeResSystemClick.class);
-  }
-
-  public void systemInput(final String input) throws IOException {
-    typedBlock(new SeReqSystemInput(input), SeResSystemInput.class);
-  }
-
-  public void contextSetUseFrames(final boolean useFrames) throws IOException {
-    final SeReqSessionSetContext context = SeReqSessionSetContext.empty
-        .withUseFrames(useFrames);
-    setSessionContext(context);
-  }
-
-  public void contextSetPersistentSelectors(
-      final List<SeElementSelector> presentSelectorList,
-      final List<SeElementSelector> absentSelectorList) throws IOException {
-    final SeReqSessionSetContext context = SeReqSessionSetContext.empty
-        .withPersistentPresentSelectorList(presentSelectorList)
-        .withPersistentAbsentSelectorList(absentSelectorList);
-    setSessionContext(context);
-  }
-
-  public void contextSetKeepalive(
-      final long delayMillis,
-      final List<SeCommsReq> reqList) throws IOException {
-    final SeReqSessionSetContext context = SeReqSessionSetContext.empty
-        .withKeepaliveDelayMillis(delayMillis)
-        .withKeepaliveReqList(reqList);
-    setSessionContext(context);
-  }
-
-  public void contextSetWaitDelay(final long waitDelay) throws IOException {
-    final SeReqSessionSetContext context = SeReqSessionSetContext.empty
-        .withWaitDelay(waitDelay);
-    setSessionContext(context);
-  }
-
-  private void setSessionContext(final SeReqSessionSetContext context) throws IOException {
-    typedBlock(context, SeResSessionSetContext.class);
+  private void setSessionContext(final SeReqSessionSetContext sessionContext) throws IOException {
+    typedBlock(sessionContext, SeResSessionSetContext.class);
   }
 }
