@@ -16,7 +16,6 @@ object DriverPoolActor {
   def props(settings: PoolSettings): Props = Props(new DriverPoolActor(settings))
 
   case class Dequeue(requester: ActorRef, sessionRequest: SessionRequest)
-  private case object Enqueue
 
   private val uuidFactory = new NamedUUID("Driver")
   case class DriverEntry(uuid: String, future: Future[SelenateFirefox])
@@ -32,7 +31,7 @@ class DriverPoolActor(val settings: PoolSettings)
 
   logDebug(s"""Driver pool with size ${ settings.size } started""")
   for (i <- 1 to settings.size) {
-    self ! Enqueue
+    enqueue()
   }
 
   private def dequeue(): DriverEntry = {
@@ -57,12 +56,8 @@ class DriverPoolActor(val settings: PoolSettings)
   def receive = {
     case Dequeue(requester, sessionRequest) =>
       logDebug(s"""Received Dequeue($sessionRequest)""")
-      self ! Enqueue
-      sender ! ((requester, sessionRequest, dequeue()))
-
-    case Enqueue =>
-      logDebug("Received Enqueue")
       enqueue()
+      sender ! ((requester, sessionRequest, dequeue()))
   }
 
   override def postStop() {
