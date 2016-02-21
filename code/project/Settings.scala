@@ -30,7 +30,7 @@ trait Settings {
     Defaults.coreDefaultSettings ++
     GraphPlugin.graphSettings ++ Seq(
       organization := "net.selenate",
-      version      := "0.3.8",
+      version      := "0.3.9",
       scalaVersion := "2.11.7"
     )
 
