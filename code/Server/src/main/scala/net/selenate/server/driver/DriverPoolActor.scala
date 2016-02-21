@@ -61,7 +61,8 @@ class DriverPoolActor(val settings: PoolSettings)
     case Dequeue(requester, sessionRequest) =>
       logDebug( s"""Received Dequeue($sessionRequest)""")
       if (!sessionRequest.getPrefs.isEmpty) {
-        val customProfile = settings.profile.copy(prefMap = sessionRequest.getPrefs.asScala.toMap)
+        val customPrefs = settings.profile.prefMap ++ ProfileSettings.parsePrefs(sessionRequest.getPrefs.asScala.toMap)
+        val customProfile = settings.profile.copy(prefMap = customPrefs)
         sender ! ((requester, sessionRequest, createEntry(customProfile)))
       } else {
         enqueue()

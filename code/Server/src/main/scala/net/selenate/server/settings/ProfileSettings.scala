@@ -21,7 +21,7 @@ object ProfileSettings {
     file
   }
 
-  private def parsePrefs(prefs: Map[String, String]): Map[String, AnyRef] =
+  def parsePrefs(prefs: Map[String, String]): Map[String, AnyRef] =
     prefs.mapValues { entry =>
       entry match {
         case IsBoolean(bool) => bool
