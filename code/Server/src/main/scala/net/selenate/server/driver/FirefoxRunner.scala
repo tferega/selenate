@@ -25,8 +25,12 @@ object FirefoxRunner extends Loggable {
     }
   }
 
-  private def runInMain(profile: ProfileSettings) =
-    SelenateFirefox.fromProfileSettings(None, profile)
+  private def runInMain(profile: ProfileSettings) = {
+    val d = SelenateFirefox.fromProfileSettings(None, profile)
+    val duration = C.Server.Timeouts.PAGE_LOAD.duration;
+    d.manage.timeouts.pageLoadTimeout(duration.length, duration.unit)
+    d
+  }
 
   private def runInFirstFree(profile: ProfileSettings) = {
     if (!C.OS_NAME.contains("Linux")) {
