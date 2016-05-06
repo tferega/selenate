@@ -1,7 +1,7 @@
-FROM mentatlabs/oracle-jdk8
+FROM mentatlabs/openjdk-8-jre
 
 # Firefox/selenate dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get dist-upgrade && apt-get update && apt-get install -y \
     bzip2 \
     icewm \
     libdbus-glib-1-2 \

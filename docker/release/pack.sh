@@ -7,7 +7,7 @@ pushd ../../code
 rm -rf Server/target/pack
 
 # Compile and pack the code, and copy it to target folder
-pack.sh
+./pack.sh
 popd
 
 cp ../../code/Server/target/pack/* pack/ -r
