@@ -12,7 +12,8 @@ import net.selenate.common.comms.SeElementVisibility
 trait ActionCommons
     extends ActionCommonsBase
     with ActionCommonsFrames
-    with ActionCommonsParsers { self: Loggable =>
+    with ActionCommonsParsers
+    with ActionCommonsCerts { self: Loggable =>
   protected def findElementList(selector: SeElementSelector): IndexedSeq[RemoteWebElement] = {
     val by = byFactory(selector)
     d.findElements(by)

@@ -6,7 +6,6 @@ import extensions.SelenateFirefox
 
 import com.ning.http.client.cookie.{ Cookie => HttpClientCookie}
 import dispatch._
-import java.io.IOException
 import net.selenate.common.comms.req.SeReqSessionDownload
 import net.selenate.common.comms.res.SeResSessionDownload
 import net.selenate.common.exceptions.SeActionException
@@ -16,22 +15,32 @@ class SessionDownloadAction(val sessionID: String, val context: SessionContext, 
     extends Action[SeReqSessionDownload, SeResSessionDownload]
     with ActionCommons {
   def doAct = { arg =>
+    try {
+      val request = getRequest(arg)
+      val http = getHttp(arg)
+      val body = http(request OK as.Bytes).apply()
+      new SeResSessionDownload(body)
+    } catch {
+      case e: Exception =>
+        throw new SeActionException(name, arg, s"could not download specified URL ${ arg.getUrl }", e)
+    }
+  }
+
+  private def getRequest(arg: SeReqSessionDownload): Req = {
     var request = url(arg.getUrl)
-        .setHeader("Referer", d.getCurrentUrl)
-        .setHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/12.0")
+      .setHeader("Referer", d.getCurrentUrl)
+      .setHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/12.0")
     getCookies foreach { c =>
       request = request.addCookie(c)
     }
+    request
+  }
 
-    val body =
-      Http.configure(_ setFollowRedirect true)(request OK as.Bytes).either.apply match {
-        case Left(e) =>
-          throw new SeActionException(name, arg, s"could not download specified URL ${ arg.getUrl }", e)
-        case Right(body) =>
-          body
-      }
-
-    new SeResSessionDownload(body)
+  private def getHttp(arg: SeReqSessionDownload): Http = {
+    val sslContext = buildSslContext(arg.getCertList.toIndexedSeq)
+    Http.configure(_
+      .setFollowRedirect(true)
+      .setSSLContext(sslContext))
   }
 
   private def getCookies =

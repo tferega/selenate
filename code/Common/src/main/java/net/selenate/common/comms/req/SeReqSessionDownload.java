@@ -1,6 +1,10 @@
 package net.selenate.common.comms.req;
 
 import java.net.URL;
+import java.util.List;
+
+import net.selenate.common.SelenateUtils;
+import net.selenate.common.comms.SeCert;
 import net.selenate.common.exceptions.SeInvalidArgumentException;
 import net.selenate.common.exceptions.SeNullArgumentException;
 
@@ -8,9 +12,13 @@ public final class SeReqSessionDownload implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
 
   private final String url;
+  private final List<SeCert> certList;
 
-  public SeReqSessionDownload(final String url) {
+  public SeReqSessionDownload(
+      final String url,
+      final List<SeCert> certList) {
     this.url = url;
+    this.certList = certList;
     validate();
   }
 
@@ -18,8 +26,16 @@ public final class SeReqSessionDownload implements SeCommsReq {
     return url;
   }
 
+  public List<SeCert> getCertList() {
+    return certList;
+  }
+
   public SeReqSessionDownload withUrl(final String newUrl) {
-    return new SeReqSessionDownload(newUrl);
+    return new SeReqSessionDownload(newUrl, this.certList);
+  }
+
+  public SeReqSessionDownload withCertList(final List<SeCert> newCertList) {
+    return new SeReqSessionDownload(this.url, newCertList);
   }
 
   private void validate() {
@@ -32,35 +48,33 @@ public final class SeReqSessionDownload implements SeCommsReq {
     } catch (final Exception e) {
       throw new SeInvalidArgumentException("An error occured while interpreting url as java.net.URL!", e);
     }
+
+    if (certList == null) {
+      throw new SeNullArgumentException("CertList");
+    }
   }
 
   @Override
   public String toString() {
-    return String.format("SeReqSessionDownload(%s)", url);
+    return String.format("SeReqSessionDownload(%s, %s)", url, SelenateUtils.listToString(certList));
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    SeReqSessionDownload that = (SeReqSessionDownload) o;
+
+    if (!url.equals(that.url)) return false;
+    return certList.equals(that.certList);
+
   }
 
   @Override
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((url == null) ? 0 : url.hashCode());
+    int result = url.hashCode();
+    result = 31 * result + certList.hashCode();
     return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    SeReqSessionDownload other = (SeReqSessionDownload) obj;
-    if (url == null) {
-      if (other.url != null)
-        return false;
-    } else if (!url.equals(other.url))
-      return false;
-    return true;
   }
 }

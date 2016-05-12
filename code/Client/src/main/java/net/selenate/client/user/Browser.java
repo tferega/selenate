@@ -3,10 +3,7 @@ package net.selenate.client.user;
 import akka.actor.ActorRef;
 import akka.util.Timeout;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import net.selenate.common.comms.*;
 import net.selenate.common.comms.req.*;
@@ -70,7 +67,7 @@ public class Browser extends ActorBase {
   }
 
   public byte[] download(final String url) throws IOException {
-    final SeResSessionDownload res = typedBlock(new SeReqSessionDownload(url), SeResSessionDownload.class);
+    final SeResSessionDownload res = typedBlock(new SeReqSessionDownload(url, Collections.emptyList()), SeResSessionDownload.class);
     return res.getBody();
   }
 
