@@ -1,7 +1,6 @@
 import sbt._
 import Keys._
 
-import net.virtualvoid.sbt.graph.{ Plugin => GraphPlugin }
 import xerial.sbt.Pack
 trait Settings {
   import scala.language.implicitConversions
@@ -27,11 +26,10 @@ trait Settings {
     )
 
   private val default =
-    Defaults.coreDefaultSettings ++
-    GraphPlugin.graphSettings ++ Seq(
+    Defaults.coreDefaultSettings ++ Seq(
       organization := "net.selenate",
-      version      := "0.3.9",
-      scalaVersion := "2.11.7"
+      version      := "0.3.10",
+      scalaVersion := "2.11.8"
     )
 
   val scalaSettings =
@@ -71,7 +69,7 @@ trait Settings {
     )
 
   val publishing = Seq(
-    crossScalaVersions := Seq("2.11.7", "2.10.4"),
+    crossScalaVersions := Seq("2.11.8"),
     publishArtifact in (Compile, packageDoc) := true,
     publishArtifact in Test := false,
     publishTo := Some(
