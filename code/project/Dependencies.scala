@@ -10,12 +10,12 @@ trait Dependencies {
   val jodaTimeConvert = "org.joda"  % "joda-convert" % "1.8.1"
   val jodaTimeTime    = "joda-time" % "joda-time"    % "2.9.3"
 
-  val seleniumVersion = "2.48.2"
+  val seleniumVersion = "2.53.0"
   val seleniumFirefox = "org.seleniumhq.selenium" % "selenium-firefox-driver" % seleniumVersion
   val seleniumServer  = "org.seleniumhq.selenium" % "selenium-server"         % seleniumVersion
 
   // ---------------------------------------------------------------------------
-  
+
   val config           = "com.typesafe"            %  "config"               % "1.3.0"
   val dispatch         = "net.databinder.dispatch" %% "dispatch-core"        % "0.11.3"
   val logback          = "ch.qos.logback"          %  "logback-classic"      % "1.1.7"
