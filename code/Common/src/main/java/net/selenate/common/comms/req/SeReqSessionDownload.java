@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.List;
 
 import net.selenate.common.SelenateUtils;
-import net.selenate.common.comms.SeCert;
 import net.selenate.common.exceptions.SeInvalidArgumentException;
 import net.selenate.common.exceptions.SeNullArgumentException;
 
@@ -12,11 +11,11 @@ public final class SeReqSessionDownload implements SeCommsReq {
   private static final long serialVersionUID = 45749879L;
 
   private final String url;
-  private final List<SeCert> certList;
+  private final List<byte[]> certList;
 
   public SeReqSessionDownload(
       final String url,
-      final List<SeCert> certList) {
+      final List<byte[]> certList) {
     this.url = url;
     this.certList = certList;
     validate();
@@ -26,7 +25,7 @@ public final class SeReqSessionDownload implements SeCommsReq {
     return url;
   }
 
-  public List<SeCert> getCertList() {
+  public List<byte[]> getCertList() {
     return certList;
   }
 
@@ -34,7 +33,7 @@ public final class SeReqSessionDownload implements SeCommsReq {
     return new SeReqSessionDownload(newUrl, this.certList);
   }
 
-  public SeReqSessionDownload withCertList(final List<SeCert> newCertList) {
+  public SeReqSessionDownload withCertList(final List<byte[]> newCertList) {
     return new SeReqSessionDownload(this.url, newCertList);
   }
 
@@ -46,7 +45,7 @@ public final class SeReqSessionDownload implements SeCommsReq {
     try {
       new URL(url);
     } catch (final Exception e) {
-      throw new SeInvalidArgumentException("An error occured while interpreting url as java.net.URL!", e);
+      throw new SeInvalidArgumentException("An error occurred while interpreting url as java.net.URL!", e);
     }
 
     if (certList == null) {

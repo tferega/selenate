@@ -28,7 +28,7 @@ trait Settings {
   private val default =
     Defaults.coreDefaultSettings ++ Seq(
       organization := "net.selenate",
-      version      := "0.3.10",
+      version      := "0.3.11",
       scalaVersion := "2.11.8"
     )
 
